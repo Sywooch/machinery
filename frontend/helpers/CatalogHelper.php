@@ -24,5 +24,21 @@ class CatalogHelper {
         }else{
             throw new InvalidParamException(Yii::t('yii', 'Model not fount.'));
         }
-    }  
+    }
+    
+    /**
+     * 
+     * @param string $name
+     * @return boolean|string
+     */
+    public function getModelByName($name){
+        foreach(\Yii::$app->params['catalog']['models'] as $model){
+            if(false !== strrpos($model, $name)){
+                return $model;
+            }
+        }
+        return false;
+    }
+    
+    
 }

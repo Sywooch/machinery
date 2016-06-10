@@ -7,7 +7,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\BadRequestHttpException;
 use yii\filters\VerbFilter;
-use common\helpers\ModelHelper;
+use frontend\helpers\CatalogHelper;
 
 /**
  * ItemsController implements the CRUD actions for TaxonomyItems model.
@@ -42,7 +42,7 @@ class DefaultController extends Controller
 
     public function actionAdd($entityId, $entityName){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        if(($model = ModelHelper::getModelByName($entityName)) === false){
+        if(($model = CatalogHelper::getModelByName($entityName)) === false){
             throw new BadRequestHttpException();
         }
         $product = $model::findOne($entityId);
