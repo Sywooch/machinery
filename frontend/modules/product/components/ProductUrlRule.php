@@ -2,7 +2,7 @@
 namespace frontend\modules\product\components;
 
 use yii\web\UrlRule;
-use frontend\helpers\CatalogHelper;
+use frontend\modules\catalog\helpers\CatalogHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 
 class ProductUrlRule extends UrlRule {

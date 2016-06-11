@@ -9,8 +9,8 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
-use common\modules\cart\widgets\CartBlockWidget as CartBlock;
-use frontend\widgets\CatalogMenu\CatalogMenuWidget as CatalogMenu;
+use frontend\modules\cart\widgets\CartBlockWidget as CartBlock;
+use frontend\modules\catalog\widgets\CatalogMenu\CatalogMenuWidget as CatalogMenu;
 use frontend\widgets\SearchForm\SearchFormWidget as SearchForm;
 
 AppAsset::register($this);

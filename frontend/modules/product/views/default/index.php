@@ -1,17 +1,18 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
-use common\modules\cart\Asset as CartAsset;
-use common\modules\cart\helpers\CartHelper;
+use frontend\modules\cart\Asset as CartAsset;
+use frontend\modules\cart\helpers\CartHelper;
 use common\modules\file\helpers\FileHelper;
 use common\modules\file\helpers\StyleHelper;
 use frontend\modules\product\Asset as ProductAsset;
+use frontend\modules\product\helpers\ProductHelper;
 
 ProductAsset::register($this);
 CartAsset::register($this);
 
 $this->title = Html::encode($product->title);
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
 ?>
 <h2><?=Html::encode($product->title);?></h2>
 <div>

@@ -27,6 +27,27 @@ FileAsset::register($this);
     
     <?= $form->field($model, 'photos[]')->widget(FileInput::classname(),FileHelper::FileInputConfig($model, 'photos')); ?>
 
+    <?= $form->field($model, 'catalog')->widget(Select2::classname(), [
+            'options' => [
+                'placeholder' => 'Select terms ...', 
+                'multiple' => true,
+                ],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'minimumInputLength' => 1,
+                'ajax' => [
+                    'url' => '/admin/'.TaxonomyHelper::AJAX_SELECT_URL,
+                    'dataType' => 'json',
+                    'data' => new JsExpression('function(params) { return {name:params.term}; }')
+                ],
+                //'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                'templateResult' => new JsExpression('function(term) { return term.name+":"+term.vocabulary; }'),
+                'templateSelection' => new JsExpression('function (term) {var terms = '.TaxonomyHelper::terms2IndexedArray($model->catalog).'; return term.vocabulary?(term.name+":"+term.vocabulary):terms[term.id];}'),
+
+            ],
+        ]);
+    ?>
+    
     <?= $form->field($model, 'terms')->widget(Select2::classname(), [
             'options' => [
                 'placeholder' => 'Select terms ...', 
