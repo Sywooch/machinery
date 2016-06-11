@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="category__item">
                 <h2><a href="/<?=$item['term']->transliteration?>"><?=$item['term']->name?></a></h2>
                 <?php foreach($item['dataProvider']->products as $product):?>
-                <div><?php echo Html::a($product->title, ['/product', 'entity' => $product]); ?></div>
+                <div><?php echo Html::a($product->title, ['/product', 'entity' => $product]); ?></div> 
                 <div>
                     <?php if(!empty($product->files[0])):?>
                         <?php echo Html::a(Html::img('/'.StyleHelper::getPreviewUrl($product->files[0], '130x130')),['/product', 'entity' => $product]);?>
