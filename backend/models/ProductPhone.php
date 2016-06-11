@@ -59,7 +59,7 @@ class ProductPhone extends ActiveRecord
             [['sku'], 'string', 'max' => 30],
             [['title', 'short'], 'string', 'max' => 255],
             [['sku'], 'unique'],
-            [['terms'], TermValidator::class],
+            [['terms','catalog'], TermValidator::class],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dektrium\user\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['source_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sources::className(), 'targetAttribute' => ['source_id' => 'id']],
             [['photos'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png', 'maxFiles' => 2],

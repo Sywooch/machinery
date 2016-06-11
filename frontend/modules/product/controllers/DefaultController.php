@@ -7,7 +7,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use frontend\modules\product\models\ProductSearch;
 use common\modules\taxonomy\models\TaxonomyItems;
-use frontend\helpers\CatalogHelper;
+use frontend\modules\catalog\helpers\CatalogHelper;
 
 /**
  * Site controller
@@ -51,7 +51,7 @@ class DefaultController extends Controller
         }
 
         return $this->render('index',[
-            'catalog' => $term,
+            'current' => $term,
             'product' => $product
         ]);
         
