@@ -1,17 +1,28 @@
 <?php
 
 
-namespace common\modules\cart\widgets;
+namespace backend\widgets\UserBlock;
 
 use Yii;
 
 class CartBlockWidget extends \yii\bootstrap\Widget
 {
     
+
+    /**
+     * @var array the options for rendering the tag.
+     */
+    public $type = 0;
+
+    
     public function run()
     {
-        return $this->render('cart-block-widget', [
-                'order' => Yii::$app->cart->getOrder(),
-        ]);
+        
+        $model = \dektrium\user\models\User::findOne(Yii::$app->user->id);
+        
+        return $this->render('user-block', [
+                'model' => $model,
+                'type' => $this->type,
+            ]);
     }
 }

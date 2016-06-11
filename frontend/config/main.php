@@ -16,6 +16,9 @@ return [
         'cart' => [
             'class' => 'common\modules\cart\Module',
         ],
+        'product' => [
+            'class' => 'frontend\modules\product\Module',
+        ],
     ],
     'components' => [
         'request' => [
@@ -46,11 +49,10 @@ return [
             'class' => 'common\modules\cart\components\Cart',
         ],
         'urlManager' => [
-			'rules' => [
-                ['class' => 'frontend\components\ProductUrlRule'],
-				['class' => 'frontend\components\CatalogUrlRule'],
-                            
-			],
+            'rules' => [
+                ['class' => 'frontend\modules\product\components\ProductUrlRule'],
+                ['class' => 'frontend\components\CatalogUrlRule'],  
+            ],
 	],
     ],
     'params' => $params,

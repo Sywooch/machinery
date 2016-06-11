@@ -1,9 +1,8 @@
 <?php
+namespace frontend\modules\product\components;
 
-namespace frontend\components;
-
-use Yii;
 use yii\web\UrlRule;
+use frontend\helpers\CatalogHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 
 class ProductUrlRule extends UrlRule {
@@ -15,10 +14,21 @@ class ProductUrlRule extends UrlRule {
 	}
 
 	public function createUrl($manager, $route, $params) {
-		return false;  // this rule does not apply
+            if($route == 'product' && isset($params['entity'])){
+                if(($catalogId = CatalogHelper::getCatalogIdByModel($params['entity'])) === false){
+                    return false;    
+                }
+                $url = [
+                   \URLify::filter($params['entity']->title),
+                   'p'.$catalogId.'_'.$params['entity']->id
+                ];
+               return implode('-',$url);
+            }
+            return false;  
 	}
 
 	public function parseRequest($manager, $request) {
+  
             $matches = [];
             $pathInfo = $request->getPathInfo();           
             if(!preg_match ("/.+p(\d+)_(\d+)/i", $pathInfo, $matches)){
@@ -31,6 +41,7 @@ class ProductUrlRule extends UrlRule {
             
             $params = [
                 'catalogId' => $term->id,
+                'productId' => $matches[2],
                 'ProductSearch' => [
                     'id' => $matches[2],
                     'index' => [
@@ -38,7 +49,7 @@ class ProductUrlRule extends UrlRule {
                     ]
                 ]
             ];
-            return ['product/index', $params];
+            return ['product/default/index', $params];
 	}
 
 }

@@ -22,7 +22,7 @@ class CatalogHelper {
         }elseif(isset($modelIndex[$taxonomyItem->pid])){
             return new $modelIndex[$taxonomyItem->pid];
         }else{
-            throw new InvalidParamException(Yii::t('yii', 'Model not fount.'));
+            throw new InvalidParamException(\Yii::t('yii', 'Model not fount.'));
         }
     }
     
@@ -40,5 +40,13 @@ class CatalogHelper {
         return false;
     }
     
-    
+    /**
+     * 
+     * @param object $model
+     * @return int
+     */
+    public function getCatalogIdByModel($model){
+        return array_search(get_class($model), \Yii::$app->params['catalog']['models']);
+    }
+       
 }
