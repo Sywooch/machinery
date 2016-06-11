@@ -1,5 +1,5 @@
 <?php
-namespace frontend\widgets\CatalogMenu;
+namespace frontend\modules\catalog\widgets\CatalogMenu;
 
 use Yii;
 use common\modules\taxonomy\models\TaxonomyItemsSearch;

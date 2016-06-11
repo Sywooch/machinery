@@ -14,10 +14,13 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
         'cart' => [
-            'class' => 'common\modules\cart\Module',
+            'class' => 'frontend\modules\cart\Module',
         ],
         'product' => [
             'class' => 'frontend\modules\product\Module',
+        ],
+        'catalog' => [
+            'class' => 'frontend\modules\catalog\Module',
         ],
     ],
     'components' => [
@@ -46,12 +49,12 @@ return [
             'errorAction' => 'site/error',
         ],
         'cart' => [
-            'class' => 'common\modules\cart\components\Cart',
+            'class' => 'frontend\modules\cart\components\Cart',
         ],
         'urlManager' => [
             'rules' => [
                 ['class' => 'frontend\modules\product\components\ProductUrlRule'], 
-                ['class' => 'frontend\components\CatalogUrlRule'],  
+                ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
             ],
 	],
     ],

@@ -1,8 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use common\modules\cart\Asset as CartAsset;
-use common\modules\cart\helpers\CartHelper;
+use frontend\modules\cart\Asset as CartAsset;
+use frontend\modules\cart\helpers\CartHelper;
 use common\modules\file\helpers\StyleHelper;
 
 CartAsset::register($this);

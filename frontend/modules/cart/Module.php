@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\cart;
+namespace frontend\modules\cart;
 
 class Module extends \yii\base\Module
 {

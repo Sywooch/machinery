@@ -1,6 +1,5 @@
 <?php
-
-namespace frontend\components;
+namespace frontend\modules\catalog\components;
 
 use Yii;
 use yii\web\UrlRule;
@@ -47,7 +46,7 @@ class CatalogUrlRule extends UrlRule {
                     ]
                 ]
             ];
-            return ['catalog/index', $params];
+            return ['catalog/default/index', $params];
 	}
 
 }

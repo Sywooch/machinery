@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\cart\controllers;
+namespace frontend\modules\cart\controllers;
 
 use Yii;
 use yii\web\Controller;

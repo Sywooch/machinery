@@ -37,8 +37,6 @@ catalogMenu.hoverInit = function(){
 
 }
 
-
-
 $( document ).ready(function() {
    catalogMenu.init();
 });

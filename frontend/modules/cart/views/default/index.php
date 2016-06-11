@@ -3,7 +3,7 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
-use common\modules\cart\Asset;
+use frontend\modules\cart\Asset;
 use common\modules\file\helpers\FileHelper;
 use common\modules\file\helpers\StyleHelper as Style;
 

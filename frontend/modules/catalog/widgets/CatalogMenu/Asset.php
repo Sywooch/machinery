@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\widgets\CatalogMenu;
+namespace frontend\modules\catalog\widgets\CatalogMenu;
 
 use yii\web\AssetBundle;
 use yii\web\JqueryAsset;
@@ -11,7 +11,7 @@ class Asset extends AssetBundle
      * @inheritdoc
      */
     public $basePath = '@webroot';
-    public $baseUrl = '/frontend/widgets/CatalogMenu/assets';
+    public $baseUrl = '/frontend/modules/catalog/widgets/CatalogMenu/assets';
 
     public $css = [
         'catalog.menu.css',

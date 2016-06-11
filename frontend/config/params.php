@@ -6,7 +6,8 @@ return [
         'vocabularyId' => 7,
         'buyButtonText' => 'Купить',
         'models' => [
-            11 => \backend\models\ProductPhone::class
+            11 => \backend\models\ProductPhone::class,
+            12 => \backend\models\ProductPhone::class
         ]
     ]
 ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\product;
+namespace frontend\modules\catalog;
 
 class Module extends \yii\base\Module
 {

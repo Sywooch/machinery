@@ -1,8 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
-use common\modules\cart\Asset as CartAsset;
-use common\modules\cart\helpers\CartHelper;
+use frontend\modules\cart\Asset as CartAsset;
+use frontend\modules\cart\helpers\CartHelper;
 use common\modules\file\helpers\FileHelper;
 use common\modules\file\helpers\StyleHelper;
 use frontend\modules\product\Asset as ProductAsset;

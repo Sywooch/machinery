@@ -1,7 +1,7 @@
 <?php
 
 
-namespace common\modules\cart\widgets;
+namespace frontend\modules\cart\widgets;
 
 use Yii;
 

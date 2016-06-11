@@ -1,5 +1,5 @@
 <?php
-namespace frontend\controllers;
+namespace frontend\modules\catalog\controllers;
 
 use Yii;
 use yii\base\InvalidParamException;
@@ -13,7 +13,7 @@ use frontend\helpers\CatalogHelper;
 /**
  * Site controller
  */
-class CatalogController extends Controller
+class DefaultController extends Controller
 {
     
 

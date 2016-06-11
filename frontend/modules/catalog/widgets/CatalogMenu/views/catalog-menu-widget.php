@@ -1,7 +1,7 @@
 <?php
 use common\modules\taxonomy\helpers\TaxonomyHelper;
-use frontend\widgets\CatalogMenu\CatalogMenuWidget;
-use frontend\widgets\CatalogMenu\Asset;
+use frontend\modules\catalog\widgets\CatalogMenu\CatalogMenuWidget;
+use frontend\modules\catalog\widgets\CatalogMenu\Asset;
 
 Asset::register($this);
 

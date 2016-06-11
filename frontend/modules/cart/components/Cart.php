@@ -1,12 +1,12 @@
 <?php
 
-namespace common\modules\cart\components;
+namespace frontend\modules\cart\components;
 
 use yii;
 use yii\base\Object;
 use common\modules\orders\helpers\OrdersHelper;
 use common\modules\orders\models\Orders;
-use common\modules\orders\models\OrdersItems;
+use common\modules\orders\models\OrdersItems; 
 use common\helpers\ModelHelper;
 
 class Cart extends Object

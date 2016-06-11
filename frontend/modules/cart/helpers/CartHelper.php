@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\cart\helpers;
+namespace frontend\modules\cart\helpers;
 
 use Yii;
 use yii\helpers\Html;
