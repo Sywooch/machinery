@@ -6,7 +6,7 @@ use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use frontend\models\ProductSearch;
+use frontend\modules\product\models\ProductSearch;
 use common\modules\taxonomy\models\TaxonomyItems;
 use frontend\helpers\CatalogHelper;
 
@@ -56,7 +56,7 @@ class CatalogController extends Controller
                         'dataProvider' => $searchModel->getCategoryMostRatedItems($childrenTerm)
                     ];
                 }
-                return $this->render('sub-categories',[
+                return $this->render('categories',[
                     'current' => $term,
                     'items' => $items
                 ]);

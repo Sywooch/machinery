@@ -8,7 +8,7 @@ use common\modules\taxonomy\models\TaxonomyItems;
 
 class CatalogUrlRule extends UrlRule {
 
-        public function init() {
+    public function init() {
 		if ($this->name === null) {
 			$this->name = __CLASS__;
 		}

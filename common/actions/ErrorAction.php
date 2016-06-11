@@ -108,7 +108,6 @@ class ErrorAction extends Action
         } elseif($exception instanceof NotFoundHttpException
                 && ($style = new StyleHelper(Yii::$app->request->url)) 
                 && $style->validate()){
-          
                 $url = FileHelper::createPreview(File::findOne($style->getFileId()), $style);
                 if($url){
                     header("Content-type: ".$file->mimetype);

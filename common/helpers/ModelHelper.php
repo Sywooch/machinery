@@ -18,18 +18,4 @@ class ModelHelper {
        return substr($class, strrpos($class, '\\') + strlen('\\'));
     }
     
-    /**
-     * 
-     * @param string $name
-     * @return boolean|string
-     */
-    public function getModelByName($name){
-        foreach(Yii::$app->params['catalog']['models'] as $model){
-            if(false !== strrpos($model, $name)){
-                return $model;
-            }
-        }
-        return false;
-    }
-
 }

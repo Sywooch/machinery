@@ -15,12 +15,14 @@ class StyleHelper {
     public $quality = 100;
     public $height;
     public $width;
+    private $isValid = false;
     public function __construct($str = '') {
         if($this->isStyleUrl($str)){
             $this->_resolution = $this->getResolution($str);
             $this->height = $this->_resolution[1];
             $this->width = $this->_resolution[2];
             $this->_fileId = $this->getIdFromUrl($str);
+            $this->isValid = true;
         }elseif($this->isResolution($str)){
             $this->_resolution = $this->getResolution($str);
             $this->height = $this->_resolution[1];
@@ -126,10 +128,7 @@ class StyleHelper {
      * @return boolean
      */
     public function validate(){
-        if($this->getName()){
-            return true;
-        }
-        return false;
+        return $this->isValid;
     }
 
 }
