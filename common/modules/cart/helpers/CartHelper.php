@@ -5,6 +5,7 @@ namespace common\modules\cart\helpers;
 use Yii;
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
+use common\helpers\ModelHelper;
 
 class CartHelper
 {
@@ -14,15 +15,15 @@ class CartHelper
      * @param int $catalogId
      * @return string
      */
-    public static function getBuyButton($entityId, $catalogId){
+    public static function getBuyButton($product){
        return Html::button ( Yii::$app->params['catalog']['buyButtonText'], [
-           'entityId' => $entityId,
-           'catalogId' => $catalogId,
+           'entityId' => $product->id,
+           'entity' => ModelHelper::getModelName($product),
            'class' => [
                 'btn',
                 'btn-primary',
                 'buy-button',
-                'buy-button-'.$entityId
+                'buy-button-'.$product->id
             ]
        ]);
     }
