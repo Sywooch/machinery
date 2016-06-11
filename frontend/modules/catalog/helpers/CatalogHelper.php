@@ -1,7 +1,8 @@
 <?php
 
-namespace frontend\helpers;
+namespace frontend\modules\catalog\helpers;
 
+use yii\helpers\Html;
 use yii\base\InvalidParamException;
 use common\modules\taxonomy\models\TaxonomyItems;
 
@@ -16,7 +17,7 @@ class CatalogHelper {
      */
     public static function getModelByTerm(TaxonomyItems $taxonomyItem){
         $modelIndex = \Yii::$app->params['catalog']['models'];
-        
+
         if(isset($modelIndex[$taxonomyItem->id])){
             return new $modelIndex[$taxonomyItem->id];
         }elseif(isset($modelIndex[$taxonomyItem->pid])){
@@ -48,5 +49,22 @@ class CatalogHelper {
     public function getCatalogIdByModel($model){
         return array_search(get_class($model), \Yii::$app->params['catalog']['models']);
     }
-       
+    
+    /**
+     * 
+     * @param TaxonomyItems $taxonomyItem
+     * @return []
+     */
+    public function getBreadcrumb(TaxonomyItems $taxonomyItem, $childId = 0,  &$breadcrumb = []){
+        if($taxonomyItem->pid){
+            self::getBreadcrumb($taxonomyItem->parent,$taxonomyItem->id, $breadcrumb);
+        }
+        if($childId){
+            $breadcrumb[] = ['label' => Html::encode($taxonomyItem->name), 'url' => $taxonomyItem->transliteration];
+        }else{
+            $breadcrumb[] = Html::encode($taxonomyItem->name);
+        }
+        return $breadcrumb;
+    }
+    
 }

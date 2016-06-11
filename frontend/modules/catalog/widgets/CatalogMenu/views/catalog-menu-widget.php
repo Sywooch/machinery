@@ -32,13 +32,13 @@ Asset::register($this);
                                 <div class="subcategory-list-item ">
                                     <?php if($mainItem['id'] == $childrenItem['pid']):?>
                                         <span class="h3 subcategory-list-item__link-title  ">
-                                            <a class="subcategory-list-item__link" href="#">
+                                            <a class="subcategory-list-item__link" href="/<?=$childrenItem['transliteration']?>">
                                                 <?=$childrenItem['name']?>
                                             </a>
                                         </span>
                                     <?php else: ?>
                                         <div class="subcategory-list-item__link-title_level2">
-                                            <a class="subcategory-list-item__link " href="#">
+                                            <a class="subcategory-list-item__link " href="/<?=$childrenItem['transliteration']?>">
                                                 <?=$childrenItem['name']?>
                                             </a>
                                         </div>

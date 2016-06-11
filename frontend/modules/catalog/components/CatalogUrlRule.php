@@ -32,17 +32,16 @@ class CatalogUrlRule extends UrlRule {
                 'vid' => Yii::$app->params['catalog']['vocabularyId'],
                 'transliteration' => \URLify::filter ($root, 60, "", true)
             ]);
-
+            
             if(!$term){
                 return false;
             }
-
-            $catalogId = $term->pid ? $term->pid : $term->id;
+            
             $params = [
-                'catalogId' => $catalogId,
+                'catalogId' => $term->id,
                 'ProductSearch' => [
                     'index' => [
-                        $catalogId
+                        $term->id
                     ]
                 ]
             ];

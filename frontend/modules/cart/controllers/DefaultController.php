@@ -7,7 +7,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\BadRequestHttpException;
 use yii\filters\VerbFilter;
-use frontend\helpers\CatalogHelper;
+use frontend\modules\catalog\helpers\CatalogHelper;
 
 /**
  * ItemsController implements the CRUD actions for TaxonomyItems model.

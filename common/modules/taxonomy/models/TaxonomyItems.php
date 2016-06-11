@@ -19,6 +19,8 @@ class TaxonomyItems extends \yii\db\ActiveRecord
     
     const TABLE_TAXONOMY_ITEMS = 'taxonomy_items';
     
+    private $_parent;
+    
     /**
      * @inheritdoc
      */
@@ -70,5 +72,16 @@ class TaxonomyItems extends \yii\db\ActiveRecord
     public function getVocabulary()
     {
         return $this->hasOne(TaxonomyVocabulary::className(), ['id' => 'vid']);
+    }
+    
+    public function getParent(){
+        if(!$this->pid){
+            return false;
+        }
+        if($this->_parent){
+           return $this->_parent; 
+        }
+        $this->_parent = self::findOne($this->pid);
+        return $this->_parent;
     }
 }
