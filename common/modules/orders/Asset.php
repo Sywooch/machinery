@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\modules\cart;
+namespace common\modules\orders;
 
 use yii\web\AssetBundle;
 use yii\web\JqueryAsset;
@@ -11,17 +11,15 @@ class Asset extends AssetBundle
      * @inheritdoc
      */
     public $basePath = '@webroot';
-    public $baseUrl = '/frontend/modules/cart/assets';
+    public $baseUrl = '/common/modules/orders/assets';
     public $css = [
-        'cart.css',
     ];
 
     public $js = [
-        'cart.js',
     ];
-        
+    
     public $depends = [
         JqueryAsset::class,
     ];
-	
+
 }

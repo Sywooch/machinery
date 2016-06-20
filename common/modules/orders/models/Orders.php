@@ -4,6 +4,7 @@ namespace common\modules\orders\models;
 
 use Yii;
 use \yii\db\ActiveRecord;
+use common\modules\orders\widgets\delivery\DeliveryFactory;
 /**
  * This is the model class for table "orders".
  *
@@ -28,6 +29,12 @@ use \yii\db\ActiveRecord;
  */
 class Orders extends ActiveRecord
 {
+    
+    const SCENARIO_ORDER = 'order';
+    
+    public $_deliveryInfo = [];
+    public $_data = [];
+    
     /**
      * @inheritdoc
      */
@@ -42,15 +49,26 @@ class Orders extends ActiveRecord
     public function rules()
     {
         return [
+            [['name', 'email', 'phone' , 'address', 'pay', 'delivery'], 'required', 'on' => self::SCENARIO_ORDER],
+            [['token'], 'required'],
             [['user_id', 'count', 'created', 'updated', 'ordered'], 'integer'],
             [['price'], 'number'],
-            [['pay', 'delivery', 'comment'], 'string'],
-            [['token'], 'required'],
-            [['name', 'email', 'phone', 'address'], 'string', 'max' => 255],
+            [['comment'], 'string'],
+            [['name', 'email', 'phone', 'address', 'pay', 'delivery'], 'string', 'max' => 255],
             [['token'], 'string', 'max' => 40],
             [['token'], 'unique'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dektrium\user\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_ORDER] = ['name', 'email', 'phone' , 'address', 'comment', 'pay', 'delivery'];
+        return $scenarios;
     }
 
     /**
@@ -63,12 +81,12 @@ class Orders extends ActiveRecord
             'user_id' => 'User ID',
             'count' => 'Count',
             'price' => 'Price',
-            'name' => 'Name',
-            'email' => 'Email',
-            'phone' => 'Phone',
+            'name' => 'Имя и Фамилия',
+            'email' => 'E-mail',
+            'phone' => 'Телефон',
             'address' => 'Address',
             'pay' => 'Pay',
-            'delivery' => 'Delivery',
+            'delivery' => 'Доставка',
             'comment' => 'Comment',
             'created' => 'Created',
             'updated' => 'Updated',
@@ -80,11 +98,16 @@ class Orders extends ActiveRecord
     public function beforeSave($insert) {
         $this->price = 0;
         $this->count = 0;
+        $this->data = json_encode($this->_data);
         foreach($this->ordersItems as $item){
             $this->count += $item->count;
             $this->price += $item->price * $item->count;
         } 
         return parent::beforeSave($insert);
+    }
+    
+    public function afterFind(){
+        $this->_data = json_decode($this->data);
     }
 
 
@@ -103,6 +126,17 @@ class Orders extends ActiveRecord
                 ]
             ];
     }
+
+    public function setDeliveryInfo(DeliveryFactory $delivery){
+        unset($this->_data->delivery);
+        $this->_data = (array)$this->_data;
+        $this->_data['delivery'] = $delivery->getData();
+    }
+    
+    public function getDeliveryInfo(){
+        return new DeliveryFactory($this->_data->delivery);
+    }
+    
 
     /**
      * @return \yii\db\ActiveQuery

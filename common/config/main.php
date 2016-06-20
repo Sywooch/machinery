@@ -22,5 +22,8 @@ return [
             'cost' => 12,
             'admins' => ['root'],
         ],
+        'orders' => [
+            'class' => 'common\modules\orders\Module',
+        ],
     ], 
 ];

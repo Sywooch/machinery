@@ -9,5 +9,11 @@ return [
             11 => \backend\models\ProductPhone::class,
             12 => \backend\models\ProductPhone::class
         ]
+    ],
+    'orders' => [
+        'delivery' => [
+            'DeliveryDefault',
+            'DeliveryNovaPochta',
+        ]
     ]
 ];
