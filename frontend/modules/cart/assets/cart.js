@@ -113,8 +113,12 @@ cart.count = function(id, count)
             }
             cartWidget.update(data);
             cart.updateItem(data);
+            cart.updateOrder(data);
         }
     });
+}
+cart.updateOrder = function(data){
+    $('.cart-total').html(data.formaters.total); 
 }
 cart.updateItem = function(data){
     var item = $('#order-item-'+data.item.id);

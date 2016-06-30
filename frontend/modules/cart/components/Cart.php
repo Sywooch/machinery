@@ -13,10 +13,10 @@ class Cart extends Object
 {
     private $_order;
     
-    public function __construct(Orders $order, $config = [])
+    public function __construct($config = [])
     {
-        $this->_order = $order;
-        $this->_order->loadDefaultValues();
+        //$this->_order = $order;
+       // $this->_order->loadDefaultValues();
 
         if (!empty($config)) {
             Yii::configure($this, $config);
@@ -29,14 +29,13 @@ class Cart extends Object
      * @param boolean $reload
      * @return null|object
      */
-    public function getOrder($reload = false)
+    public function getOrder($token = false)
     {
-        if($this->_order->id && !$reload){
+        if($this->_order && $token === false){
             return $this->_order;
         }
-      
-        $order = Orders::find()->where([
-                                   'token' => OrdersHelper::getToken(),
+        $this->_order = Orders::find()->where([
+                                   'token' => $token ? $token : OrdersHelper::getToken(),
                                 ])
                                 ->orFilterWhere([
                                     'user_id' => Yii::$app->user->id,
@@ -45,16 +44,13 @@ class Cart extends Object
                                     'ordered' => 0,
                                 ])
                                 ->one(); 
-        if($order){
-            $this->_order = $order;
-        }
-
         return $this->_order;
     }
 
     private function create(){
+        $this->_order = new Orders();
         $this->_order->user_id = Yii::$app->user->id;
-        $this->_order->token = OrdersHelper::getToken();
+        $this->_order->token = OrdersHelper::getToken(true);
         $this->_order->save();
     }
 
@@ -71,10 +67,10 @@ class Cart extends Object
         if($entity === null){
             return;
         }
-        
+
         $this->getOrder();
         
-        if(!$this->_order->id){
+        if(!$this->_order){
             $this->create();
         }else{
             foreach($this->_order->ordersItems as $item){
@@ -101,7 +97,7 @@ class Cart extends Object
         }
         
         if($workItem && $workItem->save()){
-            $order = $this->getOrder(true);
+            $order = $this->getOrder($this->_order->token);
             $order->save();
             return $order;
         }

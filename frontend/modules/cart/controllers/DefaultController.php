@@ -35,11 +35,15 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
+        if(Yii::$app->request->isPost){
+            return $this->redirect(['/orders']);
+        }
+        
         return $this->render('index', [
                     'order' => Yii::$app->cart->getOrder()
         ]);
     }
-
+    
     public function actionAdd($entityId, $entityName){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if(($model = CatalogHelper::getModelByName($entityName)) === false){
