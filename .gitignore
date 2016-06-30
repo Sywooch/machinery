@@ -1,3 +1,6 @@
 /vendor
 /backend/web/assets
 /files
+/nbproject/private/
+nbproject/project.properties
+nbproject/project.xml
