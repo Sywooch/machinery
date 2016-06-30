@@ -13,8 +13,8 @@ use console\modules\import\models\Validate;
 class DefaultController extends Controller
 {
     const TIRES = 500;
-    const INSERT_LIMIT  = 1000;
-
+    const INSERT_LIMIT  = 3;
+    private $terms;
 
     public function actions()
     {
@@ -25,6 +25,8 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         $sources = Sources::find()->where(['<', 'tires' , self::TIRES])->all();
+        $importHelper = Yii::$container->get(\console\modules\import\helpers\ImportHelper::class);
+        $validator = Yii::$container->get(\console\modules\import\models\Validate::class); 
         
         foreach($sources as $source){
            
@@ -36,13 +38,33 @@ class DefaultController extends Controller
             }
             
             $data = [];
+            $rawData = [];
+            $rawTerms = [];
             $fields = [];
-            $validator = new Validate();
+            
             while (($line = fgetcsv($handle, 2000, ";")) !== FALSE) {
                 if(empty($fields)){
                     $fields = $line;
                     continue;
                 }
+                
+                $line = array_combine($fields, $line);
+
+                if(($line = $importHelper->parseTerms($line)) === false){
+                    $source->addMessage('[1001] Ошибка парсинга терминов.');
+                    continue;
+                }
+
+                $raw[] = $line;
+                if(count($raw) >= self::INSERT_LIMIT){
+        
+                     $importHelper->termsIndex($raw);
+                     print_r($raw); exit('assas');
+                    $raw = [];
+                }
+               
+               /*
+                
                 $validator->setAttributes(array_combine($fields, $line));
                 if($validator->validate()){
                     $data[] = $validator->attributes;
@@ -58,8 +80,9 @@ class DefaultController extends Controller
                     // TODO: bathInsert
                     $data = [];
                 }
-                
+                */
             }
+            exit('AAAAXXPXPPX');
             if(count($data)){
                 // TODO: bathInsert
                 $data = [];
