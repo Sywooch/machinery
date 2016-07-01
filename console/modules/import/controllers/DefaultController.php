@@ -27,7 +27,8 @@ class DefaultController extends Controller
         $sources = Sources::find()->where(['<', 'tires' , self::TIRES])->all();
         $importHelper = Yii::$container->get(\console\modules\import\helpers\ImportHelper::class);
         $validator = Yii::$container->get(\console\modules\import\models\Validate::class); 
-        
+        $terms = Yii::$container->get(\console\modules\import\models\Terms::class); 
+   
         foreach($sources as $source){
            
             $fileName = \Yii::getAlias('@app')."/../files/import/source_{$source->id}.csv";
@@ -49,23 +50,13 @@ class DefaultController extends Controller
                 }
                 
                 $line = array_combine($fields, $line);
-
+                
                 if(($line = $importHelper->parseTerms($line)) === false){
                     $source->addMessage('[1001] Ошибка парсинга терминов.');
                     continue;
                 }
 
-                $raw[] = $line;
-                if(count($raw) >= self::INSERT_LIMIT){
-        
-                     $importHelper->termsIndex($raw);
-                     print_r($raw); exit('assas');
-                    $raw = [];
-                }
-               
-               /*
-                
-                $validator->setAttributes(array_combine($fields, $line));
+                $validator->setAttributes($line);
                 if($validator->validate()){
                     $data[] = $validator->attributes;
                 }else{
@@ -75,14 +66,14 @@ class DefaultController extends Controller
                         }
                     }
                 }
-                
+
                 if(count($data) >= self::INSERT_LIMIT){
                     // TODO: bathInsert
                     $data = [];
                 }
-                */
+                
             }
-            exit('AAAAXXPXPPX');
+            
             if(count($data)){
                 // TODO: bathInsert
                 $data = [];
