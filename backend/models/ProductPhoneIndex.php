@@ -30,8 +30,9 @@ class ProductPhoneIndex extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['term_id', 'entity_id'], 'required'],
+            [['term_id', 'entity_id', 'field'], 'required'],
             [['term_id', 'entity_id'], 'integer'],
+            [['field'], 'string', 'max' => 30],
             [['term_id', 'entity_id'], 'unique', 'targetAttribute' => ['term_id', 'entity_id'], 'message' => 'The combination of Term ID and Entity ID has already been taken.'],
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductPhone::className(), 'targetAttribute' => ['entity_id' => 'id']],
             [['term_id'], 'exist', 'skipOnError' => true, 'targetClass' => TaxonomyItems::className(), 'targetAttribute' => ['term_id' => 'id']],

@@ -15,6 +15,21 @@ class ImportHelper
         $this->taxonomyVocabularyModel = $taxonomyVocabularyModel;
         $this->taxonomyItemsModel = $taxonomyItemsModel;
     }
+    
+    public function insetTermsData(array $sku2Ids, array $currentTermIds, array $newTermIds){
+        $data = [];
+        $vocabularyFields = Yii::$app->params['catalog']['vocabularyFields'];
+        foreach($sku2Ids as $sku => $productId){
+            foreach($newTermIds[$sku] as $term){
+               $data[] = [
+                    'term_id' => $term['id'],
+                    'entity_id' => $productId,
+                    'field' => isset($vocabularyFields[$term['vid']]) ? $vocabularyFields[$term['vid']] : $vocabularyFields['all']
+                ]; 
+            }
+        }
+        return $data;
+    }
 
     public function parseTerms($line){
         $terms = [];
@@ -46,6 +61,43 @@ class ImportHelper
         
         $line['terms'] = $terms;
         return $line;
+    }
+    
+    public static function productFieldTypes(){
+        return [
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_INT,
+            \PDO::PARAM_INT,
+            \PDO::PARAM_INT
+        ];
+    }
+    public static function productFields(){
+        return [
+                   'sku',
+                   'price',
+                   'title',
+                   'description',
+                   'reindex',
+                   'user_id',
+                   'source_id'
+               ];
+    }
+    public static function termFieldTypes(){
+        return [
+            \PDO::PARAM_INT,
+            \PDO::PARAM_INT,
+            \PDO::PARAM_STR
+        ];
+    }
+    public static function termFields(){
+        return [
+                   'term_id',
+                   'entity_id',
+                   'field'
+               ];
     }
 }
 

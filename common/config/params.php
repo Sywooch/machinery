@@ -6,6 +6,10 @@ return [
     'catalog' => [
         'defaultPageSize' => 20,
         'vocabularyId' => 7,
+        'vocabularyFields' => [
+            'all' => 'terms',
+            7 => 'catalog'
+        ],
         'buyButtonText' => 'Купить',
         'models' => [
             11 => \backend\models\ProductPhone::class,

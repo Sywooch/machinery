@@ -6,6 +6,7 @@ use Yii;
 use common\modules\taxonomy\models\TaxonomyItems;
 use console\modules\import\helpers\ImportHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
+use common\helpers\ModelHelper;
 
 
 /**
@@ -16,9 +17,10 @@ class Insert extends \yii\base\Model
     const INSERT_LIMIT  = 3;
     
     private $stack = [];
+    private $model;
 
     public function add(array $data){
-        $catalogId = $data['termIds'][0]; 
+        $catalogId = $data['termIds'][0]['id']; 
         $this->stack[$catalogId][] = $data;
         if(count($this->stack[$catalogId]) >= self::INSERT_LIMIT){
             $this->flush($catalogId);
@@ -31,15 +33,50 @@ class Insert extends \yii\base\Model
         }
         foreach($this->stack as $currentCatalogId => $items){
            if(!$catalogId){
-               $model = CatalogHelper::getModelByTerm(TaxonomyItems::findOne($currentCatalogId));
+               $this->insert($currentCatalogId, $items);
            }elseif( $catalogId == $currentCatalogId){
-               $model = CatalogHelper::getModelByTerm(TaxonomyItems::findOne($currentCatalogId));
-               $this->insertBatch($model->tableName(), $items, CatalogHelper::fields(), CatalogHelper::types());
+               $this->insert($currentCatalogId, $items);
            } 
         }
     }
     
+    private function insert($currentCatalogId, array $items){
+        $this->model = CatalogHelper::getModelByTerm(TaxonomyItems::findOne($currentCatalogId));
+        $this->insertBatch($this->model->tableName(), $items, ImportHelper::productFields(), ImportHelper::productFieldTypes());
+        $sku2Ids = $this->getIdsBySku(array_column($items, 'sku'));
+        $currentTermIds = $this->getTermIdsByProdutIds($sku2Ids);
+        $newTermIds = array_column($items, 'termIds', 'sku');
+        $insetTermsData = ImportHelper::insetTermsData($sku2Ids, $currentTermIds, $newTermIds);
+        print_r($newTermIds); print_r($currentTermIds);print_r($sku2Ids); exit('a');
+        $indexModel = $this->model->className() . 'Index';
+        $this->insertBatch($indexModel::tableName(), $insetTermsData, ImportHelper::termFields(), ImportHelper::termFieldTypes());
+    }
     
+    private function getIdsBySku(array $sku){
+        return (new \yii\db\Query())
+                        ->select(['id','sku'])
+                        ->from($this->model->tableName())
+                        ->indexBy('sku')
+                        ->where([
+                            'sku' => $sku,
+                        ])->column();
+    }
+    
+    private function getTermIdsByProdutIds(array $ids){
+        $data = [];
+        $model = $this->model->className() . 'Index';
+        $items = (new \yii\db\Query())
+                        ->select(['entity_id','term_id'])
+                        ->from($model::tableName())
+                        ->where([
+                            'entity_id' => $ids,
+                        ])->all();
+        foreach($items as $item){
+            $data[$item['entity_id']][] = $item['term_id'];
+        }
+        return $data;
+    }
+
     private function insertBatch($table, array $data, array $columns, array $types){
 
         if (!$table) {

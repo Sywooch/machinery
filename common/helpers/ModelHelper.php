@@ -18,4 +18,8 @@ class ModelHelper {
        return substr($class, strrpos($class, '\\') + strlen('\\'));
     }
     
+    public static function getFields($model){
+        print_r($model); exit('AAA');
+    }
+    
 }

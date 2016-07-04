@@ -51,9 +51,10 @@ class Validate extends \yii\base\Model
             return;
         }
         
-        foreach($data as $term){
+        foreach($data as $index => $term){
             if($term['pid'] == 0 && $term['vid'] == Yii::$app->params['catalog']['vocabularyId']){
                 $rootTerm[] = $term;
+                unset($data[$index]);
             }
         }
         
@@ -62,9 +63,7 @@ class Validate extends \yii\base\Model
             return;
         }
         
-        array_unshift ( $data, array_shift($rootTerm) );        
-        $this->termIds = array_unique(array_column($data,'id'));
-       
+        $this->termIds = array_replace($rootTerm, $data);   
     }
 
 }

@@ -60,7 +60,7 @@ class TemporaryTerms extends \yii\base\Model
     
     public static function getTermIds(array $data){
         $query = (new \yii\db\Query())
-            ->select(['id', 'pid', 'vid', 'vocabulary_name', 'name'])
+            ->select(['id', 'pid', 'vid'])
             ->from(self::TABLE_TMP_TERMS);
  
             foreach($data as $vocabulary => $terms){
@@ -70,7 +70,7 @@ class TemporaryTerms extends \yii\base\Model
                     ]);
             }
            
-            return $query->all();
+            return $query->indexBy('id')->all();
     }
 
 }
