@@ -8,7 +8,7 @@ use common\modules\taxonomy\models\TaxonomyVocabulary;
 /**
 *
  */
-class Terms extends \yii\base\Model
+class TemporaryTerms extends \yii\base\Model
 {
     const TABLE_TMP_TERMS = 'tmp_terms';
     
@@ -36,8 +36,8 @@ class Terms extends \yii\base\Model
 
     public function fill(){
         Yii::$app->db->createCommand('
-             INSERT IGNORE INTO '.self::TABLE_TMP_TERMS.' (id,vocabulary_name, name)'
-                . '  SELECT t.id,v.name, t.name FROM '.TaxonomyItems::TABLE_TAXONOMY_ITEMS.' t '
+             INSERT IGNORE INTO '.self::TABLE_TMP_TERMS.' (id, pid, vid, vocabulary_name, name)'
+                . '  SELECT t.id, t.pid, t.vid, v.name, t.name FROM '.TaxonomyItems::TABLE_TAXONOMY_ITEMS.' t '
                 . 'INNER JOIN '.TaxonomyVocabulary::TABLE_TAXONOMY_VOCABULARY.' v ON v.id = t.vid'
                 )->execute();
     }
@@ -47,6 +47,8 @@ class Terms extends \yii\base\Model
         return Yii::$app->db->createCommand('
             CREATE TEMPORARY TABLE IF NOT EXISTS '.self::TABLE_TMP_TERMS.' (
                 `id` INT(11) NOT NULL,
+                `pid` INT(11) NOT NULL,
+                `vid` INT(11) NOT NULL,
                 `vocabulary_name` VARCHAR(20) NOT NULL,
                 `name` VARCHAR(50) NOT NULL,
                 UNIQUE INDEX `v_i_n` (`vocabulary_name`, `name`)
@@ -58,7 +60,7 @@ class Terms extends \yii\base\Model
     
     public static function getTermIds(array $data){
         $query = (new \yii\db\Query())
-            ->select(['id', 'vocabulary_name', 'name'])
+            ->select(['id', 'pid', 'vid', 'vocabulary_name', 'name'])
             ->from(self::TABLE_TMP_TERMS);
  
             foreach($data as $vocabulary => $terms){

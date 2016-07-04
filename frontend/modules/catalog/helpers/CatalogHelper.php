@@ -67,4 +67,26 @@ class CatalogHelper {
         return $breadcrumb;
     }
     
+    public static function types(){
+        return [
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_INT,
+            \PDO::PARAM_INT,
+            \PDO::PARAM_INT
+        ];
+    }
+    public static function fields(){
+        return [
+                   'sku',
+                   'price',
+                   'title',
+                   'description',
+                   'reindex',
+                   'user_id',
+                   'source_id'
+               ];
+    }   
 }

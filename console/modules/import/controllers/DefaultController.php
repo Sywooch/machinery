@@ -6,6 +6,7 @@ use Yii;
 use yii\console\Controller;
 use console\modules\import\models\Sources;
 use console\modules\import\models\Validate;
+use console\modules\import\models\Insert;
 
 /**
  * ItemsController implements the CRUD actions for TaxonomyItems model.
@@ -13,9 +14,7 @@ use console\modules\import\models\Validate;
 class DefaultController extends Controller
 {
     const TIRES = 500;
-    const INSERT_LIMIT  = 3;
-    private $terms;
-
+    
     public function actions()
     {
         return [
@@ -27,8 +26,9 @@ class DefaultController extends Controller
         $sources = Sources::find()->where(['<', 'tires' , self::TIRES])->all();
         $importHelper = Yii::$container->get(\console\modules\import\helpers\ImportHelper::class);
         $validator = Yii::$container->get(\console\modules\import\models\Validate::class); 
-        $terms = Yii::$container->get(\console\modules\import\models\Terms::class); 
-   
+        $terms = Yii::$container->get(\console\modules\import\models\TemporaryTerms::class);
+        $insert = Yii::$container->get(\console\modules\import\models\Insert::class);
+
         foreach($sources as $source){
            
             $fileName = \Yii::getAlias('@app')."/../files/import/source_{$source->id}.csv";
@@ -57,27 +57,23 @@ class DefaultController extends Controller
                 }
 
                 $validator->setAttributes($line);
+                $validator->source_id = $source->id;
+                $validator->user_id = 1;
+                
                 if($validator->validate()){
-                    $data[] = $validator->attributes;
+                    $insert->add($validator->attributes);
                 }else{
                     foreach($validator->getErrors() as $field => $errors){
                         foreach($errors as $error){
                            $source->addMessage("[1001] {$field} {$error}"); 
                         }
                     }
+                    $validator->clearErrors(); 
                 }
-
-                if(count($data) >= self::INSERT_LIMIT){
-                    // TODO: bathInsert
-                    $data = [];
-                }
-                
             }
             
-            if(count($data)){
-                // TODO: bathInsert
-                $data = [];
-            }
+            $insert->flush();
+            
             fclose($handle);
             $source->tires++;
             $source->save();
