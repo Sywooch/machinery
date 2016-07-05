@@ -19,6 +19,8 @@ use Yii;
  */
 class Sources extends \yii\db\ActiveRecord
 {
+    const TIRES = 500;
+    
     private $_messages;
     /**
      * @inheritdoc

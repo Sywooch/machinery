@@ -13,8 +13,6 @@ use console\modules\import\models\Insert;
  */
 class DefaultController extends Controller
 {
-    const TIRES = 500;
-    
     public function actions()
     {
         return [
@@ -23,7 +21,7 @@ class DefaultController extends Controller
    
     public function actionIndex()
     {
-        $sources = Sources::find()->where(['<', 'tires' , self::TIRES])->all();
+        $sources = Sources::find()->where(['<', 'tires' , Sources::TIRES])->all();
         $importHelper = Yii::$container->get(\console\modules\import\helpers\ImportHelper::class);
         $validator = Yii::$container->get(\console\modules\import\models\Validate::class); 
         $terms = Yii::$container->get(\console\modules\import\models\TemporaryTerms::class);
@@ -75,7 +73,6 @@ class DefaultController extends Controller
             $insert->flush();
             
             fclose($handle);
-            $source->tires++;
             $source->save();
         }
     }
