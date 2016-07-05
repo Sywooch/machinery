@@ -16,14 +16,25 @@ class ImportHelper
         $this->taxonomyItemsModel = $taxonomyItemsModel;
     }
     
+    public static function deleteTermsData(array $sku2Ids, array $currentTermIds, array $newTermIds){
+        $data = [];
+        foreach($sku2Ids as $sku => $entityId){
+            $new = array_column($newTermIds[$sku], 'id');
+            $current = $currentTermIds[$entityId];
+            $current[] = 233;
+            $data[$entityId] = array_diff($current, $new);
+        }
+        return $data;
+    } 
+    
     public function insetTermsData(array $sku2Ids, array $currentTermIds, array $newTermIds){
         $data = [];
         $vocabularyFields = Yii::$app->params['catalog']['vocabularyFields'];
-        foreach($sku2Ids as $sku => $productId){
+        foreach($sku2Ids as $sku => $entityId){
             foreach($newTermIds[$sku] as $term){
                $data[] = [
                     'term_id' => $term['id'],
-                    'entity_id' => $productId,
+                    'entity_id' => $entityId,
                     'field' => isset($vocabularyFields[$term['vid']]) ? $vocabularyFields[$term['vid']] : $vocabularyFields['all']
                 ]; 
             }

@@ -47,11 +47,24 @@ class Insert extends \yii\base\Model
         $currentTermIds = $this->getTermIdsByProdutIds($sku2Ids);
         $newTermIds = array_column($items, 'termIds', 'sku');
         $insetTermsData = ImportHelper::insetTermsData($sku2Ids, $currentTermIds, $newTermIds);
-        print_r($newTermIds); print_r($currentTermIds);print_r($sku2Ids); exit('a');
+        $deleteTermsData = ImportHelper::deleteTermsData($sku2Ids, $currentTermIds, $newTermIds);
         $indexModel = $this->model->className() . 'Index';
         $this->insertBatch($indexModel::tableName(), $insetTermsData, ImportHelper::termFields(), ImportHelper::termFieldTypes());
+        $this->deleteIndex($indexModel::tableName(), $deleteTermsData);
     }
     
+    private function deleteIndex($table, array $items){
+        if(empty($items)){
+            return;
+        }
+        $where = [];
+        foreach($items as $entityId => $termsIds){
+            $where[] = '(entity_id = '.$entityId.' AND term_id IN ('.implode(',', $termsIds).'))';
+        }
+        return (new \yii\db\Query())->createCommand()->delete($table, implode(' OR ', $where))->execute();
+    }
+
+
     private function getIdsBySku(array $sku){
         return (new \yii\db\Query())
                         ->select(['id','sku'])
