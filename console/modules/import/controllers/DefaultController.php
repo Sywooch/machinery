@@ -30,7 +30,7 @@ class DefaultController extends Controller
         foreach($sources as $source){
            
             $import = Yii::$container->get(Import::class, [$source]); 
-            if(!$import->file){
+            if(!$import->getFile()){
                 $source->addMessage('[1000] Файл не найден или не может быть прочитан.');
                 continue;
             }

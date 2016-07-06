@@ -49,7 +49,7 @@ class TemporaryTerms extends \yii\base\Model
                 `id` INT(11) NOT NULL,
                 `pid` INT(11) NOT NULL,
                 `vid` INT(11) NOT NULL,
-                `vocabulary_name` VARCHAR(20) NOT NULL,
+                `vocabulary_name` VARCHAR(50) NOT NULL,
                 `name` VARCHAR(50) NOT NULL,
                 UNIQUE INDEX `v_i_n` (`vocabulary_name`, `name`)
             )
@@ -59,17 +59,17 @@ class TemporaryTerms extends \yii\base\Model
     }
     
     public static function getTermIds(array $data){
+        if(empty($data)){
+            return [];
+        }
         $query = (new \yii\db\Query())
-            ->select(['id', 'pid', 'vid'])
+            ->select(['id', 'pid', 'vid', 'vocabulary_name'])
             ->from(self::TABLE_TMP_TERMS);
- 
+            $where = [];
             foreach($data as $vocabulary => $terms){
-                $query->orWhere([
-                    'vocabulary_name' => $vocabulary,
-                    'name' => array_keys($terms)
-                    ]);
+                $where[] = "vocabulary_name = '{$vocabulary}' AND name IN ('" . implode("','", array_keys($terms)) . "')";
             }
-           
+            $query->where('(' . implode(') OR (', $where) . ')');
             return $query->indexBy('id')->all();
     }
 
