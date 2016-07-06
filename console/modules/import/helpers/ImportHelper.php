@@ -42,7 +42,7 @@ class ImportHelper
         return $data;
     }
 
-    public function parseTerms($line){
+    public function parseTerms(array $line){
         $terms = [];
         
         if(!key_exists('terms', $line)){

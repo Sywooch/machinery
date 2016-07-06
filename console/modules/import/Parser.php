@@ -1,13 +1,15 @@
 <?php
-
 namespace console\modules\import;
+
+use Yii;
 use console\modules\import\models\Sources;
 
 class Parser{
     
     private $_parser;
     private $_fields;
-
+    private $file;
+    private $header = false;
 
     public function __construct(Sources $source) {
         $class = '\\console\\modules\\import\\parsers\\'.$source->type;
@@ -15,6 +17,7 @@ class Parser{
         $this->_fields = get_class_methods($this->_parser);
         $constructorIndex = array_search('__construct', $this->_fields);
         unset($this->_fields[$constructorIndex]);
+        $this->file = fopen(Yii::getAlias('@app').'/../files/import/source_' . $source->id . 'a.csv', 'w');
     }
     
     public function prepare(array $data){
@@ -27,6 +30,17 @@ class Parser{
     
     public function getFields(){
         return $this->_fields;
+    }
+    
+    public function write(array $data){
+        if(empty($data)){
+            return;
+        }
+        if($this->header === false){
+            fputcsv($this->file, array_keys($data), ';');
+            $this->header = true;
+        }
+        fputcsv($this->file, $data, ';');
     }
     
 }

@@ -28,12 +28,11 @@ class ParserController extends Controller
             $file = file_get_contents($source->url);
             $lines = explode(PHP_EOL, $file);
             unset($file);
-            $data = [];
             foreach ($lines as $line) {
                 $csv = str_getcsv($line, ';');
-                $data[] = $parser->prepare($csv); 
+                $data = $parser->prepare($csv); 
+                $parser->write($data);
             }
-            print_r($data); exit('a');
             $source->tires++;
             $source->save();
         }
