@@ -15,6 +15,9 @@ use console\modules\import\models\TemporaryTerms;
  */
 class DefaultController extends Controller
 {
+    const MAX_IMPORT_ERRORS = 100;
+
+
     public function actions()
     {
         return [
@@ -46,7 +49,7 @@ class DefaultController extends Controller
                     $source->addMessage('[1001] Ошибка парсинга изображений.');
                     continue;
                 }
-                print_r($line); exit('as');
+             
                 $validator->setAttributes($line);
                 $validator->source_id = $source->id;
                 $validator->user_id = 1;
@@ -56,12 +59,17 @@ class DefaultController extends Controller
                 }else{
                     foreach($validator->getErrors() as $field => $errors){
                         foreach($errors as $error){
-                           $source->addMessage("[1001] {$field} {$error}"); 
+                            $source->addMessage("{$field} {$error}", $validator); 
+                            echo $source->getLastMessage(),"\n\r";
                         }
                     }
-                    $validator->clearErrors(); 
+                    if($source->countMessages() > self::MAX_IMPORT_ERRORS){
+                        $source->addMessage("Превышен лимит максимального количества ошибок. Операции прекращены."); 
+                        exit('Max error exit.');
+                    }
                 }
             } 
+            
             $import->flush();
             $import->close();
             $source->save();

@@ -57,8 +57,7 @@ class ImportHelper
                         'sku' => $sku,
                         'entity_id' => $entityId,
                         'model' => ModelHelper::getModelName($model),
-                        'url' => $image,
-                        'status' => 0
+                        'url' => $image
                     ];  
                 }
             }
@@ -168,5 +167,22 @@ class ImportHelper
                    'field'
                ];
     }
+    public static function importImagesFields(){
+        return [
+                   'sku',
+                   'entity_id',
+                   'model',
+                   'url',
+               ];
+    }
+    public static function importImagesFieldTypes(){
+        return [
+            \PDO::PARAM_INT,
+            \PDO::PARAM_INT,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR
+        ];
+    }
+    
 }
 

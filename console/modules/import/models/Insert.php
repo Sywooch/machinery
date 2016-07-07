@@ -7,6 +7,7 @@ use common\modules\taxonomy\models\TaxonomyItems;
 use console\modules\import\helpers\ImportHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
 use common\helpers\ModelHelper;
+use console\modules\import\models\ImportImages;
 
 
 /**
@@ -14,7 +15,7 @@ use common\helpers\ModelHelper;
  */
 class Insert extends \yii\base\Model
 {
-    const INSERT_LIMIT  = 3;
+    const INSERT_LIMIT  = 500;
     
     private $stack = [];
     private $model;
@@ -47,8 +48,16 @@ class Insert extends \yii\base\Model
         $this->insertBatch($this->model->tableName(), $items, ImportHelper::productFields(), ImportHelper::productFieldTypes());
         $sku2Ids = $this->getIdsBySku(array_column($items, 'sku'));
         
-        print_r($sku2Ids); exit('aaa');
+        /*
+         * images
+         */
+        $insetImageData = ImportHelper::insetImageData($this->model, $sku2Ids, $items);
+        $this->insertBatch(ImportImages::TABLE_IMPORT_IMAGES, $insetImageData, ImportHelper::importImagesFields(), ImportHelper::importImagesFieldTypes());
+        unset($insetImageData);
         
+        /*
+         * terms
+         */
         $currentTermIds = $this->getTermIdsByProdutIds($sku2Ids);
         $newTermIds = array_column($items, 'termIds', 'sku');
         $insetTermsData = ImportHelper::insetTermsData($sku2Ids, $currentTermIds, $newTermIds);
@@ -57,7 +66,6 @@ class Insert extends \yii\base\Model
         $this->insertBatch($indexModel::tableName(), $insetTermsData, ImportHelper::termFields(), ImportHelper::termFieldTypes());
         $this->deleteIndex($indexModel::tableName(), $deleteTermsData);
         
-        $insetImageData = ImportHelper::insetTermsData($sku2Ids, $currentTermIds, $newTermIds);
     }
     
     private function deleteIndex($table, array $items){
