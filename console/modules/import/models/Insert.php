@@ -14,7 +14,7 @@ use common\helpers\ModelHelper;
  */
 class Insert extends \yii\base\Model
 {
-    const INSERT_LIMIT  = 3;
+    const INSERT_LIMIT  = 500;
     
     private $stack = [];
     private $model;
@@ -34,8 +34,10 @@ class Insert extends \yii\base\Model
         foreach($this->stack as $currentCatalogId => $items){
            if(!$catalogId){
                $this->insert($currentCatalogId, $items);
+               unset($this->stack[$currentCatalogId]);
            }elseif( $catalogId == $currentCatalogId){
                $this->insert($currentCatalogId, $items);
+               unset($this->stack[$currentCatalogId]);
            } 
         }
     }
@@ -59,7 +61,11 @@ class Insert extends \yii\base\Model
         }
         $where = [];
         foreach($items as $entityId => $termsIds){
-            $where[] = '(entity_id = '.$entityId.' AND term_id IN ('.implode(',', $termsIds).'))';
+            $temporary = 'entity_id = '.$entityId;
+            if(!empty($termsIds)){
+                $temporary .= ' AND term_id IN ('.implode(',', $termsIds).')';
+            }
+            $where[] = "({$temporary})";
         }
         return (new \yii\db\Query())->createCommand()->delete($table, implode(' OR ', $where))->execute();
     }
