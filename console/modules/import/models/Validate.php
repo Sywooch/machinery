@@ -19,6 +19,7 @@ class Validate extends \yii\base\Model
     public $reindex;
     public $user_id;
     public $source_id;
+    public $images;
 
 
     /**
@@ -33,7 +34,8 @@ class Validate extends \yii\base\Model
             [['sku'], 'string', 'max' => 20],
             [['title'], 'string', 'max' => 255],
             [['terms'], 'validateTerms'],
-            [['price'], 'double']
+            [['price'], 'double'],
+            [['images'], 'safe']
         ];
     }
     

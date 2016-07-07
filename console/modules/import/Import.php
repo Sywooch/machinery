@@ -43,6 +43,10 @@ class Import{
         return $this->_helper->parseTerms($data);
     }
     
+    public function parseImages(array $data){
+        return $this->_helper->parseImages($data);
+    }
+    
     public function getFields(){
         return $this->_fields;
     }

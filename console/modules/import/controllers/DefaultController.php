@@ -42,6 +42,11 @@ class DefaultController extends Controller
                     continue;
                 }
                 
+                if(($line = $import->parseImages($line)) === false){
+                    $source->addMessage('[1001] Ошибка парсинга изображений.');
+                    continue;
+                }
+                print_r($line); exit('as');
                 $validator->setAttributes($line);
                 $validator->source_id = $source->id;
                 $validator->user_id = 1;
