@@ -1,11 +1,11 @@
 <?php
-namespace console\modules\import;
+namespace common\modules\import;
 
 use Yii;
-use console\modules\import\models\Sources;
-use console\modules\import\helpers\ImportHelper;
-use console\modules\import\models\Insert;
-use console\modules\import\models\Validate;
+use common\modules\import\models\Sources;
+use common\modules\import\helpers\ImportHelper;
+use common\modules\import\models\Insert;
+use common\modules\import\models\Validate;
 
 class Import{
     

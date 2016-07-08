@@ -1,13 +1,13 @@
 <?php
 
-namespace console\modules\import\models;
+namespace common\modules\import\models;
 
 use Yii;
 use common\modules\taxonomy\models\TaxonomyItems;
-use console\modules\import\helpers\ImportHelper;
+use common\modules\import\helpers\ImportHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
 use common\helpers\ModelHelper;
-use console\modules\import\models\ImportImages;
+use common\modules\import\models\ImportImages;
 
 
 /**

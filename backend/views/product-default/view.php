@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\ProductDefault */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Product Phones', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Product', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-phone-view">
