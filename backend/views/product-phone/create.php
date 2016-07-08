@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ProductPhone */
+/* @var $model backend\models\ProductDefault */
 
 $this->title = 'Create Product Phone';
 $this->params['breadcrumbs'][] = ['label' => 'Product Phones', 'url' => ['index']];

@@ -7,6 +7,7 @@ use common\modules\taxonomy\models\TaxonomyItems;
 use console\modules\import\helpers\ImportHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
 use common\helpers\ModelHelper;
+use console\modules\import\models\ImportImages;
 
 
 /**
@@ -46,6 +47,17 @@ class Insert extends \yii\base\Model
         $this->model = CatalogHelper::getModelByTerm(TaxonomyItems::findOne($currentCatalogId));
         $this->insertBatch($this->model->tableName(), $items, ImportHelper::productFields(), ImportHelper::productFieldTypes());
         $sku2Ids = $this->getIdsBySku(array_column($items, 'sku'));
+        
+        /*
+         * images
+         */
+        $insetImageData = ImportHelper::insetImageData($this->model, $sku2Ids, $items);
+        $this->insertBatch(ImportImages::TABLE_IMPORT_IMAGES, $insetImageData, ImportHelper::importImagesFields(), ImportHelper::importImagesFieldTypes());
+        unset($insetImageData);
+        
+        /*
+         * terms
+         */
         $currentTermIds = $this->getTermIdsByProdutIds($sku2Ids);
         $newTermIds = array_column($items, 'termIds', 'sku');
         $insetTermsData = ImportHelper::insetTermsData($sku2Ids, $currentTermIds, $newTermIds);
@@ -53,6 +65,7 @@ class Insert extends \yii\base\Model
         $indexModel = $this->model->className() . 'Index';
         $this->insertBatch($indexModel::tableName(), $insetTermsData, ImportHelper::termFields(), ImportHelper::termFieldTypes());
         $this->deleteIndex($indexModel::tableName(), $deleteTermsData);
+        
     }
     
     private function deleteIndex($table, array $items){

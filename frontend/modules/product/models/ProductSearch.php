@@ -7,7 +7,7 @@ use yii\data\Pagination;
 use common\modules\taxonomy\models\TaxonomyItems;
 
 /**
- * ProductPhoneSearch represents the model behind the search.
+ * ProductDefaultSearch represents the model behind the search.
  */
 class ProductSearch extends \backend\models\ProductSearch
 {

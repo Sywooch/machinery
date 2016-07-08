@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 
 /**
- * ProductPhoneSearch represents the model behind the search.
+ * ProductDefaultSearch represents the model behind the search.
  */
 class ProductSearch extends Model
 {   

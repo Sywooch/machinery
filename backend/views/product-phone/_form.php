@@ -13,7 +13,7 @@ use common\modules\file\Asset as FileAsset;
 FileAsset::register($this);
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ProductPhone */
+/* @var $model backend\models\ProductDefault */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

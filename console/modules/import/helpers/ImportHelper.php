@@ -5,6 +5,7 @@ namespace console\modules\import\helpers;
 use Yii;
 use common\modules\taxonomy\models\TaxonomyVocabulary;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\helpers\ModelHelper;
 
 class ImportHelper
 {
@@ -40,6 +41,62 @@ class ImportHelper
             }
         }
         return $data;
+    }
+    
+    public function insetImageData($model, array $sku2Ids, array $items){
+        $data = [];
+        foreach($items as $item){
+            if(empty($item['images'])){
+                continue;
+            }
+            $entityId = $sku2Ids[$item['sku']];
+            $sku = $item['sku'];
+            foreach($item['images'] as $images){
+                foreach($images as $field => $image){
+                   $data[] = [
+                        'sku' => $sku,
+                        'entity_id' => $entityId,
+                        'model' => ModelHelper::getModelName($model),
+                        'url' => $image
+                    ];  
+                }
+            }
+        }
+        return $data;
+    }
+    
+    public function parseImages(array $line){
+        $images = [];
+  
+        if(!key_exists('images', $line)){
+            $line['images'] = [];
+            return $line;
+        }
+        
+        $temporary = str_replace('"', '', $line['images']);
+        
+        if($temporary == ''){
+            $line['images'] = [];
+            return $line;
+        }
+        
+        $temporary = explode(';', $temporary);
+        
+        if(empty($temporary)){
+            return false;
+        }
+        
+        foreach($temporary as $item){
+            list($field, $image) = explode(':', $item);
+            $images[$field][] = $image;
+        }
+        
+        if(empty($images)){
+            return false;
+        }
+        
+        $line['images'] = $images;
+        return $line;
     }
 
     public function parseTerms(array $line){
@@ -110,5 +167,22 @@ class ImportHelper
                    'field'
                ];
     }
+    public static function importImagesFields(){
+        return [
+                   'sku',
+                   'entity_id',
+                   'model',
+                   'url',
+               ];
+    }
+    public static function importImagesFieldTypes(){
+        return [
+            \PDO::PARAM_INT,
+            \PDO::PARAM_INT,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR
+        ];
+    }
+    
 }
 

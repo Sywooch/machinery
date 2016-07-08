@@ -3,6 +3,7 @@
 namespace console\modules\import\models;
 
 use Yii;
+use console\modules\import\models\Validate;
 
 /**
  * This is the model class for table "sources".
@@ -15,7 +16,7 @@ use Yii;
  * @property string $date
  * @property string $messages
  *
- * @property ProductPhone[] $productPhones
+ * @property ProductDefault[] $ProductDefaults
  */
 class Sources extends \yii\db\ActiveRecord
 {
@@ -27,7 +28,7 @@ class Sources extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'sources';
+        return 'import_sources';
     }
 
     /**
@@ -72,13 +73,24 @@ class Sources extends \yii\db\ActiveRecord
     }
     
     public function afterFind(){
-        $this->_messages = json_decode($this->messages);
+        $this->_messages = [];
     }
 
-    public function addMessage($message){
+    public function addMessage($message, Validate $validate = null){
+        if($validate){
+            $message = "[{$validate->sku}] ".$message;
+        }
         $this->_messages[] = $message;
     }
     
+    public function getLastMessage(){
+        return $this->_messages[$this->countMessages()-1];
+    }
+
+    public function countMessages(){
+        return count($this->_messages);
+    }
+
     public function getMessages($message){
         return $this->_messages;
     }

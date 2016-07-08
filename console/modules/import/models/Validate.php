@@ -19,6 +19,7 @@ class Validate extends \yii\base\Model
     public $reindex;
     public $user_id;
     public $source_id;
+    public $images;
 
 
     /**
@@ -33,7 +34,8 @@ class Validate extends \yii\base\Model
             [['sku'], 'string', 'max' => 20],
             [['title'], 'string', 'max' => 255],
             [['terms'], 'validateTerms'],
-            [['price'], 'double']
+            [['price'], 'double'],
+            [['images'], 'safe']
         ];
     }
     
@@ -45,9 +47,15 @@ class Validate extends \yii\base\Model
         
         $rootTerm = [];
         $data = TemporaryTerms::getTermIds($this->$attribute); 
-  
-        if(count($this->$attribute, COUNT_RECURSIVE) - count($this->$attribute) !== count($data)){
-            $this->addError($attribute, 'Не удалось распознать термины.');
+        
+        if(count($this->$attribute, COUNT_RECURSIVE) - count($this->$attribute) !== count($data)){  
+            $vocabularies = array_keys($this->$attribute);
+            foreach($data as $term){
+                if(($index = array_search($term['vocabulary_name'], $vocabularies)) !== false){
+                    unset($vocabularies[$index]);
+                }
+            }
+            $this->addError($attribute, 'Не удалось распознать термины словарей: '.  implode(', ', $vocabularies).'.');
             return;
         }
         

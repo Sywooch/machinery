@@ -10,7 +10,8 @@ class Tyretrader implements ParserInterface{
     
     private $map = [
         'id' => 3,
-        'vendor' => 0,
+        'type' => 0,
+        'vendor' => 1,
         'radius' => 4,
         'width' => 5,
         'title' => 6,
@@ -53,6 +54,7 @@ class Tyretrader implements ParserInterface{
         $terms = [];
         
         $terms[] = ['Каталог' => 'Автомобильные диски'];
+        $terms[] = ['Тип диска' => $data[$this->map['type']]];
         $terms[] = ['Бренд' => $data[$this->map['vendor']]];
         $terms[] = ['Диаметр диска' => $data[$this->map['radius']]];
         $terms[] = ['Ширина диска' => $data[$this->map['width']]];

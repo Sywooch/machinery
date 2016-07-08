@@ -10,7 +10,7 @@ use Yii;
  * @property integer $id
  * @property string $name
  *
- * @property ProductPhone[] $productPhones
+ * @property ProductDefault[] $ProductDefaults
  */
 class Sources extends \yii\db\ActiveRecord
 {
@@ -47,8 +47,8 @@ class Sources extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductPhones()
+    public function getProductDefaults()
     {
-        return $this->hasMany(ProductPhone::className(), ['source_id' => 'id']);
+        return $this->hasMany(ProductDefault::className(), ['source_id' => 'id']);
     }
 }
