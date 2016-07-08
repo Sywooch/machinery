@@ -21,7 +21,13 @@ class ParserController extends Controller
    
     public function actionIndex()
     {
-        $sources = Sources::find()->where(['<', 'tires' , Sources::TIRES])->all();
+        $sources = Sources::find()
+                ->where([
+                    'status' => Sources::STATUS_ACTIVE
+                ])
+                ->andWhere(['<', 'tires' , Sources::TIRES])
+                ->all();
+
         foreach($sources as $source){
            
             $parser = new Parser($source);
