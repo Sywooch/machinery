@@ -93,16 +93,12 @@ class Sources extends \yii\db\ActiveRecord
         }
         $this->_messages[] = $message;
     }
-    
-    public function getLastMessage(){
-        return $this->_messages[$this->countMessages()-1];
-    }
 
     public function countMessages(){
         return count($this->_messages);
     }
 
     public function getMessages($message){
-        return $this->_messages;
+        return $this->messages;
     }
 }
