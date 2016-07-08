@@ -6,22 +6,22 @@ use Yii;
 use common\modules\taxonomy\models\TaxonomyItems;
 
 /**
- * This is the model class for table "product_phone_index".
+ * This is the model class for table "product_default_index".
  *
  * @property integer $term_id
  * @property integer $entity_id
  *
- * @property ProductPhone $entity
+ * @property ProductDefault $entity
  * @property TaxonomyItems $term
  */
-class ProductPhoneIndex extends \yii\db\ActiveRecord
+class ProductDefaultIndex extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'product_phone_index';
+        return 'product_default_index';
     }
 
     /**
@@ -30,10 +30,11 @@ class ProductPhoneIndex extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['term_id', 'entity_id'], 'required'],
+            [['term_id', 'entity_id', 'field'], 'required'],
             [['term_id', 'entity_id'], 'integer'],
+            [['field'], 'string', 'max' => 30],
             [['term_id', 'entity_id'], 'unique', 'targetAttribute' => ['term_id', 'entity_id'], 'message' => 'The combination of Term ID and Entity ID has already been taken.'],
-            [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductPhone::className(), 'targetAttribute' => ['entity_id' => 'id']],
+            [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductDefault::className(), 'targetAttribute' => ['entity_id' => 'id']],
             [['term_id'], 'exist', 'skipOnError' => true, 'targetClass' => TaxonomyItems::className(), 'targetAttribute' => ['term_id' => 'id']],
         ];
     }
@@ -54,7 +55,7 @@ class ProductPhoneIndex extends \yii\db\ActiveRecord
      */
     public function getEntity()
     {
-        return $this->hasOne(ProductPhone::className(), ['id' => 'entity_id']);
+        return $this->hasOne(ProductDefault::className(), ['id' => 'entity_id']);
     }
 
     /**
