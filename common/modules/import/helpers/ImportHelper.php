@@ -1,6 +1,6 @@
 <?php
 
-namespace console\modules\import\helpers;
+namespace common\modules\import\helpers;
 
 use Yii;
 use common\modules\taxonomy\models\TaxonomyVocabulary;
@@ -120,7 +120,7 @@ class ImportHelper
         
         foreach($temporary as $item){
             list($vocabulary, $term) = explode(':', $item);
-            $terms[$vocabulary][$term] = null;
+            $terms[$vocabulary][$term] = 'AAA';
         }
         
         if(empty($terms)){

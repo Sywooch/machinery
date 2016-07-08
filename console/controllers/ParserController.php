@@ -1,11 +1,11 @@
 <?php
 
-namespace console\modules\import\controllers;
+namespace console\controllers;
 
 use Yii;
 use yii\console\Controller;
-use console\modules\import\models\Sources;
-use console\modules\import\Parser;
+use common\modules\import\models\Sources;
+use common\modules\import\Parser;
 
 
 /**
@@ -32,6 +32,13 @@ class ParserController extends Controller
            
             $parser = new Parser($source);
             $file = file_get_contents($source->url);
+            
+            if(!$file){
+                $source->tires++;
+                $source->save();
+                continue;
+            }
+            
             $lines = explode(PHP_EOL, $file);
             unset($file);
             foreach ($lines as $line) {
@@ -39,7 +46,7 @@ class ParserController extends Controller
                 $data = $parser->prepare($csv); 
                 $parser->write($data);
             }
-            $source->tires++;
+
             $source->save();
         }
     }

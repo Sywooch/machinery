@@ -1,7 +1,7 @@
 <?php
-namespace console\modules\import;
+namespace common\modules\import;
 
-use console\modules\import\models\Sources;
+use common\modules\import\models\Sources;
 
 interface ParserInterface
 {

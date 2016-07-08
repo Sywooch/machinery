@@ -1,8 +1,8 @@
 <?php
-namespace console\modules\import\parsers;
+namespace common\modules\import\parsers;
 
-use console\modules\import\ParserAbstract;
-use console\modules\import\models\Sources;
+use common\modules\import\ParserAbstract;
+use common\modules\import\models\Sources;
 
 class TyretraderDisk extends ParserAbstract{
 
@@ -38,6 +38,9 @@ class TyretraderDisk extends ParserAbstract{
         $temporary = [];
         foreach($terms as $item){
             foreach($item as $key => $value){
+                if($value == ''){
+                   continue;
+                }
                 $temporary[] = $key . ':' . $value;
             }
         }

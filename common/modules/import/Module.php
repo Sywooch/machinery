@@ -1,6 +1,6 @@
 <?php
 
-namespace console\modules\import;
+namespace common\modules\import;
 
 class Module extends \yii\base\Module
 {

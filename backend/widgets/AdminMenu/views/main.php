@@ -10,7 +10,7 @@ Asset::register($this);
 <div class="widget-menu-block">
     <?php
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-leaf pull-left"></span>Главная</span>', ['/'], ['class' => $widget->isActive()]);
-    echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-asterisk  pull-left"></span>Каталог</span>', ['/product-default'], ['class' => $widget->isActive(['product-phone'])]);
+    echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-asterisk  pull-left"></span>Каталог</span>', ['/product-default'], ['class' => $widget->isActive(['product-default'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-edit pull-left"></span>Контент</span>', ['/pages/index'], ['class' => $widget->isActive(['news', 'pages', 'shortbox'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-list-alt pull-left"></span>Таксономия</span>', ['/taxonomy/vocabulary'], ['class' => $widget->isActive(['taxonomy'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-user pull-left"></span>Пользователи</span>', ['/user/admin'], ['class' => $widget->isActive(['user'])]);

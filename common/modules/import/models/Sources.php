@@ -1,9 +1,9 @@
 <?php
 
-namespace console\modules\import\models;
+namespace common\modules\import\models;
 
 use Yii;
-use console\modules\import\models\Validate;
+use common\modules\import\models\Validate;
 use backend\models\ProductDefault;
 
 /**

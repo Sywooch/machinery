@@ -1,8 +1,8 @@
 <?php
-namespace console\modules\import\parsers;
+namespace common\modules\import\parsers;
 
-use console\modules\import\ParserAbstract;
-use console\modules\import\models\Sources;
+use common\modules\import\ParserAbstract;
+use common\modules\import\models\Sources;
 
 class TyretraderTire extends ParserAbstract{
     
@@ -32,7 +32,10 @@ class TyretraderTire extends ParserAbstract{
         $terms[] = ['Диаметр' => $data[$this->map['radius']]];
         $terms[] = ['Ширина профиля' => $data[$this->map['width']]];
         $terms[] = ['Высота профиля' => $data[$this->map['height']]];
-        $terms[] = ['Индекс нагрузки' => $data[$this->map['capacityIndex']]];
+        $capacityIndex = explode('/', $data[$this->map['capacityIndex']]);
+        foreach ($capacityIndex as $item){
+            $terms[] = ['Индекс нагрузки' => $item];
+        }
         $terms[] = ['Индекс скорости' => $data[$this->map['speedIndex']]];
         $terms[] = ['Шип/нешип' => $data[$this->map['ship']]];
         $terms[] = ['Тип транспортного средства' => $data[$this->map['tranportType']]];
