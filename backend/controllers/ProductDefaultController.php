@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\ProductPhone;
+use backend\models\ProductDefault;
 use backend\models\ProductSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -11,9 +11,9 @@ use yii\filters\VerbFilter;
 use common\modules\taxonomy\models\TaxonomyItems;
 
 /**
- * ProductPhoneController implements the CRUD actions for ProductPhone model.
+ * ProductDefaultController implements the CRUD actions for ProductDefault model.
  */
-class ProductPhoneController extends Controller
+class ProductDefaultController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,12 +31,12 @@ class ProductPhoneController extends Controller
     }
 
     /**
-     * Lists all ProductPhone models.
+     * Lists all ProductDefault models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch(new ProductPhone());
+        $searchModel = new ProductSearch(new ProductDefault());
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +46,7 @@ class ProductPhoneController extends Controller
     }
     
     /**
-     * Displays a single ProductPhone model.
+     * Displays a single ProductDefault model.
      * @param integer $id
      * @return mixed
      */
@@ -60,14 +60,14 @@ class ProductPhoneController extends Controller
     }
 
     /**
-     * Creates a new ProductPhone model.
+     * Creates a new ProductDefault model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
 
-        $model = new ProductPhone();
+        $model = new ProductDefault();
         $model->loadDefaultValues();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -80,7 +80,7 @@ class ProductPhoneController extends Controller
     }
 
     /**
-     * Updates an existing ProductPhone model.
+     * Updates an existing ProductDefault model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -99,7 +99,7 @@ class ProductPhoneController extends Controller
     }
 
     /**
-     * Deletes an existing ProductPhone model.
+     * Deletes an existing ProductDefault model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -112,15 +112,15 @@ class ProductPhoneController extends Controller
     }
 
     /**
-     * Finds the ProductPhone model based on its primary key value.
+     * Finds the ProductDefault model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ProductPhone the loaded model
+     * @return ProductDefault the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ProductPhone::findOne($id)) !== null) {
+        if (($model = ProductDefault::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
