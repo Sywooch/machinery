@@ -13,7 +13,7 @@ use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\models\TaxonomyIndex;
 
 /**
- * This is the model class for table "product_phone".
+ * This is the model class for table "product_default".
  *
  * @property integer $id
  * @property integer $group_id
@@ -33,17 +33,17 @@ use common\modules\taxonomy\models\TaxonomyIndex;
  *
  * @property User $user
  * @property Sources $source
- * @property ProductPhoneIndex[] $productPhoneIndices
+ * @property ProductDefaultIndex[] $productDefaultIndices
  * @property TaxonomyItems[] $terms
  */
-class ProductPhone extends ActiveRecord
+class ProductDefault extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'product_phone';
+        return 'product_default';
     }
 
     /**
@@ -99,7 +99,7 @@ class ProductPhone extends ActiveRecord
         return [
                 [
                     'class' => \common\modules\taxonomy\components\TaxonomyBehavior::class,
-                    'indexModel' => \backend\models\ProductPhoneIndex::class
+                    'indexModel' => \backend\models\ProductDefaultIndex::class
                 ],
                 [
                     'class' => \common\modules\file\components\FileBehavior::class,

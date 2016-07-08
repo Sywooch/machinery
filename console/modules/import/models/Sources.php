@@ -16,7 +16,7 @@ use console\modules\import\models\Validate;
  * @property string $date
  * @property string $messages
  *
- * @property ProductPhone[] $productPhones
+ * @property ProductDefault[] $ProductDefaults
  */
 class Sources extends \yii\db\ActiveRecord
 {

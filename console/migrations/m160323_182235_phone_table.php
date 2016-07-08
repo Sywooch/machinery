@@ -5,7 +5,7 @@ use yii\db\Migration;
 
 class m160323_182235_phone_table extends Migration
 {
-    const TABLE = 'product_phone';
+    const TABLE = 'product_default';
     
     public function up()
     {

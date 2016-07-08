@@ -75,7 +75,7 @@ class SiteController extends Controller
         
         if(0){
             
-            $product = \backend\models\ProductPhone::findOne(27);
+            $product = \backend\models\ProductDefault::findOne(27);
 
            
             \Yii::$app->cart->removeItem($product);
