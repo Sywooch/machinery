@@ -1,8 +1,8 @@
 <?php
-namespace console\modules\import;
+namespace common\modules\import;
 
 use Yii;
-use console\modules\import\models\Sources;
+use common\modules\import\models\Sources;
 
 class Parser{
     
@@ -12,7 +12,7 @@ class Parser{
     private $header = false;
 
     public function __construct(Sources $source) {
-        $class = '\\console\\modules\\import\\parsers\\'.$source->type;
+        $class = '\\common\\modules\\import\\parsers\\'.$source->type;
         $this->_parser = new $class($source);
         $this->_fields = get_class_methods($this->_parser);
         $constructorIndex = array_search('__construct', $this->_fields);

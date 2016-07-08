@@ -1,6 +1,6 @@
 <?php
 
-namespace console\modules\import\models;
+namespace common\modules\import\models;
 
 use Yii;
 use common\modules\taxonomy\models\TaxonomyItems;
@@ -63,7 +63,7 @@ class TemporaryTerms extends \yii\base\Model
             return [];
         }
         $query = (new \yii\db\Query())
-            ->select(['id', 'pid', 'vid', 'vocabulary_name'])
+            ->select(['id', 'pid', 'vid', 'name', 'vocabulary_name'])
             ->from(self::TABLE_TMP_TERMS);
             $where = [];
             foreach($data as $vocabulary => $terms){

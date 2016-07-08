@@ -11,6 +11,7 @@ use common\modules\taxonomy\components\TermValidator;
 use yii\behaviors\TimestampBehavior;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\models\TaxonomyIndex;
+use common\modules\import\models\Sources;
 
 /**
  * This is the model class for table "product_default".

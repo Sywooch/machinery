@@ -25,5 +25,8 @@ return [
         'orders' => [
             'class' => 'common\modules\orders\Module',
         ],
+        'import' => [
+            'class' => 'common\modules\import\Module',
+        ],
     ], 
 ];

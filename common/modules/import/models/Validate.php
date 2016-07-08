@@ -1,9 +1,9 @@
 <?php
 
-namespace console\modules\import\models;
+namespace common\modules\import\models;
 
 use Yii;
-use console\modules\import\models\TemporaryTerms;
+use common\modules\import\models\TemporaryTerms;
 
 /**
 *
@@ -47,16 +47,31 @@ class Validate extends \yii\base\Model
         
         $rootTerm = [];
         $data = TemporaryTerms::getTermIds($this->$attribute); 
-        
+
         if(count($this->$attribute, COUNT_RECURSIVE) - count($this->$attribute) !== count($data)){  
-            $vocabularies = array_keys($this->$attribute);
+            
+            $vocabularies = $this->$attribute;
+            
             foreach($data as $term){
-                if(($index = array_search($term['vocabulary_name'], $vocabularies)) !== false){
-                    unset($vocabularies[$index]);
+                $termName = $term['name'];
+                $vocabularyName = $term['vocabulary_name'];
+                if(isset($vocabularies[$vocabularyName][$termName])){
+                   unset($vocabularies[$vocabularyName][$termName]);
                 }
             }
-            $this->addError($attribute, 'Не удалось распознать термины словарей: '.  implode(', ', $vocabularies).'.');
+            
+            $messages = [];
+            foreach($vocabularies as $name => $terms){
+                if(empty($terms)){
+                    continue;
+                }
+                $messages[] = $name . ':'. implode('; ', array_keys($terms));
+            }
+            
+            $this->addError($attribute, 'Не удалось распознать термины: '.  implode('; ', $messages).'.');
+
             return;
+          
         }
         
         foreach($data as $index => $term){

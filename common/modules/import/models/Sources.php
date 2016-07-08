@@ -1,9 +1,10 @@
 <?php
 
-namespace console\modules\import\models;
+namespace common\modules\import\models;
 
 use Yii;
-use console\modules\import\models\Validate;
+use common\modules\import\models\Validate;
+use backend\models\ProductDefault;
 
 /**
  * This is the model class for table "sources".
@@ -21,6 +22,8 @@ use console\modules\import\models\Validate;
 class Sources extends \yii\db\ActiveRecord
 {
     const TIRES = 500;
+    const STATUS_ACTIVE = 'active';
+    const STATUS_PAUSE = 'pause';
     
     private $_messages;
     /**
@@ -74,6 +77,14 @@ class Sources extends \yii\db\ActiveRecord
     
     public function afterFind(){
         $this->_messages = [];
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductDefaults()
+    {
+        return $this->hasMany(ProductDefault::className(), ['source_id' => 'id']);
     }
 
     public function addMessage($message, Validate $validate = null){

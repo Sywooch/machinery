@@ -1,32 +1,28 @@
 <?php
 
-namespace console\modules\import\controllers;
+namespace console\controllers;
 
 use Yii;
 use yii\console\Controller;
-use console\modules\import\models\Sources;
-use console\modules\import\models\Validate;
-use console\modules\import\Import;
-use console\modules\import\helpers\ImportHelper;
-use console\modules\import\models\TemporaryTerms;
+use common\modules\import\models\Sources;
+use common\modules\import\models\Validate;
+use common\modules\import\Import;
+use common\modules\import\helpers\ImportHelper;
+use common\modules\import\models\TemporaryTerms;
 
-/**
- * ItemsController implements the CRUD actions for TaxonomyItems model.
- */
-class DefaultController extends Controller
+class ImporterController extends Controller 
 {
     const MAX_IMPORT_ERRORS = 100;
 
-
-    public function actions()
-    {
-        return [
-        ];
-    }
-   
     public function actionIndex()
     {
-        $sources = Sources::find()->where(['<', 'tires' , Sources::TIRES])->all();
+        $sources = Sources::find()
+                ->where([
+                    'status' => Sources::STATUS_ACTIVE
+                ])
+                ->andWhere(['<', 'tires' , Sources::TIRES])
+                ->all();
+        
         $validator = Yii::$container->get(Validate::class); 
         $terms = Yii::$container->get(TemporaryTerms::class);
 

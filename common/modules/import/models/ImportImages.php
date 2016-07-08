@@ -1,6 +1,6 @@
 <?php
 
-namespace console\modules\import\models;
+namespace common\modules\import\models;
 
 use Yii;
 /**
