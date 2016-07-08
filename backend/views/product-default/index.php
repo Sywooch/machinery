@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
            // 'group_id',
-           // 'source_id',
+            'source_id',
             'user_id',
             'sku',
             'available',
