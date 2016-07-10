@@ -5,6 +5,7 @@ use frontend\modules\cart\Asset as CartAsset;
 use frontend\modules\cart\helpers\CartHelper;
 use common\modules\file\helpers\StyleHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
+use frontend\modules\catalog\widgets\Filter\FilterWidget;
 
 CartAsset::register($this);
 
@@ -12,9 +13,9 @@ $this->title = Html::encode($current->name);
 $this->params['breadcrumbs'] = CatalogHelper::getBreadcrumb($current);
 
 ?>
-
+222
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-8">
         <?php foreach($dataProvider->products as $product):?>
             <div><?php echo Html::a(Html::encode($product->title), ['/product', 'entity' => $product]); ?></div> 
             <div>
@@ -27,6 +28,9 @@ $this->params['breadcrumbs'] = CatalogHelper::getBreadcrumb($current);
             <div><?php echo CartHelper::getBuyButton($product);?></div>
         <?php endforeach; ?>
         <?=CartHelper::getConfirmModal();?>
+    </div>
+    <div class="col-lg-4">
+        <?=FilterWidget::widget(['search' => $search]);?>
     </div>
 </div>
 

@@ -36,7 +36,7 @@ class DefaultController extends Controller
     public function actionIndex($catalogId)
     {   
         $term = TaxonomyItems::findOne($catalogId);
-        
+
         if($term === null){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
@@ -62,11 +62,13 @@ class DefaultController extends Controller
                 ]);
             }
         }
-   
+
         $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term->parent));
+        $searchModel->setParams(Yii::$app->request->queryParams);
         return $this->render('index',[
             'current' => $term,
-            'dataProvider' => $searchModel->searchItemsByParams(Yii::$app->request->queryParams)
+            'dataProvider' => $searchModel->searchItemsByParams(Yii::$app->request->queryParams),
+            'search' => $searchModel,
         ]);
         
     }

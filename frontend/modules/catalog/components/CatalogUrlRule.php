@@ -14,28 +14,45 @@ class CatalogUrlRule extends UrlRule {
 	}
 
 	public function createUrl($manager, $route, $params) {
-		return false;  // this rule does not apply
+                if(!isset($params['catalogMenu'])){
+                    return false;
+                }
+                $menu = [];
+                foreach($params['catalogMenu'] as $item){
+                    $menu[] = $item['transliteration'];
+                }
+		return implode('/', $menu);  
 	}
 
 	public function parseRequest($manager, $request) {
+            
+            
+            \URLify::add_chars (array (',' => '.', '_' => '-' ));
+
+            
             $root = '';
             $pathInfo = $request->getPathInfo();
             $chunks = explode('/', $pathInfo);
-
-            if(!is_array($chunks)){
-                $root = $chunks;
-            }else{
-                $root = array_shift($chunks);
+           
+            foreach($chunks as $index => $item){
+                $chunks[$index] = \URLify::filter (\URLify::downcode ($item), 60, "", true);
             }
-
-            $term = TaxonomyItems::findOne([
-                'vid' => Yii::$app->params['catalog']['vocabularyId'],
-                'transliteration' => \URLify::filter ($root, 60, "", true)
-            ]);
             
-            if(!$term){
+            $terms = TaxonomyItems::find()
+            ->where([
+               'vid' => Yii::$app->params['catalog']['vocabularyId'],
+                'transliteration' => $chunks 
+            ])        
+            ->orderBy([
+                    'weight' => SORT_ASC
+            ])
+            ->all();
+            
+            if(!$terms || count($terms) != count($chunks)){
                 return false;
             }
+            
+            $term = array_pop($terms);
             
             $params = [
                 'catalogId' => $term->id,

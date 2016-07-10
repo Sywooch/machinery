@@ -3,12 +3,14 @@
 namespace common\modules\taxonomy\models;
 
 use Yii;
+use yii\validators\UniqueValidator;
 
 /**
  * This is the model class for table "taxonomy_vocabulary".
  *
  * @property integer $id
  * @property string $name
+ * @property string $prefix
  */
 class TaxonomyVocabulary extends \yii\db\ActiveRecord
 {
@@ -30,6 +32,7 @@ class TaxonomyVocabulary extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 255],
+            [['prefix'], 'unique'],
         ];
     }
 
@@ -41,6 +44,7 @@ class TaxonomyVocabulary extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'prefix' => 'Prefix',
         ];
     }
     
