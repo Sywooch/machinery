@@ -30,6 +30,10 @@ class FilterWidget extends \yii\bootstrap\Widget
 
         $filterTerms = $this->getFilterTermsByTerm($catalogTerm);
 
+        if(empty($filterTerms)){
+            return;
+        }
+        
         $filterItemsCount = $this->search->getCountFilterTerms($terms);
         
         array_walk ( $filterTerms , function (&$item, $key)  use ($filterItemsCount){
@@ -38,14 +42,10 @@ class FilterWidget extends \yii\bootstrap\Widget
                 $item['items'] = $filterItemsCount[$key];
             }
         });
-        
-        unset($itemsCount);
-        $vocabularies = TaxonomyVocabulary::find()->all();
-        $filterTerms = ArrayHelper::index($filterTerms,'id','vid');
-        
+
         return $this->render('filter-widget', [
-                'filterItems' => $filterTerms,
-                'vocabularies' => $vocabularies,
+                'filterItems' => ArrayHelper::index($filterTerms,'id','vid'),
+                'vocabularies' => TaxonomyVocabulary::find()->all(),
         ]);
     }
     

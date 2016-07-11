@@ -164,11 +164,10 @@ class ProductSearch extends \backend\models\ProductSearch
         $subQuery = (new \yii\db\Query())
                         ->select('entity_id')
                         ->from($this->_indexModel::tableName())
-                        ->innerJoin(TaxonomyItems::TABLE_TAXONOMY_ITEMS, 'id = term_id')
                         ->distinct();
         $where = [];
         foreach($data as $vocabularyId => $termIds){
-            $where[] = "vid = '{$vocabularyId}' AND term_id IN (" . implode(',', $termIds) . ")";
+            $where[] = "term_id IN (" . implode(',', $termIds) . ") AND vocabulary_id = '{$vocabularyId}'";
         }
         
         $subQuery->where('(' . implode(') OR (', $where) . ')');
