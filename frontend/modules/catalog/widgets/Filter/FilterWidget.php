@@ -29,22 +29,16 @@ class FilterWidget extends \yii\bootstrap\Widget
         }
 
         $filterTerms = $this->getFilterTermsByTerm($catalogTerm);
-
+        
         if(empty($filterTerms)){
             return;
         }
         
         $filterItemsCount = $this->search->getCountFilterTerms($terms);
         
-        array_walk ( $filterTerms , function (&$item, $key)  use ($filterItemsCount){
-            $item['items'] = 0;
-            if(isset($filterItemsCount[$key])){
-                $item['items'] = $filterItemsCount[$key];
-            }
-        });
-
         return $this->render('filter-widget', [
                 'filterItems' => ArrayHelper::index($filterTerms,'id','vid'),
+                'filterItemsCount' => $filterItemsCount,
                 'vocabularies' => TaxonomyVocabulary::find()->all(),
         ]);
     }
@@ -61,17 +55,7 @@ class FilterWidget extends \yii\bootstrap\Widget
                 return;
             }
 
-            $filterTerms = ArrayHelper::toArray(TaxonomyItems::findAll($filterTermIds), [
-                TaxonomyItems::class => [
-                    'id',
-                    'name',
-                    'vid' 
-                ],
-            ]);
-
-            unset($filterTermIds);
-
-            $filterTerms = ArrayHelper::index($filterTerms, 'id');
+            $filterTerms = ArrayHelper::index(TaxonomyItems::findAll($filterTermIds), 'id');
             
             Yii::$app->cache->set("filter:catalog:{$term->id}", $filterTerms, 3600);
         }
