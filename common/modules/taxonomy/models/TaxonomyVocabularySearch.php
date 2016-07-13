@@ -66,5 +66,13 @@ class TaxonomyVocabularySearch extends TaxonomyVocabulary
         return $dataProvider;
     }
     
+    public function getPrefixes(){
+        return (new \yii\db\Query())
+            ->select(['prefix'])
+            ->from(TaxonomyVocabulary::TABLE_TAXONOMY_VOCABULARY)
+            ->where(['!=', 'prefix', ''])  
+            ->indexBy('prefix')    
+            ->column(); 
+    }
     
 }

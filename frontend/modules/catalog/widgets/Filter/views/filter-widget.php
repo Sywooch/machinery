@@ -7,15 +7,13 @@ use frontend\modules\catalog\helpers\UrlHelper;
 Asset::register($this);
 
 ?>
-
-<?php foreach($vocabularies as $vocabulary): ?>
-    <?php if(isset($filterItems[$vocabulary->id])):?>
-        <h2><?=$vocabulary->name;?></h2>
-        <?php foreach($filterItems[$vocabulary->id] as $term): ?>
-            <div data-href="<?=UrlHelper::getUrlParams($vocabulary, $term); ?>"><?=$term->name;?></div>
-        <?php endforeach; ?>
-    <?php endif;?>
-<?php endforeach; ?>
-
-<?php exit('A');?>
-
+<div id="filter">
+    <?php foreach($vocabularies as $vocabulary): ?>
+        <?php if(isset($filterItems[$vocabulary->id])):?>
+            <h2><?=$vocabulary->name;?></h2>
+            <?php foreach($filterItems[$vocabulary->id] as $term): ?>
+                <div data-params="<?=UrlHelper::getUrlParams($vocabulary, $term); ?>" class="filter-item"><?=$term->name;?></div>
+            <?php endforeach; ?>
+        <?php endif;?>
+    <?php endforeach; ?>
+</div>

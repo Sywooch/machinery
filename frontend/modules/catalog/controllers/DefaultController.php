@@ -62,7 +62,7 @@ class DefaultController extends Controller
                 ]);
             }
         }
-
+        
         $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term->parent));
         $searchModel->setParams(Yii::$app->request->queryParams);
         return $this->render('index',[

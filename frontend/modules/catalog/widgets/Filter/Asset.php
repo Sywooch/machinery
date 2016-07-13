@@ -14,10 +14,9 @@ class Asset extends AssetBundle
     public $baseUrl = '/frontend/modules/catalog/widgets/Filter/assets';
 
     public $css = [
-        '',
     ];
     public $js = [
-        '',
+        'filter.js',
     ];
         
     public $depends = [
