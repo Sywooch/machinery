@@ -3,28 +3,36 @@ namespace frontend\modules\catalog\widgets\Filter;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use frontend\modules\catalog\helpers\UrlHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\models\TaxonomyVocabulary;
+use common\modules\taxonomy\models\TaxonomyVocabularySearch;
 
 class FilterWidget extends \yii\bootstrap\Widget
 {
     public $search; 
-    
-    
+    private $urlHelper;
+
+    public function init(){
+        parent::init();
+        $this->urlHelper = new UrlHelper();   
+    }
+
     public function run()
     {
-        
-        $catalogTerm = [];
-        $this->search->index = [11]; // TODO: delete
-        $terms = TaxonomyItems::findAll($this->search->index);
   
-        foreach($terms as $term){
-            if($term->vid == Yii::$app->params['catalog']['vocabularyId']){
-              $catalogTerm = $term;  
-            }
+        $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
+        $vocabularies = TaxonomyVocabulary::find()->indexBy('id')->all();
+        $vocabulariesPrefixes = ArrayHelper::getColumn($vocabularies, 'prefix');
+        $filterCurrent = $this->urlHelper->parseUrlParams(Yii::$app->request->getPathInfo(), $vocabulariesPrefixes);
+
+        if(!isset($filterCurrent[$catalogVocabularyId]) || !is_numeric($filterCurrent[$catalogVocabularyId])){
+            return;
         }
-       
-        if(empty($catalogTerm)){
+        
+        $catalogId = $filterCurrent[$catalogVocabularyId] = 11; // TODO: delete
+
+        if(($catalogTerm = TaxonomyItems::findOne($catalogId)) === null){
             return;
         }
 
@@ -34,12 +42,14 @@ class FilterWidget extends \yii\bootstrap\Widget
             return;
         }
         
-        $filterItemsCount = $this->search->getCountFilterTerms($terms);
-        
+        $filterItemsCount = []; //$this->search->getCountFilterTerms($terms); //TODO: uncomment
+
         return $this->render('filter-widget', [
                 'filterItems' => ArrayHelper::index($filterTerms,'id','vid'),
                 'filterItemsCount' => $filterItemsCount,
-                'vocabularies' => TaxonomyVocabulary::find()->all(),
+                'filterCurrent' => $filterCurrent,
+                'vocabulariesPrefixes' => $vocabulariesPrefixes,
+                'vocabularies' => $vocabularies,
         ]);
     }
     

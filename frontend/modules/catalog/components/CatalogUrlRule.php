@@ -34,41 +34,18 @@ class CatalogUrlRule extends UrlRule {
 
     public function parseRequest($manager, $request) {
 
-        \URLify::add_chars (array (',' => '.', '_' => '-' ));
-
-        $root = '';
         $pathInfo = $request->getPathInfo();
-        $chunks = explode('/', $pathInfo);
 
-        if(($filterParams = $this->urlHelper->parseUrlParams($chunks, TaxonomyVocabularySearch::getPrefixes())) != false){
-            array_pop($chunks);
+        if(($filterParams = $this->urlHelper->parseUrlParams($pathInfo, TaxonomyVocabularySearch::getPrefixes())) === false){
+            $filterParams = $this->urlHelper->isCatalogUrl($pathInfo);
         }
-
-        foreach($chunks as $index => $item){
-            $chunks[$index] = \URLify::filter (\URLify::downcode ($item), 60, "", true);
-        }
-
-        $terms = TaxonomyItems::find()
-        ->where([
-           'vid' => Yii::$app->params['catalog']['vocabularyId'],
-            'transliteration' => $chunks 
-        ])        
-        ->orderBy([
-                'weight' => SORT_ASC
-        ])
-        ->all();
-
-        if(!$terms || count($terms) != count($chunks)){
+        
+        if(!$filterParams){
             return false;
         }
-
-        $term = array_pop($terms);
-        $filterParams[] = $term->id;
+        
         $params = [
-            'catalogId' => $term->id,
-            'ProductSearch' => [
-                'index' => $filterParams
-            ]
+            'filter' => $filterParams
         ];
         return ['catalog/default/index', $params];
     }

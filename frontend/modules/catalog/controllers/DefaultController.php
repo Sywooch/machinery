@@ -33,9 +33,14 @@ class DefaultController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex($catalogId)
+    public function actionIndex(array $filter)
     {   
-        $term = TaxonomyItems::findOne($catalogId);
+        $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
+        if(!isset($filter[$catalogVocabularyId]) || !is_numeric($filter[$catalogVocabularyId])){
+            throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
+        }
+
+        $term = TaxonomyItems::findOne($filter[$catalogVocabularyId]);
 
         if($term === null){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
@@ -64,9 +69,9 @@ class DefaultController extends Controller
         }
         
         $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term->parent));
-        $searchModel->setParams(Yii::$app->request->queryParams);
         return $this->render('index',[
             'current' => $term,
+            'filter' => $filter,
             'dataProvider' => $searchModel->searchItemsByParams(Yii::$app->request->queryParams),
             'search' => $searchModel,
         ]);
