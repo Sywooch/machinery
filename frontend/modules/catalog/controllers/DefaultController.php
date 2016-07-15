@@ -2,8 +2,6 @@
 namespace frontend\modules\catalog\controllers;
 
 use Yii;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use frontend\modules\product\models\ProductSearch;
@@ -36,15 +34,11 @@ class DefaultController extends Controller
     public function actionIndex(array $filter)
     {   
         $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
-        if(!isset($filter[$catalogVocabularyId]) || !is_numeric($filter[$catalogVocabularyId])){
+        if(!isset($filter[$catalogVocabularyId]) || !($filter[$catalogVocabularyId] instanceof TaxonomyItems)  ){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
 
-        $term = TaxonomyItems::findOne($filter[$catalogVocabularyId]);
-
-        if($term === null){
-            throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
-        }
+        $term = $filter[$catalogVocabularyId];
 
         if(!$term->pid){
             $childrensTerms = TaxonomyItems::findAll([
