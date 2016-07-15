@@ -31,6 +31,7 @@ class TaxonomyVocabulary extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['weight'], 'double'],
             [['name'], 'string', 'max' => 255],
             [['prefix'], 'unique'],
         ];
@@ -45,6 +46,7 @@ class TaxonomyVocabulary extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'prefix' => 'Prefix',
+            'weight' => 'Weight',
         ];
     }
     

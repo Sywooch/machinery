@@ -3,6 +3,7 @@ namespace frontend\modules\catalog\components;
 
 use Yii;
 use yii\base\Object;
+use common\modules\taxonomy\models\TaxonomyVocabularySearch;
 
 class FilterParams extends Object {
 
@@ -19,6 +20,7 @@ class FilterParams extends Object {
         {
             self::$_instance = new self();
         }
+        
         return self::$_instance;
     }
     

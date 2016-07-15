@@ -35,7 +35,7 @@ class FilterWidget extends \yii\bootstrap\Widget
         }
         
         $filterItemsCount = []; //$this->search->getCountFilterTerms($terms); //TODO: uncomment
-        $vocabularies = TaxonomyVocabulary::find()->indexBy('id')->all();
+        $vocabularies = TaxonomyVocabulary::find()->indexBy('id')->orderBy(['weight' => SORT_ASC])->all();
 
         return $this->render('filter-widget', [
                 'filterItems' => ArrayHelper::index($filterTerms,'id','vid'),

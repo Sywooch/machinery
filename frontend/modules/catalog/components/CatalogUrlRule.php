@@ -76,8 +76,11 @@ class CatalogUrlRule extends UrlRule {
         if($this->clearId($term, $filter) === false){
             $this->addId($term, $filter);
         }
-
-        return $this->filterParams->catalogUrl . '/' . $this->getFilterString($filter);
+        
+        if(($params = $this->getFilterString($filter))){
+            return $this->filterParams->catalogUrl . '/' . $params;
+        }
+        return $this->filterParams->catalogUrl;
     }
     
     private function getFilterString(array $filter){
@@ -92,7 +95,11 @@ class CatalogUrlRule extends UrlRule {
         return implode('_', $link);
     }
 
-
+    /**
+     * 
+     * @param TaxonomyItems $term
+     * @param array $filter
+     */
     private function addId(TaxonomyItems $term, array &$filter){
 
         $finded = false;
@@ -117,13 +124,22 @@ class CatalogUrlRule extends UrlRule {
         }
     }
     
+    /**
+     * 
+     * @param TaxonomyItems $term
+     * @param array $filter
+     * @return boolean
+     */
     private function clearId(TaxonomyItems $term, array &$filter){
 
-        foreach($filter as $vocabularyId => $value){
+        foreach($filter as $id => $value){
             if(is_array($value)){
-               $this->clearId($term, $filter[$vocabularyId]);
+               return $this->clearId($term, $filter[$id]);
             }elseif($value instanceof TaxonomyItems && $value->id == $term->id){
-                unset($filter[$vocabularyId]);
+                unset($filter[$id]);
+                if(count($filter) == 1){
+                    $filter = array_shift($filter);
+                }
                 return true;
             }
         }
@@ -156,16 +172,16 @@ class CatalogUrlRule extends UrlRule {
      */
     private function parseFilterParams($pathInfo){
 
+        if(is_null($this->filterParams->prefixes)){
+            $this->filterParams->prefixes = TaxonomyVocabularySearch::getPrefixes();
+        }
+        
         $chunks = explode('/', $pathInfo);
         
         if(count($chunks) <= 2){
             return false;
         }
         
-        if(is_null($this->filterParams->prefixes)){
-            $this->filterParams->prefixes = TaxonomyVocabularySearch::getPrefixes();
-        }
-
         $filterString = array_pop($chunks);
         $data = explode('_', $filterString);
 
@@ -235,9 +251,9 @@ class CatalogUrlRule extends UrlRule {
         if(!$terms || count($terms) != count($params)){
             return false;
         }
+        
         $this->filterParams->catalogUrl = $pathInfo;
         $term = array_pop($terms);
-
         return [$term->vid => $term];
     }
 
