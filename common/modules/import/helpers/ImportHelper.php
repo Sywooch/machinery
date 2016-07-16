@@ -36,6 +36,7 @@ class ImportHelper
                $data[] = [
                     'term_id' => $term['id'],
                     'entity_id' => $entityId,
+                    'vocabulary_id' => $term['vid'],
                     'field' => isset($vocabularyFields[$term['vid']]) ? $vocabularyFields[$term['vid']] : $vocabularyFields['all']
                 ]; 
             }
@@ -157,6 +158,7 @@ class ImportHelper
         return [
             \PDO::PARAM_INT,
             \PDO::PARAM_INT,
+            \PDO::PARAM_INT,
             \PDO::PARAM_STR
         ];
     }
@@ -164,6 +166,7 @@ class ImportHelper
         return [
                    'term_id',
                    'entity_id',
+                   'vocabulary_id',
                    'field'
                ];
     }

@@ -5,6 +5,7 @@ namespace frontend\modules\product\models;
 use Yii;
 use yii\data\Pagination;
 use common\modules\taxonomy\models\TaxonomyItems;
+use yii\helpers\ArrayHelper;
 
 /**
  * ProductDefaultSearch represents the model behind the search.
@@ -33,14 +34,57 @@ class ProductSearch extends \backend\models\ProductSearch
     public function getPages(){
         return $this->_pages;
     }
+    
+    /**
+     * 
+     * @return []
+     */
+    public function getProducts(){
+        if(empty($this->_items)){
+            return [];
+        }
+        return $this->_model::find(['id' => $this->_items])->all();
+    }
+    
+    /**
+     * 
+     * @return object
+     */
+    public function getProduct(){
+        if(empty($this->_items)){
+            return [];
+        }
+        return $this->_model::findOne(['id' => $this->_items]);
+    }
+    
+    /**
+     * 
+     * @param int $id
+     * @return object
+     */
+    public function getProductById($id){
+        return $this->_model::findOne($id);
+    }
 
     /**
      * 
      * @param array $params
+     * @return boolean
+     */
+    public function setParams(array $params){
+        $this->load($params);
+        if (!$this->validate()) {
+          return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * 
      * @return \backend\models\ProductSearch
      */
-    public function searchItemsByParams($params){
-        $this->load($params);
+    public function searchItemsByParams(){
         if (!$this->validate()) {
             return [];
         }
@@ -93,33 +137,50 @@ class ProductSearch extends \backend\models\ProductSearch
     
     /**
      * 
+     * @param int $catalogId
      * @return []
      */
-    public function getProducts(){
-        if(empty($this->_items)){
-            return [];
-        }
-        return $this->_model::find(['id' => $this->_items])->all();
-    }
-    
-    /**
-     * 
-     * @return object
-     */
-    public function getProduct(){
-        if(empty($this->_items)){
-            return [];
-        }
-        return $this->_model::findOne(['id' => $this->_items]);
-    }
-    
-    /**
-     * 
-     * @param int $id
-     * @return object
-     */
-    public function getProductById($id){
-        return $this->_model::findOne($id);
-    }
+    public function getFilterTermIds(TaxonomyItems $catalogTerm){
 
+            $subQuery = (new \yii\db\Query())
+                        ->select('entity_id')
+                        ->from($this->_indexModel::tableName())
+                        ->where(['term_id' => $catalogTerm->id])
+                        ->distinct();
+        
+            return  (new \yii\db\Query())
+                            ->select('term_id as id')
+                            ->from($this->_indexModel::tableName())
+                            ->where(['entity_id' => $subQuery])
+                            ->distinct()
+                            ->column();  
+    }
+    
+    public function getCountFilterTerms(array $data){
+        if(empty($data)){
+            return [];
+        }
+        $data = ArrayHelper::map($data, 'id', 'id', 'vid');
+        $subQuery = (new \yii\db\Query())
+                        ->select('entity_id')
+                        ->from($this->_indexModel::tableName())
+                        ->distinct();
+        $where = [];
+        foreach($data as $vocabularyId => $termIds){
+            $where[] = "term_id IN (" . implode(',', $termIds) . ") AND vocabulary_id = '{$vocabularyId}'";
+        }
+        
+        $subQuery->where('(' . implode(') OR (', $where) . ')');
+        
+        return  (new \yii\db\Query())
+                        ->select('count(entity_id) as items, term_id')
+                        ->from($this->_indexModel::tableName())
+                        ->where(['entity_id' => $subQuery])
+                        ->indexBy('term_id')
+                        ->groupBy('term_id')
+                        ->column();
+                       // ->createCommand()->getRawSql();    
+        
+    }
+    
 }

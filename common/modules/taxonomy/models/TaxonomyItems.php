@@ -47,7 +47,8 @@ class TaxonomyItems extends \yii\db\ActiveRecord
     public function beforeSave($insert) {
         parent::beforeSave($insert);
         if(!$this->transliteration){
-            $this->transliteration = \URLify::filter ($this->name, 60, "", true);
+            \URLify::add_chars (array (',' => '.', '_' => '-' ));
+            $this->transliteration = \URLify::filter (\URLify::downcode ($this->name), 60, "", true);
         }
         return true;
     }

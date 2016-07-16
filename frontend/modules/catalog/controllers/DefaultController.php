@@ -2,8 +2,6 @@
 namespace frontend\modules\catalog\controllers;
 
 use Yii;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use frontend\modules\product\models\ProductSearch;
@@ -33,13 +31,14 @@ class DefaultController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex($catalogId)
+    public function actionIndex(array $filter)
     {   
-        $term = TaxonomyItems::findOne($catalogId);
-        
-        if($term === null){
+        $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
+        if(!isset($filter[$catalogVocabularyId]) || !($filter[$catalogVocabularyId] instanceof TaxonomyItems)  ){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
+
+        $term = $filter[$catalogVocabularyId];
 
         if(!$term->pid){
             $childrensTerms = TaxonomyItems::findAll([
@@ -62,11 +61,13 @@ class DefaultController extends Controller
                 ]);
             }
         }
-   
+        
         $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term->parent));
         return $this->render('index',[
             'current' => $term,
-            'dataProvider' => $searchModel->searchItemsByParams(Yii::$app->request->queryParams)
+            'filter' => $filter,
+            'dataProvider' => $searchModel->searchItemsByParams(Yii::$app->request->queryParams),
+            'search' => $searchModel,
         ]);
         
     }
