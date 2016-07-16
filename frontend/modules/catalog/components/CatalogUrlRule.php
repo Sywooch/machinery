@@ -15,13 +15,10 @@ class CatalogUrlRule extends UrlRule {
     
     private $filterParams;
 
-
     public function init() {
         if ($this->name === null) {
                 $this->name = __CLASS__;
         }
-        
-        $this->filterParams = FilterParams::getInstance();
     }
 
     /**
@@ -48,7 +45,7 @@ class CatalogUrlRule extends UrlRule {
      * @inheritdoc
      */
     public function parseRequest($manager, $request) {
-
+ 
         if(($filterParams = $this->parseUrl($request->getPathInfo())) === false){
             return false;
         }
@@ -65,7 +62,7 @@ class CatalogUrlRule extends UrlRule {
      * @return string
      */
     public function getFilterUrl(TaxonomyItems $term){
-        
+        $this->filterParams = FilterParams::getInstance();
         $filter = $this->filterParams->filter;
         $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
        
@@ -76,7 +73,7 @@ class CatalogUrlRule extends UrlRule {
         if($this->clearId($term, $filter) === false){
             $this->addId($term, $filter);
         }
-        
+
         if(($params = $this->getFilterString($filter))){
             return $this->filterParams->catalogUrl . '/' . $params;
         }
@@ -85,8 +82,19 @@ class CatalogUrlRule extends UrlRule {
     
     private function getFilterString(array $filter){
         $link = [];
-        foreach($filter as $vocabularyId => $value){
-            if(is_array($value)){
+        foreach($this->filterParams->prefixes as $vocabularyId => $prefix){
+            
+            if(!isset($filter[$vocabularyId])){
+                continue;
+            }
+            
+            $value = $filter[$vocabularyId];
+            
+            if(is_array($value) && count($value) == 1){
+                $value = array_shift($value); 
+            }
+            
+            if(is_array($value) && count($value) > 1){
                $link[] = self::TERM_ID_PREFIX . $vocabularyId . '-' . implode('-', ArrayHelper::getColumn($value, 'id')); 
             }else{  
                 $link[] = $this->filterParams->prefixes[$value->vid] ? $this->filterParams->prefixes[$value->vid] . $value->transliteration : $value->transliteration; 
@@ -137,9 +145,6 @@ class CatalogUrlRule extends UrlRule {
                return $this->clearId($term, $filter[$id]);
             }elseif($value instanceof TaxonomyItems && $value->id == $term->id){
                 unset($filter[$id]);
-                if(count($filter) == 1){
-                    $filter = array_shift($filter);
-                }
                 return true;
             }
         }
@@ -152,7 +157,7 @@ class CatalogUrlRule extends UrlRule {
      * @return []
      */
     public function parseUrl($pathInfo){
-        
+        $this->filterParams = FilterParams::getInstance();
         if($this->filterParams->filter !== false)
         {
             return $this->filterParams->filter;
