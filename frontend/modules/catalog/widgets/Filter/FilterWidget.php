@@ -4,6 +4,7 @@ namespace frontend\modules\catalog\widgets\Filter;
 use Yii;
 use yii\helpers\ArrayHelper;
 use frontend\modules\catalog\components\CatalogUrlRule;
+use frontend\modules\catalog\models\FilterModel;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\models\TaxonomyVocabulary;
 use common\modules\taxonomy\models\TaxonomyVocabularySearch;
@@ -12,10 +13,11 @@ class FilterWidget extends \yii\bootstrap\Widget
 {
     public $search; 
     private $_urlRule;
-
-    public function __construct(array $config = []) {
-        $this->_urlRule = new CatalogUrlRule();
-        parent::__construct($config);
+    private $_model;
+        
+    public function init(){
+       $this->_urlRule = new CatalogUrlRule();
+       $this->_model = new FilterModel($this->search);
     }
 
     public function run()
@@ -26,15 +28,14 @@ class FilterWidget extends \yii\bootstrap\Widget
             return false;
         }
        
-        $catalogTerm = $filter[$catalogVocabularyId] = TaxonomyItems::findOne(11); // TODO: delete
-
+        $catalogTerm = $filter[$catalogVocabularyId];
         $filterTerms = $this->getFilterTermsByTerm($catalogTerm);
         
         if(empty($filterTerms)){
             return;
         }
         
-        $filterItemsCount = []; //$this->search->getCountFilterTerms($terms); //TODO: uncomment
+        $filterItemsCount = []; //$this->_model->getCountFilterTerms($terms); //TODO: uncomment
         $vocabularies = TaxonomyVocabulary::find()->indexBy('id')->orderBy(['weight' => SORT_ASC])->all();
 
         return $this->render('filter-widget', [
@@ -50,7 +51,7 @@ class FilterWidget extends \yii\bootstrap\Widget
 
         if ($filterTerms === false) {
 
-            $filterTermIds = $this->search->getFilterTermIds($term);
+            $filterTermIds = $this->_model->getFilterTermIds($term);
         
             if(!$filterTermIds){
                 return;

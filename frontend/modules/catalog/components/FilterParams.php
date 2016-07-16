@@ -9,7 +9,9 @@ class FilterParams extends Object {
 
     const TERM_ID_PREFIX = 't';
     
-    private $_filter = false;
+    private $_index = false;
+    private $_priceMin = null;
+    private $_priceMax = null;
     private $_prefixes = null;
     private $_catalogUrl = null;
     
@@ -32,12 +34,29 @@ class FilterParams extends Object {
         $this->_catalogUrl = preg_replace("#/$#", "", $catalogUrl);
     }
     
-    public function getFilter(){
-        return $this->_filter;
+    
+    public function getPriceMin(){
+        return $this->_priceMin;
     }
     
-    public function setFilter($filter){
-       $this->_filter = $filter;
+    public function setPriceMin($priceMin){
+       $this->_priceMin = (float)$priceMin;
+    }
+    
+    public function getPriceMax(){
+        return $this->_priceMax;
+    }
+    
+    public function setPriceMax($priceMax){
+       $this->_priceMax = (float)$priceMax;
+    }
+    
+    public function getIndex(){
+        return $this->_index;
+    }
+    
+    public function setIndex($index){
+       $this->_index = $index;
     }
     
     public function getPrefixes(){

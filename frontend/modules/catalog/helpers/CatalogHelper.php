@@ -67,4 +67,66 @@ class CatalogHelper {
         return $breadcrumb;
     }
     
+    
+    /**
+     * 
+     * @param TaxonomyItems $term
+     * @param array $filter
+     */
+    public static function addId(TaxonomyItems $term, array &$filter){
+
+        $finded = false;
+        
+        foreach($filter as $vocabularyId => $value){
+            
+            if($vocabularyId != $term->vid){
+                continue;
+            }
+            
+            $finded = true;
+               
+            if(is_array($value)){
+                $filter[$vocabularyId][] = $term;
+            }elseif($value instanceof TaxonomyItems){
+                $filter[$vocabularyId] = [$value, $term];
+            }
+        }
+        
+        if(!$finded){
+            $filter[$term->vid] = $term;
+        }
+    }
+    
+    /**
+     * 
+     * @param TaxonomyItems $term
+     * @param array $filter
+     * @return boolean
+     */
+    public static function clearId(TaxonomyItems $term, array &$filter){
+
+        foreach($filter as $id => $value){
+            if(is_array($value)){
+               return self::clearId($term, $filter[$id]);
+            }elseif($value instanceof TaxonomyItems && $value->id == $term->id){
+                unset($filter[$id]);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     * @param array $params
+     * @param array $param
+     * @return array
+     */
+    public static function merge(array $params, array $param){
+        foreach($param as $key => $value){
+            $params[$key] = $value;
+        }
+        return $params;
+    }
+    
 }

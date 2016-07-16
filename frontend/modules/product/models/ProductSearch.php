@@ -3,9 +3,11 @@
 namespace frontend\modules\product\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\data\Pagination;
 use common\modules\taxonomy\models\TaxonomyItems;
-use yii\helpers\ArrayHelper;
+use common\modules\file\models\File;
+use frontend\modules\catalog\components\FilterParams;
 
 /**
  * ProductDefaultSearch represents the model behind the search.
@@ -16,8 +18,6 @@ class ProductSearch extends \backend\models\ProductSearch
     
     private $_items;
     private $_pages;
-    private $_product;
-    private $_products = [];
 
     /**
      * 
@@ -43,7 +43,8 @@ class ProductSearch extends \backend\models\ProductSearch
         if(empty($this->_items)){
             return [];
         }
-        return $this->_model::find(['id' => $this->_items])->all();
+        
+        return $this->_model::findAll($this->_items);
     }
     
     /**
@@ -54,7 +55,7 @@ class ProductSearch extends \backend\models\ProductSearch
         if(empty($this->_items)){
             return [];
         }
-        return $this->_model::findOne(['id' => $this->_items]);
+        return $this->_model::findOne($this->_items);
     }
     
     /**
@@ -68,39 +69,25 @@ class ProductSearch extends \backend\models\ProductSearch
 
     /**
      * 
-     * @param array $params
-     * @return boolean
-     */
-    public function setParams(array $params){
-        $this->load($params);
-        if (!$this->validate()) {
-          return false;
-        }
-        return true;
-    }
-
-
-    /**
-     * 
      * @return \backend\models\ProductSearch
      */
-    public function searchItemsByParams(){
-        if (!$this->validate()) {
-            return [];
-        }
+    public function searchItemsByFilter(FilterParams $filter){
 
         $query = (new \yii\db\Query())
                         ->select('id')
                         ->from($this->_model->tableName())
-                        ->innerJoin($this->_indexModel::tableName(), 'entity_id = id')
                         ->where([
                             'publish' => self::PUBLISH,
                         ])
-                        ->andFilterWhere([
-                            'term_id' => $this->index
-                        ])
                         ->distinct();
+        $where = null;
+        foreach($filter->index as $id => $value){
+            $query->innerJoin($this->_indexModel::tableName(). " i{$id}", "i{$id}.entity_id = id");
+            $where["i{$id}.term_id"] = is_array($value) ? ArrayHelper::getColumn($value, 'id') : $value->id;
+        }
         
+        $query->andFilterWhere($where);
+
         $countQuery = clone $query;
         $this->_pages =  new Pagination([
                 'totalCount' => $countQuery->count(), 
@@ -108,8 +95,7 @@ class ProductSearch extends \backend\models\ProductSearch
             ]);
         $this->_items = $query->offset($this->_pages->offset)
                 ->limit($this->_pages->limit)
-                ->all();
-        
+                ->column();
         return $this;
     }
     
@@ -134,53 +120,5 @@ class ProductSearch extends \backend\models\ProductSearch
                         ->all();
         return $this;
     }
-    
-    /**
-     * 
-     * @param int $catalogId
-     * @return []
-     */
-    public function getFilterTermIds(TaxonomyItems $catalogTerm){
-
-            $subQuery = (new \yii\db\Query())
-                        ->select('entity_id')
-                        ->from($this->_indexModel::tableName())
-                        ->where(['term_id' => $catalogTerm->id])
-                        ->distinct();
-        
-            return  (new \yii\db\Query())
-                            ->select('term_id as id')
-                            ->from($this->_indexModel::tableName())
-                            ->where(['entity_id' => $subQuery])
-                            ->distinct()
-                            ->column();  
-    }
-    
-    public function getCountFilterTerms(array $data){
-        if(empty($data)){
-            return [];
-        }
-        $data = ArrayHelper::map($data, 'id', 'id', 'vid');
-        $subQuery = (new \yii\db\Query())
-                        ->select('entity_id')
-                        ->from($this->_indexModel::tableName())
-                        ->distinct();
-        $where = [];
-        foreach($data as $vocabularyId => $termIds){
-            $where[] = "term_id IN (" . implode(',', $termIds) . ") AND vocabulary_id = '{$vocabularyId}'";
-        }
-        
-        $subQuery->where('(' . implode(') OR (', $where) . ')');
-        
-        return  (new \yii\db\Query())
-                        ->select('count(entity_id) as items, term_id')
-                        ->from($this->_indexModel::tableName())
-                        ->where(['entity_id' => $subQuery])
-                        ->indexBy('term_id')
-                        ->groupBy('term_id')
-                        ->column();
-                       // ->createCommand()->getRawSql();    
-        
-    }
-    
+  
 }
