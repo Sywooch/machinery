@@ -17,6 +17,10 @@ abstract class ParserAbstract implements ParserInterface
         return $this->_source->id . '-' . $data[$this->map['id']] ;
     }
     
+    public function group(array $data){
+        return $data[$this->map['vendor']] . '-' . $data[$this->map['model']] ;
+    }
+    
     public function title(array $data){
         return '"'.$data[$this->map['title']].'"';
     }

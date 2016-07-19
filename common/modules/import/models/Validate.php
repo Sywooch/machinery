@@ -11,6 +11,7 @@ use common\modules\import\models\TemporaryTerms;
 class Validate extends \yii\base\Model
 {
     public $sku;
+    public $group;
     public $title;
     public $description;
     public $terms;
@@ -20,7 +21,7 @@ class Validate extends \yii\base\Model
     public $user_id;
     public $source_id;
     public $images;
-
+    public $publish;
 
     /**
      * @inheritdoc
@@ -28,10 +29,11 @@ class Validate extends \yii\base\Model
     public function rules()
     {
         return [
-            [['sku', 'title', 'price', 'source_id', 'user_id'], 'required'],
-            [['source_id', 'reindex', 'user_id'], 'integer'],
+            [['sku', 'title', 'price', 'source_id', 'user_id', 'group'], 'required'],
+            [['source_id', 'reindex', 'publish', 'user_id'], 'integer'],
             [['description'], 'string'],
             [['sku'], 'string', 'max' => 20],
+            [['group'], 'string', 'max' => 50],
             [['title'], 'string', 'max' => 255],
             [['terms'], 'validateTerms'],
             [['price'], 'double'],
@@ -41,6 +43,7 @@ class Validate extends \yii\base\Model
     
     public function afterValidate() {
         $this->reindex = 1;
+        $this->publish = 1;
     }
     
     public function validateTerms($attribute, $params){

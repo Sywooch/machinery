@@ -71,7 +71,7 @@ class ImporterController extends Controller
                     if($source->countMessages() > self::MAX_IMPORT_ERRORS){
                         $source->addMessage("Превышен лимит максимального количества ошибок. Операции прекращены."); 
                         $this->stdout("[1003] Превышен лимит максимального количества ошибок. Операции прекращены.\n", Console::FG_RED); 
-                        continue;
+                        break;
                     }
                 }
             } 

@@ -138,6 +138,8 @@ class ImportHelper
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_INT,
             \PDO::PARAM_INT,
             \PDO::PARAM_INT,
             \PDO::PARAM_INT
@@ -146,10 +148,12 @@ class ImportHelper
     public static function productFields(){
         return [
                    'sku',
+                   'group',
                    'price',
                    'title',
                    'description',
                    'reindex',
+                   'publish',
                    'user_id',
                    'source_id'
                ];
