@@ -70,7 +70,7 @@ class FileBehavior extends Behavior
                             'class' => File::class,
                             'entity_id' => $this->owner->id,
                             'field' => $fieldName,
-                            'model' => FileHelper::getModelName($this->owner),
+                            'model' => ModelHelper::getModelName($this->owner),
                             'name' => $fileName,
                             'path' => FileHelper::getUrl($this->owner),
                             'mimetype' => BaseFileHelper::getMimeType($file),

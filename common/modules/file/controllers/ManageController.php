@@ -58,10 +58,10 @@ class ManageController extends Controller
         if(!key_exists($field, $fields)){
             return ['success' => false, 'error'=>'[230] Ошибка загрузки.'];
         }
-
+        $filesInstances = UploadedFile::getInstances($entityModel, $field);
         $filesValidator = \Yii::createObject([
             'class' => FileValidator::class,
-            'files' => UploadedFile::getInstances($entityModel, $field),
+            'files' => (isset($fields[$field]['maxFiles']) && $fields[$field]['maxFiles'] == 1) ? array_shift($filesInstances) : $filesInstances,
             'rule' => $fields[$field]
         ]);
         
@@ -74,8 +74,9 @@ class ManageController extends Controller
         if(!$entityModel->id){
             $path = FileHelper::createTempDirectory($token, $field);
         }
-
-        foreach($filesValidator->files as $file){
+        
+        $filesInstances = is_array($filesValidator->files) ? $filesValidator->files : [$filesValidator->files];
+        foreach($filesInstances as $file){
             if($file->saveAs($path . '/' . FileHelper::text2url($file->name))){
                 if($entityModel->id){
                     $fileModel = \Yii::createObject([

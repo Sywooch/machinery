@@ -17,7 +17,7 @@ use common\modules\import\models\Sources;
  * This is the model class for table "product_default".
  *
  * @property integer $id
- * @property integer $group_id
+ * @property integer $group
  * @property integer $source_id
  * @property integer $user_id
  * @property string $sku
@@ -53,11 +53,12 @@ class ProductDefault extends ActiveRecord
     public function rules()
     {
         return [
-            [['group_id', 'source_id', 'user_id', 'available', 'publish', 'created', 'updated'], 'integer'],
+            [['source_id', 'user_id', 'available', 'publish', 'created', 'updated'], 'integer'],
             [['user_id', 'sku', 'created', 'updated', 'title'], 'required'],
             [['price', 'rating'], 'number'],
             [['description', 'data'], 'string'],
             [['sku'], 'string', 'max' => 30],
+            [['group'], 'string', 'max' => 50],
             [['title', 'short'], 'string', 'max' => 255],
             [['sku'], 'unique'],
             [['terms','catalog'], TermValidator::class],
@@ -74,7 +75,7 @@ class ProductDefault extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'group_id' => 'Group ID',
+            'group' => 'Group',
             'source_id' => 'Source ID',
             'user_id' => 'User ID',
             'sku' => 'Sku',
