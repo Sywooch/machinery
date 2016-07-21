@@ -13,7 +13,7 @@ class ProductHelper {
      * @param object $product
      * @return []
      */
-    public function getBreadcrumb($entity){
+    public static function getBreadcrumb($entity){
         $breadcrumb = [];
         foreach($entity->catalog as $taxonomyItem){
             $breadcrumb[] = ['label' => Html::encode($taxonomyItem->name), 'url' => $taxonomyItem->transliteration];
@@ -21,4 +21,5 @@ class ProductHelper {
         $breadcrumb[] = Html::encode($entity->title);
         return $breadcrumb;
     }
+    
 }

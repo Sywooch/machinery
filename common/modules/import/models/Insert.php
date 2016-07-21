@@ -155,7 +155,7 @@ class Insert extends \yii\base\Model
 
         $onDuplicateStrings = [];
         foreach ($columns as $column) {
-            $onDuplicateStrings[] = $column.' = VALUES('.$column.') ';
+            $onDuplicateStrings[] = '`'.$column.'` = VALUES(`'.$column.'`) ';
         }
         
         $sql = Yii::$app->db->queryBuilder->batchInsert($table, $columns, array_chunk($params, $countColumns));

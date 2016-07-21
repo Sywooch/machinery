@@ -3,8 +3,11 @@
 namespace frontend\modules\product\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\data\Pagination;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\modules\file\models\File;
+use frontend\modules\catalog\components\FilterParams;
 
 /**
  * ProductDefaultSearch represents the model behind the search.
@@ -15,8 +18,6 @@ class ProductSearch extends \backend\models\ProductSearch
     
     private $_items;
     private $_pages;
-    private $_product;
-    private $_products = [];
 
     /**
      * 
@@ -33,30 +34,60 @@ class ProductSearch extends \backend\models\ProductSearch
     public function getPages(){
         return $this->_pages;
     }
+    
+    /**
+     * 
+     * @return []
+     */
+    public function getProducts(){
+        if(empty($this->_items)){
+            return [];
+        }
+        
+        return $this->_model::findAll($this->_items);
+    }
+    
+    /**
+     * 
+     * @return object
+     */
+    public function getProduct(){
+        if(empty($this->_items)){
+            return [];
+        }
+        return $this->_model::findOne($this->_items);
+    }
+    
+    /**
+     * 
+     * @param int $id
+     * @return object
+     */
+    public function getProductById($id){
+        return $this->_model::findOne($id);
+    }
 
     /**
      * 
-     * @param array $params
      * @return \backend\models\ProductSearch
      */
-    public function searchItemsByParams($params){
-        $this->load($params);
-        if (!$this->validate()) {
-            return [];
-        }
+    public function searchItemsByFilter(FilterParams $filter){
 
         $query = (new \yii\db\Query())
                         ->select('id')
                         ->from($this->_model->tableName())
-                        ->innerJoin($this->_indexModel::tableName(), 'entity_id = id')
                         ->where([
                             'publish' => self::PUBLISH,
                         ])
-                        ->andFilterWhere([
-                            'term_id' => $this->index
-                        ])
                         ->distinct();
+        $where = null;
+        foreach($filter->index as $id => $value){
+            $query->innerJoin($this->_indexModel::tableName(). " i{$id}", "i{$id}.entity_id = id");
+            $where["i{$id}.term_id"] = is_array($value) ? ArrayHelper::getColumn($value, 'id') : $value->id;
+        }
         
+        $query->andFilterWhere($where);
+
         $countQuery = clone $query;
         $this->_pages =  new Pagination([
                 'totalCount' => $countQuery->count(), 
@@ -64,8 +95,7 @@ class ProductSearch extends \backend\models\ProductSearch
             ]);
         $this->_items = $query->offset($this->_pages->offset)
                 ->limit($this->_pages->limit)
-                ->all();
-        
+                ->column();
         return $this;
     }
     
@@ -90,36 +120,5 @@ class ProductSearch extends \backend\models\ProductSearch
                         ->all();
         return $this;
     }
-    
-    /**
-     * 
-     * @return []
-     */
-    public function getProducts(){
-        if(empty($this->_items)){
-            return [];
-        }
-        return $this->_model::find(['id' => $this->_items])->all();
-    }
-    
-    /**
-     * 
-     * @return object
-     */
-    public function getProduct(){
-        if(empty($this->_items)){
-            return [];
-        }
-        return $this->_model::findOne(['id' => $this->_items]);
-    }
-    
-    /**
-     * 
-     * @param int $id
-     * @return object
-     */
-    public function getProductById($id){
-        return $this->_model::findOne($id);
-    }
-
+  
 }

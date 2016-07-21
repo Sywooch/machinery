@@ -66,5 +66,13 @@ class TaxonomyVocabularySearch extends TaxonomyVocabulary
         return $dataProvider;
     }
     
+    public function getPrefixes(){
+        return (new \yii\db\Query())
+            ->select(['prefix', 'id'])
+            ->from(TaxonomyVocabulary::TABLE_TAXONOMY_VOCABULARY) 
+            ->indexBy('id') 
+            ->orderBy(['weight' => SORT_ASC])       
+            ->column(); 
+    }
     
 }

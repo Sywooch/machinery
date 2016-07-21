@@ -36,6 +36,7 @@ class ImportHelper
                $data[] = [
                     'term_id' => $term['id'],
                     'entity_id' => $entityId,
+                    'vocabulary_id' => $term['vid'],
                     'field' => isset($vocabularyFields[$term['vid']]) ? $vocabularyFields[$term['vid']] : $vocabularyFields['all']
                 ]; 
             }
@@ -137,6 +138,8 @@ class ImportHelper
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_INT,
             \PDO::PARAM_INT,
             \PDO::PARAM_INT,
             \PDO::PARAM_INT
@@ -145,16 +148,19 @@ class ImportHelper
     public static function productFields(){
         return [
                    'sku',
+                   'group',
                    'price',
                    'title',
                    'description',
                    'reindex',
+                   'publish',
                    'user_id',
                    'source_id'
                ];
     }
     public static function termFieldTypes(){
         return [
+            \PDO::PARAM_INT,
             \PDO::PARAM_INT,
             \PDO::PARAM_INT,
             \PDO::PARAM_STR
@@ -164,6 +170,7 @@ class ImportHelper
         return [
                    'term_id',
                    'entity_id',
+                   'vocabulary_id',
                    'field'
                ];
     }

@@ -51,6 +51,7 @@ class TaxonomyBehavior extends Behavior
                         \Yii::createObject([
                            'class' => $model,
                            'term_id' => $term->id,
+                           'vocabulary_id' => $term->vid,
                            'entity_id' => $this->owner->id,
                            'field' => $field,
                         ])->save(); 

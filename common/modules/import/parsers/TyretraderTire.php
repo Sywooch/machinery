@@ -10,6 +10,7 @@ class TyretraderTire extends ParserAbstract{
         'id' => 3,
         'season' => 4, 
         'vendor' => 0, 
+        'model' => 1,
         'radius' => 8, 
         'width' => 6, 
         'height' => 7, 

@@ -2,10 +2,10 @@
 namespace frontend\modules\catalog\controllers;
 
 use Yii;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
+use common\modules\file\models\File;
+use frontend\modules\catalog\components\FilterParams;
 use frontend\modules\product\models\ProductSearch;
 use common\modules\taxonomy\models\TaxonomyItems;
 use frontend\modules\catalog\helpers\CatalogHelper;
@@ -33,15 +33,17 @@ class DefaultController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex($catalogId)
+    public function actionIndex(FilterParams $filter)
     {   
-        $term = TaxonomyItems::findOne($catalogId);
-        
-        if($term === null){
+        $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
+
+        if(!isset($filter->index[$catalogVocabularyId]) || !($filter->index[$catalogVocabularyId] instanceof TaxonomyItems)  ){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
 
-        if(!$term->pid){
+        $term = $filter->index[$catalogVocabularyId];
+
+        if(0 && !$term->pid){
             $childrensTerms = TaxonomyItems::findAll([
                 'vid' => $term->vid,
                 'pid' => $term->id
@@ -62,11 +64,18 @@ class DefaultController extends Controller
                 ]);
             }
         }
-   
-        $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term->parent));
+
+        $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term));
+        $dataProvider = $searchModel->searchItemsByFilter($filter);
+        $products = $dataProvider->products;
+        $files = File::getFilesBatch($products, 'photos');
+        
         return $this->render('index',[
             'current' => $term,
-            'dataProvider' => $searchModel->searchItemsByParams(Yii::$app->request->queryParams)
+            'dataProvider' => $dataProvider,
+            'products' => $products,
+            'files' => $files,
+            'search' => $searchModel,
         ]);
         
     }

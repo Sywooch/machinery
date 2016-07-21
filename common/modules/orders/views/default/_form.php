@@ -22,7 +22,7 @@ Asset::register($this);
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'pay')->dropDownList([ 'Наличный' => 'Наличный', 'Безналичный' => 'Безналичный', 'При получении' => 'При получении', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'payment')->dropDownList([ 'Наличный' => 'Наличный', 'Безналичный' => 'Безналичный', 'При получении' => 'При получении', ], ['prompt' => '']) ?>
 
     <?= $form->field($model, 'delivery')->widget(Delivery::classname()) ?>
 

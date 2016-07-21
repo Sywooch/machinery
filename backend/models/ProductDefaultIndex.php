@@ -30,8 +30,8 @@ class ProductDefaultIndex extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['term_id', 'entity_id', 'field'], 'required'],
-            [['term_id', 'entity_id'], 'integer'],
+            [['term_id', 'vocabulary_id', 'entity_id', 'field'], 'required'],
+            [['term_id', 'entity_id', 'vocabulary_id',], 'integer'],
             [['field'], 'string', 'max' => 30],
             [['term_id', 'entity_id'], 'unique', 'targetAttribute' => ['term_id', 'entity_id'], 'message' => 'The combination of Term ID and Entity ID has already been taken.'],
             [['entity_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductDefault::className(), 'targetAttribute' => ['entity_id' => 'id']],

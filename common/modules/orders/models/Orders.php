@@ -16,7 +16,7 @@ use common\modules\orders\widgets\delivery\DeliveryFactory;
  * @property string $email
  * @property string $phone
  * @property string $address
- * @property string $pay
+ * @property string $payment
  * @property string $delivery
  * @property string $comment
  * @property integer $created
@@ -49,12 +49,12 @@ class Orders extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'email', 'phone' , 'address', 'pay', 'delivery'], 'required', 'on' => self::SCENARIO_ORDER],
+            [['name', 'email', 'phone' , 'address', 'payment', 'delivery'], 'required', 'on' => self::SCENARIO_ORDER],
             [['token'], 'required'],
             [['user_id', 'count', 'created', 'updated', 'ordered'], 'integer'],
             [['price'], 'number'],
             [['comment'], 'string'],
-            [['name', 'email', 'phone', 'address', 'pay', 'delivery'], 'string', 'max' => 255],
+            [['name', 'email', 'phone', 'address', 'payment', 'delivery'], 'string', 'max' => 255],
             [['token'], 'string', 'max' => 40],
             [['token'], 'unique'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dektrium\user\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -67,7 +67,7 @@ class Orders extends ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_ORDER] = ['name', 'email', 'phone' , 'address', 'comment', 'pay', 'delivery'];
+        $scenarios[self::SCENARIO_ORDER] = ['name', 'email', 'phone' , 'address', 'comment', 'payment', 'delivery'];
         return $scenarios;
     }
 
@@ -85,8 +85,8 @@ class Orders extends ActiveRecord
             'email' => 'E-mail',
             'phone' => 'Телефон',
             'address' => 'Address',
-            'pay' => 'Pay',
             'delivery' => 'Доставка',
+            'payment' => 'Pay',
             'comment' => 'Comment',
             'created' => 'Created',
             'updated' => 'Updated',

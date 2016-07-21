@@ -105,7 +105,12 @@ class FileHelper {
         $initialPreview = [];
         if (empty($files)){
             return [];
-        }   
+        }
+        
+        if(!is_array($files)){
+            $files = [$files];
+        }
+        
         foreach($files as $file){
             if (strpos($file->mimetype, "image") !== false){
                 $initialPreview[] = Html::img('/' . $file->path . '/' . $file->name, ['class' => 'file-preview-image']); 
@@ -124,6 +129,11 @@ class FileHelper {
         if (empty($files)){
             return [];
         } 
+        
+        if(!is_array($files)){
+            $files = [$files];
+        }
+        
         foreach($files as $file){
             $url = Url::to(['/file/manage/delete', 'id' => $file->id, 'token' => self::getToken($file)]);
             $initialPreviewConfig[] = ['url' => $url, 'key' => "fileId-{$file->id}"];
@@ -164,12 +174,12 @@ class FileHelper {
      * @param string $field
      * @return []
      */
-    public static function FileInputConfig($model, $field){
+    public static function FileInputConfig($model, $field){        
         $files = $model->{$field};
         return [
             'options' => ['multiple' => true],
             'pluginOptions' => [
-                'uploadUrl' => Url::to([self::AJAX_UPLOAD_URL, 'id' => $model->id , 'field' => 'photos', 'token' => Yii::$app->request->getCsrfToken()]),
+                'uploadUrl' => Url::to([self::AJAX_UPLOAD_URL, 'id' => $model->id , 'field' => $field, 'token' => Yii::$app->request->getCsrfToken()]),
                 'showUpload' => true,
                 'showRemove' => false,
                 'initialPreview' => self::getFileInputPreviews($files),

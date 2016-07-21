@@ -2,6 +2,7 @@
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 use frontend\modules\catalog\widgets\CatalogMenu\CatalogMenuWidget;
 use frontend\modules\catalog\widgets\CatalogMenu\Asset;
+use yii\helpers\Html;
 
 Asset::register($this);
 
@@ -17,7 +18,7 @@ Asset::register($this);
                 <li class="menu-item menu-item_expandable menu-item_products menu-item_cat_phones  ">
                     <span class="menu-item__link-container   phones">
                         <span class="menu-item__link-container-inner">
-                            <a class="link_side-menu " href="/<?=$mainItem['transliteration']?>"><?=$mainItem['name']?></a>
+                            <?=Html::a($mainItem['name'], ['/','catalogMenu' => [$mainItem]], ['class'=> 'link_side-menu']);?>
                         </span>
                     </span>
                     <?php if(isset($mainItem['children'])):?>
@@ -32,15 +33,11 @@ Asset::register($this);
                                 <div class="subcategory-list-item ">
                                     <?php if($mainItem['id'] == $childrenItem['pid']):?>
                                         <span class="h3 subcategory-list-item__link-title  ">
-                                            <a class="subcategory-list-item__link" href="/<?=$childrenItem['transliteration']?>">
-                                                <?=$childrenItem['name']?>
-                                            </a>
+                                            <?=Html::a($childrenItem['name'], ['/','catalogMenu' => [$mainItem, $childrenItem]], ['class'=> 'subcategory-list-item__link']);?>
                                         </span>
                                     <?php else: ?>
                                         <div class="subcategory-list-item__link-title_level2">
-                                            <a class="subcategory-list-item__link " href="/<?=$childrenItem['transliteration']?>">
-                                                <?=$childrenItem['name']?>
-                                            </a>
+                                            <?=Html::a($childrenItem['name'], ['/','catalogMenu' => [$mainItem, $childrenItem]], ['class'=> 'subcategory-list-item__link']);?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
