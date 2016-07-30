@@ -50,7 +50,7 @@ class ImportHelper
         foreach($links as $id => $link){
             $data[] = [
                 'entity_id' => (int) $id,
-                'url' => 'product/' . $id,
+                'url' => 'product/default/?id=' . $id . '&model=' . $model,
                 'alias' => $link,
                 'model' => $model
             ]; 
