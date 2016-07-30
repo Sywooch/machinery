@@ -18,7 +18,7 @@ abstract class ParserAbstract implements ParserInterface
     }
     
     public function group(array $data){
-        return URLify::url ($data[$this->map['vendor']], 50) . '/' . URLify::url ($data[$this->map['model']], 50);
+        return $data[$this->map['vendor']] . ' ' . $data[$this->map['model']];
     }
 
     public function model(array $data){

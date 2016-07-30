@@ -85,7 +85,7 @@ class Validate extends \yii\base\Model
                 $messages[] = $name . ':'. implode('; ', array_keys($terms));
             }
             
-            $this->addError($attribute, 'Не удалось распознать термины: '.  implode('; ', $messages).'.');
+            $this->addError($attribute, 'Не удалось распознать термины: '.  implode('; ', $messages));
 
             return;
           
