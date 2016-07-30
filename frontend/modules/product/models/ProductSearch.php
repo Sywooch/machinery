@@ -43,8 +43,8 @@ class ProductSearch extends \backend\models\ProductSearch
         if(empty($this->_items)){
             return [];
         }
-        
-        return $this->_model::findAll($this->_items);
+        $model = $this->_model;
+        return $model::findAll($this->_items);
     }
     
     /**
@@ -55,7 +55,8 @@ class ProductSearch extends \backend\models\ProductSearch
         if(empty($this->_items)){
             return [];
         }
-        return $this->_model::findOne($this->_items);
+        $model = $this->_model;
+        return $model::findOne($this->_items);
     }
     
     /**
@@ -64,7 +65,8 @@ class ProductSearch extends \backend\models\ProductSearch
      * @return object
      */
     public function getProductById($id){
-        return $this->_model::findOne($id);
+        $model = $this->_model;
+        return $model::findOne($id);
     }
 
     /**
@@ -81,8 +83,9 @@ class ProductSearch extends \backend\models\ProductSearch
                         ])
                         ->distinct();
         $where = null;
+        $indexModel = $this->_indexModel;
         foreach($filter->index as $id => $value){
-            $query->innerJoin($this->_indexModel::tableName(). " i{$id}", "i{$id}.entity_id = id");
+            $query->innerJoin($indexModel::tableName(). " i{$id}", "i{$id}.entity_id = id");
             $where["i{$id}.term_id"] = is_array($value) ? ArrayHelper::getColumn($value, 'id') : $value->id;
         }
         
@@ -106,10 +109,11 @@ class ProductSearch extends \backend\models\ProductSearch
      * @return \backend\models\ProductSearch
      */
     public function getCategoryMostRatedItems(TaxonomyItems $taxonomyItem, int $limit = 5){
+        $indexModel = $this->_indexModel;
         $this->_items = (new \yii\db\Query())
                         ->select('id')
                         ->from($this->_model->tableName())
-                        ->innerJoin($this->_indexModel::tableName(), 'entity_id = id')
+                        ->innerJoin($indexModel::tableName(), 'entity_id = id')
                         ->where([
                             'term_id' => $taxonomyItem->id,
                             'publish' => self::PUBLISH,

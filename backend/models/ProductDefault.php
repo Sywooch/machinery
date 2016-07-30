@@ -4,14 +4,13 @@ namespace backend\models;
 
 use Yii;
 use \yii\db\ActiveRecord;
-use common\modules\file\models\File;
-use common\modules\file\helpers\FileHelper;
-use common\helpers\ModelHelper;
 use common\modules\taxonomy\components\TermValidator;
 use yii\behaviors\TimestampBehavior;
 use common\modules\taxonomy\models\TaxonomyItems;
-use common\modules\taxonomy\models\TaxonomyIndex;
 use common\modules\import\models\Sources;
+use frontend\modules\catalog\helpers\CatalogHelper;
+use yii\helpers\ArrayHelper;
+use common\helpers\URLify;
 
 /**
  * This is the model class for table "product_default".
@@ -107,6 +106,9 @@ class ProductDefault extends ActiveRecord
                     'class' => \common\modules\file\components\FileBehavior::class,
                 ],
                 [
+                    'class' => \common\components\UrlBehavior::class,
+                ],
+                [
                     'class' => TimestampBehavior::className(),
                     'attributes' => [
                         ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'updated'],
@@ -130,6 +132,19 @@ class ProductDefault extends ActiveRecord
     public function getSource()
     {
         return $this->hasOne(Sources::className(), ['id' => 'source_id']);
+    }
+
+    public function urlImportPattern(array $items, array $sku2Ids){
+
+        $links = [];
+        foreach ($items as $item){
+            $catalog = ArrayHelper::getValue(CatalogHelper::getItemByVocabularyIdOne($item['terms'], 7),'transliteration');
+            $vendor = ArrayHelper::getValue(CatalogHelper::getItemByVocabularyIdOne($item['terms'], 1),'transliteration');
+            $model = URLify::url($item['model'], 50);
+            $id = $sku2Ids[$item['sku']];
+            $links[$id] = $catalog . '/' . 'diski' . '-' . $vendor . '/' . $vendor . '-' . $model . '-' . $id .'.html'; 
+        }
+        return $links;
     }
 
 }

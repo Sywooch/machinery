@@ -2,6 +2,7 @@
 
 namespace common\modules\file\helpers;
 
+use common\helpers\URLify;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -90,7 +91,7 @@ class FileHelper {
     public function text2url($name){
         $url = [
             time(),
-            \URLify::filter ($name, 60, "", true),
+            URLify::url ($name, 60, "", true),
         ];
         return implode('-', $url);
     }

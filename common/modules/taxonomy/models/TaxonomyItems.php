@@ -3,7 +3,7 @@
 namespace common\modules\taxonomy\models;
 
 use Yii;
-use common\modules\taxonomy\models\TaxonomyVocabulary;
+use common\helpers\URLify;
 
 /**
  * This is the model class for table "taxonomy_items".
@@ -47,8 +47,7 @@ class TaxonomyItems extends \yii\db\ActiveRecord
     public function beforeSave($insert) {
         parent::beforeSave($insert);
         if(!$this->transliteration){
-            \URLify::add_chars (array (',' => '.', '_' => '-' ));
-            $this->transliteration = \URLify::filter (\URLify::downcode ($this->name), 60, "", true);
+            $this->transliteration = URLify::url ($this->name, 60);
         }
         return true;
     }

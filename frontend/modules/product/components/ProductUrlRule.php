@@ -4,6 +4,7 @@ namespace frontend\modules\product\components;
 use yii\web\UrlRule;
 use frontend\modules\catalog\helpers\CatalogHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\helpers\URLify;
 
 class ProductUrlRule extends UrlRule {
 
@@ -19,7 +20,7 @@ class ProductUrlRule extends UrlRule {
                     return false;    
                 }
                 $url = [
-                   \URLify::filter($params['entity']->title),
+                   URLify::url($params['entity']->title),
                    'p'.$catalogId.'_'.$params['entity']->id
                 ];
                return implode('-',$url);

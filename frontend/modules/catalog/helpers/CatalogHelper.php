@@ -26,7 +26,19 @@ class CatalogHelper {
             throw new InvalidParamException(\Yii::t('yii', 'Model not fount.'));
         }
     }
-    
+
+    /**
+     * @param int $id
+     * @return string
+     */
+    public function getModelByTermId($id){
+
+        if(isset(\Yii::$app->params['catalog']['models'][$id])){
+            return \Yii::$app->params['catalog']['models'][$id];
+        }
+        return false;
+    }
+
     /**
      * 
      * @param string $name
@@ -49,11 +61,12 @@ class CatalogHelper {
     public function getCatalogIdByModel($model){
         return array_search(get_class($model), \Yii::$app->params['catalog']['models']);
     }
-    
+
     /**
-     * 
      * @param TaxonomyItems $taxonomyItem
-     * @return []
+     * @param int $childId
+     * @param array $breadcrumb
+     * @return array
      */
     public function getBreadcrumb(TaxonomyItems $taxonomyItem, $childId = 0,  &$breadcrumb = []){
         if($taxonomyItem->pid){
@@ -128,5 +141,19 @@ class CatalogHelper {
         }
         return $params;
     }
-    
+
+
+    /**
+     * @param array $items
+     * @param int $vocabularyId
+     * @return array
+     */
+    public static function getItemByVocabularyIdOne(array $items, $vocabularyId){
+        foreach($items as $item){
+            if($item['vid'] == $vocabularyId){
+                return $item;
+            }
+        }
+        return [];
+    }
 }

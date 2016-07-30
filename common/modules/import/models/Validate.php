@@ -3,7 +3,9 @@
 namespace common\modules\import\models;
 
 use Yii;
-use common\modules\import\models\TemporaryTerms;
+use frontend\modules\catalog\helpers\CatalogHelper;
+
+
 
 /**
 *
@@ -12,6 +14,7 @@ class Validate extends \yii\base\Model
 {
     public $sku;
     public $group;
+    public $model;
     public $title;
     public $description;
     public $terms;
@@ -22,6 +25,10 @@ class Validate extends \yii\base\Model
     public $source_id;
     public $images;
     public $publish;
+    public $url;
+
+    private $_catalogId;
+    private $_model;
 
     /**
      * @inheritdoc
@@ -33,7 +40,7 @@ class Validate extends \yii\base\Model
             [['source_id', 'reindex', 'publish', 'user_id'], 'integer'],
             [['description'], 'string'],
             [['sku'], 'string', 'max' => 20],
-            [['group'], 'string', 'max' => 50],
+            [['group', 'model'], 'string', 'max' => 50],
             [['title'], 'string', 'max' => 255],
             [['terms'], 'validateTerms'],
             [['price'], 'double'],
@@ -44,6 +51,13 @@ class Validate extends \yii\base\Model
     public function afterValidate() {
         $this->reindex = 1;
         $this->publish = 1;
+        $this->_catalogId = \yii\helpers\ArrayHelper::getValue($this->attributes,'terms.0.id');
+       
+        return TRUE;
+    }
+
+    public function getCatalogId(){
+        return $this->_catalogId;
     }
     
     public function validateTerms($attribute, $params){
@@ -89,7 +103,7 @@ class Validate extends \yii\base\Model
             return;
         }
         
-        $this->termIds = array_replace($rootTerm, $data);   
+        $this->terms = array_replace($rootTerm, $data);   
     }
 
 }

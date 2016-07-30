@@ -2,6 +2,7 @@
 
 namespace console\controllers;
 
+use common\modules\import\models\Insert;
 use Yii;
 use yii\console\Controller;
 use common\modules\import\models\Sources;
@@ -32,7 +33,7 @@ class ImporterController extends Controller
             $validator->source_id = $source->id;
             $validator->user_id = 1;
             
-            $this->stdout("Источник: {$source->name}\n", Console::FG_GREEN);  
+            $this->stdout("Source: {$source->name}\n", Console::FG_GREEN);
             
             $import = Yii::$container->get(Import::class, [$source]); 
             if(!$import->getFile()){
@@ -40,7 +41,7 @@ class ImporterController extends Controller
                 $this->stdout("[1000] Файл не найден или не может быть прочитан.\n", Console::FG_RED);  
                 continue;
             }
-            
+
             while (($line = $import->read()) !== FALSE) {
 
                 $validator->sku = $line['sku'];

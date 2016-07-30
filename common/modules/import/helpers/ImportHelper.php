@@ -44,6 +44,19 @@ class ImportHelper
         return $data;
     }
     
+    public function insetUrlData($model, array $links){
+        $data = [];
+        $model = ModelHelper::getModelName($model);
+        foreach($links as $id => $link){
+            $data[] = [
+                'url' => 'product/' . $id,
+                'alias' => $link,
+                'model' => $model
+            ]; 
+        }
+        return $data;
+    }
+    
     public function insetImageData($model, array $sku2Ids, array $items){
         $data = [];
         foreach($items as $item){
@@ -121,7 +134,7 @@ class ImportHelper
         
         foreach($temporary as $item){
             list($vocabulary, $term) = explode(':', $item);
-            $terms[$vocabulary][$term] = 'AAA';
+            $terms[$vocabulary][$term] = true;
         }
         
         if(empty($terms)){
@@ -186,6 +199,21 @@ class ImportHelper
         return [
             \PDO::PARAM_INT,
             \PDO::PARAM_INT,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR
+        ];
+    }
+    
+    public static function importUrlFields(){
+        return [
+                   'url',
+                   'alias',
+                   'model'
+               ];
+    }
+    public static function importUrlFieldTypes(){
+        return [
+            \PDO::PARAM_STR,
             \PDO::PARAM_STR,
             \PDO::PARAM_STR
         ];

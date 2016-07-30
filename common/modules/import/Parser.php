@@ -23,7 +23,7 @@ class Parser{
     public function prepare(array $data){
         $return = [];
         foreach($this->_fields as $method){
-            $return[$method] = $this->_parser->$method($data);
+            $return[$method] = $this->_parser->$method($data, $return);
         }
         return $return;
     }

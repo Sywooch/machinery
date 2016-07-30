@@ -2,7 +2,7 @@
 namespace common\modules\import;
 
 use common\modules\import\models\Sources;
-use common\modules\import\ParserInterface;
+use common\helpers\URLify;
 
 abstract class ParserAbstract implements ParserInterface
 {
@@ -18,7 +18,11 @@ abstract class ParserAbstract implements ParserInterface
     }
     
     public function group(array $data){
-        return $data[$this->map['vendor']] . '-' . $data[$this->map['model']] ;
+        return URLify::url ($data[$this->map['vendor']], 50) . '/' . URLify::url ($data[$this->map['model']], 50);
+    }
+
+    public function model(array $data){
+        return $data[$this->map['model']];
     }
     
     public function title(array $data){

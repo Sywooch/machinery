@@ -6,8 +6,8 @@ use Yii;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\import\helpers\ImportHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
-use common\helpers\ModelHelper;
-use common\modules\import\models\ImportImages;
+use common\models\Alias;
+use common\modules\import\models\Validate;
 
 
 /**
@@ -15,19 +15,24 @@ use common\modules\import\models\ImportImages;
  */
 class Insert extends \yii\base\Model
 {
-    const INSERT_LIMIT  = 500;
+    const INSERT_LIMIT  = 1000;
     
     private $stack = [];
     private $model;
 
-    public function add(array $data){
-        $catalogId = $data['termIds'][0]['id']; 
-        $this->stack[$catalogId][] = $data;
-        if(count($this->stack[$catalogId]) >= self::INSERT_LIMIT){
-            $this->flush($catalogId);
+    /**
+     * @param Validate $data
+     */
+    public function add(Validate $data){
+        $this->stack[$data->catalogId][] = $data->attributes;
+        if(count($this->stack[$data->catalogId]) >= self::INSERT_LIMIT){
+            $this->flush($data->catalogId);
         }
     }
 
+    /**
+     * @param int $catalogId
+     */
     public function flush($catalogId = null){
         if(empty($this->stack)){
             return;
@@ -47,19 +52,29 @@ class Insert extends \yii\base\Model
         $this->model = CatalogHelper::getModelByTerm(TaxonomyItems::findOne($currentCatalogId));
         $this->insertBatch($this->model->tableName(), $items, ImportHelper::productFields(), ImportHelper::productFieldTypes());
         $sku2Ids = $this->getIdsBySku(array_column($items, 'sku'));
+       
+        /**
+         * Url
+         */
+        if(method_exists($this->model, 'urlImportPattern')){
+            $model = $this->model;
+            $insertUrlData = ImportHelper::insetUrlData($model, $model::urlImportPattern($items, $sku2Ids));
+            $this->insertBatch(Alias::TABLE_ALIAS, $insertUrlData, ImportHelper::importUrlFields(), ImportHelper::importUrlFieldTypes());
+            unset($insertUrlData);
+        }
         
         /*
          * images
          */
-        $insetImageData = ImportHelper::insetImageData($this->model, $sku2Ids, $items);
-        $this->insertBatch(ImportImages::TABLE_IMPORT_IMAGES, $insetImageData, ImportHelper::importImagesFields(), ImportHelper::importImagesFieldTypes());
-        unset($insetImageData);
+        $insertImageData = ImportHelper::insetImageData($this->model, $sku2Ids, $items);
+        $this->insertBatch(ImportImages::TABLE_IMPORT_IMAGES, $insertImageData, ImportHelper::importImagesFields(), ImportHelper::importImagesFieldTypes());
+        unset($insertImageData);
         
         /*
          * terms
          */
         $currentTermIds = $this->getTermIdsByProdutIds($sku2Ids);
-        $newTermIds = array_column($items, 'termIds', 'sku');
+        $newTermIds = array_column($items, 'terms', 'sku');
         $insetTermsData = ImportHelper::insetTermsData($sku2Ids, $currentTermIds, $newTermIds);
         $deleteTermsData = ImportHelper::deleteTermsData($sku2Ids, $currentTermIds, $newTermIds);
         $indexModel = $this->model->className() . 'Index';
@@ -109,7 +124,7 @@ class Insert extends \yii\base\Model
         return $data;
     }
 
-    private function insertBatch($table, array $data, array $columns, array $types){
+    public function insertBatch($table, array $data, array $columns, array $types){
 
         if (!$table) {
             throw new ParamMiss('Param $table can not be empty');

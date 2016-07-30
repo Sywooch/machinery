@@ -19,7 +19,7 @@ class TyretraderDisk extends ParserAbstract{
         'et' => 10,
         'dia' => 11,
         'color' => 12,
-        'images' => 14,
+        'images' => 16,
         'price' => 13
     ];
 

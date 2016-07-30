@@ -52,7 +52,7 @@ class Import{
     }
     
     public function add(Validate $validator){
-        $this->_insert->add($validator->attributes);
+        $this->_insert->add($validator);
     }
     
     public function flush(){
