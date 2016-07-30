@@ -49,6 +49,7 @@ class ImportHelper
         $model = ModelHelper::getModelName($model);
         foreach($links as $id => $link){
             $data[] = [
+                'entity_id' => (int) $id,
                 'url' => 'product/' . $id,
                 'alias' => $link,
                 'model' => $model
@@ -206,6 +207,7 @@ class ImportHelper
     
     public static function importUrlFields(){
         return [
+                   'entity_id',
                    'url',
                    'alias',
                    'model'
@@ -213,6 +215,7 @@ class ImportHelper
     }
     public static function importUrlFieldTypes(){
         return [
+            \PDO::PARAM_INT,
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
             \PDO::PARAM_STR

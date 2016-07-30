@@ -4,45 +4,45 @@ namespace common\components;
 
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
+use common\models\Alias;
 use common\helpers\ModelHelper;
-use common\modules\taxonomy\models\TaxonomyItems;
-use common\modules\taxonomy\models\TaxonomyIndex;
-use common\modules\taxonomy\helpers\TaxonomyHelper;
 
 class UrlBehavior extends Behavior
 {
-
+    
     public function events()
     {
         return [
-            ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave',
+            ActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
+            ActiveRecord::EVENT_AFTER_UPDATE => 'afterSave',
         ];
     }
     
+    public function getAlias(){
+        return $this->owner->hasOne(Alias::className(), ['id' => 'user_id'])->where(['model' => ModelHelper::getModelName($this->owner)]);
+    }
 
 
 
-    public function beforeSave($event){
+    public function afterSave($event){
 
-        if(!isset($this->owner->url)){
-            return false;
-        }
-
-        if($this->owner->url){
+        $alias = $this->owner->alias;
+        if($alias && $alias->alias != ''){
             return true;
         }
-
         if(method_exists ( $this->owner , 'urlPattern' )){
-            $this->owner->url = $this->owner->urlPattern($this->owner);
+            $alias->alias = $this->owner->urlPattern($this->owner);
         }else{
-            $this->owner->url = $this->urlPattern($this->owner);
+            $alias->alias = $this->urlPattern($this->owner);
         }
-        exit('AAA');
+        if($alias->alias){
+            $alias->save();
+        }
+        return true;
     }
 
     public function urlPattern(){
-        return null;
+        return '';
     }
 
 }
