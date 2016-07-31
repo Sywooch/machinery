@@ -19,29 +19,34 @@ class UrlBehavior extends Behavior
     }
     
     public function getAlias(){
-        return $this->owner->hasOne(Alias::className(), ['id' => 'user_id'])->where(['model' => ModelHelper::getModelName($this->owner)]);
+        return $this->owner->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName($this->owner)]);
     }
 
 
 
     public function afterSave($event){
-
         $alias = $this->owner->alias;
         if($alias && $alias->alias != ''){
             return true;
         }
-        if(method_exists ( $this->owner , 'urlPattern' )){
-            $alias->alias = $this->owner->urlPattern($this->owner);
-        }else{
-            $alias->alias = $this->urlPattern($this->owner);
+        if(!$alias){
+            $alias = \Yii::createObject([
+                'class' => Alias::class,
+                'entity_id' => $this->owner->id,
+                'url' => '',
+                'alias' => '',
+                'model' => ModelHelper::getModelName($this->owner),
+            ]);
         }
-        if($alias->alias){
-            $alias->save();
-        }
+
+        $alias = method_exists ( $this->owner , 'urlPattern' ) ? $this->owner->urlPattern($this->owner, $alias) : $this->urlPattern($this->owner, $alias);
+        $alias->url = $alias->url . '?id=' . $this->owner->id . '&model='. ModelHelper::getModelName($this->owner);
+        $alias->save();
+
         return true;
     }
 
-    public function urlPattern(){
+    public function urlPattern($model, Alias $alias){
         return '';
     }
 
