@@ -29,8 +29,8 @@ class CatalogUrlRule extends UrlRule {
      */
     public function createUrl($manager, $route, $params) {
         
-            if($route == 'catalog/default/index'){
-                $link = isset($params['filter']) && $params['filter'] instanceof TaxonomyItems ? $this->getFilterUrl($params['filter']) : $this->getFilterUrl();
+            if(isset($params['filter']) && $params['filter'] instanceof TaxonomyItems){
+                $link = $this->getFilterUrl($params['filter']);
                 $query = http_build_query($params);
                 return $query ? $link . '?' . $query : $link;
             }
@@ -53,7 +53,7 @@ class CatalogUrlRule extends UrlRule {
  
         if(($filterParams = $this->parseUrl($request->getPathInfo())) === false){
             return false;
-        }
+        }    
         $params = [
             'filter' => FilterParams::getInstance()
         ];
@@ -67,19 +67,25 @@ class CatalogUrlRule extends UrlRule {
      */
     public function getFilterUrl(TaxonomyItems $term = null){
         $this->filterParams = FilterParams::getInstance();
-        $filter = $this->filterParams->index;
         $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
        
-        if(isset($filter[$catalogVocabularyId])){
-            unset($filter[$catalogVocabularyId]);
+        $index = $this->filterParams->index;
+        if(isset($index[$catalogVocabularyId])){
+            unset($index[$catalogVocabularyId]);
         }
         
-        if($term !==null && CatalogHelper::clearId($term, $filter) === false){
-            CatalogHelper::addId($term, $filter);
+        if($term !==null && CatalogHelper::clearId($term, $index) === false){
+            CatalogHelper::addId($term, $index);
         }
-
-        if(($filterUrl = $this->getFilterString($filter))){
-            return $this->filterParams->catalogUrl . '/' . self::FILTER_INDICATOR . '/' . $filterUrl;
+        
+        if(($filterUrl = $this->getFilterString($this->filterParams, $index))){
+            $link = [];
+            if($this->filterParams->catalogUrl) {
+                $link[] = $this->filterParams->catalogUrl;
+            }
+            $link[] = self::FILTER_INDICATOR ;
+            $link[] = $filterUrl ;
+            return implode('/', $link);
         }
         return $this->filterParams->catalogUrl;
     }
@@ -89,15 +95,15 @@ class CatalogUrlRule extends UrlRule {
      * @param array $filter
      * @return string
      */
-    private function getFilterString(array $filter){
+    private function getFilterString(FilterParams $filter, $newIndex){
         $link = [];
-        foreach($this->filterParams->prefixes as $vocabularyId => $prefix){
+        foreach($filter->prefixes as $vocabularyId => $prefix){
             
-            if(!isset($filter[$vocabularyId])){
+            if(!isset($newIndex[$vocabularyId])){
                 continue;
             }
             
-            $value = $filter[$vocabularyId];
+            $value = $newIndex[$vocabularyId];
             
             if(is_array($value) && count($value) == 1){
                 $value = array_shift($value); 
@@ -106,7 +112,7 @@ class CatalogUrlRule extends UrlRule {
             if(is_array($value) && count($value) > 1){
                $link[] = self::TERM_ID_PREFIX . $vocabularyId . '-' . implode('-', ArrayHelper::getColumn($value, 'id')); 
             }else{  
-                $link[] = $this->filterParams->prefixes[$value->vid] ? $this->filterParams->prefixes[$value->vid] . $value->transliteration : $value->transliteration; 
+                $link[] = $filter->prefixes[$value->vid] ? $filter->prefixes[$value->vid] . $value->transliteration : $value->transliteration; 
             }
         }
         return implode('_', $link);
@@ -123,7 +129,7 @@ class CatalogUrlRule extends UrlRule {
         {
             return $this->filterParams->index;
         }
-        
+
         if(($this->filterParams->index = $this->parseFilterParams($pathInfo)) === false){
             $this->filterParams->index = $this->parseCatalogUrl($pathInfo);
         }
@@ -137,17 +143,13 @@ class CatalogUrlRule extends UrlRule {
      * @return boolean || []
      */
     private function parseFilterParams($pathInfo){
-
-        if(is_null($this->filterParams->prefixes)){
-            $this->filterParams->prefixes = TaxonomyVocabularySearch::getPrefixes();
-        }
         
         $chunks = explode('/', $pathInfo);
         
         if(count($chunks) < 3){
             return false;
         }
-        
+       
         $filterString = array_pop($chunks);
         if(array_pop($chunks) != self::FILTER_INDICATOR){
             return false;
@@ -179,12 +181,12 @@ class CatalogUrlRule extends UrlRule {
         }
 
         $pathInfo = str_replace(self::FILTER_INDICATOR . '/' . $filterString, '', $pathInfo);
-
-        if(($param = $this->parseCatalogUrl($pathInfo)) === false){
-            return false;
+      
+        if(($param = $this->parseCatalogUrl($pathInfo)) !== false){
+            $params = CatalogHelper::merge($params, $param);
         }
 
-        return CatalogHelper::merge($params, $param);
+        return $params;
     }
     
     /**

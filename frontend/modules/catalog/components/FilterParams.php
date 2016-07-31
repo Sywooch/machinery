@@ -21,8 +21,8 @@ class FilterParams extends Object {
         if(is_null(self::$_instance))
         {
             self::$_instance = new self();
+            self::$_instance->_prefixes = TaxonomyVocabularySearch::getPrefixes();
         }
-        
         return self::$_instance;
     }
     

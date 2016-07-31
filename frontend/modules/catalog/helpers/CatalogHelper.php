@@ -86,27 +86,26 @@ class CatalogHelper {
      * @param TaxonomyItems $term
      * @param array $filter
      */
-    public static function addId(TaxonomyItems $term, array &$filter){
+    public static function addId(TaxonomyItems $term, &$index){
 
         $finded = false;
         
-        foreach($filter as $vocabularyId => $value){
-            
-            if($vocabularyId != $term->vid){
-                continue;
-            }
-            
-            $finded = true;
-               
-            if(is_array($value)){
-                $filter[$vocabularyId][] = $term;
-            }elseif($value instanceof TaxonomyItems){
-                $filter[$vocabularyId] = [$value, $term];
+        if(!empty($index)){
+            foreach($index as $vocabularyId => $value){
+                if($vocabularyId != $term->vid){
+                    continue;
+                }
+                $finded = true;
+                if(is_array($value)){
+                    $index[$vocabularyId][] = $term;
+                }elseif($value instanceof TaxonomyItems){
+                    $index[$vocabularyId] = [$value, $term];
+                }
             }
         }
-        
+
         if(!$finded){
-            $filter[$term->vid] = $term;
+            $index[$term->vid] = $term;
         }
     }
     
@@ -116,13 +115,15 @@ class CatalogHelper {
      * @param array $filter
      * @return boolean
      */
-    public static function clearId(TaxonomyItems $term, array &$filter){
-
-        foreach($filter as $id => $value){
+    public static function clearId(TaxonomyItems $term, &$index = []){
+        if(empty($index)){
+            return false;
+        }
+        foreach($index as $id => $value){
             if(is_array($value)){
-               return self::clearId($term, $filter[$id]);
+               return self::clearId($term, $index[$id]);
             }elseif($value instanceof TaxonomyItems && $value->id == $term->id){
-                unset($filter[$id]);
+                unset($index[$id]);
                 return true;
             }
         }
