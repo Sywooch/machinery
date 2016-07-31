@@ -51,7 +51,7 @@ class CatalogUrlRule extends UrlRule {
      */
     public function parseRequest($manager, $request) {
  
-        if(($filterParams = $this->parseUrl($request->getPathInfo())) === false){
+        if($this->parseUrl($request->getPathInfo()) === false){
             return false;
         }    
         $params = [

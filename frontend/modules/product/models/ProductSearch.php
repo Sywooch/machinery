@@ -6,7 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use yii\data\Pagination;
 use common\modules\taxonomy\models\TaxonomyItems;
-use common\modules\file\models\File;
+use yii\data\ActiveDataProvider;
 use frontend\modules\catalog\components\FilterParams;
 
 /**
@@ -15,49 +15,6 @@ use frontend\modules\catalog\components\FilterParams;
 class ProductSearch extends \backend\models\ProductSearch
 {
     const PUBLISH = 1;
-    
-    private $_items;
-    private $_pages;
-
-    /**
-     * 
-     * @return type
-     */
-    public function getItems(){
-       return $this->_items;
-    }
-    
-    /**
-     * 
-     * @return type
-     */
-    public function getPages(){
-        return $this->_pages;
-    }
-    
-    /**
-     * 
-     * @return []
-     */
-    public function getProducts(){
-        if(empty($this->_items)){
-            return [];
-        }
-        $model = $this->_model;
-        return $model::findAll($this->_items);
-    }
-    
-    /**
-     * 
-     * @return object
-     */
-    public function getProduct(){
-        if(empty($this->_items)){
-            return [];
-        }
-        $model = $this->_model;
-        return $model::findOne($this->_items);
-    }
     
     /**
      * 
@@ -75,31 +32,30 @@ class ProductSearch extends \backend\models\ProductSearch
      */
     public function searchItemsByFilter(FilterParams $filter){
 
-        $query = (new \yii\db\Query())
-                        ->select('id')
-                        ->from($this->_model->tableName())
+        $query = $this->_model->find()
                         ->where([
                             'publish' => self::PUBLISH,
                         ])
                         ->distinct();
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => Yii::$app->params['catalog']['defaultPageSize'],
+            ],
+            'key' => 'id',
+
+        ]);
+        
         $where = null;
         $indexModel = $this->_indexModel;
+        $indexTable = $indexModel::tableName();
         foreach($filter->index as $id => $value){
-            $query->innerJoin($indexModel::tableName(). " i{$id}", "i{$id}.entity_id = id");
-            $where["i{$id}.term_id"] = is_array($value) ? ArrayHelper::getColumn($value, 'id') : $value->id;
+            $query->innerJoin($indexTable . " {$indexTable}{$id}", "{$indexTable}{$id}.entity_id = id");
+            $where["{$indexTable}{$id}.term_id"] = is_array($value) ? ArrayHelper::getColumn($value, 'id') : $value->id;
         }
-        
         $query->andFilterWhere($where);
-
-        $countQuery = clone $query;
-        $this->_pages =  new Pagination([
-                'totalCount' => $countQuery->count(), 
-                'defaultPageSize' => Yii::$app->params['catalog']['defaultPageSize']
-            ]);
-        $this->_items = $query->offset($this->_pages->offset)
-                ->limit($this->_pages->limit)
-                ->column();
-        return $this;
+        return $dataProvider;
     }
     
     /**
