@@ -23,7 +23,17 @@ class TaxonomyBehavior extends Behavior
             ActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
             ActiveRecord::EVENT_AFTER_UPDATE => 'afterSave',
             ActiveRecord::EVENT_INIT => 'afterInit',
+            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
         ];
+    }
+    
+    public function afterDelete(){
+        if($this->indexModel){      
+            $model = $this->indexModel;   
+            $model::deleteAll(['entity_id' => $this->owner->id]);
+        }else{
+            TaxonomyIndex::deleteAll(['entity_id' => $this->owner->id, 'model' => ModelHelper::getModelName($this->owner)]);
+        }
     }
     
     public function afterInit() {
