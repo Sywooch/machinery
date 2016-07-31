@@ -67,7 +67,7 @@ class DefaultController extends Controller
 
         $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term));
         $dataProvider = $searchModel->searchItemsByFilter($filter);
-        $products = $dataProvider->products;
+        $products = $dataProvider->getModels();
         $files = File::getFilesBatch($products, 'photos');
         
         return $this->render('index',[

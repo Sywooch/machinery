@@ -23,16 +23,16 @@ class FilterModel extends \yii\base\Model
      * @return []
      */
     public function getFilterTermIds(TaxonomyItems $catalogTerm){
-
+            $indexModel = $this->_indexModel;
             $subQuery = (new \yii\db\Query())
                         ->select('entity_id')
-                        ->from($this->_indexModel::tableName())
+                        ->from($indexModel::tableName())
                         ->where(['term_id' => $catalogTerm->id])
                         ->distinct();
         
             return  (new \yii\db\Query())
                             ->select('term_id as id')
-                            ->from($this->_indexModel::tableName())
+                            ->from($indexModel::tableName())
                             ->where(['entity_id' => $subQuery])
                             ->distinct()
                             ->column();  
@@ -42,10 +42,11 @@ class FilterModel extends \yii\base\Model
         if(empty($data)){
             return [];
         }
+        $indexModel = $this->_indexModel;
         $data = ArrayHelper::map($data, 'id', 'id', 'vid');
         $subQuery = (new \yii\db\Query())
                         ->select('entity_id')
-                        ->from($this->_indexModel::tableName())
+                        ->from($indexModel::tableName())
                         ->distinct();
         $where = [];
         foreach($data as $vocabularyId => $termIds){
@@ -56,7 +57,7 @@ class FilterModel extends \yii\base\Model
         
         return  (new \yii\db\Query())
                         ->select('count(entity_id) as items, term_id')
-                        ->from($this->_indexModel::tableName())
+                        ->from($indexModel::tableName())
                         ->where(['entity_id' => $subQuery])
                         ->indexBy('term_id')
                         ->groupBy('term_id')
