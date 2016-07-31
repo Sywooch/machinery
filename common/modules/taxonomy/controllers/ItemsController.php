@@ -169,12 +169,12 @@ class ItemsController extends Controller
         ]);
     }
     
-    public function actionTermsAjax($vid = null, $name, $exeptId = null){
+    public function actionTermsAjax($vocabularyId = null, $name, $exeptId = null){
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
         $taxonomyItemsSearch = new TaxonomyItemsSearch();
-        $terms = $taxonomyItemsSearch->getItemsByName($name);
+        $terms = $taxonomyItemsSearch->getItemsByName($name, $vocabularyId);
         
         if(empty($terms)){
             return ['results' => [] ];

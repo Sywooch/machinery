@@ -74,6 +74,7 @@ class TaxonomyBehavior extends Behavior
                         ])->save();  
                     }
                 }
+                $this->owner->$field = $this->_terms;
             }
         }
     }
@@ -85,8 +86,8 @@ class TaxonomyBehavior extends Behavior
      * @return object
      */
     private function getFiledsTerms($field){
-        if($this->indexModel){
-            $model = $this->indexModel;
+        if($this->indexModel){      
+            $model = $this->indexModel;   
             return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable($model::tableName(), ['entity_id' => 'id'], function($query) use($field){
                 $query->where(['field' => $field]);
             });
