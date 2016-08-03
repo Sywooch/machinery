@@ -4,7 +4,7 @@ namespace common\modules\import;
 use Yii;
 use common\modules\import\models\Sources;
 use common\modules\import\helpers\ImportHelper;
-use common\modules\import\models\Insert;
+use common\modules\import\components\Insert;
 use common\modules\import\models\Validate;
 
 class Import{
@@ -15,7 +15,7 @@ class Import{
     private $_fields = [];
 
     public function __construct(Sources $source, ImportHelper $helper, Insert $insert) {
-        $this->_file = fopen(Yii::getAlias('@app').'/../files/import/source_' . $source->id . 'a.csv', 'r');
+        $this->_file = fopen(Yii::getAlias('@app').'/../files/import/source_' . $source->id . '.csv', 'r');
         $this->_helper = $helper;
         $this->_insert = $insert;
     } 

@@ -57,7 +57,7 @@ class ImporterController extends Controller
                     $this->stdout("[1002] Ошибка парсинга изображений.\n", Console::FG_YELLOW); 
                     continue;
                 }
-             
+               
                 $validator->setAttributes($line);
                 
                 if($validator->validate()){
