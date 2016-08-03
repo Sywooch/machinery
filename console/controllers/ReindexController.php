@@ -2,16 +2,8 @@
 
 namespace console\controllers;
 
-use common\modules\import\models\Insert;
 use Yii;
 use yii\console\Controller;
-use common\modules\import\models\Sources;
-use common\modules\import\models\Validate;
-use common\modules\import\Import;
-use common\modules\import\helpers\ImportHelper;
-use common\modules\import\models\TemporaryTerms;
-use yii\helpers\Console;
-
 use yii\helpers\ArrayHelper;
 use common\modules\import\components\Reindex;
 use backend\models\ProductSearch;

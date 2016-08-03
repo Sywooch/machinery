@@ -18,7 +18,6 @@ class Validate extends \yii\base\Model
     public $terms;
     public $termIds;
     public $price;
-    public $reindex;
     public $user_id;
     public $source_id;
     public $images;
@@ -34,7 +33,7 @@ class Validate extends \yii\base\Model
     {
         return [
             [['sku', 'title', 'price', 'source_id', 'user_id', 'group'], 'required'],
-            [['source_id', 'reindex', 'publish', 'user_id'], 'integer'],
+            [['source_id', 'publish', 'user_id'], 'integer'],
             [['description'], 'string'],
             [['sku'], 'string', 'max' => 20],
             [['group', 'model'], 'string', 'max' => 50],
@@ -46,7 +45,6 @@ class Validate extends \yii\base\Model
     }
     
     public function afterValidate() {
-        $this->reindex = Reindex::REINDEX;
         $this->publish = 1;
         $this->_catalogId = \yii\helpers\ArrayHelper::getValue($this->attributes,'terms.0.id');
        

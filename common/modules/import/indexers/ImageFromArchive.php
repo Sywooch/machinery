@@ -9,6 +9,7 @@ use finfo;
 use common\modules\import\components\Insert;
 use common\modules\file\models\File;
 use common\modules\import\helpers\ImportHelper;
+use common\modules\import\components\Reindex;
 
 class ImageFromArchive implements IndexerInterface{
 
@@ -39,16 +40,25 @@ class ImageFromArchive implements IndexerInterface{
         $this->stack = [];        
     }
 
-
+    /**
+     * 
+     * @param array $item
+     * @return boolean
+     */
     public function add($item){
        
         $copiedFiles = [];
         $data = json_decode($item['data']);
-        if(isset($data->images) && !empty($data->images)){
-           $copiedFiles = $this->copy($item['id'], $item['source_id'],  $data->images);
+        if($item['reindex'] != Reindex::NEW_ITEM){
+            return false;
+        }
+        if(!isset($data->images) || empty($data->images)){
+           return false;
         }
         
+        $copiedFiles = $this->copy($item['id'], $item['source_id'],  $data->images);
         $this->stack = array_merge($this->stack, $copiedFiles);
+        return true;
     }
     
     /**
@@ -85,19 +95,19 @@ class ImageFromArchive implements IndexerInterface{
                     $this->resources[$source_id] = false;
                 }      
             }
-           
             if($this->resources[$source_id] === false){
                 continue;
             }
+            
             $size = memory_get_usage(); 
             $fp = $this->resources[$source_id]->getFromName($file['name']);
+            if ( ! $fp ){
+                continue;
+            } 
             $file['size'] = memory_get_usage() - $size;
             $file['name'] = $newFileName;
             $file['mimetype'] = $this->finfo->buffer($fp);
             $ofp = fopen( $this->itemsFilePath . '/' . $newFileName, 'w' ); 
-            if ( ! $fp ){
-                continue;
-            } 
             fwrite( $ofp, $fp );  
             fclose($ofp); 
             $copiedFiles[] = $file;

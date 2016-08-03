@@ -8,6 +8,7 @@ use common\modules\import\helpers\ImportHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
 use common\models\Alias;
 use common\modules\import\models\Validate;
+use common\modules\import\components\Reindex;
 
 
 /**
@@ -167,6 +168,7 @@ class Insert extends \yii\base\Model
         $onDuplicateStrings = [];
         foreach ($columns as $column) {
             if($column == 'crc32'){
+                $onDuplicateStrings[] = '`reindex` =  ' . Reindex::REINDEX;
                 $onDuplicateStrings[] = '`old_crc32` = `crc32` ';
             }
             $onDuplicateStrings[] = '`'.$column.'` = VALUES(`'.$column.'`) ';

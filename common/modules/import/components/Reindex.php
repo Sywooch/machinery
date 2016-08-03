@@ -2,21 +2,12 @@
 
 namespace common\modules\import\components;
 
-use Yii;
-use common\modules\taxonomy\models\TaxonomyItems;
-use common\modules\import\helpers\ImportHelper;
-use frontend\modules\catalog\helpers\CatalogHelper;
-use common\models\Alias;
-use common\modules\import\models\Validate;
-
-
-
 /**
 *
  */
 class Reindex extends \yii\base\Model
 {
-    const MAX_REINDEX_ITEMS = 1;
+    const MAX_REINDEX_ITEMS = 100;
     
     const NEW_ITEM = 1;
     const REINDEX = 2;
@@ -32,13 +23,11 @@ class Reindex extends \yii\base\Model
         if(!method_exists ( $model , 'getReindexItems' )){
                return false; 
         }
-
         $items = $model->getReindexItems([Reindex::NEW_ITEM, Reindex::REINDEX]);
         $itemIds = array_column($items, 'id');
-      //  $model->setReindexStatus(self::INPROGRESS, $itemIds);
-        
+        $model->setReindexStatus(self::INPROGRESS, $itemIds);
         foreach($items as $item){ 
-           if($item['crc32'] == $item['old_crc32']){
+           if($item['crc32'] && $item['crc32'] == $item['old_crc32']){
                continue;
            }
            
@@ -46,10 +35,8 @@ class Reindex extends \yii\base\Model
                $this->_indexers[$index]->add($item);
            }
         }
-        
         $this->flush();
-      //  $model->setReindexStatus(self::DONE, $itemIds);
-        
+        $model->setReindexStatus(self::DONE, $itemIds);
     }
 
 
@@ -58,7 +45,6 @@ class Reindex extends \yii\base\Model
                $indexer->flush();
         }
     }
-
 
     public function setModel($model){
         $this->_model = $model;

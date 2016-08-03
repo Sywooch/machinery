@@ -106,8 +106,28 @@ class ProductSearch extends Model
      */
     public function getReindexItems(array $status){
         $model = $this->_model;
+        
+    
+        
         return (new \yii\db\Query())
-                        ->select('*')
+                        ->select('
+                            id,
+                            group,
+                            model,
+                            source_id,
+                            user_id,
+                            sku,
+                            available,
+                            price,
+                            rating,
+                            publish,
+                            `reindex` + 0 as reindex,
+                            crc32,
+                            old_crc32,
+                            title,
+                            description,
+                            data'
+                        )
                         ->from($model::tableName())
                         ->where(['reindex' => $status])
                         ->limit(Reindex::MAX_REINDEX_ITEMS)
