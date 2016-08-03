@@ -7,7 +7,7 @@ namespace common\modules\import\components;
  */
 class Reindex extends \yii\base\Model
 {
-    const MAX_REINDEX_ITEMS = 100;
+    const MAX_REINDEX_ITEMS = 10000;
     
     const NEW_ITEM = 1;
     const REINDEX = 2;
@@ -23,11 +23,11 @@ class Reindex extends \yii\base\Model
         if(!method_exists ( $model , 'getReindexItems' )){
                return false; 
         }
-        $items = $model->getReindexItems([Reindex::NEW_ITEM, Reindex::REINDEX]);
+        $items = $model->getReindexItems([Reindex::NEW_ITEM, Reindex::REINDEX], self::MAX_REINDEX_ITEMS);
         $itemIds = array_column($items, 'id');
         $model->setReindexStatus(self::INPROGRESS, $itemIds);
         foreach($items as $item){ 
-           if($item['crc32'] && $item['crc32'] == $item['old_crc32']){
+           if($item['crc32'] && $item['crc32'] == $item['crc32_reindex']){
                continue;
            }
            

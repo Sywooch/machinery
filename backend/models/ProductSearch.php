@@ -102,13 +102,12 @@ class ProductSearch extends Model
     /**
      * 
      * @param array $status
-     * @return []
+     * @param int $limit
+     * @return array
      */
-    public function getReindexItems(array $status){
+    public function getReindexItems(array $status, $limit){
         $model = $this->_model;
-        
-    
-        
+
         return (new \yii\db\Query())
                         ->select('
                             id,
@@ -123,14 +122,14 @@ class ProductSearch extends Model
                             publish,
                             `reindex` + 0 as reindex,
                             crc32,
-                            old_crc32,
+                            crc32_reindex,
                             title,
                             description,
                             data'
                         )
                         ->from($model::tableName())
                         ->where(['reindex' => $status])
-                        ->limit(Reindex::MAX_REINDEX_ITEMS)
+                        ->limit($limit)
                         ->all();
     }
     
@@ -141,7 +140,7 @@ class ProductSearch extends Model
      */
     public function setReindexStatus($status, $ids){
         $model = $this->_model;
-        Yii::$app->db->createCommand()->update($model::tableName(), ['reindex' => $status], ['id' => $ids])->execute();
+        Yii::$app->db->createCommand("UPDATE ".$model::tableName()." SET reindex={$status}, crc32_reindex=crc32 WHERE id IN (".implode(',', $ids).")")->execute();
     }
 
 }

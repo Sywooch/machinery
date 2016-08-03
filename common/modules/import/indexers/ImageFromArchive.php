@@ -36,6 +36,9 @@ class ImageFromArchive implements IndexerInterface{
 
 
     public function flush(){
+        if(empty($this->stack)){
+            return [];
+        }
         $this->insert->insertBatch(File::TABLE_FILES, $this->stack, ImportHelper::importImagesFields(), ImportHelper::importImagesFieldTypes());
         $this->stack = [];        
     }

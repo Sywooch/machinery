@@ -9,7 +9,7 @@ use frontend\modules\catalog\helpers\CatalogHelper;
 use common\models\Alias;
 use common\modules\import\models\Validate;
 use common\modules\import\components\Reindex;
-
+use yii\base\InvalidValueException;
 
 /**
 *
@@ -124,19 +124,19 @@ class Insert extends \yii\base\Model
     public function insertBatch($table, array $data, array $columns, array $types){
 
         if (!$table) {
-            throw new ParamMiss('Param $table can not be empty');
+            throw new InvalidValueException('Param $table can not be empty');
         }
         
         if (empty($columns)) {
-            throw new ParamMiss('Param $columns can not be empty');
+            throw new InvalidValueException('Param $columns can not be empty');
         }
 
         if (empty($data)) {
-            throw new ParamMiss('Param $data can not be empty');
+            throw new InvalidValueException('Param $data can not be empty');
         }
         
         if (empty($types)) {
-            throw new ParamMiss('Param $types can not be empty');
+            throw new InvalidValueException('Param $types can not be empty');
         }
         
 
@@ -169,7 +169,6 @@ class Insert extends \yii\base\Model
         foreach ($columns as $column) {
             if($column == 'crc32'){
                 $onDuplicateStrings[] = '`reindex` =  ' . Reindex::REINDEX;
-                $onDuplicateStrings[] = '`old_crc32` = `crc32` ';
             }
             $onDuplicateStrings[] = '`'.$column.'` = VALUES(`'.$column.'`) ';
         }
