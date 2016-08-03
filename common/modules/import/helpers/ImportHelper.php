@@ -156,7 +156,9 @@ class ImportHelper
             \PDO::PARAM_INT,
             \PDO::PARAM_INT,
             \PDO::PARAM_INT,
-            \PDO::PARAM_INT
+            \PDO::PARAM_INT,
+            \PDO::PARAM_INT,
+            \PDO::PARAM_STR
         ];
     }
     public static function productFields(){
@@ -167,9 +169,11 @@ class ImportHelper
                    'title',
                    'description',
                    'reindex',
+                   'crc32',
                    'publish',
                    'user_id',
-                   'source_id'
+                   'source_id',
+                   'data'
                ];
     }
     public static function termFieldTypes(){
@@ -190,18 +194,26 @@ class ImportHelper
     }
     public static function importImagesFields(){
         return [
-                   'sku',
-                   'entity_id',
-                   'model',
-                   'url',
+                    'entity_id',
+                    'field',
+                    'model',
+                    'name',
+                    'path',
+                    'size',
+                    'mimetype',
+                    'delta',
                ];
     }
     public static function importImagesFieldTypes(){
         return [
             \PDO::PARAM_INT,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
             \PDO::PARAM_INT,
             \PDO::PARAM_STR,
-            \PDO::PARAM_STR
+            \PDO::PARAM_INT,
         ];
     }
     

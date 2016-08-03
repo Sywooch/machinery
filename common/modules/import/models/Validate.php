@@ -3,15 +3,13 @@
 namespace common\modules\import\models;
 
 use Yii;
-use frontend\modules\catalog\helpers\CatalogHelper;
-
-
+use common\modules\import\components\Reindex;
 
 /**
 *
  */
 class Validate extends \yii\base\Model
-{
+{   
     public $sku;
     public $group;
     public $model;
@@ -28,7 +26,6 @@ class Validate extends \yii\base\Model
     public $url;
 
     private $_catalogId;
-    private $_model;
 
     /**
      * @inheritdoc
@@ -49,7 +46,7 @@ class Validate extends \yii\base\Model
     }
     
     public function afterValidate() {
-        $this->reindex = 1;
+        $this->reindex = Reindex::REINDEX;
         $this->publish = 1;
         $this->_catalogId = \yii\helpers\ArrayHelper::getValue($this->attributes,'terms.0.id');
        

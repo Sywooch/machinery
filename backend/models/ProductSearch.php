@@ -8,6 +8,8 @@ use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\modules\import\components\Insert;
+use common\modules\import\components\Reindex;
 
 /**
  * ProductDefaultSearch represents the model behind the search.
@@ -97,5 +99,29 @@ class ProductSearch extends Model
     }
     
     
+    /**
+     * 
+     * @param array $status
+     * @return []
+     */
+    public function getReindexItems(array $status){
+        $model = $this->_model;
+        return (new \yii\db\Query())
+                        ->select('*')
+                        ->from($model::tableName())
+                        ->where(['reindex' => $status])
+                        ->limit(Reindex::MAX_REINDEX_ITEMS)
+                        ->all();
+    }
+    
+    /**
+     * 
+     * @param int $status
+     * @param [] $ids
+     */
+    public function setReindexStatus($status, $ids){
+        $model = $this->_model;
+        Yii::$app->db->createCommand()->update($model::tableName(), ['reindex' => $status], ['id' => $ids])->execute();
+    }
 
 }

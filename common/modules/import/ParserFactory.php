@@ -4,7 +4,7 @@ namespace common\modules\import;
 use Yii;
 use common\modules\import\models\Sources;
 
-class Parser{
+class ParserFactory{
     
     private $_parser;
     private $_fields;
@@ -17,7 +17,7 @@ class Parser{
         $this->_fields = get_class_methods($this->_parser);
         $constructorIndex = array_search('__construct', $this->_fields);
         unset($this->_fields[$constructorIndex]);
-        $this->file = fopen(Yii::getAlias('@app').'/../files/import/source_' . $source->id . 'a.csv', 'w');
+        $this->file = fopen(Yii::getAlias('@app').'/../files/import/source_' . $source->id . '.csv', 'w');
     }
     
     public function prepare(array $data){

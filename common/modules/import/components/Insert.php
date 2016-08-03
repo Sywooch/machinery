@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\import\models;
+namespace common\modules\import\components;
 
 use Yii;
 use common\modules\taxonomy\models\TaxonomyItems;
@@ -23,10 +23,13 @@ class Insert extends \yii\base\Model
     /**
      * @param Validate $data
      */
-    public function add(Validate $data){
-        $this->stack[$data->catalogId][] = $data->attributes;
-        if(count($this->stack[$data->catalogId]) >= self::INSERT_LIMIT){
-            $this->flush($data->catalogId);
+    public function add(Validate $validate){
+        $data = $validate->attributes;
+        $data['data'] = json_encode($validate->attributes);
+        $data['crc32'] = crc32($data['data']);
+        $this->stack[$validate->catalogId][] = $data;
+        if(count($this->stack[$validate->catalogId]) >= self::INSERT_LIMIT){
+            $this->flush($validate->catalogId);
         }
     }
 
@@ -62,13 +65,6 @@ class Insert extends \yii\base\Model
             $this->insertBatch(Alias::TABLE_ALIAS, $insertUrlData, ImportHelper::importUrlFields(), ImportHelper::importUrlFieldTypes());
             unset($insertUrlData);
         }
-        
-        /*
-         * images
-         */
-        $insertImageData = ImportHelper::insetImageData($this->model, $sku2Ids, $items);
-        $this->insertBatch(ImportImages::TABLE_IMPORT_IMAGES, $insertImageData, ImportHelper::importImagesFields(), ImportHelper::importImagesFieldTypes());
-        unset($insertImageData);
         
         /*
          * terms
@@ -170,10 +166,14 @@ class Insert extends \yii\base\Model
 
         $onDuplicateStrings = [];
         foreach ($columns as $column) {
+            if($column == 'crc32'){
+                $onDuplicateStrings[] = '`old_crc32` = `crc32` ';
+            }
             $onDuplicateStrings[] = '`'.$column.'` = VALUES(`'.$column.'`) ';
         }
         
         $sql = Yii::$app->db->queryBuilder->batchInsert($table, $columns, array_chunk($params, $countColumns));
+       
         return Yii::$app->db->createCommand($sql . " ON DUPLICATE KEY UPDATE ".implode(',', $onDuplicateStrings))->execute();
 
     }
