@@ -57,7 +57,7 @@ return [
         ],
         'urlManager' => [
             'rules' => [
-                ['class' => 'frontend\modules\product\components\ProductUrlRule'], 
+                ['class' => 'frontend\components\SiteUlrRule'],
                 ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
             ],
 	],

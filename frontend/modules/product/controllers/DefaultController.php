@@ -32,26 +32,17 @@ class DefaultController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex($catalogId, $productId)
+    public function actionIndex($id, $model)
     {   
 
-        $term = TaxonomyItems::findOne($catalogId);
-
-        if($term === null){
-            throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
-        }
+        $searchModel = new ProductSearch(CatalogHelper::getModelByName($model));
+        $product = $searchModel->getProductById($id);
         
-        $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term));
-        $product = $searchModel->getProductById($productId);
-        
-        if(empty($product) 
-                || !$product->publish 
-                || Yii::$app->request->url != Url::to(['/product', 'entity' => $product])){
+        if(empty($product) || !$product->publish ){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
 
         return $this->render('index',[
-            'current' => $term,
             'product' => $product
         ]);
         

@@ -34,7 +34,7 @@ class CatalogHelper {
     public function getModelByTermId($id){
 
         if(isset(\Yii::$app->params['catalog']['models'][$id])){
-            return \Yii::$app->params['catalog']['models'][$id];
+            return new \Yii::$app->params['catalog']['models'][$id];
         }
         return false;
     }
@@ -47,7 +47,7 @@ class CatalogHelper {
     public function getModelByName($name){
         foreach(\Yii::$app->params['catalog']['models'] as $model){
             if(false !== strrpos($model, $name)){
-                return $model;
+                return new $model();
             }
         }
         return false;
