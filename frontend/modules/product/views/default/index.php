@@ -6,6 +6,8 @@ use frontend\modules\cart\helpers\CartHelper;
 use common\modules\file\helpers\StyleHelper;
 use frontend\modules\product\Asset as ProductAsset;
 use frontend\modules\product\helpers\ProductHelper;
+use frontend\modules\comments\widgets\CommentsWidget;
+use common\helpers\ModelHelper;
 
 ProductAsset::register($this);
 CartAsset::register($this);
@@ -28,11 +30,20 @@ $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
 <div><?php echo \Yii::$app->formatter->asCurrency($product->price); ?></div>
 <div><?php echo CartHelper::getBuyButton($product);?></div>
 <div class="body">
-        <?=
-        HtmlPurifier::process($product->description, [
-            'HTML.AllowedElements' => ['p', 'br', 'b', 'ul', 'li'],
-            'AutoFormat.AutoParagraph' => true
+    <?=
+    HtmlPurifier::process($product->description, [
+        'HTML.AllowedElements' => ['p', 'br', 'b', 'ul', 'li'],
+        'AutoFormat.AutoParagraph' => true
+    ]);
+    ?>
+</div>
+
+<?php 
+echo CommentsWidget::widget([
+            'entity_id' => $product->id,
+            'model' => ModelHelper::getModelName($product),
+            'maxThread' => 4,
         ]);
-        ?>
-    </div>
+?>
+
 <?=CartHelper::getConfirmModal();?> 

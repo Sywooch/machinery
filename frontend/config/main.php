@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
+    'homeUrl' => '/',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
@@ -22,6 +23,9 @@ return [
         'catalog' => [
             'class' => 'frontend\modules\catalog\Module',
         ],
+        'comments' => [
+            'class' => 'frontend\modules\comments\Module'
+	],
     ],
     'components' => [
         'request' => [

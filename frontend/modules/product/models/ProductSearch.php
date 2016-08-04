@@ -18,6 +18,16 @@ class ProductSearch extends \backend\models\ProductSearch
     
     /**
      * 
+     * @param array $ids
+     * @return mixed
+     */
+    public function getProducstByIds(array $ids){
+        $model = $this->_model;
+        return $model::findAll($ids);
+    }
+    
+    /**
+     * 
      * @param int $id
      * @return object
      */
@@ -66,7 +76,7 @@ class ProductSearch extends \backend\models\ProductSearch
      */
     public function getCategoryMostRatedItems(TaxonomyItems $taxonomyItem, int $limit = 5){
         $indexModel = $this->_indexModel;
-        $this->_items = (new \yii\db\Query())
+        return (new \yii\db\Query())
                         ->select('id')
                         ->from($this->_model->tableName())
                         ->innerJoin($indexModel::tableName(), 'entity_id = id')
@@ -78,7 +88,6 @@ class ProductSearch extends \backend\models\ProductSearch
                         ->distinct()
                         ->limit($limit)
                         ->all();
-        return $this;
     }
   
 }

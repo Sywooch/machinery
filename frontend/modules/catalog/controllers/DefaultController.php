@@ -4,7 +4,7 @@ namespace frontend\modules\catalog\controllers;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use common\modules\file\models\File;
+use common\modules\file\models\FileRepository;
 use frontend\modules\catalog\components\FilterParams;
 use frontend\modules\product\models\ProductSearch;
 use common\modules\taxonomy\models\TaxonomyItems;
@@ -43,7 +43,7 @@ class DefaultController extends Controller
 
         $term = $filter->index[$catalogVocabularyId];
 
-        if(0 && !$term->pid){
+        if(!$term->pid){
             $childrensTerms = TaxonomyItems::findAll([
                 'vid' => $term->vid,
                 'pid' => $term->id
@@ -53,9 +53,12 @@ class DefaultController extends Controller
                 $items = [];
                 foreach($childrensTerms as $childrenTerm){
                     $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($childrenTerm));
+                    $products = $searchModel->getProducstByIds($searchModel->getCategoryMostRatedItems($childrenTerm));
+                    $files = FileRepository::getFilesBatch($products, 'photos');
                     $items[$childrenTerm->id] = [
                         'term' => $childrenTerm,
-                        'dataProvider' => $searchModel->getCategoryMostRatedItems($childrenTerm)
+                        'products' => $products,
+                        'files' => $files
                     ];
                 }
                 return $this->render('categories',[
@@ -68,7 +71,7 @@ class DefaultController extends Controller
         $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term));
         $dataProvider = $searchModel->searchItemsByFilter($filter);
         $products = $dataProvider->getModels();
-        $files = File::getFilesBatch($products, 'photos');
+        $files = FileRepository::getFilesBatch($products, 'photos');
         
         return $this->render('index',[
             'current' => $term,

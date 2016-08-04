@@ -17,10 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach($items as $item):?>
             <div class="category__item">
                 <h2><a href="/<?=$item['term']->transliteration?>"><?=Html::encode($item['term']->name);?></a></h2>
-                <?php foreach($item['dataProvider']->products as $product):?>
-                <div><?php echo Html::a(Html::encode($product->title), ['/product', 'entity' => $product]); ?></div> 
+                <?php foreach($item['products'] as $product):?>
+                <div><?php echo Html::a(Html::encode($product->title), ['/' . $product->alias->alias]); ?></div> 
                 <div>
-                    <?php if(!empty($product->files[0])):?>
+                    <?php if(!empty($product->photos[0])):?>
                         <?php echo Html::a(Html::img('/'.StyleHelper::getPreviewUrl($product->files[0], '130x130')),['/product', 'entity' => $product]);?>
                     <?php endif;?>
                 </div>

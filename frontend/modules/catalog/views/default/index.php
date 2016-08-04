@@ -28,7 +28,7 @@ $this->params['breadcrumbs'] = CatalogHelper::getBreadcrumb($current);
             <div><?php echo \Yii::$app->formatter->asCurrency($product->price); ?></div>
             <div><?php echo CartHelper::getBuyButton($product);?></div>
         <?php endforeach; ?>
-        <?=LinkPager::widget(['pagination' => $dataProvider->pagination, 'linkOptions' => ['href' => 'zzz']]); ?>
+        <?=LinkPager::widget(['pagination' => $dataProvider->pagination]); ?>
         <?=CartHelper::getConfirmModal();?>
     </div>
     <div class="col-lg-4">

@@ -15,16 +15,6 @@ class ProductUrlRule extends UrlRule {
 	}
 
 	public function createUrl($manager, $route, $params) {
-            if($route == 'product' && isset($params['entity'])){
-                if(($catalogId = CatalogHelper::getCatalogIdByModel($params['entity'])) === false){
-                    return false;    
-                }
-                $url = [
-                   URLify::url($params['entity']->title),
-                   'p'.$catalogId.'_'.$params['entity']->id
-                ];
-               return implode('-',$url);
-            }
             return false;  
 	}
 

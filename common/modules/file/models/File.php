@@ -64,24 +64,5 @@ class File extends \yii\db\ActiveRecord
             'delta' => 'Delta',
         ];
     }
-    
-    public function getFilesBatch(array $models, $field = null){
-        
-        if(empty($models)){
-            return [];
-        }
-        
-        $files =  self::find()
-                ->where([
-                    'entity_id' => ArrayHelper::getColumn($models, 'id'),
-                    'model' => ModelHelper::getModelName(array_shift($models))
-                ])
-                ->andFilterWhere(['field' => $field])
-                ->orderBy([
-                     'delta' => SORT_ASC
-                ])
-                ->all();
-        
-        return ArrayHelper::index($files, null, 'entity_id');
-    }
+
 }
