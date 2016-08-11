@@ -36,6 +36,9 @@ class TaxonomyBehavior extends Behavior
         }
     }
     
+    /**
+     * 
+     */
     public function afterInit() {
         parent::init();
         $termFields =  TaxonomyHelper::getTermFields($this->owner);
@@ -44,7 +47,10 @@ class TaxonomyBehavior extends Behavior
         }
     }
 
-
+    /**
+     * 
+     * @param type $event
+     */
     public function afterSave($event){
         
         $termFields = TaxonomyHelper::getTermFields($this->owner);

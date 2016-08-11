@@ -3,7 +3,7 @@
 namespace frontend\modules\catalog\models;
 
 use Yii;
-use frontend\modules\product\models\ProductSearch;
+use frontend\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
 
 class FilterModel extends \yii\base\Model
@@ -12,7 +12,7 @@ class FilterModel extends \yii\base\Model
     protected $_model;
     protected $_indexModel;
 
-    public function __construct(ProductSearch $search) {
+    public function __construct(ProductRepository $search) {
         $this->_model = $search->model;
         $this->_indexModel = $this->_model->className() . 'Index';
     }

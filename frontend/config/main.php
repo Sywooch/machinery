@@ -55,9 +55,31 @@ return [
         'cart' => [
             'class' => 'frontend\modules\cart\components\Cart',
         ],
+        'event' => [
+            'class' => 'frontend\components\EventComponent',
+            'events' => [
+                \frontend\modules\rating\components\RatingBehavior::RATING_UPDATE => function($e){
+                    $modelName = "\\backend\\models\\" . $e->sender->model;
+                    $model = $modelName::findOne($e->sender->entity_id);
+                                       
+                    $ratingRepository = new frontend\modules\rating\models\RatingRepository();
+                    $commentsRepository = new frontend\modules\comments\models\CommentsRepository();
+                    $ids = $commentsRepository->getCommentIds([
+                        'entity_id' => $e->sender->entity_id,
+                        'model' => $e->sender->model
+                    ]);
+                   
+                    $model->rating = $ratingRepository->getAvgRating([
+                        'entity_id' => $ids,
+                        'model' => \common\helpers\ModelHelper::getModelName(\frontend\modules\comments\models\Comments::class)
+                    ]);
+                    $model->save();
+                }
+            ]
+        ],
         'urlManager' => [
             'rules' => [
-                ['class' => 'frontend\components\SiteUlrRule'],
+                ['class' => 'frontend\components\AliasRule'],
                 ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
             ],
 	],

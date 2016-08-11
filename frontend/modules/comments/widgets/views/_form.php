@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use kartik\file\FileInput;
 use yii\captcha\Captcha;
 use common\modules\file\helpers\StyleHelper;
+use kartik\rating\StarRating;
 ?>
 
 <div class="title">Новый отзыв</div>
@@ -32,6 +33,11 @@ $form = ActiveForm::begin(['id' => 'comment-form'])
 <?php endif;?>
 
 <?php echo $form->field($model, 'comment')->textarea(['rows' => 8]); ?>
+
+<?php echo $form->field($model, 'rating')->widget(StarRating::classname(), [
+    'pluginOptions' => ['size'=>'sm']
+]); ?>
+
 <?php if (!Yii::$app->user->id): ?>
 <?php
 echo $form->field($model, 'verifyCode')->widget(Captcha::className(), [

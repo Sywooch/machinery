@@ -21,17 +21,15 @@ use frontend\modules\comments\helpers\CommentsHelper;
     <div class="comment-body">
         <div class="comments-author">
             <?php if($comment['name']):?>
+                <?=Html::encode($comment['name']);?>
+            <?php elseif($comment['profilename']):?>
                 <?=Html::a(Html::encode($comment['profilename']), ['/user/' . $comment['user_id']])?>
-            <?php elseif($comment['name']):?>
-                <?=Html::a(Html::encode($comment['username']), ['/user/' . $comment['user_id']])?>
             <?php elseif($comment['username']):?>
                 <?=Html::a(Html::encode($comment['username']), ['/user/' . $comment['user_id']])?>
             <?php else:?>
                 НЛО
             <?php endif;?>
-           
             <span class="comments-created">  <?= Yii::$app->formatter->asDatetime($comment['created_at']); ?> </span>
-
         </div>
         <div class="comment">
                 <?= Html::encode($comment['comment']); ?>

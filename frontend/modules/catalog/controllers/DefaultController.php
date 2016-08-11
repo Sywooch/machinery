@@ -6,7 +6,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use common\modules\file\models\FileRepository;
 use frontend\modules\catalog\components\FilterParams;
-use frontend\modules\product\models\ProductSearch;
+use frontend\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
 use frontend\modules\catalog\helpers\CatalogHelper;
 
@@ -52,7 +52,7 @@ class DefaultController extends Controller
             if($childrensTerms){
                 $items = [];
                 foreach($childrensTerms as $childrenTerm){
-                    $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($childrenTerm));
+                    $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($childrenTerm));
                     $products = $searchModel->getProducstByIds($searchModel->getCategoryMostRatedItems($childrenTerm));
                     $files = FileRepository::getFilesBatch($products, 'photos');
                     $items[$childrenTerm->id] = [
@@ -68,7 +68,7 @@ class DefaultController extends Controller
             }
         }
 
-        $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term));
+        $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($term));
         $dataProvider = $searchModel->searchItemsByFilter($filter);
         $products = $dataProvider->getModels();
         $files = FileRepository::getFilesBatch($products, 'photos');

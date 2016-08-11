@@ -5,7 +5,7 @@ use Yii;
 use yii\web\UrlRule;
 use common\models\Alias;
 
-class SiteUlrRule extends UrlRule {
+class AliasRule extends UrlRule {
 
 
     public function init() {

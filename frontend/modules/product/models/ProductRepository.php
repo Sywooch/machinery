@@ -12,7 +12,7 @@ use frontend\modules\catalog\components\FilterParams;
 /**
  * ProductDefaultSearch represents the model behind the search.
  */
-class ProductSearch extends \backend\models\ProductSearch
+class ProductRepository extends \backend\models\ProductSearch
 {
     const PUBLISH = 1;
     
@@ -89,5 +89,5 @@ class ProductSearch extends \backend\models\ProductSearch
                         ->limit($limit)
                         ->all();
     }
-  
+    
 }

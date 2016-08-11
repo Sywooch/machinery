@@ -35,9 +35,7 @@ class CommentsWidget extends \yii\base\Widget {
             $model->setAttributes((array)$this);
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                $url = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH) . '#comments';
-             //   print_r($url); exit('S');
-                return Yii::$app->response->redirect($url);
+                header('location: ' . Yii::$app->request->url); exit();
             } else {
               // print_r($model->getErrors()); exit();
             }

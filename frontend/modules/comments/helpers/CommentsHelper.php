@@ -45,11 +45,11 @@ class CommentsHelper {
      * @param string $max
      * @return string
      */
-    public static function getLastThreadSegment($max){
+    public static function getLastThreadSegment($parentThread, $max){
         $max = rtrim($max, '/');
         $parts = explode('.', $max);
-        $parent_depth = count(explode('.', $thread));
-        return  $parts[$parent_depth];
+        $parentDepth = count(explode('.', $parentThread));
+        return  $parts[$parentDepth];
     }
     
     /**

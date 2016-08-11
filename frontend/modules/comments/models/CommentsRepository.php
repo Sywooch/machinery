@@ -12,17 +12,39 @@ use yii\base\Model;
 
 class CommentsRepository extends Model {
 
-    const ORDER = SORT_ASC;
-    const PAGE_SIZE = 40;
+    const ORDER = SORT_DESC;
+    const PAGE_SIZE = 100;
    
 
     public function getMaxThread($thread = null){
+        
+        if($thread){
+            $thread .= '.';
+        }
         return (new \yii\db\Query())
                         ->from(Comments::tableName())
-                        ->filterWhere(['like', 'thread', $thread . '.%',])//->createCommand()->getRawSql();
+                        ->filterWhere(['like', 'thread', $thread])//->createCommand()->getRawSql();
                         ->max('thread');
     }
     
+    /**
+     * 
+     * @param array $params
+     * @return array
+     */
+    public function getCommentIds(array $params){
+        return (new \yii\db\Query())
+                    ->select(['id'])
+                    ->from(Comments::tableName())
+                    ->where($params)
+                    ->column();
+    }
+
+    /**
+     * 
+     * @param Comments $model
+     * @return array
+     */
     public function getComment(Comments $model) {
         return (new \yii\db\Query())
                     ->select([
@@ -72,7 +94,7 @@ class CommentsRepository extends Model {
 
         if (self::ORDER == SORT_ASC) {
             $query->orderBy([
-                'thread1' => SORT_ASC,
+                'thread1' => self::ORDER,
             ]);
         } else {
             $query->orderBy([

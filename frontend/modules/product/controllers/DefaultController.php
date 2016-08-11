@@ -5,7 +5,7 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use frontend\modules\product\models\ProductSearch;
+use frontend\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
 use frontend\modules\catalog\helpers\CatalogHelper;
 
@@ -35,7 +35,7 @@ class DefaultController extends Controller
     public function actionIndex($id, $model)
     {   
 
-        $searchModel = new ProductSearch(CatalogHelper::getModelByName($model));
+        $searchModel = new ProductRepository(CatalogHelper::getModelByName($model));
         $product = $searchModel->getProductById($id);
         
         if(empty($product) || !$product->publish ){

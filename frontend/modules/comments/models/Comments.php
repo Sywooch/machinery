@@ -3,14 +3,12 @@
 namespace frontend\modules\comments\models;
 
 use Yii;
-use yii\helpers\Html;
-use frontend\modules\comments\models\CommentsRepository;
-use frontend\modules\comments\helpers\CommentsHelper;
+use frontend\modules\rating\components\RatingValidator;
 
 class Comments extends \yii\db\ActiveRecord {
 
     public $verifyCode;
-    
+
     /**
      * @inheritdoc
      */
@@ -31,7 +29,8 @@ class Comments extends \yii\db\ActiveRecord {
             [['name', 'feed_back'], 'string', 'max' => 255],
             [['comment','negative','positive'], 'string', 'max' => 6000],
             [['model'], 'string', 'max' => 50],
-            [['ip'], 'string', 'max' => 30]
+            [['ip'], 'string', 'max' => 30],
+            [['rating'], RatingValidator::class],
         ];
             
         if(!Yii::$app->user->id){
@@ -55,34 +54,21 @@ class Comments extends \yii\db\ActiveRecord {
             'negative' => 'Негативные стороны'
         ];
     }
-
-    /** @inheritdoc */
-    public function beforeSave($insert) {
-        if ($insert && !$this->id) {
-            if ($this->parent_id == 0) {
-                $maxThread = CommentsRepository::getMaxThread();
-                $thread = CommentsHelper::int2vancode(CommentsHelper::vancode2int(CommentsHelper::getFirstThreadSegment($maxThread)) + 1) . '/';
-            } else {
-                $parent = Comments::findOne($this->parent_id);
-                $thread = (string) rtrim((string) $parent->thread, '/'); 
-                $maxThread = CommentsRepository::getMaxThread($thread); 
-                if ($maxThread == '') {
-                    $thread = $thread . '.' . CommentsHelper::int2vancode(0) . '/';
-                } else {
-                    $thread = $thread . '.' . CommentsHelper::int2vancode(CommentsHelper::vancode2int(CommentsHelper::getLastThreadSegment($maxThread)) + 1) . '/';
-                }
-            }
-            $this->created_at = time();
-            $this->thread = $thread;
-            $this->user_id = \Yii::$app->user->id;
-            $this->ip = $_SERVER['REMOTE_ADDR'];
-        }
-        return parent::beforeSave($insert);
-    }
     
-    public function afterSave($a, $b) {
-        //CommentsHelper::sendNotifyNewComment($this);
-        return parent::afterSave($a, $b);
-    }
     
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+                [
+                    'class' => \frontend\modules\comments\components\CommentsBehavior::class
+                ],
+                [
+                    'class' => \frontend\modules\rating\components\RatingBehavior::class,
+                ]
+            ];
+    }
+ 
 }
