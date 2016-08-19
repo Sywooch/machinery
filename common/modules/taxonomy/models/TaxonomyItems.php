@@ -1,8 +1,7 @@
 <?php
-
 namespace common\modules\taxonomy\models;
 
-use Yii;
+use common\modules\taxonomy\models\TaxonomyVocabulary;
 use common\helpers\URLify;
 
 /**
@@ -20,7 +19,7 @@ class TaxonomyItems extends \yii\db\ActiveRecord
     const TABLE_TAXONOMY_ITEMS = 'taxonomy_items';
     
     private $_parent;
-    
+
     /**
      * @inheritdoc
      */
@@ -47,7 +46,7 @@ class TaxonomyItems extends \yii\db\ActiveRecord
     public function beforeSave($insert) {
         parent::beforeSave($insert);
         if(!$this->transliteration){
-            $this->transliteration = URLify::url ($this->name, 60);
+            $this->transliteration = URLify::transliterate($this->name);
         }
         return true;
     }
@@ -65,7 +64,7 @@ class TaxonomyItems extends \yii\db\ActiveRecord
             'weight' => 'Weight',
         ];
     }
-    
+   
     /**
      * @return \yii\db\ActiveQuery
      */
