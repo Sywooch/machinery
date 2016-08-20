@@ -4,6 +4,7 @@ namespace frontend\modules\catalog\components;
 use Yii;
 use yii\web\UrlRule;
 use yii\helpers\ArrayHelper;
+use frontend\modules\catalog\models\FilterModel;
 use frontend\modules\catalog\helpers\CatalogHelper;
 use frontend\modules\catalog\components\FilterParams;
 use common\modules\taxonomy\models\TaxonomyVocabularySearch;
@@ -14,7 +15,7 @@ class CatalogUrlRule extends UrlRule {
 
     const TERM_ID_PREFIX = 't';
     const FILTER_INDICATOR = 'filter';
-
+    const PRICE_PREFIX = 'prc';
 
     private $filterParams;
 
@@ -28,13 +29,12 @@ class CatalogUrlRule extends UrlRule {
      * @inheritdoc
      */
     public function createUrl($manager, $route, $params) {
-        
             if(isset($params['filter']) && $params['filter'] instanceof TaxonomyItems){
                 $link = $this->getFilterUrl($params['filter']);
                 $query = http_build_query($params);
                 return $query ? $link . '?' . $query : $link;
             }
-           
+
             if(isset($params['catalogMenu'])){
                 $menu = [];
                 foreach($params['catalogMenu'] as $item){
@@ -43,6 +43,17 @@ class CatalogUrlRule extends UrlRule {
                 return implode('/', $menu);
             }
             
+            if(isset($params['filter'])){ 
+                parse_str(parse_url(Yii::$app->request->url, PHP_URL_QUERY), $query);
+                if(isset($params['page'])){
+                    $query['page'] = $params['page'];
+                }
+                if(isset($params['sort'])){
+                    $query['sort'] = $params['sort'];
+                }
+                return Yii::$app->request->pathInfo . '?' . http_build_query($query);
+            }
+
             return false; 
     }
     
@@ -50,7 +61,7 @@ class CatalogUrlRule extends UrlRule {
      * @inheritdoc
      */
     public function parseRequest($manager, $request) {
- 
+   
         if($this->parseUrl($request->getPathInfo()) === false){
             return false;
         }    
@@ -77,7 +88,7 @@ class CatalogUrlRule extends UrlRule {
         if($term !==null && CatalogHelper::clearId($term, $index) === false){
             CatalogHelper::addId($term, $index);
         }
-        
+
         if(($filterUrl = $this->getFilterString($this->filterParams, $index))){
             $link = [];
             if($this->filterParams->catalogUrl) {
@@ -92,6 +103,38 @@ class CatalogUrlRule extends UrlRule {
     
     /**
      * 
+     * @param FilterModel $model
+     * @return string
+     */
+    public function getFilterUrlByModel(FilterModel $model){
+            $this->filterParams = FilterParams::getInstance();
+            $this->filterParams->priceMax = $model->priceMax;
+            $this->filterParams->priceMin = $model->priceMin;
+            $termIds = array_keys(array_filter($model->index));
+            $terms = TaxonomyItems::findAll($termIds);
+           
+            if(!$terms){
+                return '';
+            }
+            
+            $terms = ArrayHelper::index($terms, 'id', 'vid');
+            
+            if(($filterUrl = $this->getFilterString($this->filterParams, $terms))){
+                $link = [];
+                if($this->filterParams->catalogUrl) {
+                    $link[] = $this->filterParams->catalogUrl;
+                }
+                $link[] = self::FILTER_INDICATOR ;
+                $link[] = $filterUrl ;
+                return implode('/', $link);
+            }
+            
+            return $this->filterParams->catalogUrl;
+    }
+
+
+    /**
+     * 
      * @param array $filter
      * @return string
      */
@@ -102,7 +145,7 @@ class CatalogUrlRule extends UrlRule {
             if(!isset($newIndex[$vocabularyId])){
                 continue;
             }
-            
+
             $value = $newIndex[$vocabularyId];
             
             if(is_array($value) && count($value) == 1){
@@ -111,9 +154,12 @@ class CatalogUrlRule extends UrlRule {
             
             if(is_array($value) && count($value) > 1){
                $link[] = self::TERM_ID_PREFIX . $vocabularyId . '-' . implode('-', ArrayHelper::getColumn($value, 'id')); 
-            }else{  
+            }elseif($value instanceof TaxonomyItems){  
                 $link[] = $filter->prefixes[$value->vid] ? $filter->prefixes[$value->vid] . $value->transliteration : $value->transliteration; 
             }
+        }
+        if($filter->priceMin && $filter->priceMax){
+            $link[] = self::PRICE_PREFIX . '-'.implode('-',[$filter->priceMin,$filter->priceMax]);
         }
         return implode('_', $link);
     }
@@ -129,11 +175,28 @@ class CatalogUrlRule extends UrlRule {
         {
             return $this->filterParams->index;
         }
-
-        if(($this->filterParams->index = $this->parseFilterParams($pathInfo)) === false){
-            $this->filterParams->index = $this->parseCatalogUrl($pathInfo);
+        
+        $params = $this->parseFilterUrlParams($pathInfo);
+        $params = $this->parseCatalogUrl($pathInfo);
+        
+       
+        if(($paramsUrl = $this->parseCatalogUrl($pathInfo)) !== false){
+            if(($paramsFilter = $this->parseFilterUrlParams($pathInfo))){
+                $paramsUrl = CatalogHelper::merge($paramsUrl, $paramsFilter);
+            }
+        }else{
+            return false;
         }
-        return $this->filterParams->index; 
+        
+        foreach($paramsUrl as $index => $item){
+            if(!is_numeric($index)){
+                $this->filterParams->{$index} = $item;
+                unset($paramsUrl[$index]);
+            }
+        }
+        $this->filterParams->index = $paramsUrl;
+        
+        return $this->filterParams;
     }
 
     /**
@@ -142,7 +205,7 @@ class CatalogUrlRule extends UrlRule {
      * @param array $prefixes
      * @return boolean || []
      */
-    private function parseFilterParams($pathInfo){
+    private function parseFilterUrlParams($pathInfo){
         
         $chunks = explode('/', $pathInfo);
         
@@ -158,10 +221,16 @@ class CatalogUrlRule extends UrlRule {
         $params = [];
         foreach($data as $item){
 
+            if(($param = $this->isPriceParam($item)) !== false){
+                $params = CatalogHelper::merge($params, $param);
+            }
+            
+            else
+                
             if(($param = $this->isTermIdParam($item, $this->filterParams->prefixes)) !== false){
                 $params = CatalogHelper::merge($params, $param);
             }
-  
+            
             else
             
             if(($param = $this->isNamedParam($item, $this->filterParams->prefixes)) !== false){
@@ -177,15 +246,8 @@ class CatalogUrlRule extends UrlRule {
             else{
                 return false;
             }
-
         }
-
-        $pathInfo = str_replace(self::FILTER_INDICATOR . '/' . $filterString, '', $pathInfo);
-      
-        if(($param = $this->parseCatalogUrl($pathInfo)) !== false){
-            $params = CatalogHelper::merge($params, $param);
-        }
-
+        
         return $params;
     }
     
@@ -195,7 +257,7 @@ class CatalogUrlRule extends UrlRule {
      * @return boolean || []
      */
     private function parseCatalogUrl($pathInfo){
-
+  
         if($pathInfo == ''){
             return false;
         }
@@ -205,27 +267,64 @@ class CatalogUrlRule extends UrlRule {
         if(empty($params)){
             return false;
         }
+        
+        if(($index = array_search('filter', $params)) !== false){
+            $params = array_slice($params, 0, $index);
+        }
+        
+        $termsData = [];
+        foreach($params as $index =>  $item){
+            $termsData[$index] = [
+                        'vid' => null,
+                        'transliteration' => $item
+                    ];
+            foreach($this->filterParams->prefixes as $vocabularyId => $prefix){
+                if($prefix && strpos($item, $prefix) === 0 && (int)str_replace($prefix, '', $item)){
+                    $termsData[$index] = [
+                        'vid' => $vocabularyId,
+                        'transliteration' => str_replace($prefix, '', $item)
+                    ];
+                    unset($params[$index]);
+                }
+            }  
+        }
 
-        $terms = TaxonomyItems::find()
-        ->where([
-           'vid' => Yii::$app->params['catalog']['vocabularyId'],
-           'transliteration' => $params 
-        ])        
-        ->orderBy([
+        $terms = TaxonomyItems::find();
+        foreach($termsData as $data){
+            $terms->orFilterWhere([
+                'transliteration' => $data['transliteration'],
+                'vid' => $data['vid']
+             ]);
+        }
+        $terms = $terms->orderBy([
                 'weight' => SORT_ASC
         ])
         ->all();
         
-
-        
-        if(!$terms || count($terms) != count($params)){
+        if(!$terms || count($terms) != count($termsData)){
             return false;
         }
-       
-        $this->filterParams->catalogUrl = $pathInfo;
-        $term = array_pop($terms);
-        return [$term->vid => $term];
+
+        $this->filterParams->catalogUrl = implode('/',$params);
+
+        $return = [];
+        foreach($terms as $term){
+            $return[$term->vid][] = $term;
+        }
+        return $return;
     }
+
+    private function isPriceParam($param){
+        $param = explode('-', $param);
+        if(count($param) < 3 || $param[0] != self::PRICE_PREFIX){
+            return false;
+        }
+        return [
+            'priceMin' => $param[1],
+            'priceMax' => $param[2]
+        ];
+    }
+
 
     /**
      * 
@@ -284,7 +383,10 @@ class CatalogUrlRule extends UrlRule {
             
             if(strpos($param, $prefix) === 0 && strlen($prefix) < strlen($param)){
                 $transliteration =  substr($param, strlen($prefix));
-                $term = TaxonomyItems::find()->where(['transliteration' => $transliteration])->one();
+                $term = TaxonomyItems::find()->where([
+                    'transliteration' => $transliteration,
+                    'vid' => $vocabularyId
+                        ])->one();
                 if(!$term){
                     return false;
                 }
