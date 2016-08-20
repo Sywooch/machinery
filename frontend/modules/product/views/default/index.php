@@ -15,7 +15,7 @@ CartAsset::register($this);
 $this->title = Html::encode($product->title);
 $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
 ?>
-<h2><?=Html::encode($product->title);?></h2>
+<h1><?=Html::encode($product->title);?></h1>
 <div>
     
     <ul id="imageGallery">
