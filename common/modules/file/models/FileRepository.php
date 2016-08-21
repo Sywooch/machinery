@@ -23,7 +23,7 @@ use common\modules\file\models\File;
 class FileRepository extends File
 {
 
-    public function getFilesBatch(array $models, $field = null){
+    public function getBatch(array $models, $field = null){
         if(empty($models)){
             return [];
         }

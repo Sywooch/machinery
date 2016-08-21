@@ -1,63 +1,82 @@
 <?php
 use yii\helpers\Html;
-use yii\helpers\HtmlPurifier;
 use frontend\modules\cart\Asset as CartAsset;
 use frontend\modules\cart\helpers\CartHelper;
-use common\modules\file\helpers\StyleHelper;
 use frontend\modules\product\Asset as ProductAsset;
 use frontend\modules\product\helpers\ProductHelper;
-use frontend\modules\comments\widgets\CommentsWidget;
-use common\helpers\ModelHelper;
+use kartik\rating\StarRating;
+use yii\widgets\Breadcrumbs;
+
 
 ProductAsset::register($this);
 CartAsset::register($this);
 
-$this->title = Html::encode($product->title);
+$map = [
+    'otzyvy' => 'Отзывы'
+];
+
+
+$this->title = isset($tab) ? $product->title . ' ' . $map[$tab] : Html::encode(ProductHelper::getParametersTitle($product));
 $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
 ?>
-<h1><?=Html::encode($product->title);?></h1>
-<div>
-    
-    <ul id="imageGallery">
-        <?php foreach($product->files as $file):?>
-            <li data-thumb="/<?=StyleHelper::getPreviewUrl($file, '130x130');?>" data-src="<?='/'.$file->path.'/'.$file->name; ?>">
-              <?php echo Html::img('/'.$file->path.'/'.$file->name); ?>
-            </li>
-        <?php endforeach;?>
-    </ul>
-</div>
-<div><? echo Html::encode($product->sku);?></div>
-<div><?php echo \Yii::$app->formatter->asCurrency($product->price); ?></div>
-<div><?php echo CartHelper::getBuyButton($product);?></div>
-<div class="body">
-    <?=
-    HtmlPurifier::process($product->description, [
-        'HTML.AllowedElements' => ['p', 'br', 'b', 'ul', 'li'],
-        'AutoFormat.AutoParagraph' => true
-    ]);
-    ?>
-</div>
 
-<div class="characteristic">
-    <?php foreach(ProductHelper::getCharacteristicsByTerms($product->terms) as $characteristic):?>
-    <h3><?=$characteristic['name']?></h3>
-    <ul class="">
-        <?php foreach($characteristic['items'] as $items):?>
-        <li class="">
-            <span class="label"><?=$items['name']?></span>
-            <span><?=$items['value']?></span>
-        </li> 
-        <?php endforeach;?>
-    </ul> 
-    <?php endforeach;?>
-</div>
+<div class="row product">
+    <div class="col-lg-8 left">
+        <div class="clearfix">
+            <?= Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]) ?>
 
-<?php 
-echo CommentsWidget::widget([
-            'entity_id' => $product->id,
-            'model' => ModelHelper::getModelName($product),
-            'maxThread' => 4,
-        ]);
-?>
+            <span class="sku"><?=Html::encode($product->sku);?></span>
+            <?= StarRating::widget([
+                'name' => 'rating_35',
+                'value' => $product->groupRating,
+                'pluginOptions' => ['displayOnly' => true, 'size' => 'xs']
+            ]);
+            ?>
+            <div class="print-wrapper" onclick="window.print();"><span class="glyphicon glyphicon-print"></span><a>Распечатать</a></div>
+        </div>
+        
+        
+
+        
+        
+        <h1><?=Html::encode($this->title);?></h1>
+        <div class="btn-group" role="group" aria-label="...">
+            <a type="button" class="btn btn-default" href="/<?=$product->alias->alias?>">Характеристики</a>
+          <a type="button" class="btn btn-default" href="/<?=$product->groupAlias->alias?>/otzyvy">Отзывы</a>
+        </div>
+
+        <?php if(isset($tab)):?>
+            <?=$this->render('_'.$tab,[
+                'model' => $product,
+                'products' => $products
+            ]);?>
+        <?php else:?>
+            <?=$this->render('_main',[
+                'model' => $product,
+            ]);?>
+        <?php endif; ?>
+        
+        
+        
+        
+    </div>
+    <div class="col-lg-4 ">
+        
+        <aside>
+            <section class="buy-block">
+                <div class="inline">
+                    <div class="price"><?php echo \Yii::$app->formatter->asCurrency($product->price); ?></div>
+                </div>
+                <div class="inline">
+                    <?php echo CartHelper::getBuyButton($product);?>
+                </div>   
+            </section>
+        </aside>
+        
+        
+    </div>
+</div>
 
 <?=CartHelper::getConfirmModal();?> 

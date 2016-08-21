@@ -35,6 +35,37 @@ class ProductRepository extends \backend\models\ProductSearch
         $model = $this->_model;
         return $model::findOne($id);
     }
+    
+    /**
+     * 
+     * @param int $groupId
+     * @return array
+     */
+    public function getProductsByGroup($groupId){
+        $model = $this->_model;
+        return $model::find()->where(['group' => $groupId])->all();
+    }
+    
+    /**
+     * 
+     * @param array $ids
+     * @return mixed
+     */
+    public function getProducstsByGroups(array $groups){
+        $model = $this->_model;
+        return $model::find()->where(['group' => $groups])->groupBy('group')->all();
+    }
+   
+        
+    public function getGroupRatingByModel($model){
+        $query = (new \yii\db\Query())
+                ->from($model::tableName())
+                ->where([
+                    'group' => $model->group,
+                ])->andWhere(['>', 'rating', 0]);
+        
+        return $query->average('rating');
+    }
 
     /**
      * 
@@ -42,18 +73,20 @@ class ProductRepository extends \backend\models\ProductSearch
      */
     public function searchItemsByFilter(FilterParams $filter){
 
-        $query = $this->_model->find()
-                        ->where([
-                            'publish' => self::PUBLISH,
-                        ])
-                        ->distinct();
-        
+        $query = (new \yii\db\Query())
+                        ->select(['group'])
+                        ->from($this->_model->tableName())
+                        ->distinct()
+                        ->orderBy([
+                            'rating' => SORT_DESC
+                        ]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => Yii::$app->params['catalog']['defaultPageSize'],
             ],
-            'key' => 'id',
+            'key' => 'group',
 
         ]);
         
@@ -85,7 +118,7 @@ class ProductRepository extends \backend\models\ProductSearch
                             'publish' => self::PUBLISH,
                             
                         ])
-                        ->distinct()
+                        ->groupBy('group')
                         ->limit($limit)
                         ->all();
     }

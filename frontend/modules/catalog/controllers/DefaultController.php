@@ -4,11 +4,13 @@ namespace frontend\modules\catalog\controllers;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
+use yii\helpers\ArrayHelper;
 use common\modules\file\models\FileRepository;
 use frontend\modules\catalog\components\FilterParams;
 use frontend\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
 use frontend\modules\catalog\helpers\CatalogHelper;
+use common\models\AliasRepository;
 
 /**
  * Site controller
@@ -37,51 +39,57 @@ class DefaultController extends Controller
     {   
         $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
 
-        if(!isset($filter->index[$catalogVocabularyId]) || !($filter->index[$catalogVocabularyId] instanceof TaxonomyItems)  ){
+        $catalogMain = ArrayHelper::getValue($filter->index, '7.0');
+        $catalogSub = ArrayHelper::getValue($filter->index, '7.1');
+        
+        if(!$catalogMain){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
-
-        $term = $filter->index[$catalogVocabularyId];
-
-        if(!$term->pid){
+        
+        $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($catalogMain));
+        
+        if(!$catalogSub){
             $childrensTerms = TaxonomyItems::findAll([
-                'vid' => $term->vid,
-                'pid' => $term->id
+                'vid' => $catalogMain->vid,
+                'pid' => $catalogMain->id
             ]); 
             
             if($childrensTerms){
                 $items = [];
                 foreach($childrensTerms as $childrenTerm){
-                    $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($childrenTerm));
                     $products = $searchModel->getProducstByIds($searchModel->getCategoryMostRatedItems($childrenTerm));
-                    $files = FileRepository::getFilesBatch($products, 'photos');
+                    $files = FileRepository::getBatch($products, 'photos');
+                    $aliases = AliasRepository::getBatch($products, 'photos');
                     $items[$childrenTerm->id] = [
                         'term' => $childrenTerm,
                         'products' => $products,
+                        'aliases' => $aliases,
                         'files' => $files
                     ];
                 }
                 return $this->render('categories',[
-                    'current' => $term,
+                    'parent' => $catalogMain,
                     'items' => $items
                 ]);
             }
         }
-
-        $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($term));
+        
+        $filter->index = CatalogHelper::clearId($catalogMain, $filter->index);
         $dataProvider = $searchModel->searchItemsByFilter($filter);
-        $products = $dataProvider->getModels();
-        $files = FileRepository::getFilesBatch($products, 'photos');
+        $products = $searchModel->getProducstsByGroups($dataProvider->getKeys());
+        $files = FileRepository::getBatch($products, 'photos');
+        $aliases = AliasRepository::getBatch($products, 'photos');
         
         return $this->render('index',[
-            'current' => $term,
+            'parent' => $catalogMain,
+            'current' => $catalogSub,
             'dataProvider' => $dataProvider,
             'products' => $products,
             'files' => $files,
+            'aliases' => $aliases,
             'search' => $searchModel,
         ]);
         
     }
 
-    
 }

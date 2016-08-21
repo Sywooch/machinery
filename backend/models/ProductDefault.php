@@ -11,6 +11,7 @@ use common\modules\import\models\Sources;
 use frontend\modules\catalog\helpers\CatalogHelper;
 use yii\helpers\ArrayHelper;
 use common\helpers\URLify;
+use frontend\modules\product\helpers\ProductHelper;
 
 /**
  * This is the model class for table "product_default".
@@ -53,11 +54,11 @@ class ProductDefault extends ActiveRecord
     {
         return [
             [['source_id', 'user_id', 'available', 'publish', 'created', 'updated'], 'integer'],
-            [['user_id', 'sku', 'created', 'updated', 'title'], 'required'],
+            [['user_id', 'sku', 'created', 'updated', 'title', 'model'], 'required'],
             [['price', 'rating'], 'number'],
             [['description', 'data'], 'string'],
             [['sku'], 'string', 'max' => 30],
-            [['group'], 'string', 'max' => 50],
+            [['model'], 'string', 'max' => 50],
             [['title', 'short'], 'string', 'max' => 255],
             [['sku'], 'unique'],
             [['terms','catalog'], TermValidator::class],
@@ -75,6 +76,7 @@ class ProductDefault extends ActiveRecord
         return [
             'id' => 'ID',
             'group' => 'Group',
+            'model' => 'Model',
             'source_id' => 'Source ID',
             'user_id' => 'User ID',
             'sku' => 'Sku',
@@ -106,6 +108,9 @@ class ProductDefault extends ActiveRecord
                     'class' => \common\modules\file\components\FileBehavior::class,
                 ],
                 [
+                    'class' => \frontend\modules\product\components\ProductBehavior::class,
+                ],
+                [
                     'class' => \common\components\UrlBehavior::class,
                 ],
                 [
@@ -133,7 +138,30 @@ class ProductDefault extends ActiveRecord
     {
         return $this->hasOne(Sources::className(), ['id' => 'source_id']);
     }
+    
+    /**
+     * 
+     * @param type $model
+     * @param \common\models\Alias $alias
+     * @return \common\models\Alias
+     */
+    public function urlPattern(\common\models\Alias $alias){
 
+        $alias->alias = URLify::url(ProductHelper::getParametersTitle($this));        
+        $alias->groupAlias = URLify::url($this->title);
+        $link = [];
+        $link = array_column($this->catalog, 'transliteration');
+        $alias->prefix = implode('/', $link);
+
+        return $alias;
+    }
+
+    /**
+     * 
+     * @param array[terms] $items
+     * @param array $sku2Ids
+     * @return string
+     */
     public function urlImportPattern(array $items, array $sku2Ids){
 
         $links = [];

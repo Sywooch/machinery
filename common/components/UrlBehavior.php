@@ -6,6 +6,7 @@ use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use common\models\Alias;
 use common\helpers\ModelHelper;
+use \common\helpers\URLify;
 
 class UrlBehavior extends Behavior
 {
@@ -22,12 +23,15 @@ class UrlBehavior extends Behavior
     public function getAlias(){
         return $this->owner->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName($this->owner)]);
     }
+    public function getGroupAlias(){
+        return $this->owner->hasOne(Alias::className(), ['entity_id' => 'group'])->where(['model' => Alias::GROUP_MODEL]);
+    }
 
     public function afterDelete(){
         Alias::deleteAll(['entity_id' => $this->owner->id, 'model' => ModelHelper::getModelName($this->owner)]);
     }
 
-    public function afterSave($event){
+    public function afterSave($insert){
         $alias = $this->owner->alias;
         if($alias && $alias->alias != ''){
             return true;
@@ -36,22 +40,30 @@ class UrlBehavior extends Behavior
             $alias = \Yii::createObject([
                 'class' => Alias::class,
                 'entity_id' => $this->owner->id,
-                'url' => '',
-                'alias' => '',
+                'url' => null,
+                'alias' => null,
                 'model' => ModelHelper::getModelName($this->owner),
             ]);
         }
      
-        $alias = method_exists ( $this->owner , 'urlPattern' ) ? $this->owner->urlPattern($this->owner, $alias) : $this->urlPattern($this->owner, $alias);
-        $alias->url = $alias->url . '?id=' . $this->owner->id . '&model='. ModelHelper::getModelName($this->owner);
-        $alias->save();
+        $alias = method_exists ( $this->owner , 'urlPattern' ) ? $this->owner->urlPattern($alias) : $this->urlPattern($alias);
+        
+        if($alias->url == null){
+            $alias->url = 'product/default' . '?id=' . $this->owner->id . '&model='. ModelHelper::getModelName($this->owner);
+        }
+        
+        if($alias->groupAlias && $alias->groupUrl == null){
+            $alias->groupUrl = 'product/default/group' . '?id=' . $this->owner->group . '&model='. ModelHelper::getModelName($this->owner);
+        }
+        
+        $alias->groupId = $this->owner->group;
 
-        return true;
+        $alias->save();
     }
 
-    public function urlPattern($model, Alias $alias){
-        $alias->url = 'aaa';
-        $alias->alias = 'bbb';
+    public function urlPattern(Alias $alias){
+        $alias->url = null;
+        $alias->alias = null;
         return $alias;
     }
 

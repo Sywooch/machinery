@@ -5,5 +5,5 @@ return [
             'DeliveryDefault',
             'DeliveryNovaPochta',
         ]
-    ]
+    ],
 ];

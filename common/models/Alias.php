@@ -16,7 +16,12 @@ class Alias extends \yii\db\ActiveRecord
 {
     
     const TABLE_ALIAS = 'alias';
-
+    const GROUP_MODEL = 'group';
+    
+    public $prefix;
+    public $groupId;
+    public $groupAlias;
+    public $groupUrl;
 
     /**
      * @inheritdoc
@@ -51,5 +56,42 @@ class Alias extends \yii\db\ActiveRecord
             'alias' => 'Alias',
             'model' => 'Model',
         ];
+    }
+    
+    public function beforeSave($insert) {
+        
+        if($this->prefix){
+           $this->alias = $this->prefix . DIRECTORY_SEPARATOR . $this->alias; 
+        }
+        if($this->groupAlias && $this->prefix){
+           $this->groupAlias = $this->prefix . DIRECTORY_SEPARATOR . $this->groupAlias; 
+        }
+
+        $this->saveGroup(); 
+        return parent::beforeSave($insert);
+    }
+    
+    private function saveGroup(){
+        if(!$this->groupAlias){
+            return false;
+        }
+        
+        $alias = self::find()->where([
+            'model' => self::GROUP_MODEL,
+            'alias' => $this->groupAlias
+        ])->one();
+        
+        if(!$alias){
+            $alias = \Yii::createObject([
+                'class' => Alias::class,
+                'entity_id' => $this->groupId,
+                'url' => $this->groupUrl,
+                'alias' => $this->groupAlias,
+                'model' => self::GROUP_MODEL,
+            ]);
+            $alias->save();
+        }
+        
+        return true;
     }
 }

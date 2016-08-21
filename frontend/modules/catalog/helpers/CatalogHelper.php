@@ -61,26 +61,7 @@ class CatalogHelper {
     public function getCatalogIdByModel($model){
         return array_search(get_class($model), \Yii::$app->params['catalog']['models']);
     }
-
-    /**
-     * @param TaxonomyItems $taxonomyItem
-     * @param int $childId
-     * @param array $breadcrumb
-     * @return array
-     */
-    public function getBreadcrumb(TaxonomyItems $taxonomyItem, $childId = 0,  &$breadcrumb = []){
-        if($taxonomyItem->pid){
-            self::getBreadcrumb($taxonomyItem->parent,$taxonomyItem->id, $breadcrumb);
-        }
-        if($childId){
-            $breadcrumb[] = ['label' => Html::encode($taxonomyItem->name), 'url' => $taxonomyItem->transliteration];
-        }else{
-            $breadcrumb[] = Html::encode($taxonomyItem->name);
-        }
-        return $breadcrumb;
-    }
-    
-    
+ 
     /**
      * 
      * @param TaxonomyItems $term
@@ -115,16 +96,16 @@ class CatalogHelper {
      * @param array $filter
      * @return boolean
      */
-    public static function clearId(TaxonomyItems $term, &$index = []){
+    public static function clearId(TaxonomyItems $term, $index = []){
         if(empty($index)){
             return false;
         }
         foreach($index as $id => $value){
             if(is_array($value)){
-               return self::clearId($term, $index[$id]);
+               return [$id => self::clearId($term, $index[$id])];
             }elseif($value instanceof TaxonomyItems && $value->id == $term->id){
                 unset($index[$id]);
-                return true;
+                return $index;
             }
         }
         return false;

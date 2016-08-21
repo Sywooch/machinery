@@ -12,7 +12,7 @@ return [
             'rules' => [
                 '<action:(login|logout)>' => 'user/security/<action>',
             ],
-        ],
+        ]
     ],
     'modules' => [
         'user' => [

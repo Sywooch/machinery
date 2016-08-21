@@ -37,13 +37,34 @@ class DefaultController extends Controller
 
         $searchModel = new ProductRepository(CatalogHelper::getModelByName($model));
         $product = $searchModel->getProductById($id);
-        
+
         if(empty($product) || !$product->publish ){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
 
         return $this->render('index',[
-            'product' => $product
+            'product' => $product,
+        ]);
+        
+    }
+    
+    /**
+     *
+     * @return mixed
+     */
+    public function actionOtzyvy($id, $model, $tab)
+    {   
+        $searchModel = new ProductRepository(CatalogHelper::getModelByName($model));
+        $products = $searchModel->getProductsByGroup($id);
+        
+        if(empty($products)){
+            throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
+        }
+
+        return $this->render('index',[
+            'products' => $products,
+            'product' => reset($products),
+            'tab' => $tab
         ]);
         
     }

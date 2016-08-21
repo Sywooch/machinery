@@ -15,8 +15,9 @@ class CommentsWidget extends \yii\base\Widget {
         public $maxThread = 3;
         public $entity_id;
 	public $model;
+        public $getGroupComments;
 
-	public function init() {
+        public function init() {
 		if (!$this->entity_id) {
 			throw new InvalidParamException('Invalid param property: nid');
 		}

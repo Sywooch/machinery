@@ -31,14 +31,17 @@ return [
         'request' => [
             'baseUrl' => '',
 	],
-
         'formatter' => [
-            'class' => 'yii\i18n\Formatter',
+            'class' => 'frontend\components\Formatter',
             'dateFormat' => 'dd.MM.yyyy',
-            'decimalSeparator' => ',',
-            'thousandSeparator' => ' ',
-            'currencyCode' => 'RUR',
-            'nullDisplay' => '',          
+            'datetimeFormat' => 'dd/MM/yy hh:mm',
+            'thousandSeparator' => ',',
+            'decimalSeparator' => '.',
+            'currencyCode' => 'UAH',
+            'numberFormatterOptions' => [
+                NumberFormatter::MIN_FRACTION_DIGITS => 0,
+                NumberFormatter::MAX_FRACTION_DIGITS => 2,
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -80,6 +83,7 @@ return [
         'urlManager' => [
             'rules' => [
                 ['class' => 'frontend\components\AliasRule'],
+                ['class' => 'frontend\modules\product\components\ProductUrlRule'],
                 ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
             ],
 	],

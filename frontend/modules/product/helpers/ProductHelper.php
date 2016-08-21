@@ -3,8 +3,7 @@
 namespace frontend\modules\product\helpers;
 
 use yii\helpers\Html;
-use yii\base\InvalidParamException;
-use common\modules\taxonomy\models\TaxonomyItems;
+use yii\helpers\ArrayHelper;
 use common\modules\taxonomy\models\TaxonomyVocabulary;
 use frontend\modules\product\models\GroupCharacteristics;
 
@@ -17,13 +16,23 @@ class ProductHelper {
      */
     public static function getBreadcrumb($entity){
         $breadcrumb = [];
+        $url = '';
         foreach($entity->catalog as $taxonomyItem){
-            $breadcrumb[] = ['label' => Html::encode($taxonomyItem->name), 'url' => $taxonomyItem->transliteration];
+            $url .= '/'.$taxonomyItem->transliteration;
+            $breadcrumb[] = ['label' => Html::encode($taxonomyItem->name), 'url' => $url];
         }
         $breadcrumb[] = Html::encode($entity->title);
         return $breadcrumb;
     }
     
+    public static function getParametersTitle($product){
+        $terms = ArrayHelper::index($product->terms, 'vid');
+        $title = [];
+        $title[] = $product->title;
+        $title[] = ArrayHelper::getValue($terms, '6.name'); // color
+        $title = array_filter($title);
+        return implode(' ', $title);
+    }
     
     public static function getCharacteristicsByTerms(array $terms){
         $groupCharacteristics = GroupCharacteristics::find()->all();

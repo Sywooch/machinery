@@ -67,6 +67,11 @@ class CommentsRepository extends Model {
                     ])->one();
     }
     
+    /**
+     * 
+     * @param Comments $model
+     * @return ActiveDataProvider
+     */
     public function getCommentsList(Comments $model) {
         
         

@@ -26,12 +26,14 @@ FileAsset::register($this);
     ]);
     ?>
     
-    <?= $form->field($model, 'photos[]')->widget(FileInput::classname(),FileHelper::FileInputConfig($model, 'photos')); ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'catalog')->widget(TaxonomyField::classname(), ['vocabularyId' => 7]); ?>
 
     <?= $form->field($model, 'terms')->widget(TaxonomyField::classname()); ?>
-
+        
+    <?= $form->field($model, 'model')->textInput(['maxlength' => 50]) ?>
+    
     <?= $form->field($model, 'user_id')->textInput() ?>
 
     <?= $form->field($model, 'sku')->textInput(['maxlength' => true]) ?>
@@ -48,10 +50,9 @@ FileAsset::register($this);
 
     <?= $form->field($model, 'updated')->textInput() ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
+    
+    <?= $form->field($model, 'photos[]')->widget(FileInput::classname(),FileHelper::FileInputConfig($model, 'photos')); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
