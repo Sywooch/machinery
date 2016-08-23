@@ -10,7 +10,7 @@ use common\helpers\URLify;
 
 class UrlBehavior extends Behavior
 {
-    
+    private $_url;
     public function events()
     {
         return [
@@ -19,11 +19,19 @@ class UrlBehavior extends Behavior
     }
     
     public function getAlias(){ 
-        $alias = $this->owner->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName($this->owner)])->one();
-        if($alias){
-            return $alias;
+        return $this->owner->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName($this->owner)]);
+    }
+    
+    public function getUrl(){
+        if($this->_url){
+            return $this->_url;
         }
-        return  $this->createAlias();
+        if($this->owner->alias){
+            return $this->owner->alias->alias;
+        }
+        $alias = $this->createAlias();
+        $this->_url = $alias->alias;
+        return  $this->_url;
     }
     public function getGroupAlias(){
         return $this->owner->hasOne(Alias::className(), ['entity_id' => 'group'])->where(['model' => Alias::GROUP_MODEL]);

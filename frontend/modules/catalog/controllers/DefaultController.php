@@ -57,14 +57,9 @@ class DefaultController extends Controller
                 $items = [];
                 foreach($childrensTerms as $childrenTerm){
                     $products = $searchModel->getProducstByIds($searchModel->getCategoryMostRatedItems($childrenTerm));
-                    //print_r($products); exit('s');
-                    $files = FileRepository::getBatch($products, 'photos');
-                    $aliases = AliasRepository::getBatch($products, 'photos');
                     $items[$childrenTerm->id] = [
                         'term' => $childrenTerm,
-                        'products' => $products,
-                        'aliases' => $aliases,
-                        'files' => $files
+                        'products' => $products
                     ];
                 }
                 return $this->render('categories',[
@@ -76,17 +71,13 @@ class DefaultController extends Controller
         
         $filter->index = CatalogHelper::clearId($catalogMain, $filter->index);
         $dataProvider = $searchModel->searchItemsByFilter($filter);
-        $products = $searchModel->getProducstsByGroups($dataProvider->getKeys());
-        $files = FileRepository::getBatch($products, 'photos');
-        $aliases = AliasRepository::getBatch($products, 'photos');
+        $products = $searchModel->getProductsByGroup($dataProvider->getKeys());
         
         return $this->render('index',[
             'parent' => $catalogMain,
             'current' => $catalogSub,
             'dataProvider' => $dataProvider,
             'products' => $products,
-            'files' => $files,
-            'aliases' => $aliases,
             'search' => $searchModel,
         ]);
         

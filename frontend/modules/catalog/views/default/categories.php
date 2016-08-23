@@ -28,11 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php foreach($item['products'] as $product):?>
                 <div class="item">
                     <div>
-                        <?php if(($file = ArrayHelper::getValue($item['files'], $product->id.'.0'))):?>
-                            <?php echo Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130')),['/'.$item['aliases'][$product->id]->alias]);?>
+                        <?php if(($file = ArrayHelper::getValue($product->files, '0'))):?>
+                            <?php echo Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130')),['/'.$product->url]);?>
                         <?php endif;?>
                     </div>
-                    <?=Html::a(Html::encode($product->title), ['/'.$item['aliases'][$product->id]->alias],['class'=>'title']); ?>
+                    <?=Html::a(Html::encode($product->title), ['/'.$product->url],['class'=>'title']); ?>
                     <?= StarRating::widget([
                             'name' => 'rating_'.$product->id,
                             'value' => $product->groupRating,

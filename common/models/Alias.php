@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\AliasRepository;
 
 /**
  * This is the model class for table "alias".
@@ -66,32 +67,9 @@ class Alias extends \yii\db\ActiveRecord
         if($this->groupAlias && $this->prefix){
            $this->groupAlias = $this->prefix . DIRECTORY_SEPARATOR . $this->groupAlias; 
         }
-
-        $this->saveGroup(); 
+        $aliasRepository = new AliasRepository();
+        $aliasRepository->saveGroup($this); 
         return parent::beforeSave($insert);
     }
-    
-    private function saveGroup(){
-        if(!$this->groupAlias){
-            return false;
-        }
-        
-        $alias = self::find()->where([
-            'model' => self::GROUP_MODEL,
-            'alias' => $this->groupAlias
-        ])->one();
-        
-        if(!$alias){
-            $alias = \Yii::createObject([
-                'class' => Alias::class,
-                'entity_id' => $this->groupId,
-                'url' => $this->groupUrl,
-                'alias' => $this->groupAlias,
-                'model' => self::GROUP_MODEL,
-            ]);
-            $alias->save();
-        }
-        
-        return true;
-    }
+
 }

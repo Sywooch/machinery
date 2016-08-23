@@ -8,9 +8,9 @@ use common\modules\taxonomy\components\TermValidator;
 use yii\behaviors\TimestampBehavior;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\import\models\Sources;
-use frontend\modules\catalog\helpers\CatalogHelper;
 use yii\helpers\ArrayHelper;
 use common\helpers\URLify;
+use dektrium\user\models\User;
 use common\modules\product\helpers\ProductHelper;
 
 /**
@@ -130,7 +130,7 @@ class ProductDefault extends ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-
+    
     /**
      * @return \yii\db\ActiveQuery
      */

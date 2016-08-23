@@ -23,10 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
     <div class="col-lg-8">
         <?php foreach($products as $product):?>
-            <div><?php echo Html::a(Html::encode($product->title), ['/'.$aliases[$product->id]->alias]); ?></div> 
+            <div><?php echo Html::a(Html::encode($product->title), ['/'.$product->url]); ?></div> 
             <div>
-                <?php if(($file = ArrayHelper::getValue($files, $product->id.'.0'))):?>
-                    <?php echo Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130')),['/'.$aliases[$product->id]->alias]);?>
+                <?php if(($file = ArrayHelper::getValue($product->files, '0'))):?>
+                    <?php echo Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130')),['/'.$product->url]);?>
                 <?php endif;?>
             </div>
             <div><?php echo Html::encode($product->short); ?></div>

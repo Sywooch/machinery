@@ -4,7 +4,7 @@ namespace common\modules\product\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\data\Pagination;
+use common\helpers\ModelHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 use yii\data\ActiveDataProvider;
 use frontend\modules\catalog\components\FilterParams;
@@ -23,7 +23,12 @@ class ProductRepository extends \backend\models\ProductSearch
      */
     public function getProducstByIds(array $ids){
         $model = $this->_model;
-        return $model::findAll($ids);
+        return $model::find()->where(['id' => $ids])
+                ->with([
+                    'files',
+                    'alias'
+                ])
+                ->groupBy('group')->all();
     }
     
     /**
@@ -38,22 +43,17 @@ class ProductRepository extends \backend\models\ProductSearch
     
     /**
      * 
-     * @param int $groupId
-     * @return array
-     */
-    public function getProductsByGroup($groupId){
-        $model = $this->_model;
-        return $model::find()->where(['group' => $groupId])->all();
-    }
-    
-    /**
-     * 
      * @param array $ids
      * @return mixed
      */
-    public function getProducstsByGroups(array $groups){
+    public function getProductsByGroup($groups){
         $model = $this->_model;
-        return $model::find()->where(['group' => $groups])->groupBy('group')->all();
+        return $model::find()->where(['group' => $groups])
+                ->with([
+                    'files',
+                    'alias'
+                ])
+                ->groupBy('group')->all();
     }
    
         
