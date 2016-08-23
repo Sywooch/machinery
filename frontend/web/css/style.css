@@ -1,6 +1,6 @@
 
 @import 'https://fonts.googleapis.com/css?family=PT+Sans';
-
+ 
 html,
 body {
     height: 100%;
@@ -170,6 +170,9 @@ a:hover{
 
 .product .left{
     border-right: 1px solid #ddd
+}
+.produt-short{
+    color: #999;
 }
 aside section {
     padding: 15px 20px;

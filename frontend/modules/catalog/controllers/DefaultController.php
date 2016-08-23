@@ -7,7 +7,7 @@ use yii\web\Controller;
 use yii\helpers\ArrayHelper;
 use common\modules\file\models\FileRepository;
 use frontend\modules\catalog\components\FilterParams;
-use frontend\modules\product\models\ProductRepository;
+use common\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
 use frontend\modules\catalog\helpers\CatalogHelper;
 use common\models\AliasRepository;
@@ -38,9 +38,8 @@ class DefaultController extends Controller
     public function actionIndex(FilterParams $filter)
     {   
         $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
-
-        $catalogMain = ArrayHelper::getValue($filter->index, '7.0');
-        $catalogSub = ArrayHelper::getValue($filter->index, '7.1');
+        $catalogMain = ArrayHelper::getValue($filter->index, "{$catalogVocabularyId}.0");
+        $catalogSub = ArrayHelper::getValue($filter->index, "{$catalogVocabularyId}.1");
         
         if(!$catalogMain){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
@@ -58,6 +57,7 @@ class DefaultController extends Controller
                 $items = [];
                 foreach($childrensTerms as $childrenTerm){
                     $products = $searchModel->getProducstByIds($searchModel->getCategoryMostRatedItems($childrenTerm));
+                    //print_r($products); exit('s');
                     $files = FileRepository::getBatch($products, 'photos');
                     $aliases = AliasRepository::getBatch($products, 'photos');
                     $items[$childrenTerm->id] = [

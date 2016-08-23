@@ -18,22 +18,23 @@ class TopMenu extends \yii\bootstrap\Widget
     
     private function getUrlParams(){
         $params = explode('/', Yii::$app->requestedRoute);
-        return array_shift($params);
+        return $params;
     }
     
     public function isActive(array $menuItems = []) {
 
-        if (!Yii::$app->requestedRoute && !$menuItems)
+        if (!Yii::$app->requestedRoute && !$menuItems){
             return self::ACTIVE_CLASS;
+        }
         
-        if (!$menuItems)
+        if (!$menuItems){
             return;
-
+        }
         $params = $this->getUrlParams();
-       
-        if (in_array($params, $menuItems))
+        //print_r($params); print_r($menuItems); print_r(array_intersect($params, $menuItems));  exit('S');
+        if (!empty(array_intersect($params, $menuItems))){
             return self::ACTIVE_CLASS;
-        
+        }
         return;
     }
 }

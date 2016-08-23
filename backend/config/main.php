@@ -12,6 +12,9 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
+        'product' => [
+            'class' => 'common\modules\product\Module',
+        ],
         'taxonomy' => [
             'class' => 'common\modules\taxonomy\Module',
         ],

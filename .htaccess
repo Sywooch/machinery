@@ -1,19 +1,23 @@
-# prevent directory listings
-#Options -Indexes
-#IndexIgnore */*
-
-# follow symbolic links
-#Options FollowSymlinks
+#Options +FollowSymLinks
+IndexIgnore */*
 RewriteEngine on
 
-RewriteCond %{HTTP_HOST} ^www\.(.+) [NC]
-RewriteRule .* http://%1/$0 [L,R=301]
+# Если запрос начинается с /admin, то заменяем на /backend/web/
+RewriteCond %{REQUEST_URI} ^/admin
+RewriteRule ^admin\/?(.*) /backend/web/$1
 
-RewriteBase /
-RewriteCond %{REQUEST_URI} /$ [NC]
-RewriteRule ^(.*)(/)$ $1 [L,R=301]
+# Добавляем другой запрос /frontend/web/$1
+RewriteCond %{REQUEST_URI} !^/(frontend/web|backend/web|admin)
+RewriteRule (.*) /frontend/web/$1
 
-RewriteRule ^admin(/.+)?$ /backend/web/$1 [L,PT]
-RewriteRule ^(admin)/$ /$1 [L,R=301]
+# Если frontend запрос
+RewriteCond %{REQUEST_URI} ^/frontend/web
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.+)?$ /frontend/web/$1
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /frontend/web/index.php
+
+# Если backend запрос
+RewriteCond %{REQUEST_URI} ^/backend/web
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /backend/web/index.php

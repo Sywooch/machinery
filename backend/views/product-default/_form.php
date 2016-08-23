@@ -28,7 +28,7 @@ FileAsset::register($this);
     
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'catalog')->widget(TaxonomyField::classname(), ['vocabularyId' => 7]); ?>
+    <?= $form->field($model, 'catalog')->widget(TaxonomyField::classname(), ['vocabularyId' => 1]); ?>
 
     <?= $form->field($model, 'terms')->widget(TaxonomyField::classname()); ?>
         

@@ -11,7 +11,7 @@ use common\modules\import\models\Sources;
 use frontend\modules\catalog\helpers\CatalogHelper;
 use yii\helpers\ArrayHelper;
 use common\helpers\URLify;
-use frontend\modules\product\helpers\ProductHelper;
+use common\modules\product\helpers\ProductHelper;
 
 /**
  * This is the model class for table "product_default".
@@ -56,10 +56,10 @@ class ProductDefault extends ActiveRecord
             [['source_id', 'user_id', 'available', 'publish', 'created', 'updated'], 'integer'],
             [['user_id', 'sku', 'created', 'updated', 'title', 'model'], 'required'],
             [['price', 'rating'], 'number'],
-            [['description', 'data'], 'string'],
+            [['description', 'data', 'short'], 'string'],
             [['sku'], 'string', 'max' => 30],
             [['model'], 'string', 'max' => 50],
-            [['title', 'short'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 255],
             [['sku'], 'unique'],
             [['terms','catalog'], TermValidator::class],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dektrium\user\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -108,7 +108,7 @@ class ProductDefault extends ActiveRecord
                     'class' => \common\modules\file\components\FileBehavior::class,
                 ],
                 [
-                    'class' => \frontend\modules\product\components\ProductBehavior::class,
+                    'class' => \common\modules\product\components\ProductBehavior::class,
                 ],
                 [
                     'class' => \common\components\UrlBehavior::class,
@@ -141,13 +141,11 @@ class ProductDefault extends ActiveRecord
     
     /**
      * 
-     * @param type $model
      * @param \common\models\Alias $alias
      * @return \common\models\Alias
      */
     public function urlPattern(\common\models\Alias $alias){
-
-        $alias->alias = URLify::url(ProductHelper::getParametersTitle($this));        
+        $alias->alias = URLify::url($this->titlePattern());        
         $alias->groupAlias = URLify::url($this->title);
         $link = [];
         $link = array_column($this->catalog, 'transliteration');
@@ -155,24 +153,31 @@ class ProductDefault extends ActiveRecord
 
         return $alias;
     }
-
+    
     /**
      * 
-     * @param array[terms] $items
-     * @param array $sku2Ids
      * @return string
      */
-    public function urlImportPattern(array $items, array $sku2Ids){
-
-        $links = [];
-        foreach ($items as $item){
-            $catalog = ArrayHelper::getValue(CatalogHelper::getItemByVocabularyIdOne($item['terms'], 7),'transliteration');
-            $vendor = ArrayHelper::getValue(CatalogHelper::getItemByVocabularyIdOne($item['terms'], 1),'transliteration');
-            $model = URLify::url($item['model'], 50);
-            $id = $sku2Ids[$item['sku']];
-            $links[$id] = $catalog . '/' . 'diski' . '-' . $vendor . '/' . $vendor . '-' . $model . '-' . $id .'.html'; 
-        }
-        return $links;
+    public function shortPattern(){
+        $terms = ArrayHelper::index($this->terms, 'vid');
+        $short = [];
+        $short[] = 'диагональ: '.ArrayHelper::getValue($terms, '32.name') . '"'; // display
+        $short[] = ArrayHelper::getValue($terms, '36.name'); // OC
+        $short = array_filter($short);
+        return implode(',', $short);
     }
-
+    
+    /**
+     * 
+     * @return string
+     */
+    public function titlePattern(){
+        $terms = ArrayHelper::index($this->terms, 'vid');
+        $title = [];
+        $title[] = $this->title;
+        $title[] = ArrayHelper::getValue($terms, '36.name'); // OC
+        $title[] = ArrayHelper::getValue($terms, '31.name'); // color
+        $title = array_filter($title);
+        return implode(' ', $title);
+    }
 }

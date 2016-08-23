@@ -18,7 +18,7 @@ return [
             'class' => 'frontend\modules\cart\Module',
         ],
         'product' => [
-            'class' => 'frontend\modules\product\Module',
+            'class' => 'common\modules\product\Module',
         ],
         'catalog' => [
             'class' => 'frontend\modules\catalog\Module',
@@ -83,7 +83,7 @@ return [
         'urlManager' => [
             'rules' => [
                 ['class' => 'frontend\components\AliasRule'],
-                ['class' => 'frontend\modules\product\components\ProductUrlRule'],
+                ['class' => 'common\modules\product\components\ProductUrlRule'],
                 ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
             ],
 	],

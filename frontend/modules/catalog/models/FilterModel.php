@@ -3,7 +3,7 @@
 namespace frontend\modules\catalog\models;
 
 use Yii;
-use frontend\modules\product\models\ProductRepository;
+use common\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
 
 class FilterModel extends \yii\base\Model

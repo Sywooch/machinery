@@ -32,7 +32,7 @@ AppAsset::register($this);
     </header>
     
     <?php
-        echo CatalogMenu::widget(['vocabularyId' => 7]);
+        echo CatalogMenu::widget(['vocabularyId' => Yii::$app->params['catalog']['vocabularyId']]);
     ?>
     
 <div class="wrap">

@@ -27,7 +27,7 @@ class CatalogUrlRule extends UrlRule {
 
     /**
      * @inheritdoc
-     */
+     */ 
     public function createUrl($manager, $route, $params) {
             if(isset($params['filter']) && $params['filter'] instanceof TaxonomyItems){
                 $link = $this->getFilterUrl($params['filter']);
@@ -176,10 +176,6 @@ class CatalogUrlRule extends UrlRule {
             return $this->filterParams->index;
         }
         
-        $params = $this->parseFilterUrlParams($pathInfo);
-        $params = $this->parseCatalogUrl($pathInfo);
-        
-       
         if(($paramsUrl = $this->parseCatalogUrl($pathInfo)) !== false){
             if(($paramsFilter = $this->parseFilterUrlParams($pathInfo))){
                 $paramsUrl = CatalogHelper::merge($paramsUrl, $paramsFilter);

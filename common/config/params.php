@@ -5,10 +5,10 @@ return [
     'user.passwordResetTokenExpire' => 3600,
     'catalog' => [
         'defaultPageSize' => 20,
-        'vocabularyId' => 7,
+        'vocabularyId' => 1,
         'vocabularyFields' => [
             'all' => 'terms',
-            7 => 'catalog'
+            1 => 'catalog'
         ],
         'buyButtonText' => 'В корзину',
         'models' => [
