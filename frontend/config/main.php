@@ -65,18 +65,21 @@ return [
                     $modelName = "\\backend\\models\\" . $e->sender->model;
                     $model = $modelName::findOne($e->sender->entity_id);
                                        
-                    $ratingRepository = new frontend\modules\rating\models\RatingRepository();
                     $commentsRepository = new frontend\modules\comments\models\CommentsRepository();
                     $ids = $commentsRepository->getCommentIds([
                         'entity_id' => $e->sender->entity_id,
                         'model' => $e->sender->model
                     ]);
-                   
+                    
+                    $ratingRepository = new frontend\modules\rating\models\RatingRepository();
                     $model->rating = $ratingRepository->getAvgRating([
                         'entity_id' => $ids,
                         'model' => \common\helpers\ModelHelper::getModelName(\frontend\modules\comments\models\Comments::class)
-                    ]);
-                    $model->save();
+                    ]);   
+                    $model::updateAll([
+                            'rating' => $model->rating,
+                            'comments' => count($ids)
+                        ], ['group' => $model->group]);
                 }
             ]
         ],

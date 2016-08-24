@@ -38,15 +38,15 @@ class DefaultController extends Controller
     public function actionIndex(FilterParams $filter)
     {   
         $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
-        $catalogMain = ArrayHelper::getValue($filter->index, "{$catalogVocabularyId}.0");
-        $catalogSub = ArrayHelper::getValue($filter->index, "{$catalogVocabularyId}.1");
+        $catalogTerms = $filter->index[$catalogVocabularyId];
+        $catalogMain = array_shift($catalogTerms);
+        $catalogSub = array_shift($catalogTerms);
         
         if(!$catalogMain){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
         
         $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($catalogMain));
-        
         if(!$catalogSub){
             $childrensTerms = TaxonomyItems::findAll([
                 'vid' => $catalogMain->vid,
@@ -69,9 +69,8 @@ class DefaultController extends Controller
             }
         }
         
-        $filter->index = CatalogHelper::clearId($catalogMain, $filter->index);
         $dataProvider = $searchModel->searchItemsByFilter($filter);
-        $products = $searchModel->getProductsByGroup($dataProvider->getKeys());
+        $products = $searchModel->getProducstByIds($dataProvider->getKeys());
         
         return $this->render('index',[
             'parent' => $catalogMain,

@@ -5,6 +5,7 @@ namespace common\modules\taxonomy\components;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use common\helpers\ModelHelper;
+use yii\base\InvalidParamException;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\models\TaxonomyIndex;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
@@ -16,7 +17,7 @@ class TaxonomyBehavior extends Behavior
     public function __set($name, $value){
         $this->$name = $value;
     }
-
+    
     public function events()
     {
         return [
@@ -40,11 +41,11 @@ class TaxonomyBehavior extends Behavior
      * 
      */
     public function afterInit() {
-        parent::init();
         $termFields =  TaxonomyHelper::getTermFields($this->owner);
         foreach($termFields as $field => $rule){
             $this->$field = $this->getFiledsTerms($field);
         }
+        parent::init();
     }
 
     /**
@@ -101,8 +102,8 @@ class TaxonomyBehavior extends Behavior
      * @param string $field
      * @return object
      */
-    private function getFiledsTerms($field){
-        if($this->indexModel){      
+    private function getFiledsTerms($field = null){
+        if($this->indexModel){
             $model = $this->indexModel;   
             return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable($model::tableName(), ['entity_id' => 'id'], function($query) use($field){
                 $query->where(['field' => $field]);
@@ -110,6 +111,24 @@ class TaxonomyBehavior extends Behavior
         }else{
             return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable(TaxonomyIndex::tableName(), ['entity_id' => 'id'], function($query) use($field){
                 $query->where(['field' => $field, 'model'=>  ModelHelper::getModelName($this->owner)]);
+            });
+        }
+    }
+    
+    /**
+     * 
+     * @param string $field
+     * @return object
+     */
+    public function getTerms($field = null){
+        if($this->indexModel){
+            $model = $this->indexModel;   
+            return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable($model::tableName(), ['entity_id' => 'id'], function($query) use($field){
+                $query->filterWhere(['field' => $field]);
+            });
+        }else{
+            return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable(TaxonomyIndex::tableName(), ['entity_id' => 'id'], function($query) use($field){
+                $query->filterWhere(['field' => $field, 'model'=>  ModelHelper::getModelName($this->owner)]);
             });
         }
     }

@@ -11,18 +11,94 @@ class FilterModel extends \yii\base\Model
     
     protected $_model;
     protected $_indexModel;
+    
+    public $_priceRange = '250, 10000';
+    public $_priceMin;
+    public $_priceMax;
+    public $index;
 
-    public function __construct(ProductRepository $search) {
-        $this->_model = $search->model;
-        $this->_indexModel = $this->_model->className() . 'Index';
+    public function __construct(ProductRepository $search = null) {
+        if($search !== null){
+            $this->_model = $search->model;
+            $this->_indexModel = $this->_model->className() . 'Index';        
+        }
     }
     
-   /**
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['priceMin', 'priceMax'], 'integer'],
+            [['index'], 'safe']
+        ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'priceRange' => 'Подобрать по цене:',
+        ];
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getPriceRange(){
+        return implode(',', [$this->priceMin, $this->priceMax]);
+    }
+    
+    
+    /**
+     * 
+     * @return int
+     */
+    public function getPriceMin(){
+        if($this->_priceMin === null){
+           $this->_priceMin = 950;
+        }
+        return $this->_priceMin;
+    }
+    
+    /**
+     * 
+     * @param int $price
+     */
+    public function setPriceMin($price){
+        $this->_priceMin = $price;
+    }
+    
+    /**
+     * 
+     * @return int
+     */
+    public function getPriceMax(){
+        if($this->_priceMax === null){
+           $this->_priceMax = 20000;
+        }
+        return $this->_priceMax;
+    }
+    
+    /**
+     * 
+     * @param int $price
+     */
+    public function setPriceMax($price){
+        $this->_priceMax = $price;
+    }
+
+    /**
      * 
      * @param int $catalogId
      * @return []
      */
     public function getFilterTermIds(TaxonomyItems $catalogTerm){
+
             $indexModel = $this->_indexModel;
             $subQuery = (new \yii\db\Query())
                         ->select('entity_id')
@@ -33,7 +109,10 @@ class FilterModel extends \yii\base\Model
             return  (new \yii\db\Query())
                             ->select('term_id as id')
                             ->from($indexModel::tableName())
-                            ->where(['entity_id' => $subQuery])
+                            ->where([
+                                'entity_id' => $subQuery,
+                                'vocabulary_id' => Yii::$app->params['catalog']['filterVocabularyIds']
+                            ])
                             ->distinct()
                             ->column();  
     }

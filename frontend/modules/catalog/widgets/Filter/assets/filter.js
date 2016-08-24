@@ -5,10 +5,12 @@ filter.filter = $('#'+filter.id);
 
 filter.init = function(){
     filter.filter.find('.' + filter.element).each(function(){
-       var url = $(this).attr('data-url');  
+       var url = $(this).attr('data-url').replace(/\/$/g, '');
        var text = $(this).text();
        var a = $('<a>');
-       a.text(text)
+       var i = $('<i>').addClass('glyphicon glyphicon-remove');
+       a.html(i);
+       a.append(text);
        a.attr('href', url);
        $(this).html(a);
    }); 

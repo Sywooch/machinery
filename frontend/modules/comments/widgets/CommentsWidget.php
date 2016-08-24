@@ -50,7 +50,7 @@ class CommentsWidget extends \yii\base\Widget {
             return $this->render('comments', [
                     'model' => $model,
                     'dataProvider' => $dataProvider,
-                    'comments' => $dataProvider->getModels(),
+                    'comments' => $comments,
                     'avatar' => $avatar,
                     'avatars' => ArrayHelper::index(File::findAll(array_column($comments, 'file_id')), 'id'),
                     'maxThread' => $this->maxThread

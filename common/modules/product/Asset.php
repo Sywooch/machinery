@@ -14,11 +14,8 @@ class Asset extends AssetBundle
     public $baseUrl = '/frontend/modules/product/assets';
 
     public $css = [
-        'lightslider.min.css',
     ];
     public $js = [
-        'lightslider.min.js',
-        'init.js',
     ];
         
     public $depends = [

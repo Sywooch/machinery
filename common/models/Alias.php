@@ -23,6 +23,8 @@ class Alias extends \yii\db\ActiveRecord
     public $groupId;
     public $groupAlias;
     public $groupUrl;
+    
+    public $group;
 
     /**
      * @inheritdoc
@@ -68,7 +70,7 @@ class Alias extends \yii\db\ActiveRecord
            $this->groupAlias = $this->prefix . DIRECTORY_SEPARATOR . $this->groupAlias; 
         }
         $aliasRepository = new AliasRepository();
-        $aliasRepository->saveGroup($this); 
+        $this->group = $aliasRepository->saveGroup($this); 
         return parent::beforeSave($insert);
     }
 

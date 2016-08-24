@@ -2,7 +2,6 @@
 
 namespace frontend\modules\catalog\helpers;
 
-use yii\helpers\Html;
 use yii\base\InvalidParamException;
 use common\modules\taxonomy\models\TaxonomyItems;
 
@@ -62,55 +61,6 @@ class CatalogHelper {
         return array_search(get_class($model), \Yii::$app->params['catalog']['models']);
     }
  
-    /**
-     * 
-     * @param TaxonomyItems $term
-     * @param array $filter
-     */
-    public static function addId(TaxonomyItems $term, &$index){
-
-        $finded = false;
-        
-        if(!empty($index)){
-            foreach($index as $vocabularyId => $value){
-                if($vocabularyId != $term->vid){
-                    continue;
-                }
-                $finded = true;
-                if(is_array($value)){
-                    $index[$vocabularyId][] = $term;
-                }elseif($value instanceof TaxonomyItems){
-                    $index[$vocabularyId] = [$value, $term];
-                }
-            }
-        }
-
-        if(!$finded){
-            $index[$term->vid] = $term;
-        }
-    }
-    
-    /**
-     * 
-     * @param TaxonomyItems $term
-     * @param array $filter
-     * @return boolean
-     */
-    public static function clearId(TaxonomyItems $term, $index = []){
-        if(empty($index)){
-            return false;
-        }
-        foreach($index as $id => $value){
-            if(is_array($value)){
-               return [$id => self::clearId($term, $index[$id])];
-            }elseif($value instanceof TaxonomyItems && $value->id == $term->id){
-                unset($index[$id]);
-                return $index;
-            }
-        }
-        return false;
-    }
-    
     /**
      * 
      * @param array $params

@@ -26,9 +26,10 @@ class ProductRepository extends \backend\models\ProductSearch
         return $model::find()->where(['id' => $ids])
                 ->with([
                     'files',
-                    'alias'
-                ])
-                ->groupBy('group')->all();
+                    'alias',
+                    'groupAlias',
+                    'terms'
+                ])->all();
     }
     
     /**
@@ -51,7 +52,8 @@ class ProductRepository extends \backend\models\ProductSearch
         return $model::find()->where(['group' => $groups])
                 ->with([
                     'files',
-                    'alias'
+                    'alias',
+                    'groupAlias'
                 ])
                 ->groupBy('group')->all();
     }
@@ -74,7 +76,7 @@ class ProductRepository extends \backend\models\ProductSearch
     public function searchItemsByFilter(FilterParams $filter){
 
         $query = (new \yii\db\Query())
-                        ->select(['group'])
+                        ->select(['id'])
                         ->from($this->_model->tableName())
                         ->distinct()
                         ->orderBy([
@@ -86,7 +88,7 @@ class ProductRepository extends \backend\models\ProductSearch
             'pagination' => [
                 'pageSize' => Yii::$app->params['catalog']['defaultPageSize'],
             ],
-            'key' => 'group',
+            'key' => 'id',
 
         ]);
         

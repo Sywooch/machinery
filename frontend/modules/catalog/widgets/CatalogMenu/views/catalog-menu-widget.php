@@ -8,8 +8,6 @@ Asset::register($this);
 
 ?>
 
-
-
 <div class="wide nav-menu-expanded" id="catalog-menu">
     <div id="layout">
         <div class="main-navigation">
@@ -18,7 +16,7 @@ Asset::register($this);
                 <li class="menu-item menu-item_expandable menu-item_products menu-item_cat_phones  ">
                     <span class="menu-item__link-container   phones">
                         <span class="menu-item__link-container-inner">
-                            <?=Html::a($mainItem['name'], ['/','catalogMenu' => [$mainItem]], ['class'=> 'link_side-menu']);?>
+                            <?=Html::a($mainItem['name'], ['/catalog', 'menu' => [$mainItem]], ['class'=> 'link_side-menu']);?>
                         </span>
                     </span>
                     <?php if(isset($mainItem['children'])):?>
@@ -33,11 +31,11 @@ Asset::register($this);
                                 <div class="subcategory-list-item ">
                                     <?php if($mainItem['id'] == $childrenItem['pid']):?>
                                         <span class="h3 subcategory-list-item__link-title  ">
-                                            <?=Html::a($childrenItem['name'], ['/','catalogMenu' => [$mainItem, $childrenItem]], ['class'=> 'subcategory-list-item__link']);?>
+                                            <?=Html::a($childrenItem['name'], ['/catalog','menu' => [$mainItem, $childrenItem]], ['class'=> 'subcategory-list-item__link']);?>
                                         </span>
                                     <?php else: ?>
                                         <div class="subcategory-list-item__link-title_level2">
-                                            <?=Html::a($childrenItem['name'], ['/','catalogMenu' => [$mainItem, $childrenItem]], ['class'=> 'subcategory-list-item__link']);?>
+                                            <?=Html::a($childrenItem['name'], ['/catalog','menu' => [$mainItem, $childrenItem]], ['class'=> 'subcategory-list-item__link']);?>
                                         </div>
                                     <?php endif; ?>
                                 </div>

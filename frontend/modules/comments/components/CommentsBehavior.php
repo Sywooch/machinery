@@ -2,14 +2,17 @@
 
 namespace frontend\modules\comments\components;
 
+use Yii;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use frontend\modules\comments\models\CommentsRepository;
 use frontend\modules\comments\helpers\CommentsHelper;
 use frontend\modules\comments\models\Comments;
+use yii\base\Event;
 
 class CommentsBehavior extends Behavior
 {
+    const COMMENTS_UPDATE = 'comments-update';
     
     public function events()
     {
@@ -40,6 +43,8 @@ class CommentsBehavior extends Behavior
             $this->owner->user_id = \Yii::$app->user->id;
             $this->owner->ip = $_SERVER['REMOTE_ADDR'];
         }
+        
+        Yii::$app->event->trigger(self::COMMENTS_UPDATE, new Event(['sender' => $this->owner]));
     }
 }
 

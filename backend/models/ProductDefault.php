@@ -54,7 +54,7 @@ class ProductDefault extends ActiveRecord
     {
         return [
             [['source_id', 'user_id', 'available', 'publish', 'created', 'updated'], 'integer'],
-            [['user_id', 'sku', 'created', 'updated', 'title', 'model'], 'required'],
+            [['sku', 'created', 'updated', 'title', 'model'], 'required'],
             [['price', 'rating'], 'number'],
             [['description', 'data', 'short'], 'string'],
             [['sku'], 'string', 'max' => 30],

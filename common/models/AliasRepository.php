@@ -58,8 +58,10 @@ class AliasRepository extends ActiveRecord
             ]);
             $alias->detachBehaviors();
             $alias->save();
+            
+            return $alias;
         }
         
-        return true;
+        return $alias;
     }
 }

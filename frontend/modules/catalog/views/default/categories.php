@@ -29,10 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="item">
                     <div>
                         <?php if(($file = ArrayHelper::getValue($product->files, '0'))):?>
-                            <?php echo Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130')),['/'.$product->url]);?>
+                            <?=Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130')),['/'.$product->url->alias]);?>
                         <?php endif;?>
                     </div>
-                    <?=Html::a(Html::encode($product->title), ['/'.$product->url],['class'=>'title']); ?>
+                    <?=Html::a(Html::encode($product->title), ['/'.$product->url->alias],['class'=>'title']); ?>
                     <?= StarRating::widget([
                             'name' => 'rating_'.$product->id,
                             'value' => $product->groupRating,

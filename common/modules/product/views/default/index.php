@@ -30,7 +30,7 @@ $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
             <span class="sku"><?=Html::encode($product->sku);?></span>
             <?= StarRating::widget([
                 'name' => 'rating_35',
-                'value' => $product->groupRating,
+                'value' => $product->rating,
                 'pluginOptions' => ['displayOnly' => true, 'size' => 'xs']
             ]);
             ?>

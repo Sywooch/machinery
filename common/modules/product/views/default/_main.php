@@ -57,13 +57,13 @@ CartAsset::register($this);
 
 
 <div class="characteristic">
-    <?php foreach(ProductHelper::getCharacteristicsByTerms($model->terms) as $characteristic):?>
-    <h3><?=$characteristic['name']?></h3>
+    <?php foreach($model->characteristic as $characteristic):?>
+    <h3><?=$characteristic->name?></h3>
     <ul class="">
-        <?php foreach($characteristic['items'] as $items):?>
+        <?php foreach($characteristic->items as $items):?>
         <li class="">
-            <span class="label"><?=$items['name']?></span>
-            <span><?=$items['value']?></span>
+            <span class="label"><?=$items->name?></span>
+            <span><?=$items->value?></span>
         </li> 
         <?php endforeach;?>
     </ul> 

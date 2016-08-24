@@ -34,8 +34,6 @@ FileAsset::register($this);
         
     <?= $form->field($model, 'model')->textInput(['maxlength' => 50]) ?>
     
-    <?= $form->field($model, 'user_id')->textInput() ?>
-
     <?= $form->field($model, 'sku')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'available')->textInput() ?>

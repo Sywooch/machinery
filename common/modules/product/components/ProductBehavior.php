@@ -2,6 +2,8 @@
 
 namespace common\modules\product\components;
 
+use Yii;
+use common\modules\product\helpers\ProductHelper;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use common\modules\product\models\ProductRepository;
@@ -22,10 +24,26 @@ class ProductBehavior extends Behavior
     
     /** @inheritdoc */
     public function beforeSaveProduct($insert) {
-        $terms = TaxonomyItems::find()->indexBy('vid')->where(['id'=>$this->owner->terms])->all();
+        $terms = TaxonomyItems::find()->indexBy('vid')->where(['id' => $this->owner->terms])->all();
         $this->owner->group = $this->getGroup($terms);
+        
+        if(!$this->owner->user_id){
+            $this->owner->user_id = Yii::$app->user->id;
+        }
+        
+        if(!$this->owner->characteristic_table){
+            $this->owner->characteristic_table = json_encode(ProductHelper::getCharacteristicsByTerms($terms));
+        }  
     }
     
+    public function getCharacteristic(){
+        if(!$this->owner->characteristic_table){
+            return [];
+        } 
+        return json_decode($this->owner->characteristic_table);
+    }
+
+
     /**
      * 
      * @return float
