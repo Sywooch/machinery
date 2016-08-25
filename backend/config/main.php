@@ -24,6 +24,7 @@ return [
         'orders' => [
             'class' => 'common\modules\orders\Module',
         ],
+        'rbac' => 'dektrium\rbac\RbacWebModule',
     ], 
     'components' => [
         'request' => [

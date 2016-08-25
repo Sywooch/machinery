@@ -9,6 +9,9 @@ return [
     'controllerNamespace' => 'console\controllers',
     'bootstrap' => ['log'], 
     'params' => $params,
+    'modules' => [
+        'rbac' => 'dektrium\rbac\RbacConsoleModule',
+    ], 
 ];
 
 

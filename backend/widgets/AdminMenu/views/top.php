@@ -14,7 +14,6 @@ Asset::register($this);
         
         if($widget->isActive(['product'])){
             echo Html::a('<div>Группы характеристик</div>', ['/product/group-characteristics'], ['class' => $widget->isActive(['group-characteristics'])]);
-            echo Html::a('<div>Краткое описание</div>', ['/product/product-short-settings'], ['class' => $widget->isActive(['product-short-settings'])]);
         }
     ?>
 </div>
