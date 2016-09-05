@@ -2,15 +2,14 @@
 
 namespace console\controllers;
 
-use common\modules\import\models\Insert;
 use Yii;
 use yii\console\Controller;
 use common\modules\import\models\Sources;
 use common\modules\import\models\Validate;
 use common\modules\import\Import;
-use common\modules\import\helpers\ImportHelper;
 use common\modules\import\models\TemporaryTerms;
 use yii\helpers\Console;
+use common\modules\import\helpers\ImportHelper;
 
 class ImporterController extends Controller 
 {
@@ -25,17 +24,17 @@ class ImporterController extends Controller
                 ->andWhere(['<', 'tires' , Sources::TIRES])
                 ->all();
         
-        $validator = Yii::$container->get(Validate::class); 
+       // $validator = Yii::$container->get(Validate::class); 
         $terms = Yii::$container->get(TemporaryTerms::class);
 
         foreach($sources as $source){
            
+            $validator = new Validate(); 
             $validator->source_id = $source->id;
             $validator->user_id = 1;
             
             $this->stdout("Source: {$source->name}\n", Console::FG_GREEN);
-            
-            $import = Yii::$container->get(Import::class, [$source]); 
+            $import = Yii::$container->get(Import::class, [$source]);   
             if(!$import->getFile()){
                 $source->addMessage('[1000] Файл не найден или не может быть прочитан.');
                 $this->stdout("[1000] Файл не найден или не может быть прочитан.\n", Console::FG_RED);  
@@ -57,9 +56,10 @@ class ImporterController extends Controller
                     $this->stdout("[1002] Ошибка парсинга изображений.\n", Console::FG_YELLOW); 
                     continue;
                 }
-               
-                $validator->setAttributes($line);
                 
+                $validator->setAttributes($line);
+                $validator->group = ImportHelper::getGroup($validator->attributes);
+               
                 if($validator->validate()){
                     $import->add($validator);
                 }else{

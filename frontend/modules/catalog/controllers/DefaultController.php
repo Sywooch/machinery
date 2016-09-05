@@ -4,13 +4,12 @@ namespace frontend\modules\catalog\controllers;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use yii\helpers\ArrayHelper;
-use common\modules\file\models\FileRepository;
 use frontend\modules\catalog\components\FilterParams;
 use common\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\modules\taxonomy\models\TaxonomyItemsSearch;
+use common\modules\taxonomy\helpers\TaxonomyHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
-use common\models\AliasRepository;
 
 /**
  * Site controller
@@ -29,6 +28,16 @@ class DefaultController extends Controller
                 'class' => 'yii\web\ErrorAction',
             ],
         ];
+    }
+    
+    public function actionCatalog(){
+
+        $taxonomyItemsSearch = new TaxonomyItemsSearch();
+        $models = $taxonomyItemsSearch->getItemsByVid(Yii::$app->params['catalog']['vocabularyId']);
+        
+        return $this->render('catalog',[
+            'menuItems' => TaxonomyHelper::tree($models),
+        ]);
     }
 
     /**

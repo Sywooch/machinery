@@ -206,7 +206,9 @@ class FileHelper {
             BaseFileHelper::createDirectory($stylePath, self::DIRECTORY_PERMISSION);
         }
         $imageManager = new \Intervention\Image\ImageManager();
-        $image = $imageManager->make($originPath . '/' . $file->name)->fit($style->height, $style->width);
+        $image = $imageManager->make($originPath . '/' . $file->name)->resize($style->width, $style->height, function ($constraint) {
+            $constraint->aspectRatio();
+        });
         if($image->save($stylePath . '/' . $file->name, $style->quality)){
            return $stylePath . '/' . $file->name; 
         }

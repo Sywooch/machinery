@@ -15,14 +15,16 @@ CartAsset::register($this);
     <?php
     $items = [];
     foreach($model->files as $file){
-        $items[] =  Html::img('/'.StyleHelper::getPreviewUrl($file, '900x900'),['class' => 'img-responsive']); 
+        $items[] =  Html::img('/'.StyleHelper::getPreviewUrl($file, '700x700'),['class' => 'img-responsive']); 
     }
 
     echo BxSlider::widget([
         'pluginOptions' => [
             'maxSlides' => 1,
+            'speed' => 300,
             'controls' => true,
             'slideWidth' => 450,
+            //'adaptiveHeight' => true,
             'pagerCustom' => '#bx-pager',
             'onSliderLoad' => new yii\web\JsExpression('
                 function() {
@@ -38,7 +40,7 @@ CartAsset::register($this);
 
     <div id="bx-pager">
         <?php foreach($model->files as $index => $file):?>
-            <a data-slide-index="<?=$index?>" href=""> <?=Html::img('/'.StyleHelper::getPreviewUrl($file, '100x100'),['width' => 70,'height'=>70]); ?></a>
+            <a data-slide-index="<?=$index?>" href=""> <?=Html::img('/'.StyleHelper::getPreviewUrl($file, '100x100'),[]); ?></a>
         <?php endforeach; ?>
     </div>
 </div>
@@ -57,10 +59,10 @@ CartAsset::register($this);
 
 
 <div class="characteristic">
-    <?php foreach($model->characteristic as $characteristic):?>
-    <h3><?=$characteristic->name?></h3>
+    <?php foreach($model->feature as $name => $features):?>
+    <h3><?=$name?></h3>
     <ul class="">
-        <?php foreach($characteristic->items as $items):?>
+        <?php foreach($features as $items):?>
         <li class="">
             <span class="label"><?=$items->name?></span>
             <span><?=$items->value?></span>

@@ -45,6 +45,9 @@ class TaxonomyItems extends \yii\db\ActiveRecord
      */
     public function beforeSave($insert) {
         parent::beforeSave($insert);
+        if(!$this->pid){
+            $this->pid = 0;
+        }
         if(!$this->transliteration){
             $this->transliteration = URLify::url($this->name);
         }

@@ -4,6 +4,7 @@ namespace common\modules\import\models;
 
 use Yii;
 use common\modules\import\components\Reindex;
+use common\modules\import\helpers\ImportHelper;
 
 /**
 *
@@ -15,6 +16,8 @@ class Validate extends \yii\base\Model
     public $model;
     public $title;
     public $description;
+    public $short;
+    public $features;
     public $terms;
     public $termIds;
     public $price;
@@ -32,11 +35,11 @@ class Validate extends \yii\base\Model
     public function rules()
     {
         return [
-            [['sku', 'title', 'price', 'source_id', 'user_id', 'group'], 'required'],
-            [['source_id', 'publish', 'user_id'], 'integer'],
-            [['description'], 'string'],
+            [['sku', 'title', 'price', 'source_id', 'user_id', 'model','group'], 'required'],
+            [['group','source_id', 'publish', 'user_id'], 'integer'],
+            [['description', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 20],
-            [['group', 'model'], 'string', 'max' => 50],
+            [['model'], 'string', 'max' => 255],
             [['title'], 'string', 'max' => 255],
             [['terms'], 'validateTerms'],
             [['price'], 'double'],
@@ -50,7 +53,7 @@ class Validate extends \yii\base\Model
        
         return TRUE;
     }
-
+    
     public function getCatalogId(){
         return $this->_catalogId;
     }

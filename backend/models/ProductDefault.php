@@ -56,7 +56,7 @@ class ProductDefault extends ActiveRecord
             [['source_id', 'user_id', 'available', 'publish', 'created', 'updated'], 'integer'],
             [['sku', 'created', 'updated', 'title', 'model'], 'required'],
             [['price', 'rating'], 'number'],
-            [['description', 'data', 'short'], 'string'],
+            [['description', 'data', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 30],
             [['model'], 'string', 'max' => 50],
             [['title'], 'string', 'max' => 255],
@@ -145,7 +145,7 @@ class ProductDefault extends ActiveRecord
      * @return \common\models\Alias
      */
     public function urlPattern(\common\models\Alias $alias){
-        $alias->alias = URLify::url($this->titlePattern());        
+        $alias->alias = URLify::url($this->titlePattern()) .'-'. $this->id;        
         $alias->groupAlias = URLify::url($this->title);
         $link = [];
         $link = array_column($this->catalog, 'transliteration');

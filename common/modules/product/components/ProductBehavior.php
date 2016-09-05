@@ -31,16 +31,16 @@ class ProductBehavior extends Behavior
             $this->owner->user_id = Yii::$app->user->id;
         }
         
-        if(!$this->owner->characteristic_table){
+        if(1 || !$this->owner->characteristic_table){
             $this->owner->characteristic_table = json_encode(ProductHelper::getCharacteristicsByTerms($terms));
         }  
     }
     
-    public function getCharacteristic(){
-        if(!$this->owner->characteristic_table){
+    public function getFeature(){
+        if(!$this->owner->features){
             return [];
         } 
-        return json_decode($this->owner->characteristic_table);
+        return json_decode($this->owner->features);
     }
 
 
@@ -62,7 +62,6 @@ class ProductBehavior extends Behavior
         $group = [];
         $group[] = ArrayHelper::getValue($terms, '2.name'); // brend
         $group[] = $this->owner->model;
-        $group[] = ModelHelper::getModelName($this->owner);
         return crc32(implode(' ', $group));
     }
     

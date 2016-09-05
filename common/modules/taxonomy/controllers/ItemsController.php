@@ -26,7 +26,7 @@ class ItemsController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'update', 'view', 'create', 'hierarchy'],
+                        'actions' => ['index', 'update', 'view', 'create', 'delete', 'hierarchy','terms-ajax'],
                         'roles' => ['admin'],
                     ],
                 ],
@@ -184,7 +184,7 @@ class ItemsController extends Controller
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
         $taxonomyItemsSearch = new TaxonomyItemsSearch();
-        $terms = $taxonomyItemsSearch->getItemsByName($name, $vocabularyId);
+        $terms = $taxonomyItemsSearch->getItemsByName($name, $vocabularyId, 0);
         
         if(empty($terms)){
             return ['results' => [] ];

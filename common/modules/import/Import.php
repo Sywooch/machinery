@@ -25,10 +25,10 @@ class Import{
     }
     
     public function read(){
-        $line = fgetcsv($this->_file, 2000, ";");
+        $line = fgetcsv($this->_file, 20000, ";");
         if($line !== false && empty($this->_fields)){
             $this->_fields = $line;
-            $line = fgetcsv($this->_file, 2000, ";");
+            $line = fgetcsv($this->_file, 20000, ";");
         }
         if($line !== false){
             array_walk($line, function(&$item){

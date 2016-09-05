@@ -32,6 +32,7 @@ class ProductSearch extends Model
     public function __construct($model) {
         $this->_model = $model;
         $this->_indexModel = $model->className() . 'Index';
+        
     }
     /**
      * @inheritdoc

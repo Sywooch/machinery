@@ -3,6 +3,7 @@
 namespace frontend\modules\catalog\components\urlManager;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use frontend\modules\catalog\components\FilterParams;
 use common\modules\taxonomy\models\TaxonomyItems;
 use frontend\modules\catalog\helpers\CatalogHelper;

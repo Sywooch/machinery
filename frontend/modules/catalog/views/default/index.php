@@ -23,7 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?=Html::encode($current->name);?></h1>
 <div class="row catalog-list ">
     <div class="col-lg-8">
-        <?=LinkPager::widget(['pagination' => $dataProvider->pagination]); ?>
+        <?=LinkPager::widget([
+            'pagination' => $dataProvider->pagination,
+            'nextPageLabel' => false,
+            'prevPageLabel' => false,
+           // 'maxButtonCount' => 4,
+                ]); ?>
         <?php foreach($products as $product):?>
         <div class="item">
             <div class="left">
@@ -50,7 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>    
         <?php endforeach; ?>
-        <?=LinkPager::widget(['pagination' => $dataProvider->pagination]); ?>
+        <?=LinkPager::widget([
+            'pagination' => $dataProvider->pagination,
+            'nextPageLabel' => false,
+            'prevPageLabel' => false,
+           // 'maxButtonCount' => 4,
+                ]); ?>
        
     </div>
     <div class="col-lg-4">

@@ -16,7 +16,7 @@ use yii\base\InvalidValueException;
  */
 class Insert extends \yii\base\Model
 {
-    const INSERT_LIMIT  = 1000;
+    const INSERT_LIMIT  = 1;
     
     private $stack = [];
     private $model;
@@ -53,29 +53,20 @@ class Insert extends \yii\base\Model
     }
     
     private function insert($currentCatalogId, array $items){
+       
         $this->model = CatalogHelper::getModelByTerm(TaxonomyItems::findOne($currentCatalogId));
         $this->insertBatch($this->model->tableName(), $items, ImportHelper::productFields(), ImportHelper::productFieldTypes());
         $sku2Ids = $this->getIdsBySku(array_column($items, 'sku'));
-       
-        /**
-         * Url
-         */
-        if(method_exists($this->model, 'urlImportPattern')){
-            $model = $this->model;
-            $insertUrlData = ImportHelper::insetUrlData($model, $model::urlImportPattern($items, $sku2Ids));
-            $this->insertBatch(Alias::TABLE_ALIAS, $insertUrlData, ImportHelper::importUrlFields(), ImportHelper::importUrlFieldTypes());
-            unset($insertUrlData);
-        }
         
         /*
          * terms
          */
         $currentTermIds = $this->getTermIdsByProdutIds($sku2Ids);
         $newTermIds = array_column($items, 'terms', 'sku');
-        $insetTermsData = ImportHelper::insetTermsData($sku2Ids, $currentTermIds, $newTermIds);
+        $insertTermsData = ImportHelper::insertTermsData($sku2Ids, $currentTermIds, $newTermIds);
         $deleteTermsData = ImportHelper::deleteTermsData($sku2Ids, $currentTermIds, $newTermIds);
         $indexModel = $this->model->className() . 'Index';
-        $this->insertBatch($indexModel::tableName(), $insetTermsData, ImportHelper::termFields(), ImportHelper::termFieldTypes());
+        $this->insertBatch($indexModel::tableName(), $insertTermsData, ImportHelper::termFields(), ImportHelper::termFieldTypes());
         $this->deleteIndex($indexModel::tableName(), $deleteTermsData);
         
     }
@@ -144,7 +135,6 @@ class Insert extends \yii\base\Model
         $params = [];
         $paramsType = [];
         $sortedColumns = [];
-
         array_walk_recursive($data, function($value, $key) use (&$params, $types, &$paramsType, $columns, &$sortedColumns){
             if(!is_numeric($key) && in_array($key, $columns)){
                $params[] = $value;

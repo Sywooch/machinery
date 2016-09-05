@@ -16,6 +16,7 @@ class ProductHelper {
      */
     public static function getBreadcrumb($entity){
         $breadcrumb = [];
+        $breadcrumb[] = ['label' => 'Каталог', 'url' => '/catalog'];
         $url = '';
         foreach($entity->catalog as $taxonomyItem){
             $url .= '/'.$taxonomyItem->transliteration;
@@ -35,17 +36,13 @@ class ProductHelper {
         foreach ($terms as $term){
             foreach($groupCharacteristics as $item){
                 if(in_array($term->vid, $item->vocabularies)){
-                    if(!isset($grouped[$item->id])){
-                        $grouped[$item->id] = [
-                            'id' => $item->id,
-                            'name' => $item->name,
-                            'items' => []
-                        ];
+                    if(!isset($grouped[$item->name])){
+                        $grouped[$item->name] = [];
                     }
-                   $grouped[$item->id]['items'][] = [
-                       'name' => $vocabularies[$term->vid]->name,
-                       'value' => $term->name
-                   ]; 
+                    $grouped[$item->name][] = [
+                        'name' => $vocabularies[$term->vid]->name,
+                        'value' => $term->name
+                    ]; 
                 }
             } 
         }

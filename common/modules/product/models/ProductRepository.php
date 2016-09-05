@@ -109,7 +109,7 @@ class ProductRepository extends \backend\models\ProductSearch
      * @param int $limit
      * @return \backend\models\ProductSearch
      */
-    public function getCategoryMostRatedItems(TaxonomyItems $taxonomyItem, int $limit = 5){
+    public function getCategoryMostRatedItems(TaxonomyItems $taxonomyItem, $limit = 5){
         $indexModel = $this->_indexModel;
         return (new \yii\db\Query())
                         ->select('id')
@@ -123,6 +123,55 @@ class ProductRepository extends \backend\models\ProductSearch
                         ->groupBy('group')
                         ->limit($limit)
                         ->all();
+    }
+    
+    /**
+     * 
+     * @param array $status
+     * @param int $limit
+     * @return array
+     */
+    public function getReindexItems(array $status, $limit){
+        $model = $this->_model;
+
+        return (new \yii\db\Query())
+                        ->select('
+                            id,
+                            group,
+                            model,
+                            source_id,
+                            user_id,
+                            sku,
+                            available,
+                            price,
+                            rating,
+                            publish,
+                            `reindex` + 0 as reindex,
+                            crc32,
+                            crc32_reindex,
+                            title,
+                            description,
+                            data'
+                        )
+                        ->from($model::tableName())
+                        ->where(['reindex' => $status])
+                        ->limit($limit)
+                        ->all();
+    }
+    
+    
+    /**
+     * 
+     * @param int $status
+     * @param [] $ids
+     * @return boolean
+     */
+    public function setReindexStatus($status, $ids){
+        if(empty($ids)){
+            return false;
+        }
+        $model = $this->_model;
+        Yii::$app->db->createCommand("UPDATE ".$model::tableName()." SET reindex={$status}, crc32_reindex=crc32 WHERE id IN (".implode(',', $ids).")")->execute();
     }
     
 }
