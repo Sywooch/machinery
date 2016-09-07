@@ -2,6 +2,7 @@
 
 namespace common\modules\file\helpers;
 
+use common\helpers\URLify;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -90,7 +91,7 @@ class FileHelper {
     public function text2url($name){
         $url = [
             time(),
-            \URLify::filter ($name, 60, "", true),
+            URLify::url ($name, 60, "", true),
         ];
         return implode('-', $url);
     }
@@ -205,7 +206,9 @@ class FileHelper {
             BaseFileHelper::createDirectory($stylePath, self::DIRECTORY_PERMISSION);
         }
         $imageManager = new \Intervention\Image\ImageManager();
-        $image = $imageManager->make($originPath . '/' . $file->name)->fit($style->height, $style->width);
+        $image = $imageManager->make($originPath . '/' . $file->name)->resize($style->width, $style->height, function ($constraint) {
+            $constraint->aspectRatio();
+        });
         if($image->save($stylePath . '/' . $file->name, $style->quality)){
            return $stylePath . '/' . $file->name; 
         }

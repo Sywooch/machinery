@@ -3,25 +3,31 @@
 namespace common\modules\import\models;
 
 use Yii;
-use common\modules\import\models\TemporaryTerms;
+use common\modules\import\components\Reindex;
+use common\modules\import\helpers\ImportHelper;
 
 /**
 *
  */
 class Validate extends \yii\base\Model
-{
+{   
     public $sku;
     public $group;
+    public $model;
     public $title;
     public $description;
+    public $short;
+    public $features;
     public $terms;
     public $termIds;
     public $price;
-    public $reindex;
     public $user_id;
     public $source_id;
     public $images;
     public $publish;
+    public $url;
+
+    private $_catalogId;
 
     /**
      * @inheritdoc
@@ -29,11 +35,11 @@ class Validate extends \yii\base\Model
     public function rules()
     {
         return [
-            [['sku', 'title', 'price', 'source_id', 'user_id', 'group'], 'required'],
-            [['source_id', 'reindex', 'publish', 'user_id'], 'integer'],
-            [['description'], 'string'],
+            [['sku', 'title', 'price', 'source_id', 'user_id', 'model','group'], 'required'],
+            [['group','source_id', 'publish', 'user_id'], 'integer'],
+            [['description', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 20],
-            [['group'], 'string', 'max' => 50],
+            [['model'], 'string', 'max' => 255],
             [['title'], 'string', 'max' => 255],
             [['terms'], 'validateTerms'],
             [['price'], 'double'],
@@ -42,8 +48,14 @@ class Validate extends \yii\base\Model
     }
     
     public function afterValidate() {
-        $this->reindex = 1;
         $this->publish = 1;
+        $this->_catalogId = \yii\helpers\ArrayHelper::getValue($this->attributes,'terms.0.id');
+       
+        return TRUE;
+    }
+    
+    public function getCatalogId(){
+        return $this->_catalogId;
     }
     
     public function validateTerms($attribute, $params){
@@ -71,7 +83,7 @@ class Validate extends \yii\base\Model
                 $messages[] = $name . ':'. implode('; ', array_keys($terms));
             }
             
-            $this->addError($attribute, 'Не удалось распознать термины: '.  implode('; ', $messages).'.');
+            $this->addError($attribute, 'Не удалось распознать термины: '.  implode('; ', $messages));
 
             return;
           
@@ -89,7 +101,7 @@ class Validate extends \yii\base\Model
             return;
         }
         
-        $this->termIds = array_replace($rootTerm, $data);   
+        $this->terms = array_replace($rootTerm, $data);   
     }
 
 }

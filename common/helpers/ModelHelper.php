@@ -19,7 +19,7 @@ class ModelHelper {
     }
     
     public static function getFields($model){
-        print_r($model); exit('AAA');
+        return [];
     }
     
 }

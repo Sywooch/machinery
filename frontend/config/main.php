@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
+    'homeUrl' => '/',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
@@ -17,24 +18,30 @@ return [
             'class' => 'frontend\modules\cart\Module',
         ],
         'product' => [
-            'class' => 'frontend\modules\product\Module',
+            'class' => 'common\modules\product\Module',
         ],
         'catalog' => [
             'class' => 'frontend\modules\catalog\Module',
         ],
+        'comments' => [
+            'class' => 'frontend\modules\comments\Module'
+	],
     ],
     'components' => [
         'request' => [
             'baseUrl' => '',
 	],
-
         'formatter' => [
-            'class' => 'yii\i18n\Formatter',
+            'class' => 'frontend\components\Formatter',
             'dateFormat' => 'dd.MM.yyyy',
-            'decimalSeparator' => ',',
-            'thousandSeparator' => ' ',
-            'currencyCode' => 'RUR',
-            'nullDisplay' => '',          
+            'datetimeFormat' => 'dd/MM/yy hh:mm',
+            'thousandSeparator' => ',',
+            'decimalSeparator' => '.',
+            'currencyCode' => 'UAH',
+            'numberFormatterOptions' => [
+                NumberFormatter::MIN_FRACTION_DIGITS => 0,
+                NumberFormatter::MAX_FRACTION_DIGITS => 2,
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -51,9 +58,35 @@ return [
         'cart' => [
             'class' => 'frontend\modules\cart\components\Cart',
         ],
+        'event' => [
+            'class' => 'frontend\components\EventComponent',
+            'events' => [
+                \frontend\modules\rating\components\RatingBehavior::RATING_UPDATE => function($e){
+                    $modelName = "\\backend\\models\\" . $e->sender->model;
+                    $model = $modelName::findOne($e->sender->entity_id);
+                                       
+                    $commentsRepository = new frontend\modules\comments\models\CommentsRepository();
+                    $ids = $commentsRepository->getCommentIds([
+                        'entity_id' => $e->sender->entity_id,
+                        'model' => $e->sender->model
+                    ]);
+                    
+                    $ratingRepository = new frontend\modules\rating\models\RatingRepository();
+                    $model->rating = $ratingRepository->getAvgRating([
+                        'entity_id' => $ids,
+                        'model' => \common\helpers\ModelHelper::getModelName(\frontend\modules\comments\models\Comments::class)
+                    ]);   
+                    $model::updateAll([
+                            'rating' => $model->rating,
+                            'comments' => count($ids)
+                        ], ['group' => $model->group]);
+                }
+            ]
+        ],
         'urlManager' => [
             'rules' => [
-                ['class' => 'frontend\modules\product\components\ProductUrlRule'], 
+                ['class' => 'frontend\components\AliasRule'],
+                ['class' => 'common\modules\product\components\ProductUrlRule'],
                 ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
             ],
 	],

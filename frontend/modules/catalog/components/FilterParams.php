@@ -4,6 +4,7 @@ namespace frontend\modules\catalog\components;
 use Yii;
 use yii\base\Object;
 use common\modules\taxonomy\models\TaxonomyVocabularySearch;
+use common\modules\taxonomy\models\TaxonomyItems;
 
 class FilterParams extends Object {
 
@@ -21,8 +22,8 @@ class FilterParams extends Object {
         if(is_null(self::$_instance))
         {
             self::$_instance = new self();
+            self::$_instance->_prefixes = TaxonomyVocabularySearch::getPrefixes(Yii::$app->params['catalog']['filterVocabularyIds']);
         }
-        
         return self::$_instance;
     }
     
@@ -65,6 +66,35 @@ class FilterParams extends Object {
     
     public function setPrefixes(array $prefixes){
        $this->_prefixes = $prefixes;
+    }
+    
+    public function clear(TaxonomyItems $term){
+        foreach($this->_index as $id => $terms){
+            if(isset($terms[$term->id])){
+                unset($this->_index[$id][$term->id]);
+                if(empty($this->_index[$id])){
+                    unset($this->_index[$id]);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public function add(TaxonomyItems $term){
+        if(!isset($this->_index[$term->vid])){
+            $this->_index[$term->vid] = [];
+        }
+        $this->_index[$term->vid][$term->id] = $term;
+    }
+    
+    public function isExists(TaxonomyItems $term){
+        foreach($this->_index as $terms){
+            if(isset($terms[$term->id])){
+                return true;
+            }
+        }
+        return false;
     }
 
 

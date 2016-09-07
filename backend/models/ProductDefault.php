@@ -4,14 +4,14 @@ namespace backend\models;
 
 use Yii;
 use \yii\db\ActiveRecord;
-use common\modules\file\models\File;
-use common\modules\file\helpers\FileHelper;
-use common\helpers\ModelHelper;
 use common\modules\taxonomy\components\TermValidator;
 use yii\behaviors\TimestampBehavior;
 use common\modules\taxonomy\models\TaxonomyItems;
-use common\modules\taxonomy\models\TaxonomyIndex;
 use common\modules\import\models\Sources;
+use yii\helpers\ArrayHelper;
+use common\helpers\URLify;
+use dektrium\user\models\User;
+use common\modules\product\helpers\ProductHelper;
 
 /**
  * This is the model class for table "product_default".
@@ -54,12 +54,12 @@ class ProductDefault extends ActiveRecord
     {
         return [
             [['source_id', 'user_id', 'available', 'publish', 'created', 'updated'], 'integer'],
-            [['user_id', 'sku', 'created', 'updated', 'title'], 'required'],
+            [['sku', 'created', 'updated', 'title', 'model'], 'required'],
             [['price', 'rating'], 'number'],
-            [['description', 'data'], 'string'],
+            [['description', 'data', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 30],
-            [['group'], 'string', 'max' => 50],
-            [['title', 'short'], 'string', 'max' => 255],
+            [['model'], 'string', 'max' => 50],
+            [['title'], 'string', 'max' => 255],
             [['sku'], 'unique'],
             [['terms','catalog'], TermValidator::class],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dektrium\user\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -76,6 +76,7 @@ class ProductDefault extends ActiveRecord
         return [
             'id' => 'ID',
             'group' => 'Group',
+            'model' => 'Model',
             'source_id' => 'Source ID',
             'user_id' => 'User ID',
             'sku' => 'Sku',
@@ -107,6 +108,12 @@ class ProductDefault extends ActiveRecord
                     'class' => \common\modules\file\components\FileBehavior::class,
                 ],
                 [
+                    'class' => \common\modules\product\components\ProductBehavior::class,
+                ],
+                [
+                    'class' => \common\components\UrlBehavior::class,
+                ],
+                [
                     'class' => TimestampBehavior::className(),
                     'attributes' => [
                         ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'updated'],
@@ -123,7 +130,7 @@ class ProductDefault extends ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-
+    
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -131,5 +138,46 @@ class ProductDefault extends ActiveRecord
     {
         return $this->hasOne(Sources::className(), ['id' => 'source_id']);
     }
+    
+    /**
+     * 
+     * @param \common\models\Alias $alias
+     * @return \common\models\Alias
+     */
+    public function urlPattern(\common\models\Alias $alias){
+        $alias->alias = URLify::url($this->titlePattern()) .'-'. $this->id;        
+        $alias->groupAlias = URLify::url($this->title);
+        $link = [];
+        $link = array_column($this->catalog, 'transliteration');
+        $alias->prefix = implode('/', $link);
 
+        return $alias;
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function shortPattern(){
+        $terms = ArrayHelper::index($this->terms, 'vid');
+        $short = [];
+        $short[] = 'диагональ: '.ArrayHelper::getValue($terms, '32.name') . '"'; // display
+        $short[] = ArrayHelper::getValue($terms, '36.name'); // OC
+        $short = array_filter($short);
+        return implode(',', $short);
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function titlePattern(){
+        $terms = ArrayHelper::index($this->terms, 'vid');
+        $title = [];
+        $title[] = $this->title;
+        $title[] = ArrayHelper::getValue($terms, '36.name'); // OC
+        $title[] = ArrayHelper::getValue($terms, '31.name'); // color
+        $title = array_filter($title);
+        return implode(' ', $title);
+    }
 }

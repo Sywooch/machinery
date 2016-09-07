@@ -5,7 +5,7 @@ namespace console\controllers;
 use Yii;
 use yii\console\Controller;
 use common\modules\import\models\Sources;
-use common\modules\import\Parser;
+use common\modules\import\ParserFactory as Parser;
 
 
 /**

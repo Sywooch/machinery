@@ -16,7 +16,7 @@ class CartHelper
      * @return string
      */
     public static function getBuyButton($product){
-       return Html::button ( Yii::$app->params['catalog']['buyButtonText'], [
+       return '<div class="buy-btn-conteiner">'.Html::button ( Yii::$app->params['catalog']['buyButtonText'], [
            'entityId' => $product->id,
            'entity' => ModelHelper::getModelName($product),
            'class' => [
@@ -25,7 +25,7 @@ class CartHelper
                 'buy-button',
                 'buy-button-'.$product->id
             ]
-       ]);
+       ]).'</div>';
     }
     
     public function getConfirmModal(){

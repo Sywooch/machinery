@@ -84,17 +84,17 @@ class FileBehavior extends Behavior
     
     /**
      * 
-     * @param string $field
      * @return object
      */
-    protected function getFiles($field = ''){
+    public function getFiles(){
          return $this->owner->hasMany(File::className(), ['entity_id' => 'id'])
                  ->where(['model'=>  ModelHelper::getModelName($this->owner)])
-                 ->andFilterWhere(['field' => $field])
                  ->orderBy([
                      'delta' => SORT_ASC
                  ]);
     }
+    
+    
 }
 
 ?>

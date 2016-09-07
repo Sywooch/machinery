@@ -2,7 +2,6 @@
 
 namespace frontend\modules\catalog\helpers;
 
-use yii\helpers\Html;
 use yii\base\InvalidParamException;
 use common\modules\taxonomy\models\TaxonomyItems;
 
@@ -26,7 +25,19 @@ class CatalogHelper {
             throw new InvalidParamException(\Yii::t('yii', 'Model not fount.'));
         }
     }
-    
+
+    /**
+     * @param int $id
+     * @return string
+     */
+    public function getModelByTermId($id){
+
+        if(isset(\Yii::$app->params['catalog']['models'][$id])){
+            return new \Yii::$app->params['catalog']['models'][$id];
+        }
+        return false;
+    }
+
     /**
      * 
      * @param string $name
@@ -35,7 +46,7 @@ class CatalogHelper {
     public function getModelByName($name){
         foreach(\Yii::$app->params['catalog']['models'] as $model){
             if(false !== strrpos($model, $name)){
-                return $model;
+                return new $model();
             }
         }
         return false;
@@ -49,73 +60,7 @@ class CatalogHelper {
     public function getCatalogIdByModel($model){
         return array_search(get_class($model), \Yii::$app->params['catalog']['models']);
     }
-    
-    /**
-     * 
-     * @param TaxonomyItems $taxonomyItem
-     * @return []
-     */
-    public function getBreadcrumb(TaxonomyItems $taxonomyItem, $childId = 0,  &$breadcrumb = []){
-        if($taxonomyItem->pid){
-            self::getBreadcrumb($taxonomyItem->parent,$taxonomyItem->id, $breadcrumb);
-        }
-        if($childId){
-            $breadcrumb[] = ['label' => Html::encode($taxonomyItem->name), 'url' => $taxonomyItem->transliteration];
-        }else{
-            $breadcrumb[] = Html::encode($taxonomyItem->name);
-        }
-        return $breadcrumb;
-    }
-    
-    
-    /**
-     * 
-     * @param TaxonomyItems $term
-     * @param array $filter
-     */
-    public static function addId(TaxonomyItems $term, array &$filter){
-
-        $finded = false;
-        
-        foreach($filter as $vocabularyId => $value){
-            
-            if($vocabularyId != $term->vid){
-                continue;
-            }
-            
-            $finded = true;
-               
-            if(is_array($value)){
-                $filter[$vocabularyId][] = $term;
-            }elseif($value instanceof TaxonomyItems){
-                $filter[$vocabularyId] = [$value, $term];
-            }
-        }
-        
-        if(!$finded){
-            $filter[$term->vid] = $term;
-        }
-    }
-    
-    /**
-     * 
-     * @param TaxonomyItems $term
-     * @param array $filter
-     * @return boolean
-     */
-    public static function clearId(TaxonomyItems $term, array &$filter){
-
-        foreach($filter as $id => $value){
-            if(is_array($value)){
-               return self::clearId($term, $filter[$id]);
-            }elseif($value instanceof TaxonomyItems && $value->id == $term->id){
-                unset($filter[$id]);
-                return true;
-            }
-        }
-        return false;
-    }
-    
+ 
     /**
      * 
      * @param array $params
@@ -128,5 +73,19 @@ class CatalogHelper {
         }
         return $params;
     }
-    
+
+
+    /**
+     * @param array $items
+     * @param int $vocabularyId
+     * @return array
+     */
+    public static function getItemByVocabularyIdOne(array $items, $vocabularyId){
+        foreach($items as $item){
+            if($item['vid'] == $vocabularyId){
+                return $item;
+            }
+        }
+        return [];
+    }
 }

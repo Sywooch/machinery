@@ -75,16 +75,17 @@ class TaxonomyItemsSearch extends TaxonomyItems
      * 
      * @param string $name
      * @param int $vocabularyId
+     * @param int $parentId
      * @return []
      */
-    public function getItemsByName($name, $vocabularyId = null){
+    public function getItemsByName($name, $vocabularyId = null, $parentId = null){
         return (new \yii\db\Query())
             ->select(['t.id', 't.pid', 't.vid', 't.name', 'v.name as vocabulary'])
             ->from(TaxonomyItems::TABLE_TAXONOMY_ITEMS.' t')
             ->innerJoin(TaxonomyVocabulary::TABLE_TAXONOMY_VOCABULARY.' v', 't.vid = v.id')
             ->where(['like', 't.name', $name]) 
-            ->andFilterWhere(['vid' => $vocabularyId])         
-            ->indexBy('id')    
+            ->andFilterWhere(['vid' => $vocabularyId, 'pid' => $parentId])         
+            ->indexBy('id')
             //->orderBy(['weight' => SORT_ASC])
             ->all();  
     }

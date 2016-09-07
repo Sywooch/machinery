@@ -4,10 +4,11 @@ namespace frontend\modules\catalog\controllers;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use common\modules\file\models\File;
 use frontend\modules\catalog\components\FilterParams;
-use frontend\modules\product\models\ProductSearch;
+use common\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\modules\taxonomy\models\TaxonomyItemsSearch;
+use common\modules\taxonomy\helpers\TaxonomyHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
 
 /**
@@ -28,6 +29,16 @@ class DefaultController extends Controller
             ],
         ];
     }
+    
+    public function actionCatalog(){
+
+        $taxonomyItemsSearch = new TaxonomyItemsSearch();
+        $models = $taxonomyItemsSearch->getItemsByVid(Yii::$app->params['catalog']['vocabularyId']);
+        
+        return $this->render('catalog',[
+            'menuItems' => TaxonomyHelper::tree($models),
+        ]);
+    }
 
     /**
      *
@@ -36,49 +47,48 @@ class DefaultController extends Controller
     public function actionIndex(FilterParams $filter)
     {   
         $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
-
-        if(!isset($filter->index[$catalogVocabularyId]) || !($filter->index[$catalogVocabularyId] instanceof TaxonomyItems)  ){
+        $catalogTerms = $filter->index[$catalogVocabularyId];
+        $catalogMain = array_shift($catalogTerms);
+        $catalogSub = array_shift($catalogTerms);
+        
+        if(!$catalogMain){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
-
-        $term = $filter->index[$catalogVocabularyId];
-
-        if(0 && !$term->pid){
+        
+        $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($catalogMain));
+        if(!$catalogSub){
             $childrensTerms = TaxonomyItems::findAll([
-                'vid' => $term->vid,
-                'pid' => $term->id
+                'vid' => $catalogMain->vid,
+                'pid' => $catalogMain->id
             ]); 
             
             if($childrensTerms){
                 $items = [];
                 foreach($childrensTerms as $childrenTerm){
-                    $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($childrenTerm));
+                    $products = $searchModel->getProducstByIds($searchModel->getCategoryMostRatedItems($childrenTerm));
                     $items[$childrenTerm->id] = [
                         'term' => $childrenTerm,
-                        'dataProvider' => $searchModel->getCategoryMostRatedItems($childrenTerm)
+                        'products' => $products
                     ];
                 }
                 return $this->render('categories',[
-                    'current' => $term,
+                    'parent' => $catalogMain,
                     'items' => $items
                 ]);
             }
         }
-
-        $searchModel = new ProductSearch(CatalogHelper::getModelByTerm($term));
+        
         $dataProvider = $searchModel->searchItemsByFilter($filter);
-        $products = $dataProvider->products;
-        $files = File::getFilesBatch($products, 'photos');
+        $products = $searchModel->getProducstByIds($dataProvider->getKeys());
         
         return $this->render('index',[
-            'current' => $term,
+            'parent' => $catalogMain,
+            'current' => $catalogSub,
             'dataProvider' => $dataProvider,
             'products' => $products,
-            'files' => $files,
             'search' => $searchModel,
         ]);
         
     }
 
-    
 }

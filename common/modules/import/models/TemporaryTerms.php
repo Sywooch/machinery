@@ -22,9 +22,9 @@ class TemporaryTerms extends \yii\base\Model
     public function rules()
     {
         return [
-            [['id', 'vocabulary_name', 'name'], 'required'],
+            [['id', 'vocabulary_name', 'name', 'transliteration'], 'required'],
             [['id', 'vocabulary_name'], 'string', 'max' => 20],
-            [['name'], 'string', 'max' => 50]
+            [['name', 'transliteration'], 'string', 'max' => 50]
         ];
     }
     
@@ -36,8 +36,8 @@ class TemporaryTerms extends \yii\base\Model
 
     public function fill(){
         Yii::$app->db->createCommand('
-             INSERT IGNORE INTO '.self::TABLE_TMP_TERMS.' (id, pid, vid, vocabulary_name, name)'
-                . '  SELECT t.id, t.pid, t.vid, v.name, t.name FROM '.TaxonomyItems::TABLE_TAXONOMY_ITEMS.' t '
+             INSERT IGNORE INTO '.self::TABLE_TMP_TERMS.' (id, pid, vid, vocabulary_name, name, transliteration)'
+                . '  SELECT t.id, t.pid, t.vid, v.name, t.name, t.transliteration FROM '.TaxonomyItems::TABLE_TAXONOMY_ITEMS.' t '
                 . 'INNER JOIN '.TaxonomyVocabulary::TABLE_TAXONOMY_VOCABULARY.' v ON v.id = t.vid'
                 )->execute();
     }
@@ -51,7 +51,8 @@ class TemporaryTerms extends \yii\base\Model
                 `vid` INT(11) NOT NULL,
                 `vocabulary_name` VARCHAR(50) NOT NULL,
                 `name` VARCHAR(50) NOT NULL,
-                UNIQUE INDEX `v_i_n` (`vocabulary_name`, `name`)
+                `transliteration` VARCHAR(50) NOT NULL,
+                 UNIQUE INDEX `v_i_n` (`vocabulary_name`, `name`)
             )
             ENGINE=MEMORY
             ROW_FORMAT=FIXED')
@@ -63,7 +64,7 @@ class TemporaryTerms extends \yii\base\Model
             return [];
         }
         $query = (new \yii\db\Query())
-            ->select(['id', 'pid', 'vid', 'name', 'vocabulary_name'])
+            ->select(['id', 'pid', 'vid', 'name', 'vocabulary_name', 'transliteration'])
             ->from(self::TABLE_TMP_TERMS);
             $where = [];
             foreach($data as $vocabulary => $terms){

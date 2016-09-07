@@ -21,6 +21,16 @@ class ItemsController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'update', 'view', 'create', 'delete', 'hierarchy','terms-ajax'],
+                        'roles' => ['admin'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -169,12 +179,12 @@ class ItemsController extends Controller
         ]);
     }
     
-    public function actionTermsAjax($vid = null, $name, $exeptId = null){
+    public function actionTermsAjax($vocabularyId = null, $name, $exeptId = null){
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
         $taxonomyItemsSearch = new TaxonomyItemsSearch();
-        $terms = $taxonomyItemsSearch->getItemsByName($name);
+        $terms = $taxonomyItemsSearch->getItemsByName($name, $vocabularyId, 0);
         
         if(empty($terms)){
             return ['results' => [] ];
