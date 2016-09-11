@@ -2,6 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\bootstrap\Modal;
+use yii\jui\AutoComplete;
+use yii\helpers\Url;
+use yii\web\JsExpression;
+use common\modules\product\PromoAsset;
+use common\helpers\ModelHelper;
+
+PromoAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\ProductDefault */
@@ -23,8 +31,62 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-    </p>
+        
+        <?php
+            Modal::begin([
+                'header' => '<h2>Add promo code</h2>',
+                'toggleButton' => ['label' => 'Promo','class' => 'btn btn-primary'],
+            ]);
+        ?>    
 
+        <?=AutoComplete::widget([
+            'name'=>'name',
+            //'model' => $promoCodes,
+           // 'attribute' => 'code',
+            'clientOptions' => [
+                    'source' =>Url::toRoute('/product/promo-codes/find-ajax'),
+                    'dataType'=>'json',
+                    'autoFill'=>true,
+                    'minLength' => '1',
+                    'select' =>new JsExpression("function(event, ui) {
+                        this.value = ui.item.name + 'бл. ' + ui.item.blok_num;
+                    }"),
+            ],
+            'options'=>[
+                'id' => 'add-code',
+                'class'=>'form-control',
+                'placeholder' => 'AAA-AAA-AAA'
+            ]
+        ]);
+        ?> 
+        <br/>
+        <div class="form-group">
+            <?= Html::submitButton( 'add', ['class' =>  'btn btn-primary', 'onClick' => "promo.add($('#add-code'),'".$model->id."','".ModelHelper::getModelName($model)."');"]) ?>
+        </div>
+        <?php Modal::end(); ?>
+    </p>
+    
+    <?php if(isset($model->promoItem)):?>
+    <?php
+        $code = $model->promoItem->code;
+        echo DetailView::widget([
+            'model' => $code,
+            'attributes' => [
+                'id',
+                'code',
+                'count',
+                'discount',
+                'time',
+                [
+                    'label'  => 'action',
+                    'value'  => Html::a("view", ['/product/promo-products/view', 'id' => $model->promoItem->id]),
+                    'format'=>'raw'
+                ],
+            ],
+        ]); 
+  
+    ?>
+    <?php endif;?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -41,8 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated',
             'title',
             'short',
-            'description:ntext',
-            'data:ntext',
+            'description:ntext'
         ],
     ]) ?>
 

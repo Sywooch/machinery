@@ -18,6 +18,11 @@ class ModelHelper {
        return substr($class, strrpos($class, '\\') + strlen('\\'));
     }
     
+    public static function getModelClass($name){
+        $model = '\\backend\\models\\' . $name;
+        return $model::className();
+    }
+
     public static function getFields($model){
         return [];
     }

@@ -1,9 +1,18 @@
 $( document ).ready(function() {
+    front.init();
     subCategory.init();
-    
 });
 
-
+var front = [];
+front.init = function(){
+    $('#front-tabs-1 a').click(function(){
+        $(this).parent().find('a').removeClass('active');
+        $(this).addClass('active');
+        $('.tab-catalog-category').removeClass('active');
+       
+        $('#'+$(this).attr('data-tab')).addClass('active');
+    });
+}
 var subCategory = [];
 subCategory.init = function(){
     $('.sub-menu__items').scrollNav({

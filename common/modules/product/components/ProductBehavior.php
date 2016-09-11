@@ -31,9 +31,9 @@ class ProductBehavior extends Behavior
             $this->owner->user_id = Yii::$app->user->id;
         }
         
-        if(1 || !$this->owner->characteristic_table){
-            $this->owner->characteristic_table = json_encode(ProductHelper::getCharacteristicsByTerms($terms));
-        }  
+        if(!$this->owner->features){
+            $this->owner->features = json_encode(ProductHelper::getCharacteristicsByTerms($terms));
+        } 
     }
     
     public function getFeature(){

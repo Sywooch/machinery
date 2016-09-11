@@ -90,6 +90,13 @@ return [
                 ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
             ],
 	],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@frontend/views/user'
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

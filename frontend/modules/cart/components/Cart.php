@@ -15,15 +15,25 @@ class Cart extends Object
     
     public function __construct($config = [])
     {
-        //$this->_order = $order;
-       // $this->_order->loadDefaultValues();
-
         if (!empty($config)) {
             Yii::configure($this, $config);
         }
         $this->init();
     }
     
+    /**
+     * 
+     * @param OrdersItems $item
+     * @return boolean
+     */
+    public function isPromoItem(OrdersItems $item){
+        if(isset($item->origin->promoCode) && isset($this->_order->promo[$item->origin->promoCode->id])){
+            return true;
+        }
+        return false;
+    }
+
+
     /**
      * 
      * @param boolean $reload
@@ -73,7 +83,7 @@ class Cart extends Object
         if(!$this->_order){
             $this->create();
         }else{
-            foreach($this->_order->ordersItems as $item){
+            foreach($this->_order->items as $item){
                 if($item->entity_id == $entity->id && $item->model == ModelHelper::getModelName($entity)){
                     $workItem = $item;
                     $workItem->count++;

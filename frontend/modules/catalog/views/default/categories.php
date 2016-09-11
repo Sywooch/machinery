@@ -26,22 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="category__item">
                 <h2><a href="/<?=$parent->transliteration?>/<?=$item['term']->transliteration?>"><?=Html::encode($item['term']->name);?></a></h2>
                 <?php foreach($item['products'] as $product):?>
-                <div class="item">
-                    <div>
-                        <?php if(($file = ArrayHelper::getValue($product->files, '0'))):?>
-                            <?=Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130')),['/'.$product->url->alias]);?>
-                        <?php endif;?>
-                    </div>
-                    <?=Html::a(Html::encode($product->title), ['/'.$product->url->alias],['class'=>'title']); ?>
-                    <?= StarRating::widget([
-                            'name' => 'rating_'.$product->id,
-                            'value' => $product->groupRating,
-                            'pluginOptions' => ['displayOnly' => true, 'size' => 'xs']
-                        ]);
-                    ?>
-                    <div class="price"><?php echo \Yii::$app->formatter->asCurrency($product->price); ?></div>
-                    <div><?php echo CartHelper::getBuyButton($product);?></div>
-                </div>
+                <?=$this->render('_itemB',[
+                    'product' => $product
+                ]);?>
                 <?php endforeach;?>
             </div>
         <?php endforeach;?>

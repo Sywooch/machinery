@@ -18,6 +18,25 @@ body {
     padding: 0 0 60px;
     margin-left: 220px;
 }
+.btn-group.custom .btn{
+    padding: 4px 12px;
+}
+.btn-group.custom .btn:hover{
+    background-color: #f37f00;
+    color: #fff;
+    border-color: #f37f00;
+}
+.btn-group.custom .btn.active{
+    background-color: #f37f00;
+    color: #fff;
+    border-color: #f37f00;
+    box-shadow: none;
+}
+.form-control {
+    padding: 4px 12px;
+    height: auto;
+    border-radius: 2px;
+}
 .pagination li a{
     color: #000;
     font-weight: bold;
@@ -149,21 +168,6 @@ a:hover{
   background: none !important;
 }
 
-/* cart */
-
-#cart-block-widget{ float: left; height: 64px; border-left: 1px solid #eee; padding: 20px;}
-.mif-shopping-basket{ font-size: 24px; color: #f37f00; float: left; margin-right: 10px; }
-.cart-items{ line-height: 2; font-style: italic; line-height: 2; }
-#cart-block-widget a{
-     border-color: rgba(35,82,124,.3);
-}
-.cart-total{ 
-    color: #f37f00; 
-    font-weight: bold;
-    font-size: 13px; 
-    line-height: 2;
-    margin-left: 8px;
-}
 /* sub menu */
 
 .scroll-nav {
@@ -398,6 +402,15 @@ aside section .inline{
     font-size: 14px;
     margin-bottom: 20px;
 }
+.catalog-category img{
+    max-height: 100px;
+}
+.catalog-category a.img{
+    text-align: center;
+    display: block;
+    width: 80%;
+    border: none;
+}
 .catalog-category h2{
     margin-top: 0px;
     margin-bottom: 30px;
@@ -424,6 +437,34 @@ aside section .inline{
     width: 200px;
     float: left;
     overflow: hidden;
+    margin: 0px 10px;
+}
+.product-status{
+    display: block;
+    height: 20px;
+    font-size: 12px;
+    color: #fff;
+    overflow: hidden;
+    margin-top: 6px;
+}
+.product-status span{
+    display: block;
+    float: left;
+    margin-right: 4px;
+    padding: 1px 4px;
+    
+}
+.product-status span.top-100{
+    background-color: #f37f00;
+}
+.product-status span.akciya{
+    background-color: #f37f00;
+}
+.product-status span.novinka{
+    background-color: #acbc16;
+}
+.product-status span.hit{
+    background-color: #a43a8d;
 }
 .catalog-category .title{
     display: block;
@@ -431,12 +472,24 @@ aside section .inline{
     border: 0px;
     text-decoration: underline;
     font-size: 16px;
-    margin: 10px 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .catalog-category .price{
     color: #f37f00;
     font-size: 18px;
     margin-bottom: 6px;
+    float: left;
+}
+.catalog-category .old_price{
+    float: left;
+    font-size: 16px;
+    color: #999;
+    margin-left: 10px;
+    margin-top: 2px;
+}
+.catalog-category .buy-btn-conteiner{
+    clear: both;
 }
 .catalog-category .buy-button{
     background-color: #fff;
@@ -610,5 +663,84 @@ aside section .inline{
 .slider.slider-horizontal .slider-track-low, .slider.slider-horizontal .slider-track-high {
     height: 40%;
     top: 2px;
+}
+/* cart */
+
+#cart-block-widget{ float: right; height: 64px; border-left: 1px solid #eee; padding: 20px;}
+.mif-shopping-basket{ font-size: 24px; color: #f37f00; float: left; margin-right: 10px; }
+.cart-items{ line-height: 2; font-style: italic; line-height: 2; }
+#cart-block-widget a{
+     border-color: rgba(35,82,124,.3);
+}
+.cart-total{ 
+    color: #f37f00; 
+    font-weight: bold;
+    font-size: 13px; 
+    line-height: 2;
+    margin-left: 8px;
+}
+
+/* user */
+.user-page{
+    margin-top: 20px;
+
+}
+.user-page form{
+    overflow: hidden;
+}
+.user-page button{
+    float: left;
+    font-size: 16px;
+    width: auto;
+    min-width: 80px;
+}
+.user-page .auth-clients{
+    margin: 0px;
+}
+.user-page .form-control{
+    border-radius: 0px;
+
+}
+.login{
+    float: right;
+    height: 64px;
+    border-left: 1px solid #eee;
+    padding: 20px;
+    line-height: 2;
+    overflow: hidden;
+}
+
+.user-page {
+    background-color: #f8f7f5;
+    padding: 20px;
+    max-width: 600px;
+    margin-left: -15px;
+}
+.user-page label{
+    font-weight: normal;
+}
+.user-page .links{
+    float: right;
+    margin-top: -28px;
+}
+.login-page .links{
+    float: none;
+    margin-top: 15px;
+}
+#login-form{
+    max-width: 400px;
+}
+/* index */
+.site-index{
+    margin-top: 20px;
+}
+.site-index .catalog-category{
+    margin-top: 20px;
+}
+.site-index .tab-items.catalog-category{
+   display: none; 
+}
+.site-index .tab-items.catalog-category.active{
+    display: block;
 }
 

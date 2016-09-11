@@ -76,8 +76,8 @@ class OrdersItems extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getOrigin()
-    {
+    {        
         $model = '\\backend\\models\\' . $this->model;
-        return $this->hasOne($model, ['id' => 'entity_id']);
+        return $this->hasOne($model, ['id' => 'entity_id'])->with(['promoCode']);
     }
 }

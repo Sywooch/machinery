@@ -5,6 +5,8 @@ namespace common\modules\orders\models;
 use Yii;
 use \yii\db\ActiveRecord;
 use common\modules\orders\widgets\delivery\DeliveryFactory;
+use common\helpers\ModelHelper;
+use common\modules\product\models\PromoCodes;
 /**
  * This is the model class for table "orders".
  *
@@ -99,9 +101,11 @@ class Orders extends ActiveRecord
         $this->price = 0;
         $this->count = 0;
         $this->data = json_encode($this->_data);
-        foreach($this->ordersItems as $item){
+        
+        foreach($this->items as $item){
             $this->count += $item->count;
-            $this->price += $item->price * $item->count;
+            $price = Yii::$app->cart->isPromoItem($item) ? $item->origin->promoPrice : $item->price;
+            $this->price += $price * $item->count;
         } 
         return parent::beforeSave($insert);
     }
@@ -110,7 +114,7 @@ class Orders extends ActiveRecord
         $this->_data = json_decode($this->data);
     }
 
-
+    
     /**
      * @inheritdoc
      */
@@ -149,9 +153,21 @@ class Orders extends ActiveRecord
     /** 
      * @return \yii\db\ActiveQuery
      */
-    public function getOrdersItems()
+    public function getItems()
     {
-        return $this->hasMany(OrdersItems::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrdersItems::className(), ['order_id' => 'id'])->where([
+            'NOT IN', 'model', [ModelHelper::getModelName(PromoCodes::class)]
+        ])->with('origin');
+    }
+    
+    /** 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPromo()
+    {
+        return $this->hasMany(OrdersItems::className(), ['order_id' => 'id'])->where([
+            'model' => ModelHelper::getModelName(PromoCodes::class)
+        ])->indexBy('entity_id');
     }
     
     /** 

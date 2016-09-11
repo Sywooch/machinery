@@ -81,6 +81,10 @@ class FilterParams extends Object {
         return false;
     }
     
+    /**
+     * 
+     * @param TaxonomyItems $term
+     */
     public function add(TaxonomyItems $term){
         if(!isset($this->_index[$term->vid])){
             $this->_index[$term->vid] = [];
@@ -88,6 +92,11 @@ class FilterParams extends Object {
         $this->_index[$term->vid][$term->id] = $term;
     }
     
+    /**
+     * 
+     * @param TaxonomyItems $term
+     * @return boolean
+     */
     public function isExists(TaxonomyItems $term){
         foreach($this->_index as $terms){
             if(isset($terms[$term->id])){

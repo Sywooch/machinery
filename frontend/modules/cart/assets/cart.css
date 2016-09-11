@@ -1,4 +1,159 @@
+/* cart */
+
+.cart-empty{
+
+}
+.cart-page{
+    margin-left: -30px;
+}
+.cart-page .cbx-container{
+    float: left;
+    margin-right: 30px;
+}
+.cart-page .cbx-xs{
+    border: 2px solid #f37f00
+}
+.cart-page h1{
+    margin-left: 15px;
+}
+.cart-page .header{
+
+    padding-right: 10px;
+    height: 50px;
+    background-color: #faf7f0;
+    margin: 0px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border: none;
+}
+.cart-item{
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.cart-item-remove{
+    text-decoration: none;
+    color: #ccc;
+    float: right;
+    margin-left: 20px;
+    border:none;
+    font-weight: normal;
+    font-size: 14px;
+    margin-top: 10px;
+    opacity: 0;
+}
+.cart-item:hover .cart-item-remove{
+    opacity: 1;
+}
+.cart-item .info{
+    margin-top: 10px;
+    font-size: 14px;
+}
+#multi-delete-button{
+    margin-top: -6px;
+    padding: 4px 12px;
+    display: none;
+    margin-left: 10px;
+}
+.cart-item .info .sku{
+    font-size: 13px; 
+}
+.cart-item .info .sku .lb{
+    margin-right: 10px;
+    color: #000;
+    text-transform: capitalize;
+}
+.cart-item .item-total{
+    font-weight: 700;
+    float: right;
+    font-size: 15px;
+    line-height: 2.4;
+}
+.cart-item .count-container {
+    width: 90px;
+    float: left;
+}
+.cart-item .count-container .input-group-addon{
+    background: none;
+    border:none;
+    font-size: 14px;
+}
 .order-panel{
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    border-radius: 0px;
+    background-color: #282828;
+    color: #fff;
+    border:none;
+    margin-top: 20px;
+    font-size: 16px;
+}
+.order-panel .order-panel-total{
+    overflow: hidden;
+    padding: 10px 20px;
+}
+.order-panel .order-panel-total .lb{
+    line-height: 3;
+}
+.order-panel-info{
+    padding: 20px 20px;
+    background-color: #565656;
+    color: #C7C7C7;
+}
+.order-panel-info a{
+    text-decoration: underline;
+    color: #fff;
+}
+.order-panel-info a:hover{
+    color: #ccc;
+}
+.order-panel .cart-total{
+    font-size: 24px;
+    float: right;
+}
+
+.order-panel .panel-body .btn-primary{
+    background-color: #f37f00;
+    border-color: #f37f00;
+    font-size: 18px;
+}
+.order-panel .panel-body .btn-primary:hover{
+    background-color: #ff981f;
+}
+
+#promo-code{
+padding: 0px 20px;
+overflow: hidden;
+}
+#promo-code label{
+    font-weight: normal;
+}
+#promo-code .form-group{ float: left;}
+#promo-code .form-control{
+   padding: 4px 12px;
+   height: auto;
+   border-radius: 2px;
+}
+#promo-code button{
+    margin-top: 27px;
+    margin-left: 10px;
+    padding: 4px 12px;
+    border-radius: 2px;
+}
+
+.used-promo-code{
+    display: block;
+    clear: both;
+    font-size: 12px;
+    color: #ccc;
+    margin-right: 32px;
+    text-align: right;
+}
+.item-old-total{
+
+    color: #000;
+    text-decoration: line-through;
+    font-size: 12px;
+    display: block;
+    text-align: right;
+    margin-right: 32px;
+    margin-top: -10px;
+    clear: both;
 }

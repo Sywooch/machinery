@@ -22,6 +22,9 @@ class ProductRepository extends \backend\models\ProductSearch
      * @return mixed
      */
     public function getProducstByIds(array $ids){
+        if(empty($ids)){
+            return [];
+        }
         $model = $this->_model;
         return $model::find()->where(['id' => $ids])
                 ->with([
@@ -125,6 +128,27 @@ class ProductRepository extends \backend\models\ProductSearch
                         ->all();
     }
     
+    /**
+     * 
+     * @param TaxonomyItems $status
+     * @param int $limit
+     * @return []
+     */
+    public function getItemsByStatus(TaxonomyItems $status, $limit = 10){
+        
+        $indexModel = $this->_indexModel;
+        return (new \yii\db\Query())
+                        ->select('id')
+                        ->from($this->_model->tableName())
+                        ->innerJoin($indexModel::tableName(), 'entity_id = id')
+                        ->where([
+                            'term_id' => $status->id
+                        ])
+                        ->limit($limit)
+                        ->column();
+    }
+
+
     /**
      * 
      * @param array $status

@@ -48,8 +48,14 @@ class Url{
         ;
  
         if(($paramsFilter = $this->filter->parseUrl($pathInfo)) !== false){
-            foreach($paramsFilter['index'] as $term){
-                $this->filterInstance->add($term);
+            foreach($paramsFilter['index'] as $terms){
+                if(is_array($terms)){
+                    foreach($terms as $term){
+                        $this->filterInstance->add($term); 
+                    }
+                }else{
+                   $this->filterInstance->add($terms); 
+                } 
             }
             $this->filterInstance->priceMin = $paramsFilter['priceMin'];
             $this->filterInstance->priceMax = $paramsFilter['priceMax'];

@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\modules\product\models\PromoCodes;
 
 /**
  * ProductDefaultController implements the CRUD actions for ProductDefault model.
@@ -62,10 +63,10 @@ class ProductDefaultController extends Controller
      */
     public function actionView($id)
     {
-        $m = $this->findModel($id);
-        
+        $promoCodes = new PromoCodes();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'promoCodes' => $promoCodes
         ]);
     }
 
@@ -98,10 +99,12 @@ class ProductDefaultController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+   
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+         //   print_r($model->getErrors()); exit('s');
             return $this->render('update', [
                 'model' => $model,
             ]);
