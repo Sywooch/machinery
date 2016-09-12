@@ -31,18 +31,6 @@ return [
         'request' => [
             'baseUrl' => '',
 	],
-        'formatter' => [
-            'class' => 'frontend\components\Formatter',
-            'dateFormat' => 'dd.MM.yyyy',
-            'datetimeFormat' => 'dd/MM/yy hh:mm',
-            'thousandSeparator' => ',',
-            'decimalSeparator' => '.',
-            'currencyCode' => 'UAH',
-            'numberFormatterOptions' => [
-                NumberFormatter::MIN_FRACTION_DIGITS => 0,
-                NumberFormatter::MAX_FRACTION_DIGITS => 2,
-            ]
-        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

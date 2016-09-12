@@ -25,11 +25,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?php // echo $form->field($model, 'email') ?>
+    <?= $form->field($model, 'email') ?>
 
-    <?php // echo $form->field($model, 'phone') ?>
+    <?= $form->field($model, 'phone') ?>
 
-    <?php // echo $form->field($model, 'address') ?>
+    <?= $form->field($model, 'address') ?>
 
     <?php // echo $form->field($model, 'pay') ?>
 
@@ -41,7 +41,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'updated') ?>
 
-    <?php // echo $form->field($model, 'ordered') ?>
+    <?= $form->field($model, 'ordered') ?>
 
     <?php // echo $form->field($model, 'hash') ?>
 

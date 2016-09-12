@@ -12,7 +12,19 @@ return [
             'rules' => [
                 '<action:(login|logout)>' => 'user/security/<action>',
             ],
-        ]
+        ],
+        'formatter' => [
+            'class' => 'frontend\components\Formatter',
+            'dateFormat' => 'dd.MM.yyyy',
+            'datetimeFormat' => 'dd/MM/yy hh:mm',
+            'thousandSeparator' => ',',
+            'decimalSeparator' => '.',
+            'currencyCode' => 'UAH',
+            'numberFormatterOptions' => [
+                NumberFormatter::MIN_FRACTION_DIGITS => 0,
+                NumberFormatter::MAX_FRACTION_DIGITS => 2,
+            ]
+        ],
     ],
     'modules' => [
         'user' => [
@@ -21,6 +33,11 @@ return [
             'confirmWithin' => 21600,
             'cost' => 12,
             'admins' => ['root'],
+            'modelMap' => [
+                'Profile' => 'frontend\models\Profile',
+                'LoginForm' => 'common\models\LoginForm',
+                'RegistrationForm' => 'frontend\models\RegistrationForm',
+            ],
         ],
         'orders' => [
             'class' => 'common\modules\orders\Module',

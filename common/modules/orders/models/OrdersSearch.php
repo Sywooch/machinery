@@ -20,7 +20,7 @@ class OrdersSearch extends Orders
         return [
             [['id', 'user_id', 'count', 'created', 'updated', 'ordered'], 'integer'],
             [['price'], 'number'],
-            [['name', 'email', 'phone', 'address', 'pay', 'delivery', 'comment', 'hash'], 'safe'],
+            [['name', 'email', 'phone', 'address', 'comment', 'status'], 'safe'],
         ];
     }
 
@@ -57,7 +57,7 @@ class OrdersSearch extends Orders
             // $query->where('0=1');
             return $dataProvider;
         }
-
+      
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -67,16 +67,14 @@ class OrdersSearch extends Orders
             'created' => $this->created,
             'updated' => $this->updated,
             'ordered' => $this->ordered,
+            'status' => !$this->status ? null : array_search($this->status, $this->statuses),
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'pay', $this->pay])
-            ->andFilterWhere(['like', 'delivery', $this->delivery])
-            ->andFilterWhere(['like', 'comment', $this->comment])
-            ->andFilterWhere(['like', 'hash', $this->hash]);
+            ->andFilterWhere(['like', 'comment', $this->comment]);
 
         return $dataProvider;
     }

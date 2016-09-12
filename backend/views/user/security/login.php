@@ -1,10 +1,16 @@
 <?php
 
+
 use dektrium\user\widgets\Connect;
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\widgets\ActiveForm;
 use yii\captcha\Captcha;
 
+/**
+ * @var yii\web\View                   $this
+ * @var dektrium\user\models\LoginForm $model
+ * @var dektrium\user\Module           $module
+ */
 
 $this->title = Yii::t('user', 'Sign in');
 $this->params['breadcrumbs'][] = $this->title;
@@ -12,11 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
-<h2>Вход в личный кабинет</h2>
-
-<div class="user-page login-page">
-
-     
+<div class="row">
+    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+            </div>
+            <div class="panel-body">
                 <?php $form = ActiveForm::begin([
                     'id'                     => 'login-form',
                     'enableAjaxValidation'   => false,
@@ -31,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $model,
                     'login',
                     ['inputOptions' => ['autofocus' => 'autofocus', 'class' => 'form-control', 'tabindex' => '1']]
-                )->textInput(['placeholder' => 'Логин / Email']) ?>
+                ) ?>
 
                 <?= $form
                     ->field(
@@ -42,9 +50,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     ->passwordInput()
                     ->label(
                         Yii::t('user', 'Password')
+                        .($module->enablePasswordRecovery ?
+                            ' (' . Html::a(
+                                Yii::t('user', 'Forgot password?'),
+                                ['/user/recovery/request'],
+                                ['tabindex' => '5']
+                            )
+                            . ')' : '')
                     ) ?>
-                <?= $form->field($model, 'rememberMe')->checkbox(['tabindex' => '4']) ?>
-                <hr>
 
                 <?= $form->field($model, 'captcha')->widget(Captcha::className(), [
                         'captchaAction' => ['/site/captcha'],
@@ -52,31 +65,28 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'form-control',
                             'placeholder' => 'Код с картинки',
                         ],
-                ]) ?>
-    
-                
-    
+                ]); ?> 
+
                 <?= Html::submitButton(
-                    'Вход',
-                    ['class' => 'btn btn-default btn-block', 'tabindex' => '3']
+                    Yii::t('user', 'Sign in'),
+                    ['class' => 'btn btn-primary btn-block', 'tabindex' => '3']
                 ) ?>
 
                 <?php ActiveForm::end(); ?>
-    <div class="links">
-        <?php if ($module->enablePasswordRecovery): ?>
-            <p class="">
-                <?= Html::a(Yii::t('user', 'Forgot password?'), ['/user/recovery/request']) ?>
+            </div>
+        </div>
+        <?php if ($module->enableConfirmation): ?>
+            <p class="text-center">
+                <?= Html::a(Yii::t('user', 'Didn\'t receive confirmation message?'), ['/user/registration/resend']) ?>
             </p>
         <?php endif ?>
-
         <?php if ($module->enableRegistration): ?>
-            <p class="">
+            <p class="text-center">
                 <?= Html::a(Yii::t('user', 'Don\'t have an account? Sign up!'), ['/user/registration/register']) ?>
             </p>
         <?php endif ?>
-    </div>
         <?= Connect::widget([
             'baseAuthUrl' => ['/user/security/auth'],
         ]) ?>
- 
+    </div>
 </div>

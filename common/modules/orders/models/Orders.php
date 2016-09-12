@@ -7,6 +7,8 @@ use \yii\db\ActiveRecord;
 use common\modules\orders\widgets\delivery\DeliveryFactory;
 use common\helpers\ModelHelper;
 use common\modules\product\models\PromoCodes;
+use dektrium\user\models\User;
+
 /**
  * This is the model class for table "orders".
  *
@@ -51,7 +53,7 @@ class Orders extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'email', 'phone' , 'address', 'payment', 'delivery'], 'required', 'on' => self::SCENARIO_ORDER],
+            [['name', 'email', 'phone' , 'address', 'payment', 'delivery', 'status'], 'required', 'on' => self::SCENARIO_ORDER],
             [['token'], 'required'],
             [['user_id', 'count', 'created', 'updated', 'ordered'], 'integer'],
             [['price'], 'number'],
@@ -79,17 +81,17 @@ class Orders extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => '№ заказа',
             'user_id' => 'User ID',
             'count' => 'Count',
             'price' => 'Price',
-            'name' => 'Имя и Фамилия',
+            'name' => 'Клиент',
             'email' => 'E-mail',
             'phone' => 'Телефон',
             'address' => 'Address',
             'delivery' => 'Доставка',
             'payment' => 'Pay',
-            'comment' => 'Comment',
+            'comment' => 'Комментарий',
             'created' => 'Created',
             'updated' => 'Updated',
             'ordered' => 'Ordered',
@@ -121,6 +123,19 @@ class Orders extends ActiveRecord
     public function behaviors()
     {
         return [
+                [
+                    'class' => \common\modules\orders\components\StatusBehavior::class,
+                    'statuses' => [
+                            1 => 'Новый',
+                            2 => 'В обработке',
+                            3 => 'Ожидает оплаты',
+                            4 => 'Оплачен',
+                            5 => 'Ожидает доставки',
+                            6 => 'Передан в доставку',
+                            7 => 'Отменен',
+                            8 => 'Завершен',
+                    ]
+                ],
                 [
                     'class' => \yii\behaviors\TimestampBehavior::class,
                     'attributes' => [

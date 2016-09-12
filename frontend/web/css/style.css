@@ -32,6 +32,21 @@ body {
     border-color: #f37f00;
     box-shadow: none;
 }
+
+.btn-orange{
+    background-color: #f37f00;
+    color: #fff;
+}
+.btn-custom{
+    padding: 2px 10px;
+    font-size: 13px;
+}
+
+.btn-orange:hover{
+    color: #fff;
+    background-color: #ff981f;
+}
+
 .form-control {
     padding: 4px 12px;
     height: auto;
@@ -503,6 +518,7 @@ aside section .inline{
     color: #fff;
 }
 
+
 .catalog-list .item{
     display: block;
     overflow: hidden;
@@ -727,8 +743,25 @@ aside section .inline{
     float: none;
     margin-top: 15px;
 }
-#login-form{
-    max-width: 400px;
+#login-form .form-group,#registration-form .form-group{
+    max-width: 300px;
+}
+#registration-form hr, #login-form hr{
+    border-color: #ccc;
+    margin-top: 30px;
+    margin-bottom: 28px;
+}
+#login-form-captcha-image{
+    margin-bottom: 4px;
+    margin-left: 10px;
+}
+#registration-form .hint-block{
+    font-size: 12px;
+}
+.login .popover{
+    top: 95px !important;
+    border-radius: 0px;
+    border-top: 0px;
 }
 /* index */
 .site-index{
@@ -742,5 +775,17 @@ aside section .inline{
 }
 .site-index .tab-items.catalog-category.active{
     display: block;
+}
+.menu-action-items{
+    position: initial;
+}
+#popover-overlay{
+    position: absolute;
+    z-index: 1059;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    display: none;
 }
 

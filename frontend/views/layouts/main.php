@@ -39,19 +39,8 @@ AppAsset::register($this);
         <div class="control row">
             <div class="col-lg-5"><?=SearchForm::widget();?></div>
             <div class="col-lg-2"></div>
-            <div class="col-lg-5 ">
-                
-                <div class="login">
-                    <?php if(Yii::$app->user->id):?>
-                     <a href="/user/<?=Yii::$app->user->id;?>">Профиль</a>
-                    |
-                    <a href="/user/logout" data-method="post">Выход</a>
-                    <?php else:?>
-                     <a href="/login">Войти</a>
-                    |
-                    <a href="/user/register" >Регистрация</a>
-                    <?php endif;?>
-                </div>
+            <div class="col-lg-5 menu-action-items">
+                <?=$this->render('_login');?>
                 <?=CartBlock::widget();?>
             </div>
         </div>

@@ -80,4 +80,8 @@ class OrdersItems extends \yii\db\ActiveRecord
         $model = '\\backend\\models\\' . $this->model;
         return $this->hasOne($model, ['id' => 'entity_id'])->with(['promoCode']);
     }
+    
+    public function getData(){
+        return json_decode($this->entity);
+    }
 }

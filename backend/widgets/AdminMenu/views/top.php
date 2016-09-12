@@ -1,9 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use backend\widgets\AdminMenu\assets\Asset;
-
-Asset::register($this);
+use backend\widgets\AdminMenu\Asset;
 
 ?>
 <div class="widget-sub-menu-block">

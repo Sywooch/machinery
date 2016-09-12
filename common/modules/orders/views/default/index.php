@@ -1,21 +1,51 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $model common\modules\orders\models\Orders */
+/* @var $searchModel app\models\CartOrdersSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Оформление заказа';
-$this->params['breadcrumbs'][] = ['label' => 'Оформление', 'url' => ['/orders']];
+
+
+$this->title = 'Заказы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="orders-create">
+<div class="cart-orders-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php // $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= $this->render('_form', [
-        'model' => $model
-    ]) ?>
+
+
+    <?=
+    GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'id',
+            'name',
+            'email:email',
+            'phone',
+            'address:ntext',
+            'comment:ntext',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'value' => function ($model) {                      
+                        return $model->statuses[$model->status];
+                },
+            ],
+            [ 'class' => 'yii\grid\ActionColumn',
+               'template' => '{view} {delete} ' 
+            ],
+            
+        ],
+    ]);
+    ?>
+            
+                   
 
 </div>

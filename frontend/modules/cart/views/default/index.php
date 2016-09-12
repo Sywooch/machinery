@@ -6,6 +6,7 @@ use frontend\modules\cart\Asset;
 use common\modules\file\helpers\StyleHelper as Style;
 use kartik\checkbox\CheckboxX;
 use common\modules\product\widgets\PromoCode\PromoCodeWidget;
+use common\modules\product\helpers\ProductHelper;
 
 
 Asset::register($this);
@@ -59,6 +60,11 @@ $total = 0;
                 <?= Html::a($img, ['/'.$item->origin->alias->alias, 'id' => $item->entity_id], ['class' => '']); ?>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
+                <span class="product-status ">
+                        <?php foreach(ProductHelper::getStatuses($item->origin->terms) as $status):?>
+                            <span class="<?=$status->transliteration;?>"><?=$status->name;?></span>
+                        <?php endforeach;?>
+                </span>
                 <?= Html::a($item->origin->titleDescription, ['/'.$item->origin->alias->alias, 'id' => $item->entity_id], ['class' => '']); ?>
                 <div class="info">
                     <div class="sku">

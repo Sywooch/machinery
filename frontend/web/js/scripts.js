@@ -1,8 +1,30 @@
 $( document ).ready(function() {
     front.init();
     subCategory.init();
+    user.popoverInit();
+    
 });
 
+var user = [];
+user.popoverInit = function(){
+    
+    $('#popover-overlay').click(function(){
+        $(this).hide();
+        $(".popover-toggle").popover('hide');
+    });
+
+    $(".popover-toggle").popover({
+        html : true,
+         trigger: 'manual',
+        content: function() {
+          return $("#popover-login-content").html();
+        }
+    }).on('show.bs.popover', function () {
+        $('#popover-overlay').show();
+    }).click(function(e) {
+        $(this).popover('toggle');
+    });
+}
 var front = [];
 front.init = function(){
     $('#front-tabs-1 a').click(function(){
@@ -16,7 +38,7 @@ front.init = function(){
 var subCategory = [];
 subCategory.init = function(){
     $('.sub-menu__items').scrollNav({
-        sections: 'h2',
+        sections: 'h2 a',
         subSections: false,
         sectionElem: 'section',
         showHeadline: true,
@@ -31,5 +53,12 @@ subCategory.init = function(){
         insertLocation: 'appendTo',
         arrowKeys: false,
         scrollToHash: true,
+        onRender: function(){
+            $('.scroll-nav__link').unbind().click(function(){
+                var id = $(this).attr('href');
+                location.href = $(id + ' a').attr('href');
+                return false;
+            });
+        }
     });
 }
