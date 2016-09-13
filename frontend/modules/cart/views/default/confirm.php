@@ -1,43 +1,66 @@
 <?php
 
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-use yii\widgets\DetailView;
-use common\modules\orders\helpers\OrdersHelper;
+use frontend\modules\cart\Asset;
+use backend\models\ShopAddressSearch;
 
-/* @var $this yii\web\View */
-/* @var $model common\modules\orders\models\Orders */
+Asset::register($this);
 
-$this->title = 'Оформление заказа';
-$this->params['breadcrumbs'][] = ['label' => 'Оформление', 'url' => ['/orders']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Подтверждение заказа';
+
 ?>
-<div class="orders-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'email',
-            'phone',
-            'address',
-            'payment',
-            'delivery',
-        ],
-    ]) ?>
+<div class="row order-page">
+    <div class="col-lg-8">
+        <h1>Корзина</h1>
+        <ul class="order_steps"><li ><a href="/cart">Сборка заказа</a></li><li><a href="/cart/default/order">Способ и адрес доставки</a></li><li ><a href="/cart/default/payment">Способ оплаты</a></li><li class="selected">Подтверждение и оплата</li></ul>
     
-    <h1><?= Html::tag('h2','Информация по доставке') ?></h1>
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Товары</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+                <?php foreach($model->items as $item):?>
+                    <tr>
+                        <td><?= Html::a($item->origin->titleDescription, ['/'.$item->origin->alias->alias, 'id' => $item->entity_id], ['class' => '']); ?></td>
+                        <td><?=$item->count?> шт.</td>
+                        <td>
+                            <?php if($cart->isPromoItem($item)):?>
+                                <?=  Yii::$app->formatter->asCurrency($item->origin->promoPrice*$item->count);?>
+                            <?php else:?>
+                                <?=  Yii::$app->formatter->asCurrency($item->price*$item->count);?>
+                            <?php endif;?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+      </table>
+        <p><i><span class="red">Внимание!</span> Окончательная стоимость заказа,
+                    если в нем присутствуют товары и/или услуги, участвующие в акции,
+                    будет подтверждена после обработки заказа сотрудником компании.</i>
+        </p>
+        <br/>
+        <div class="grey">
+            <?php $form = ActiveForm::begin([
+                'id' => 'confirm-form'
+            ]); ?>
+            <?=$form->field($model,'comment')->textArea(['placeholder' => 'Дополнительная информация по заказу'])?>
+            <?= Html::submitButton('Оформить заказ', ['class' => 'btn btn-orange-big']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>  
     
-    <?php
-        $deliveryModel = $model->deliveryInfo->getModel();
-    ?>
-    <?= DetailView::widget([
-        'model' => $deliveryModel,
-        'attributes' => array_keys($deliveryModel->attributes),
-    ]) ?>
+    </div>
     
-    <?=Html::a('Оформить',['confirm'], ['class' =>'btn btn-primary pull-right', 'data-method' => 'post'])?>
-
+    <div class="col-lg-4">
+        <div class="order-panel">
+               
+                <?php if($model->delivery == 'DeliveryDefault'):?>
+                    <?=$this->render('_confirm_map',['model' => $model]);?>
+                <?php endif;?>
+        </div>
+    </div>
 </div>

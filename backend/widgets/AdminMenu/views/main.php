@@ -17,6 +17,7 @@ Asset::register($this);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-asterisk  pull-left"></span>Каталог</span>', ['/product-default'], ['class' => $widget->isActive(['product-default'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-shopping-cart pull-left"></span>Заказы<span class="badge">' . StatusRepository::countStatus([1], Orders::class) . '</span></span>', ['/orders'], ['class' => $widget->isActive(['orders'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-cog  pull-left"></span>Настройка продукта</span>', ['/product/promo-codes'], ['class' => $widget->isActive(['product'])]);
+    echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-map-marker  pull-left"></span>Адреса магазинов</span>', ['/shop-address'], ['class' => $widget->isActive(['shop-address'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-info-sign pull-left"></span>Отчет импорта</span>', ['/import/sources'], ['class' => $widget->isActive(['import'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-list-alt pull-left"></span>Таксономия</span>', ['/taxonomy/vocabulary'], ['class' => $widget->isActive(['taxonomy'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-user pull-left"></span>Пользователи</span>', ['/user/admin'], ['class' => $widget->isActive(['user'])]);

@@ -2,8 +2,17 @@ $( document ).ready(function() {
     front.init();
     subCategory.init();
     user.popoverInit();
-    
+    radio.radioInit();
 });
+
+var radio = [];
+
+radio.radioInit = function(){
+    $('.styled-radio input').change(function(){
+        $('.styled-radio .input').removeClass('checked');
+        $(this).next().addClass('checked');
+    });
+}
 
 var user = [];
 user.popoverInit = function(){

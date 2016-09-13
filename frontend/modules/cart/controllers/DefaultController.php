@@ -39,13 +39,19 @@ class DefaultController extends Controller
         if(!$order->id){
             return $this->redirect(['/cart']);
         }
+        
+        if(Yii::$app->user->id && !$order->name){
+            $order->name = Yii::$app->user->identity->profile->name;
+            $order->phone = Yii::$app->user->identity->profile->phone;
+            $order->email = Yii::$app->user->identity->email;
+        }
 
         if ($order->load(Yii::$app->request->post()) && $order->validate()){
             $delivery = new DeliveryFactory($order->delivery);
             if($delivery->load(Yii::$app->request->post()) && $delivery->validate()){
                 $order->deliveryInfo = $delivery;
                 $order->save();
-                return $this->redirect(['/cart/default/confirm']);
+                return $this->redirect(['/cart/default/payment']);
             }
             foreach($delivery->getErrors() as $errors){
                 foreach($errors as $error){
@@ -58,24 +64,40 @@ class DefaultController extends Controller
             'model' => $order
         ]);
     }
-    
+    public function actionPayment(){
+        $order = Yii::$app->cart->getOrder();
+         $order->scenario = Orders::SCENARIO_PAYMENT;
+        if(!$order->id){
+            return $this->redirect(['/cart']);
+        }
+        if(!$order->payment){
+           $order->payment = 'Default'; 
+        }
+        if ($order->load(Yii::$app->request->post()) && $order->validate()){
+            $order->save();
+            return $this->redirect(['/cart/default/confirm']);
+        }
+        return $this->render('payment', [
+            'model' => $order
+        ]);
+    }
     public function actionConfirm(){
         $order = Yii::$app->cart->getOrder();
 
         if(!$order->id){
             return $this->redirect(['/cart']);
         }
-        
-        if(Yii::$app->request->isPost){
+       
+        if ($order->load(Yii::$app->request->post()) && $order->validate()){
             $order->ordered = true;
+            
             $order->save();
             return $this->redirect(['/cart/default/done']);
         }
         
-        $delivery = new DeliveryFactory($order);
-        $order->delivery = $delivery->getModel()->getDeliveryName();
         return $this->render('confirm', [
-            'model' => $order
+            'model' => $order,
+            'cart' => Yii::$app->cart,    
         ]);
     }
    

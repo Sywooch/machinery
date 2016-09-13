@@ -47,6 +47,11 @@ class DefaultController extends Controller
     {
         return [
             'error' => 'yii\web\ErrorAction',
+            'load' => 
+            [
+                'class' => 'common\modules\orders\widgets\delivery\components\LoadAction',
+                'order' => isset(Yii::$app->cart) ? Yii::$app->cart->getOrder() : null,
+            ],
         ];
     }
    

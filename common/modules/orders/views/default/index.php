@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'email:email',
             'phone',
-            'address:ntext',
+          //  'address:ntext',
             'comment:ntext',
             [
                 'attribute' => 'status',

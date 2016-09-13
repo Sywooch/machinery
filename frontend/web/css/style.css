@@ -12,7 +12,6 @@ body {
     padding-left: 0px;
 }
 .wrap {
-    min-height: 100%;
     height: auto;
     margin: 0 auto -60px;
     padding: 0 0 60px;
@@ -81,15 +80,22 @@ body {
     border-top: 1px solid #ddd;
     padding-top: 20px;
     margin-left: 220px;
+    margin-top: 20px;
+    
 }
 
 h1{
     margin-top: 10px;
     margin-bottom: 20px;
     font-size: 32px;
+    
+    font-size: 187%;
+    line-height: 1.1;
+    font-weight: 400;
 }
 h2{
-    font-size: 28px;
+    font-size: 163%;
+    font-weight: 400;
 }
 
 /* add sorting icons to gridview sort links */
@@ -725,7 +731,9 @@ aside section .inline{
     line-height: 2;
     overflow: hidden;
 }
-
+.login a.popover-toggle{
+    color: #000;
+}
 .user-page {
     background-color: #f8f7f5;
     padding: 20px;
@@ -755,7 +763,7 @@ aside section .inline{
     margin-bottom: 4px;
     margin-left: 10px;
 }
-#registration-form .hint-block{
+ .hint-block{
     font-size: 12px;
 }
 .login .popover{

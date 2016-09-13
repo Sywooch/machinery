@@ -1,37 +1,42 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
+use yii\bootstrap\ActiveForm;
+use yii\widgets\MaskedInput;
 use common\modules\orders\Asset;
 use common\modules\orders\widgets\delivery\Delivery;
 
 Asset::register($this);
 
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="orders-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'orders-form']); ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'payment')->dropDownList([ 'Наличный' => 'Наличный', 'Безналичный' => 'Безналичный', 'При получении' => 'При получении', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'delivery')->widget(Delivery::classname()) ?>
-
-    <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <?php $form = ActiveForm::begin(['id' => 'orders-form', 'layout' => 'horizontal']); ?>
+    <h2>Информация о получателе</h2>
+    <div class="grey">
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'phone')->widget(MaskedInput::className(), [
+            'mask' => '+38(099) 999-99-99',
+        ]); ?>
+        <?= $form->field($model, 'phone2')->widget(MaskedInput::className(), [
+            'mask' => '+38(099) 999-99-99',
+        ]); ?>
+        <?= $form->field($model, 'email')->widget(MaskedInput::className(), [
+            'clientOptions' => [
+                'alias' =>  'email'
+            ],
+        ]) ?>
+    </div> 
+    
+    
+    <h2>Информация о доставке</h2>
+    <div class="delivery">
+        <?= Delivery::widget(['form' => $form,'model' => $model]) ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
+    <?= Html::submitButton('Далее', ['class' => 'btn btn-orange-big']) ?>
+    <?php ActiveForm::end(); ?>    
 
 </div>

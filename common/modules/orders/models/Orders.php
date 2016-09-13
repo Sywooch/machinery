@@ -35,9 +35,9 @@ class Orders extends ActiveRecord
 {
     
     const SCENARIO_ORDER = 'order';
-    
+    const SCENARIO_PAYMENT = 'payment';
+
     public $_deliveryInfo = [];
-    public $_data = [];
     
     /**
      * @inheritdoc
@@ -53,12 +53,13 @@ class Orders extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'email', 'phone' , 'address', 'payment', 'delivery', 'status'], 'required', 'on' => self::SCENARIO_ORDER],
+            [['name', 'phone', 'delivery', 'status'], 'required', 'on' => self::SCENARIO_ORDER],
+            [['payment'], 'required', 'on' => self::SCENARIO_PAYMENT],
             [['token'], 'required'],
             [['user_id', 'count', 'created', 'updated', 'ordered'], 'integer'],
             [['price'], 'number'],
             [['comment'], 'string'],
-            [['name', 'email', 'phone', 'address', 'payment', 'delivery'], 'string', 'max' => 255],
+            [['name', 'email', 'phone', 'phone2', 'address', 'payment', 'delivery'], 'string', 'max' => 255],
             [['token'], 'string', 'max' => 40],
             [['token'], 'unique'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dektrium\user\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -71,7 +72,8 @@ class Orders extends ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_ORDER] = ['name', 'email', 'phone' , 'address', 'comment', 'payment', 'delivery'];
+        $scenarios[self::SCENARIO_ORDER] = ['name',  'phone' ,  'delivery'];
+        $scenarios[self::SCENARIO_ORDER] = ['payment'];
         return $scenarios;
     }
 
@@ -85,9 +87,10 @@ class Orders extends ActiveRecord
             'user_id' => 'User ID',
             'count' => 'Count',
             'price' => 'Price',
-            'name' => 'Клиент',
+            'name' => 'Фио',
             'email' => 'E-mail',
             'phone' => 'Телефон',
+            'phone2' => 'Телефон, если не дозвонимся',
             'address' => 'Address',
             'delivery' => 'Доставка',
             'payment' => 'Pay',
@@ -100,9 +103,15 @@ class Orders extends ActiveRecord
     }
     
     public function beforeSave($insert) {
+        
+        $this->data = json_encode($this->data);
+        
+        if($this->scenario != 'default'){
+            return parent::beforeSave($insert);
+        }
+        
         $this->price = 0;
         $this->count = 0;
-        $this->data = json_encode($this->_data);
         
         foreach($this->items as $item){
             $this->count += $item->count;
@@ -113,9 +122,8 @@ class Orders extends ActiveRecord
     }
     
     public function afterFind(){
-        $this->_data = json_decode($this->data);
+        $this->data = json_decode($this->data);
     }
-
     
     /**
      * @inheritdoc
@@ -147,13 +155,13 @@ class Orders extends ActiveRecord
     }
 
     public function setDeliveryInfo(DeliveryFactory $delivery){
-        unset($this->_data->delivery);
-        $this->_data = (array)$this->_data;
-        $this->_data['delivery'] = $delivery->getData();
+        $data = (array)$this->data;
+        $data['delivery'] = $delivery->getData();
+        $this->data = $data;
     }
     
     public function getDeliveryInfo(){
-        return new DeliveryFactory($this->_data->delivery);
+        return new DeliveryFactory($this->data->delivery);
     }
     
 
@@ -191,6 +199,14 @@ class Orders extends ActiveRecord
     public function getItem($id)
     {
         return $this->hasOne(OrdersItems::className(), ['order_id' => 'id'])->where(['id' => $id])->one(); 
+    }
+    
+    public function getPaymentList(){
+        return [
+            'Default' => 'Наличными при получении',
+            'Card' => 'Банковской картой (онлайн)',
+            'Webmoney' => 'WebMoney (комиссия +2.5%)'
+        ];
     }
     
 }

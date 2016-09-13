@@ -71,8 +71,8 @@ cart.init = function(){
         cart.setCount(this);
         return false;
     });
-    
 }
+
 cart.setCount = function(e){
         var b = $(e);
         var i = b.attr("data-id");
