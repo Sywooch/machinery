@@ -8,9 +8,11 @@ use common\modules\orders\helpers\OrdersHelper;
 use common\modules\orders\models\Orders;
 use common\modules\orders\models\OrdersItems; 
 use common\helpers\ModelHelper;
+use common\modules\product\models\PromoCodes;
 
 class Cart extends Object
 {
+    
     private $_order;
     
     public function __construct($config = [])
@@ -21,19 +23,6 @@ class Cart extends Object
         $this->init();
     }
     
-    /**
-     * 
-     * @param OrdersItems $item
-     * @return boolean
-     */
-    public function isPromoItem(OrdersItems $item){
-        if(isset($item->origin->promoCode) && isset($this->_order->promo[$item->origin->promoCode->id])){
-            return true;
-        }
-        return false;
-    }
-
-
     /**
      * 
      * @param boolean $reload

@@ -36,6 +36,10 @@ body {
     background-color: #f37f00;
     color: #fff;
 }
+.btn-green{
+    background-color: #adbc18;
+    color: #fff;
+}
 .btn-custom{
     padding: 2px 10px;
     font-size: 13px;
@@ -198,6 +202,46 @@ a:hover{
 .scroll-nav.fixed .scroll-nav__wrapper {
   position: fixed;
   top: 60px;
+}
+/* profile */
+.profile-img{
+    float: left;
+    text-align: center;  
+}
+.profile-img img{
+    margin-bottom: 10px;
+}
+.profile-img .file-preview{
+    border:none;
+    padding: 0px;
+}
+.profile-img .file-drop-zone{
+    margin: 0px;
+}
+.profile-img .kv-file-zoom,.profile-img .file-drag-handle,.profile-img .fileinput-remove,.profile-img .file-upload-indicator,.profile-img .kv-upload-progress{
+    display: none;
+}
+.profile-info{
+    margin-left: 40px;
+    float: left;
+     font-size: 15px;
+}
+.profile-info label{
+    width: 100px;
+    font-weight: normal;
+}
+.profile-info .required label{
+    color: #e85222;
+}
+.my-orders .header{
+
+    padding-right: 10px;
+    height: 50px;
+    background-color: #faf7f0;
+    margin: 0px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border: none;
 }
 
 /* product */

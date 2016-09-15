@@ -4,6 +4,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use frontend\modules\cart\Asset;
 use backend\models\ShopAddressSearch;
+use common\modules\orders\helpers\OrdersHelper;
 
 Asset::register($this);
 
@@ -29,11 +30,7 @@ $this->title = 'Подтверждение заказа';
                         <td><?= Html::a($item->origin->titleDescription, ['/'.$item->origin->alias->alias, 'id' => $item->entity_id], ['class' => '']); ?></td>
                         <td><?=$item->count?> шт.</td>
                         <td>
-                            <?php if($cart->isPromoItem($item)):?>
-                                <?=  Yii::$app->formatter->asCurrency($item->origin->promoPrice*$item->count);?>
-                            <?php else:?>
-                                <?=  Yii::$app->formatter->asCurrency($item->price*$item->count);?>
-                            <?php endif;?>
+                            <?=  Yii::$app->formatter->asCurrency($item->price*$item->count);?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -49,8 +49,15 @@ class Profile extends ProfileBase
         }
         parent::afterFind();
     }
+    
+    public function validateTimeZone($attribute, $params)
+    {
+        if (!in_array($this->$attribute->getName(), timezone_identifiers_list())) {
+            $this->addError($attribute, \Yii::t('user', 'Time zone is not valid'));
+        }
+    }
 
-        public function beforeSave($insert) {
+    public function beforeSave($insert) {
         if($this->birth){
             $this->birth = date("Y-m-d", strtotime($this->birth));
         }

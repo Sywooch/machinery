@@ -6,8 +6,9 @@ use Yii;
 use \yii\db\ActiveRecord;
 use common\modules\orders\widgets\delivery\DeliveryFactory;
 use common\helpers\ModelHelper;
-use common\modules\product\models\PromoCodes;
+use common\modules\orders\models\PromoCodes;
 use dektrium\user\models\User;
+use common\modules\orders\helpers\OrdersHelper;
 
 /**
  * This is the model class for table "orders".
@@ -115,7 +116,7 @@ class Orders extends ActiveRecord
         
         foreach($this->items as $item){
             $this->count += $item->count;
-            $price = Yii::$app->cart->isPromoItem($item) ? $item->origin->promoPrice : $item->price;
+            $price = OrdersHelper::isPromo($this, $item) ? $item->origin->promoPrice : $item->price;
             $this->price += $price * $item->count;
         } 
         return parent::beforeSave($insert);

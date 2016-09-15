@@ -1,11 +1,11 @@
 <?php
 
-namespace common\modules\product\models;
+namespace common\modules\orders\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\modules\product\models\PromoProducts;
+use common\modules\orders\models\PromoProducts;
 
 /**
  * PromoProductsSearch represents the model behind the search form about `common\modules\product\models\PromoProducts`.

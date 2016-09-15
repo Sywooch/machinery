@@ -3,6 +3,7 @@
 namespace common\modules\orders\models;
 
 use Yii;
+use common\modules\orders\helpers\OrdersHelper;
 
 /**
  * This is the model class for table "orders_items".
@@ -62,6 +63,14 @@ class OrdersItems extends \yii\db\ActiveRecord
             'count' => 'Count',
             'entity' => 'Entity',
         ];
+    }
+    
+    
+    public function beforeSave($insert) {
+        if(OrdersHelper::isPromo($this->order,  $this)){
+           $this->price = $this->origin->promoPrice;
+        }
+        return parent::beforeSave($insert);
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
-namespace common\modules\product\models;
+namespace common\modules\orders\models;
 
 use Yii;
-use common\modules\product\models\PromoProducts;
+use common\modules\orders\models\PromoProducts;
 
 /**
  * This is the model class for table "promo_codes".
@@ -16,6 +16,7 @@ use common\modules\product\models\PromoProducts;
  */
 class PromoCodes extends \yii\db\ActiveRecord
 {
+    const PROMO_CODE = 'promo-code';
     const SCENARIO_FIND = 'find';
     
     /**
@@ -65,7 +66,7 @@ class PromoCodes extends \yii\db\ActiveRecord
     }
     
     public function getSku(){
-        return $this->code;
+        return self::PROMO_CODE;
     }
     public function getTitle(){
         return $this->code;

@@ -6,7 +6,7 @@ use yii\bootstrap\Modal;
 use yii\jui\AutoComplete;
 use yii\helpers\Url;
 use yii\web\JsExpression;
-use common\modules\product\PromoAsset;
+use common\modules\orders\PromoAsset;
 use common\helpers\ModelHelper;
 
 PromoAsset::register($this);
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'model' => $promoCodes,
            // 'attribute' => 'code',
             'clientOptions' => [
-                    'source' =>Url::toRoute('/product/promo-codes/find-ajax'),
+                    'source' =>Url::toRoute('/orders/promo-codes/find-ajax'),
                     'dataType'=>'json',
                     'autoFill'=>true,
                     'minLength' => '1',
@@ -66,9 +66,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php Modal::end(); ?>
     </p>
     
-    <?php if(isset($model->promoItem)):?>
+    <?php if(isset($model->promo)):?>
     <?php
-        $code = $model->promoItem->code;
+        $code = $model->promo->code;
         echo DetailView::widget([
             'model' => $code,
             'attributes' => [
@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'time',
                 [
                     'label'  => 'action',
-                    'value'  => Html::a("view", ['/product/promo-products/view', 'id' => $model->promoItem->id]),
+                    'value'  => Html::a("view", ['/product/promo-products/view', 'id' => $model->promo->id]),
                     'format'=>'raw'
                 ],
             ],

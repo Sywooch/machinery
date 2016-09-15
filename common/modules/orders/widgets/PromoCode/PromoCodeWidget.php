@@ -1,8 +1,8 @@
 <?php
-namespace common\modules\product\widgets\PromoCode;
+namespace common\modules\orders\widgets\PromoCode;
 
 use Yii;
-use common\modules\product\models\PromoCodes;
+use common\modules\orders\models\PromoCodes;
 
 class PromoCodeWidget extends \yii\bootstrap\Widget
 {

@@ -10,10 +10,10 @@ use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\import\models\Sources;
 use yii\helpers\ArrayHelper;
 use common\helpers\URLify;
-use dektrium\user\models\User;
+
 use common\helpers\ModelHelper;
-use common\modules\product\models\PromoCodes;
-use common\modules\product\models\PromoProducts;
+use common\modules\orders\models\PromoCodes;
+use common\modules\orders\models\PromoProducts;
 
 /**
  * This is the model class for table "product_default".

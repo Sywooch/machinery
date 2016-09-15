@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\product;
+namespace common\modules\orders;
 
 use yii\web\AssetBundle;
 use yii\web\JqueryAsset;
@@ -11,7 +11,7 @@ class PromoAsset extends AssetBundle
      * @inheritdoc
      */
     public $basePath = '@webroot';
-    public $baseUrl = '/common/modules/product/assets';
+    public $baseUrl = '/common/modules/orders/assets';
 
     public $css = [
         'promo.code.css'

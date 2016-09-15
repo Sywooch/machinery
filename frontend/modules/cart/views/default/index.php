@@ -4,14 +4,13 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use frontend\modules\cart\Asset;
 use kartik\checkbox\CheckboxX;
-use common\modules\product\widgets\PromoCode\PromoCodeWidget;
+use common\modules\orders\widgets\PromoCode\PromoCodeWidget;
 
 
 Asset::register($this);
 
 $this->title = 'Корзина';
 
-$total = 0;
 ?>
 
 <?php if($cart->order && count($cart->order->items)):?>
@@ -37,39 +36,35 @@ $total = 0;
                 </div>
             </div>
  
-        <?=$this->render('_items',['cart' => $cart, 'form' => $form]);?>
+        <?=$this->render('_items',['order' => $cart->order, 'form' => $form]);?>
 
         <?php ActiveForm::end(); ?>
     </div>
     <div class="col-lg-4">
-
-
-            <div class="order-panel">
-                <div class="order-panel-conteiner">
-                    <span class="lb">Сумма к оплате</span>
-                    <span class="cart-total"><?php echo \Yii::$app->formatter->asCurrency($total); ?></span>
+        <div class="order-panel">
+            <div class="order-panel-conteiner">
+                <span class="lb">Сумма к оплате</span>
+                <span class="cart-total"><?php echo \Yii::$app->formatter->asCurrency($cart->order->price); ?></span>
+            </div>
+            <?=PromoCodeWidget::widget();?>
+            <?php if(!Yii::$app->user->id):?>
+                <div class="order-panel-info">
+                    Если вы имеете клубную карту и совершали ранее покупки,
+                    то <a href="/login">Авторизуйтесь</a>, чтобы узнать сумму бонусов
+                    доступную для скидки.
                 </div>
-                <?=PromoCodeWidget::widget();?>
-                <?php if(!Yii::$app->user->id):?>
-                    <div class="order-panel-info">
-                        Если вы имеете клубную карту и совершали ранее покупки,
-                        то <a href="/login">Авторизуйтесь</a>, чтобы узнать сумму бонусов
-                        доступную для скидки.
-                    </div>
-                <?php endif;?>
-                <div class="panel-body">
-                    <?php $form = ActiveForm::begin([
-                        'id' => 'preorder-form'
-                    ]); ?>
-                    <?= Html::submitButton('Оформить заказ', ['class' => 'btn btn-primary btn-orange-big']) ?>
-                    <?php ActiveForm::end(); ?>
-                </div>
-              </div>
-
+            <?php endif;?>
+            <div class="panel-body">
+                <?php $form = ActiveForm::begin([
+                    'id' => 'preorder-form'
+                ]); ?>
+                <?= Html::submitButton('Оформить заказ', ['class' => 'btn btn-primary btn-orange-big']) ?>
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
     </div>
 </div>
 <?php else:?>
     <h1> Корзина</h1>
     <div class="cart-empty">Корзина пуста</div>
-    
 <?php endif;?>

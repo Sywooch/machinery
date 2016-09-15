@@ -16,6 +16,10 @@ class FileHelper {
     const DIRECTORY_PERMISSION  = 0775;
     const DIRECTORY_FILES = 'files';
     const AJAX_UPLOAD_URL = '/file/manage/upload';
+    
+    public static $style;
+
+
     /**
      * 
      * @param mixed $class
@@ -100,9 +104,10 @@ class FileHelper {
      * 
      * @param array $files
      * @param object $view
+     * @param array $config
      * @return []
      */
-    public static function getFileInputPreviews($files){
+    public static function getFileInputPreviews($files, StyleHelper $style = null){
         $initialPreview = [];
         if (empty($files)){
             return [];
@@ -114,7 +119,7 @@ class FileHelper {
         
         foreach($files as $file){
             if (strpos($file->mimetype, "image") !== false){
-                $initialPreview[] = Html::img('/' . $file->path . '/' . $file->name, ['class' => 'file-preview-image']); 
+                $initialPreview[] = $style ? Html::img('/'.StyleHelper::getPreviewUrl($file, $style->resolution)) : Html::img('/' . $file->path . '/' . $file->name, ['class' => 'file-preview-image']); 
             } 
         }
         return $initialPreview;
@@ -171,19 +176,25 @@ class FileHelper {
     
     /**
      * 
-     * @param object $model
+     * @param string $model
      * @param string $field
-     * @return []
+     * @param array $config
+     * @return type
      */
-    public static function FileInputConfig($model, $field){        
+    public static function FileInputConfig($model, $field, array $config = []){        
         $files = $model->{$field};
+        
+        foreach($config as $name =>  $item){
+            self::$$name = $item;
+        }
+        
         return [
             'options' => ['multiple' => true],
             'pluginOptions' => [
-                'uploadUrl' => Url::to([self::AJAX_UPLOAD_URL, 'id' => $model->id , 'field' => $field, 'token' => Yii::$app->request->getCsrfToken()]),
+                'uploadUrl' => Url::to([self::AJAX_UPLOAD_URL, 'id' => $model->id , 'field' => $field, 'style' => self::$style ? self::$style->resolution : '', 'token' => Yii::$app->request->getCsrfToken()]),
                 'showUpload' => true,
-                'showRemove' => false,
-                'initialPreview' => self::getFileInputPreviews($files),
+                'showRemove' => true,
+                'initialPreview' => self::getFileInputPreviews($files, self::$style),
                 'initialPreviewConfig' => self::getFileInputPreviewsConfig($files),
                 'overwriteInitial' => false,
             ]

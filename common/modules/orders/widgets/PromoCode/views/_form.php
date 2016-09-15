@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
-use common\modules\product\widgets\PromoCode\Asset;
+use common\modules\orders\widgets\PromoCode\Asset;
 
 Asset::register($this);
 

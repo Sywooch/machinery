@@ -35,9 +35,13 @@ return [
             'admins' => ['root'],
             'modelMap' => [
                 'Profile' => 'frontend\models\Profile',
+                'User' => 'backend\models\User',
                 'LoginForm' => 'common\models\LoginForm',
                 'RegistrationForm' => 'frontend\models\RegistrationForm',
             ],
+        ],
+        'file' => [
+            'class' => 'common\modules\file\Module',
         ],
         'orders' => [
             'class' => 'common\modules\orders\Module',

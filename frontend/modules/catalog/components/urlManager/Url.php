@@ -34,7 +34,6 @@ class Url{
         }
         
         $paramsCatalog = $this->catalog->parseUrl($pathInfo);
-        
         if($paramsCatalog === false){
             return false;
         }

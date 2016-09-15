@@ -1,11 +1,11 @@
 <?php
 
-namespace common\modules\product\controllers;
+namespace common\modules\orders\controllers;
 
 use Yii;
-use common\modules\product\models\PromoProducts;
-use common\modules\product\models\PromoCodes;
-use common\modules\product\models\PromoCodesSearch;
+use common\modules\orders\models\PromoProducts;
+use common\modules\orders\models\PromoCodes;
+use common\modules\orders\models\PromoCodesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -33,7 +33,7 @@ class PromoCodesController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['use-ajax']
+                        'actions' => ['use-promo-ajax'],
                     ],
                 ],
             ],
@@ -64,10 +64,10 @@ class PromoCodesController extends Controller
     
         if(!$productModel){
             return false;
-        }        
-     
-        if($productModel->promoItem){
-           return false; 
+        }  
+
+        if($productModel->promo){
+           return ['status' => 'error', 'message' => 'Код уже привязан'];
         }
         
         $promoProductModel = new PromoProducts();
@@ -79,7 +79,7 @@ class PromoCodesController extends Controller
         return ['status' => 'success', 'message' => ''];
     }
     
-    public function actionUseAjax($code){
+    public function actionUsePromoAjax($code){
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
         $code = PromoCodes::find()
@@ -110,11 +110,14 @@ class PromoCodesController extends Controller
         
         Yii::$app->cart->addItem($code);
         
+        foreach($order->items as $item){
+            $item->save();
+        }
+        
         return ['status' => 'success','message' => ''];
 
     }
-
-
+    
     public function actionFindAjax($term){
         \Yii::$app->response->format = 'json';
         return  PromoCodes::find()

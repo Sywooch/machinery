@@ -9,6 +9,7 @@ $params = array_merge(
 return [
     'id' => 'app-frontend',
     'homeUrl' => '/',
+    'timeZone' => 'Europe/Minsk',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
@@ -26,6 +27,12 @@ return [
         'comments' => [
             'class' => 'frontend\modules\comments\Module'
 	],
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'controllerMap' => [
+                'profile' => 'frontend\controllers\ProfileController'
+            ],
+        ],
     ],
     'components' => [
         'request' => [

@@ -135,9 +135,6 @@ class DefaultController extends Controller
             throw new BadRequestHttpException();
         }
         $product = $order->getItem($id);
-        
-        $price = Yii::$app->cart->isPromoItem($product) ? $product->origin->promoPrice : $product->price;
-        
         return [
                 'success' => 'true',
                 'order' => $order,
@@ -147,15 +144,15 @@ class DefaultController extends Controller
                         'n' => $order->count 
                     )),
                     'total' => Yii::$app->formatter->asCurrency($order->price),
-                    'itemTotal' => Yii::$app->formatter->asCurrency($price * $product->count),
-                    'itemRealTotal' => Yii::$app->formatter->asCurrency($product->price * $product->count)
+                    'itemTotal' => Yii::$app->formatter->asCurrency($product->price * $product->count),
+                    'itemRealTotal' => Yii::$app->formatter->asCurrency($product->origin->price * $product->count)
                 ]
         ];
     }
     
     public function actionRemove(array $id){
-        foreach($id as $item){
-          Yii::$app->cart->removeItem($item); 
+        foreach($id as $itemId){
+          Yii::$app->cart->removeItem($itemId); 
         }
         return $this->redirect(['/cart']);
     }

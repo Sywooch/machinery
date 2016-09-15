@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\product\models;
+namespace common\modules\orders\models;
 
 use Yii;
 use common\helpers\ModelHelper;

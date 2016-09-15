@@ -32,6 +32,10 @@ class DefaultController extends Controller
                         'allow' => true,
                         'actions' => ['load'],
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['print'],
+                    ],
                 ],
             ],
             'verbs' => [
@@ -54,7 +58,11 @@ class DefaultController extends Controller
             ],
         ];
     }
-   
+    public function actionPrint($id)
+    {
+        exit('TODO');
+    }
+    
     public function actionIndex()
     {
         

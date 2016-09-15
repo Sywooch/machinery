@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
 use kartik\datetime\DateTimePicker;
-use common\modules\product\PromoAsset;
+use common\modules\orders\PromoAsset;
 
 PromoAsset::register($this);
 

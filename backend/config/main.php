@@ -18,9 +18,6 @@ return [
         'taxonomy' => [
             'class' => 'common\modules\taxonomy\Module',
         ],
-        'file' => [
-            'class' => 'common\modules\file\Module',
-        ],
         'orders' => [
             'class' => 'common\modules\orders\Module',
         ],

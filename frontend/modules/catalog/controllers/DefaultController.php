@@ -78,6 +78,10 @@ class DefaultController extends Controller
             }
         }
         
+        $index = $filter->index;
+        array_shift($index[$catalogVocabularyId]);
+        $filter->index = $index;
+        
         $dataProvider = $searchModel->searchItemsByFilter($filter);
         $products = $searchModel->getProducstByIds($dataProvider->getKeys());
         

@@ -1,6 +1,9 @@
 <?php
 
 namespace common\modules\orders\helpers;
+use common\modules\orders\models\Orders;
+use common\modules\orders\models\OrdersItems;
+use common\modules\orders\models\PromoCodes;
 
 use Yii;
 class OrdersHelper
@@ -20,6 +23,18 @@ class OrdersHelper
             return $token->value;
         }
         return '';
+    }
+    
+    /**
+     * 
+     * @param OrdersItems $item
+     * @return boolean
+     */
+    public static function isPromo(Orders $order, OrdersItems $item){
+        if($item->sku != PromoCodes::PROMO_CODE && isset($item->origin->promoCode) && isset($order->promo[$item->origin->promoCode->id])){
+            return true;
+        }
+        return false;
     }
 }
 
