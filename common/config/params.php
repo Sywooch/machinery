@@ -15,6 +15,6 @@ return [
             11 => \backend\models\ProductDefault::class,
             12 => \backend\models\ProductPC::class
         ],
-        'filterVocabularyIds' => [2,31,32,33,34,47]
+        'filterVocabularyIds' => [2,31,32,33,34,40,47,48,51]
     ],
 ];

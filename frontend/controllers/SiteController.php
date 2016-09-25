@@ -8,6 +8,9 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\modules\product\models\ProductRepository;
 use frontend\modules\catalog\helpers\CatalogHelper;
+use backend\models\AdsSlider;
+use backend\models\AdsActions;
+use backend\models\Review;
 
 /**
  * Site controller
@@ -98,7 +101,10 @@ class SiteController extends Controller
 
         return $this->render('index',[
             'models' => $models,
-            'terms' => $terms
+            'terms' => $terms,
+            'slider' => AdsSlider::find()->all(),
+            'actions' => AdsActions::find()->with('alias')->all(),
+            'reviews' => Review::find()->with('alias')->all(),
         ]);
     }
  

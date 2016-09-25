@@ -23,7 +23,7 @@ $form = ActiveForm::begin(['id' => 'comment-form'])
         <?php echo $form->field($model, 'name')->textInput(); ?>
         <?php echo $form->field($model, 'feed_back')->textInput()->hint('Контактные данные'); ?>
     <?php else: ?>
-        <?=Yii::$app->user->identity->profile->name ? Html::a(Html::encode(Yii::$app->user->identity->profile->name), '/user/' . Yii::$app->user->id) : Html::a(Html::encode(Yii::$app->user->identityusername), '/user/' . Yii::$app->user->id); ?>
+        <?=Yii::$app->user->identity->profile->name ? Html::a(Html::encode(Yii::$app->user->identity->profile->name), '/user/' . Yii::$app->user->id) : Html::a(Html::encode(Yii::$app->user->identity->username), '/user/' . Yii::$app->user->id); ?>
     <?php endif; ?>
 </div>
 

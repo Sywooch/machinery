@@ -62,6 +62,8 @@ class CatalogManager{
         $terms = TaxonomyItems::find()
                 ->where([
                     'transliteration' => $params,
+                ])->orderBy([
+                    'pid' => SORT_ASC
                 ])->all();
         
         

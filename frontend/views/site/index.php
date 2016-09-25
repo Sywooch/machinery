@@ -8,6 +8,12 @@ $this->title = 'Интернет-магазин №1';
 
 ?>
 <div class="site-index">
+    
+    <div class="asd-index">
+        <?=$this->render('_slider',['slider' => $slider]);?>
+        <?=$this->render('_actions',['actions' => $actions]);?>
+    </div>
+    
     <div class="btn-group custom" role="group" id="front-tabs-1">
         <?php foreach($terms as $term):?>
             <a type="button" class="btn btn-default <?=($term->id == 1095)? 'active' : '';?>" href="#" data-tab="tab-<?=$term->id;?>"><?=$term->name?></a>
@@ -22,5 +28,9 @@ $this->title = 'Интернет-магазин №1';
             <?php endforeach; ?>
         </div>
     <?php endforeach; ?>
+    
+     <?=$this->render('_reviews',['reviews' => $reviews]);?>
+    
 </div>
 <?=CartHelper::getConfirmModal();?>  
+

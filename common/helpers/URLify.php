@@ -9,7 +9,7 @@ class URLify extends URLifyBase {
 
     private static $chars;
 
-    public static function url($text, $length = 60, $language = "", $file_name = true, $use_remove_list = true, $lower_case = true, $treat_underscore_as_space = true){
+    public static function url($text, $length = 120, $language = "", $file_name = true, $use_remove_list = true, $lower_case = true, $treat_underscore_as_space = true){
         $text = self::transliterate ($text);
         return parent::filter ($text, $length, $language, $file_name, $use_remove_list, $lower_case, $treat_underscore_as_space);
     }

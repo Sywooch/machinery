@@ -53,7 +53,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container-fluid">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; ТехноСад <?= date('Y') ?></p>
 
        
     </div>

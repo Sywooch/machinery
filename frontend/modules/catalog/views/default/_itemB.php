@@ -12,6 +12,8 @@ use common\modules\product\helpers\ProductHelper;
 
                     <?php if(($file = ArrayHelper::getValue($product->files, '0'))):?>
                         <?=Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130')),['/'.$product->url->alias],['class'=>'img']);?>
+                    <?php else:?>
+                        <?=Html::a(Html::img('/files/nophoto_100x100.jpg',['class' => 'img-responsive']),['/'.$product->url->alias],['class' => 'img']);?>
                     <?php endif;?>
                     <span class="product-status ">
                         <?php foreach(ProductHelper::getStatuses($product->terms) as $status):?>

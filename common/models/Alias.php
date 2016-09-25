@@ -71,6 +71,7 @@ class Alias extends \yii\db\ActiveRecord
         }
         $aliasRepository = new AliasRepository();
         $this->group = $aliasRepository->saveGroup($this); 
+        
         return parent::beforeSave($insert);
     }
 

@@ -7,6 +7,9 @@ body {
     font-size: 14px;
     font-family: 'PT Sans', Arial, sans-serif;
 }
+a:focus{
+    text-decoration: none;
+}
 .breadcrumb{
     background-color: #fff;
     padding-left: 0px;
@@ -384,7 +387,7 @@ aside section .inline{
     right: 0px;
 }
 
-.produt-gallery:hover  .bx-controls-direction a{
+.bx-wrapper:hover  .bx-controls-direction a{
     opacity: 1;
 }
 
@@ -840,4 +843,111 @@ aside section .inline{
     left: 0px;
     display: none;
 }
+
+
+/* ads */
+.asd-index{
+    overflow: hidden;
+    margin-bottom: 0px;
+    padding-bottom: 20px;
+}
+.asd-index ul{
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+}
+.asd-index .bx-wrapper{
+    float: left;
+    height: 200px;
+    position: relative;
+}
+.asd-index .bx-wrapper .bx-pager{
+    padding-top: 0px;
+    float: right;
+    bottom: 0px;
+    right: 5px;
+    width: auto;
+}
+
+.asd-index .bx-wrapper  .bx-controls-direction a{
+    width: 10%;
+}
+
+.asd-index .bx-pager-item a{
+    background-color: #ccc !important;
+
+}
+.asd-index .bx-pager-item a.active{
+    background-color: #f37f00 !important;
+}
+.asd-index .actions{
+    margin-left: 20px;
+    float: left;
+    
+}
+.asd-index .actions h3{
+    margin-top:0px;
+}
+.asd-index .actions h3 a{
+    color: #000;
+    border-color: #ccc;
+}
+.asd-index .action-item{
+    width: 270px;
+    float: left;
+
+}
+.asd-index .action-item a{
+    float: left;
+    border: none;
+}
+.asd-index .action-item .title{
+    width: 140px;
+
+    margin-left: 10px;
+    font-size: 15px;
+}
+.asd-index .action-item .title:hover{
+    text-decoration: underline;
+}
+.reviews{
+    
+}
+.reviews-full .review-item{
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+.reviews img{
+    float: left;
+    margin-right: 20px;
+}
+.reviews h3 a{
+    border-color: rgba(22,131,198,.3);
+}
+.review-item .date,.review-view .date{
+    color: #999;
+}
+.review-view .body{
+    font-size: 15px;
+    margin-top: 10px;
+}
+.reviews-full .review-item .date{
+    font-style: italic;
+    font-size: 13px;
+}
+.review-item a{
+    font-size: 15px;
+    margin: 4px 0px;
+    display: block;
+    border:none;
+}
+
+.reviews-full .review-item{
+    font-size: 16px;
+}
+
+.reviews-full .review-item a{
+    font-size: 22px;   
+}
+
 

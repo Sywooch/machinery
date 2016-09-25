@@ -46,11 +46,12 @@ class DefaultController extends Controller
      */
     public function actionIndex(FilterParams $filter)
     {   
+    //   print_r($filter); exit('s');
         $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
         $catalogTerms = $filter->index[$catalogVocabularyId];
         $catalogMain = array_shift($catalogTerms);
         $catalogSub = array_shift($catalogTerms);
-        
+      
         if(!$catalogMain){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }

@@ -184,7 +184,7 @@ class ItemsController extends Controller
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
         $taxonomyItemsSearch = new TaxonomyItemsSearch();
-        $terms = $taxonomyItemsSearch->getItemsByName($name, $vocabularyId, 0);
+        $terms = $taxonomyItemsSearch->getItemsByName($name, $vocabularyId);
         
         if(empty($terms)){
             return ['results' => [] ];
