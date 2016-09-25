@@ -39,14 +39,8 @@ FileAsset::register($this);
     <?= $form->field($model, 'available')->textInput() ?>
 
     <?= $form->field($model, 'price')->textInput() ?>
-
-    <?= $form->field($model, 'rating')->textInput() ?>
-
-    <?= $form->field($model, 'publish')->textInput() ?>
-
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'updated')->textInput() ?>
+    
+    <?= $form->field($model, 'old_price')->textInput() ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
     

@@ -1,13 +1,14 @@
 <?php
-
 use yii\helpers\Html;
-
+use yii\bootstrap\ActiveForm;
 ?>
 
-<?php foreach($model->attributes as $name => $value):?>
-    <?= Html::activeLabel( $model, $name);?>
-    <?= Html::activeTextInput($model, $name); ?>
-    <?= Html::error($model, $name, ['class' => 'help-block']); ?>
-<?php endforeach;?>
+<?php $form = ActiveForm::begin(['id' => 'delivery-form', ]); ?>
+<div class="grey">
+    <?=
+        $form->field($model, 'address')->textInput();
+    ?>
+</div>
+<?php ActiveForm::end(); ?>  
 
 

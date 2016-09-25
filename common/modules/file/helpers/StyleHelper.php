@@ -5,8 +5,9 @@ namespace common\modules\file\helpers;
 use Yii;
 use common\modules\file\models\File;
 use common\modules\file\helpers\FileHelper;
+use yii\base\Object;
 
-class StyleHelper {
+class StyleHelper extends Object{
     
     const STYLE_DIR = 'style';
 
@@ -90,6 +91,9 @@ class StyleHelper {
      */
     private function isStyleUrl($url){
         $path = parse_url($url);
+        if(!isset($path['query'])){
+            return false;
+        }
         parse_str($path['query'], $params);
         if(strpos($path['path'], 'style') !== false 
                 && key_exists('token', $params) 
@@ -104,7 +108,7 @@ class StyleHelper {
      * @param string $resolution
      * @return boolean|array
      */
-    private function isResolution($resolution){
+    public function isResolution($resolution){
         $data = explode('x', $resolution);
         if(count($data) != 2){
             return false;
@@ -117,7 +121,12 @@ class StyleHelper {
      * @param string $resolution
      * @return array
      */
-    private function getResolution($resolution){
+    public function getResolution($resolution = null){
+        
+        if($resolution === null){
+            return $this->width . 'x' . $this->height;
+        }
+        
         preg_match("/([0-9_]+)x([0-9_]+)/i", $resolution, $matches);
         return $matches;
     }

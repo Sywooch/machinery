@@ -2,88 +2,69 @@
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
 use frontend\modules\cart\Asset;
-use common\modules\file\helpers\FileHelper;
-use common\modules\file\helpers\StyleHelper as Style;
+use kartik\checkbox\CheckboxX;
+use common\modules\orders\widgets\PromoCode\PromoCodeWidget;
+
 
 Asset::register($this);
 
 $this->title = 'Корзина';
-/* @var $this yii\web\View */
-$this->params['breadcrumbs'][] = $this->title;
 
-$total = 0;
 ?>
 
-<?php if($order):?>
+<?php if($cart->order && count($cart->order->items)):?>
 
-<div class="row">
+<div class="row cart-page">
     <div class="col-lg-8">
+        <h1>Корзина</h1>
+        <ul class="order_steps"><li class="selected">Сборка заказа</li><li>Способ и адрес доставки</li><li>Способ оплаты</li><li>Подтверждение и оплата</li></ul>
         <?php $form = ActiveForm::begin([
-            'id' => 'cart-form'
+            'id' => 'cart-form',
+
         ]); ?>
-        <?php foreach($order->ordersItems as $item):?>
-        <div class="row" id="order-item-<?=$item->id?>">
-            <div class="col-lg-1 col-md-1 col-sm-1"><a href="/cart/default/remove?id=<?= $item->id ?>" class="cart-item-remove">x</a></div>
-            <div class="col-lg-2 col-md-2 col-sm-2">
-                <?php 
-                if(isset($item->origin->photos) && !empty($item->origin->photos)){
-                    $img = Html::img(Style::getPreviewUrl($item->origin->photos[0], '130x130'), ['class' => 'img-responsive']);
-                }else{
-                    $img = Html::img('/files/no-photo.png');
-                }
-                ?>
-                <?= Html::a($img, ['/', 'id' => $item->entity_id], ['class' => '']); ?>
-            </div>
-            <div class="col-lg-5 col-md-5 col-sm-5">
-                <?= Html::a($item->title, ['/', 'id' => $item->entity_id], ['class' => '']); ?>
-                <span class="price"><?=$item->price;?></span>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2" style="text-align:center;">
-                <div class="input-group input-group-sm count-container" >
-                    <span class="input-group-addon ">
-                        <a href="/cart/default/count?id=<?= $item->id ?>&count=<?= $item->count - 1 ?>" class="cart-minus glyphicon glyphicon-minus"></a>
-                    </span>
-                    <?= $form->field($item, 'count', ['template' => '{input}'])->textInput(['data-id' => $item->id, 'data-type' => 'product', 'id' => 'order-item-count-' . $item->id, 'class' => 'form-control count-input']); ?>
-                    <span class="input-group-addon">
-                        <a href="/cart/default/count?id=<?= $item->id ?>&count=<?= $item->count + 1 ?>" class="cart-plus glyphicon glyphicon-plus"></a>
-                    </span>
+        
+            <div class="row header">
+                <div class="col-lg-6 col-md-6 col-sm-6"  id="chb-all-conteiner">
+                    <?=CheckboxX::widget([
+                        'name'=>'chb_all',
+                        'options'=>['id' => 'chb_all'],
+                        'pluginOptions' => ['size'=>'xs', 'threeState' => false]
+                    ]);?>
+                    <span id="multi-text"></span>
+                     <?= Html::a('Удалить выбранное', ['#'], ['class' => 'btn btn-default ', 'id' => 'multi-delete-button']); ?>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2"><span class="item-total"><?=$item->price*$item->count;?></span></div>
-        </div>
-        <?php $total +=  $item->price*$item->count; ?>
-        <?php endforeach;?>
+ 
+        <?=$this->render('_items',['order' => $cart->order, 'form' => $form]);?>
 
         <?php ActiveForm::end(); ?>
     </div>
     <div class="col-lg-4">
-        <?php $form = ActiveForm::begin([
+        <div class="order-panel">
+            <div class="order-panel-conteiner">
+                <span class="lb">Сумма к оплате</span>
+                <span class="cart-total"><?php echo \Yii::$app->formatter->asCurrency($cart->order->price); ?></span>
+            </div>
+            <?=PromoCodeWidget::widget();?>
+            <?php if(!Yii::$app->user->id):?>
+                <div class="order-panel-info">
+                    Если вы имеете клубную карту и совершали ранее покупки,
+                    то <a href="/login">Авторизуйтесь</a>, чтобы узнать сумму бонусов
+                    доступную для скидки.
+                </div>
+            <?php endif;?>
+            <div class="panel-body">
+                <?php $form = ActiveForm::begin([
                     'id' => 'preorder-form'
                 ]); ?>
-        
-        <div class="order-panel">
-            <div class="panel-heading">Оформление</div>
-            <div class="order-panel-total">
-                <span>Сумма к оплате</span>
-                <span class="cart-total"><?php echo \Yii::$app->formatter->asCurrency($total); ?></span>
+                <?= Html::submitButton('Оформить заказ', ['class' => 'btn btn-primary btn-orange-big']) ?>
+                <?php ActiveForm::end(); ?>
             </div>
-            <div class="order-panel-info">
-                Если вы имеете клубную карту и совершали ранее покупки,
-                то Авторизуйтесь, чтобы узнать сумму бонусов
-                доступную для скидки.
-            </div>
-            <div class="panel-body">
-               
-                <?= Html::submitButton('Оформить заказ', ['class' => 'btn btn-primary']) ?>
-                
-            </div>
-          </div>
-        
-        <?php ActiveForm::end(); ?>
+        </div>
     </div>
 </div>
 <?php else:?>
-    Корзина пуста
+    <h1> Корзина</h1>
+    <div class="cart-empty">Корзина пуста</div>
 <?php endif;?>

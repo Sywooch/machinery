@@ -71,8 +71,8 @@ cart.init = function(){
         cart.setCount(this);
         return false;
     });
-    
 }
+
 cart.setCount = function(e){
         var b = $(e);
         var i = b.attr("data-id");
@@ -122,12 +122,74 @@ cart.updateOrder = function(data){
 }
 cart.updateItem = function(data){
     var item = $('#order-item-'+data.item.id);
-    item.find('.item-total').text(data.formaters.itemTotal);
+    item.find('.item-total').html(data.formaters.itemTotal);
+    item.find('.item-old-total').html(data.formaters.itemRealTotal);
 }
+
+cart.initMultiDelete = function(){
+    cart.page.find('#multi-delete-button').click(function(){
+        var link = '';
+        cart.page.find('.chb').each(function(){
+            if($(this).val() == 1){
+                link += '&id[]='+$(this).attr('data-id');
+            }
+        });
+        location.href = '/cart/default/remove?' + link;
+        return false;
+    });
+   cart.page.find('#chb_all').change(function(){
+      cart.page.find('.chb').val($(this).val()).checkboxX('refresh');  
+      cart.multiDeleteAction();
+   }); 
+   cart.page.find('.chb').change(function(){
+       var checked = true;
+       cart.page.find('.chb').each(function(){
+           checked *= $(this).val();
+       })
+       cart.page.find('#chb_all').val(checked).checkboxX('refresh');
+       cart.multiDeleteAction();
+   });
+}
+
+cart.multiDeleteAction = function(){
+    var count = 0;
+    cart.page.find('.chb').each(function(){
+           count += $(this).val() * 1;
+    })
+    cart.page.find('#multi-text').text('Выбрано '+count+' '+cart.declension(count, ['продукт','продукта','продуктов']));
+    
+    if(count){
+      cart.page.find('#multi-text').show();  
+      cart.page.find('#multi-delete-button').show();
+    }else{
+      cart.page.find('#multi-text').hide();  
+      cart.page.find('#multi-delete-button').hide();
+    }
+}
+
+cart.declension = function (num, expressions) {
+    var result;
+    count = num % 100;
+    if (count >= 5 && count <= 20) {
+        result = expressions['2'];
+    } else {
+        count = count % 10;
+        if (count == 1) {
+            result = expressions['0'];
+        } else if (count >= 2 && count <= 4) {
+            result = expressions['1'];
+        } else {
+            result = expressions['2'];
+        }
+    }
+    return result;
+}
+
 
 $( document ).ready(function(){
    buyButton.init(); 
    cartWidget.init();
    cart.init();
+   cart.initMultiDelete();
 });
 

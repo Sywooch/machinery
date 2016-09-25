@@ -4,16 +4,48 @@ namespace common\modules\orders\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\filters\VerbFilter;
 use common\modules\orders\models\Orders;
-use common\modules\orders\widgets\delivery\DeliveryFactory;
-use common\helpers\ModelHelper;
-use common\modules\orders\widgets\delivery\helpers\DeliveryHelper;
+use common\modules\orders\models\OrdersSearch;
 
 /**
  * ItemsController implements the CRUD actions for TaxonomyItems model.
  */
 class DefaultController extends Controller
 {
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view', 'delete'],
+                        'roles' => ['admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['load'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['print'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
     
     public function actions()
     {
@@ -22,60 +54,50 @@ class DefaultController extends Controller
             'load' => 
             [
                 'class' => 'common\modules\orders\widgets\delivery\components\LoadAction',
-                'order' => Yii::$app->cart->getOrder(),
+                'order' => isset(Yii::$app->cart) ? Yii::$app->cart->getOrder() : null,
             ],
         ];
     }
-   
+    public function actionPrint($id)
+    {
+        exit('TODO');
+    }
+    
     public function actionIndex()
     {
-        $order = Yii::$app->cart->getOrder();
-        $order->scenario = Orders::SCENARIO_ORDER;
         
-        if(!$order->id){
-            return $this->redirect(['/cart']);
-        }
-
-        if ($order->load(Yii::$app->request->post()) && $order->validate()){
-            $delivery = new DeliveryFactory($order->delivery);
-            if($delivery->load(Yii::$app->request->post()) && $delivery->validate()){
-                $order->deliveryInfo = $delivery;
-                $order->save();
-                return $this->redirect(['confirm']);
-            }
-            foreach($delivery->getErrors() as $errors){
-                foreach($errors as $error){
-                    $order->addError('delivery', $error);
-                }
-            }
-        }
-        
+        $searchModel = new OrdersSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+       
         return $this->render('index', [
-            'model' => $order
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
     
-    public function actionConfirm(){
-        $order = Yii::$app->cart->getOrder();
-
-        if(!$order->id){
-            return $this->redirect(['/cart']);
-        }
+    public function actionView($id)
+    {
         
-        if(Yii::$app->request->isPost){
-            $order->ordered = true;
-            $order->save();
-            return $this->redirect(['done']);
-        }
-        
-        $delivery = new DeliveryFactory($order);
-        $order->delivery = $delivery->getModel()->getDeliveryName();
-        return $this->render('confirm', [
-            'model' => $order
+        return $this->render('view', [
+            'model' => $this->findModel($id)
         ]);
     }
-   
-    public function actionDone(){
-        return $this->render('done', []);
+
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
     }
+    
+ 
+    protected function findModel($id)
+    {
+        if (($model = Orders::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
 }

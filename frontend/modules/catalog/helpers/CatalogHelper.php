@@ -88,4 +88,5 @@ class CatalogHelper {
         }
         return [];
     }
+    
 }

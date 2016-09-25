@@ -5,6 +5,7 @@ namespace common\modules\taxonomy\models;
 use Yii;
 use yii\validators\UniqueValidator;
 
+
 /**
  * This is the model class for table "taxonomy_vocabulary".
  *

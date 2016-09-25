@@ -9,6 +9,7 @@ $params = array_merge(
 return [
     'id' => 'app-frontend',
     'homeUrl' => '/',
+    'timeZone' => 'Europe/Minsk',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
@@ -26,23 +27,17 @@ return [
         'comments' => [
             'class' => 'frontend\modules\comments\Module'
 	],
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'controllerMap' => [
+                'profile' => 'frontend\controllers\ProfileController'
+            ],
+        ],
     ],
     'components' => [
         'request' => [
             'baseUrl' => '',
 	],
-        'formatter' => [
-            'class' => 'frontend\components\Formatter',
-            'dateFormat' => 'dd.MM.yyyy',
-            'datetimeFormat' => 'dd/MM/yy hh:mm',
-            'thousandSeparator' => ',',
-            'decimalSeparator' => '.',
-            'currencyCode' => 'UAH',
-            'numberFormatterOptions' => [
-                NumberFormatter::MIN_FRACTION_DIGITS => 0,
-                NumberFormatter::MAX_FRACTION_DIGITS => 2,
-            ]
-        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -90,6 +85,13 @@ return [
                 ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
             ],
 	],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@frontend/views/user'
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

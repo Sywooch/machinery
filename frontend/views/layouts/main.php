@@ -4,8 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
+use yii\helpers\Url;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use frontend\modules\cart\widgets\CartBlockWidget as CartBlock;
@@ -40,7 +39,8 @@ AppAsset::register($this);
         <div class="control row">
             <div class="col-lg-5"><?=SearchForm::widget();?></div>
             <div class="col-lg-2"></div>
-            <div class="col-lg-5 ">
+            <div class="col-lg-5 menu-action-items">
+                <?=$this->render('_login');?>
                 <?=CartBlock::widget();?>
             </div>
         </div>
@@ -53,7 +53,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container-fluid">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; ТехноСад <?= date('Y') ?></p>
 
        
     </div>

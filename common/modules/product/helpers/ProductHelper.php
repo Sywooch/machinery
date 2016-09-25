@@ -9,6 +9,9 @@ use common\modules\product\models\GroupCharacteristics;
 
 class ProductHelper {
     
+    const STATUS_TERMS_VID = 47;
+
+
     /**
      * 
      * @param object $product
@@ -50,7 +53,16 @@ class ProductHelper {
     }
     
     public static function getShortFromProduct($model){
-        $data = [];
-        
+        $data = []; 
+    }
+    
+    public static function getStatuses(array $terms){
+        $return = [];
+        foreach($terms as $term){
+            if($term->vid == self::STATUS_TERMS_VID){
+                $return[] = $term;
+            }
+        }
+        return $return;
     }
 }

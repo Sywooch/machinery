@@ -10,8 +10,10 @@ use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\import\models\Sources;
 use yii\helpers\ArrayHelper;
 use common\helpers\URLify;
-use dektrium\user\models\User;
-use common\modules\product\helpers\ProductHelper;
+
+use common\helpers\ModelHelper;
+use common\modules\orders\models\PromoCodes;
+use common\modules\orders\models\PromoProducts;
 
 /**
  * This is the model class for table "product_default".
@@ -53,9 +55,9 @@ class ProductDefault extends ActiveRecord
     public function rules()
     {
         return [
-            [['source_id', 'user_id', 'available', 'publish', 'created', 'updated'], 'integer'],
+            [['source_id', 'user_id', 'available'], 'integer'],
             [['sku', 'created', 'updated', 'title', 'model'], 'required'],
-            [['price', 'rating'], 'number'],
+            [['price','old_price', 'rating'], 'number'],
             [['description', 'data', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 30],
             [['model'], 'string', 'max' => 50],
@@ -122,6 +124,13 @@ class ProductDefault extends ActiveRecord
                 ]
             ];
     }
+    
+    public function getPromoPrice(){
+        if(isset($this->promoCode)){
+            return $this->price - $this->promoCode->discount;
+        }
+        return $this->price;
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -139,6 +148,24 @@ class ProductDefault extends ActiveRecord
         return $this->hasOne(Sources::className(), ['id' => 'source_id']);
     }
     
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPromoCode()
+    {
+        return $this->hasOne(PromoCodes::className(), ['id' => 'code_id'])->viaTable(PromoProducts::tableName(), ['entity_id' => 'id'], function($query){
+                $query->where(['model' => ModelHelper::getModelName(self::class)]);
+            });
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPromo()
+    {
+        return $this->hasOne(PromoProducts::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName(self::class)]);
+    }
+
     /**
      * 
      * @param \common\models\Alias $alias

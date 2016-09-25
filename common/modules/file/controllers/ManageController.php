@@ -10,7 +10,7 @@ use yii\web\UploadedFile;
 use common\helpers\ModelHelper;
 use common\modules\file\models\FileValidator;
 use yii\web\NotFoundHttpException;
-
+use common\modules\file\helpers\StyleHelper;
 
 /**
  * Site controller
@@ -27,7 +27,7 @@ class ManageController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['upload','delete'],
+                        'actions' => ['upload', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -47,7 +47,7 @@ class ManageController extends Controller
      * @param string $token
      * @return string
      */
-    public function actionUpload($id = null, $field, $token)
+    public function actionUpload($id = null, $field, $style = null,  $token)
     { 
         
         $modelName = '\\backend\\models\\'.key($_FILES);
@@ -91,7 +91,7 @@ class ManageController extends Controller
                      ]);
                     $fileModel->save();
                     return [
-                        'initialPreview' => FileHelper::getFileInputPreviews([$fileModel]),
+                        'initialPreview' => FileHelper::getFileInputPreviews([$fileModel], new StyleHelper($style)),
                         'initialPreviewConfig' => FileHelper::getFileInputPreviewsConfig([$fileModel])
                     ];
                 }

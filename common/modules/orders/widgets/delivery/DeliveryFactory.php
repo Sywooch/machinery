@@ -11,9 +11,9 @@ class DeliveryFactory
     
     public function __construct($data) {
 
-        if($data instanceof Orders && isset($data->_data->delivery->model)){
-            $this->_model = new $data->_data->delivery->model();
-            foreach($data->_data->delivery->data as $key => $value){
+        if($data instanceof Orders && isset($data->data->delivery->model)){
+            $this->_model = new $data->data->delivery->model();
+            foreach($data->data->delivery->data as $key => $value){
               $this->_model->{$key} = $value;  
             }
             return;

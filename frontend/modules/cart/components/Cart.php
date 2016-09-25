@@ -8,16 +8,15 @@ use common\modules\orders\helpers\OrdersHelper;
 use common\modules\orders\models\Orders;
 use common\modules\orders\models\OrdersItems; 
 use common\helpers\ModelHelper;
+use common\modules\product\models\PromoCodes;
 
 class Cart extends Object
 {
+    
     private $_order;
     
     public function __construct($config = [])
     {
-        //$this->_order = $order;
-       // $this->_order->loadDefaultValues();
-
         if (!empty($config)) {
             Yii::configure($this, $config);
         }
@@ -73,7 +72,7 @@ class Cart extends Object
         if(!$this->_order){
             $this->create();
         }else{
-            foreach($this->_order->ordersItems as $item){
+            foreach($this->_order->items as $item){
                 if($item->entity_id == $entity->id && $item->model == ModelHelper::getModelName($entity)){
                     $workItem = $item;
                     $workItem->count++;

@@ -118,3 +118,6 @@ a.desc:after {
 .widget-user-block div a{ color: #fff; text-decoration: none; font-size: 12px; font-family: sans-serif; text-transform: uppercase;}
 .widget-user-block div a img{ margin-right: 10px;}
 .widget-top-informers{ background: #fff; height: 90px; border-bottom: 1px solid #dee1e2; padding-left: 25px;}
+.ui-autocomplete {
+    z-index: 1060;
+}

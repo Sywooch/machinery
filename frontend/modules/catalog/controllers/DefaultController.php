@@ -46,11 +46,12 @@ class DefaultController extends Controller
      */
     public function actionIndex(FilterParams $filter)
     {   
+    //   print_r($filter); exit('s');
         $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
         $catalogTerms = $filter->index[$catalogVocabularyId];
         $catalogMain = array_shift($catalogTerms);
         $catalogSub = array_shift($catalogTerms);
-        
+      
         if(!$catalogMain){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
@@ -77,6 +78,10 @@ class DefaultController extends Controller
                 ]);
             }
         }
+        
+        $index = $filter->index;
+        array_shift($index[$catalogVocabularyId]);
+        $filter->index = $index;
         
         $dataProvider = $searchModel->searchItemsByFilter($filter);
         $products = $searchModel->getProducstByIds($dataProvider->getKeys());

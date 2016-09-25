@@ -62,11 +62,9 @@ class CatalogManager{
         $terms = TaxonomyItems::find()
                 ->where([
                     'transliteration' => $params,
-                ])
-                ->orderBy([
-                        'weight' => SORT_ASC
-                ])
-                ->all();
+                ])->orderBy([
+                    'pid' => SORT_ASC
+                ])->all();
         
         
         if(!$terms || count($terms) != count($params)){

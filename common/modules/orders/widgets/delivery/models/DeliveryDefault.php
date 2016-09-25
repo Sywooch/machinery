@@ -3,10 +3,12 @@ namespace common\modules\orders\widgets\delivery\models;
 
 use yii\base\Model;
 use common\modules\orders\widgets\delivery\DeliveryInterface;
+use backend\models\ShopAddress;
 
 class DeliveryDefault extends Model implements DeliveryInterface{
 
     public $address;
+    public $date;
     
     /**
      * @inheritdoc
@@ -14,7 +16,8 @@ class DeliveryDefault extends Model implements DeliveryInterface{
     public function attributeLabels()
     {
         return [
-            'address' => 'Адрес'
+            'address' => 'Адрес',
+            'date' => 'Мне удобно получить заказ'
         ];
     }
     
@@ -25,7 +28,7 @@ class DeliveryDefault extends Model implements DeliveryInterface{
     {
         return [
             [['address'], 'required'],
-            [['address'], 'string', 'max' => 255],
+            [['address','date'], 'string', 'max' => 255],
            
         ];
     }
@@ -34,10 +37,17 @@ class DeliveryDefault extends Model implements DeliveryInterface{
         return 'Самовывоз';
     }
     
+    public function init(){
+        if(!$this->address){
+            $this->address = ShopAddress::find()->one()->address;
+        }
+    }
+
+
     public function getAdderessList(){
-        return [
-            'Киевская 7б' => 'Киевская 7б'
-        ];
+        
+        $models = ShopAddress::find()->all();
+        
     }
 }
 

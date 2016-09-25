@@ -3,7 +3,7 @@ return [
     'orders' => [
         'delivery' => [
             'DeliveryDefault',
-            'DeliveryNovaPochta',
+           // 'DeliveryNovaPochta',
         ]
     ],
 ];
