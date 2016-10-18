@@ -15,12 +15,12 @@ class Import{
     private $_fields = [];
 
     public function __construct(Sources $source, ImportHelper $helper, Insert $insert) {
-        $this->_file = fopen(Yii::getAlias('@app').'/../files/import/source_' . $source->id . '.csv', 'r');
+        $this->_file = fopen(Yii::getAlias('@app').'/../files/import/source_' . $source->id . '_' . date('Y-m-d') . '.csv', 'r');
         $this->_helper = $helper;
         $this->_insert = $insert;
     } 
     
-    public function getFile(){
+    public function getFile(){ 
         return $this->_file;
     }
     
@@ -34,7 +34,11 @@ class Import{
             array_walk($line, function(&$item){
                $item = rtrim(trim($item, '"'),'"');
             });
+            if(count($this->_fields) != count($line)){
+              return [];
+            }
             $line = array_combine($this->_fields, $line);
+             
         }
         return $line;
     }

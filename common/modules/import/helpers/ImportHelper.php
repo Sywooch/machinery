@@ -175,7 +175,9 @@ class ImportHelper
         }
         
         foreach($temporary as $item){
-            list($vocabulary, $term) = explode(':', $item);
+            $vocabulary = trim(substr ( $item , 0 , strpos ( $item , ":" ) ));
+            $term = trim(substr ( $item , strlen($vocabulary)+1 ));
+
             if($vocabulary){
                 $terms[$vocabulary][$term] = true;
             }
@@ -194,7 +196,7 @@ class ImportHelper
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
-            \PDO::PARAM_STR,
+            \PDO::PARAM_STR, 
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
@@ -215,8 +217,8 @@ class ImportHelper
                     'model',
                     'title',
                     'description',
-                    'short',
                     'features',
+                    'short',
                     'reindex',
                     'crc32',
                     'publish',

@@ -25,7 +25,7 @@ class VocabularyController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'update', 'view', 'create'],
+                        'actions' => ['index', 'update', 'view', 'delete', 'create'],
                         'roles' => ['admin'],
                     ],
                 ],

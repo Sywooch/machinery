@@ -26,7 +26,11 @@ class Insert extends \yii\base\Model
      */
     public function add(Validate $validate){
         $data = $validate->attributes;
-        $data['data'] = json_encode($validate->attributes);
+        $dataDecode = $validate->attributes;
+        $dataDecode['features'] = '';
+        $dataDecode['terms'] = '';
+        $data['data'] = json_encode($dataDecode);
+        unset($dataDecode);
         $data['crc32'] = crc32($data['data']);
         $this->stack[$validate->catalogId][] = $data;
         if(count($this->stack[$validate->catalogId]) >= self::INSERT_LIMIT){

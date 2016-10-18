@@ -17,7 +17,6 @@ class ReindexController extends Controller
         
         $models = array_unique(ArrayHelper::getValue(Yii::$app->params,'catalog.models'));
        
-        
         foreach($models as $item){
            
             $model = new $item();

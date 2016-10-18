@@ -30,7 +30,7 @@ class ProductUrlRule extends UrlRule {
      * @inheritdoc
      */
     public function parseRequest($manager, $request) {
-   
+
         $url = explode('/', $request->getPathInfo());
         $tab = array_pop($url);
         

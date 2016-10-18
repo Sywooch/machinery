@@ -47,10 +47,9 @@ class Validate extends \yii\base\Model
         ];
     }
     
-    public function afterValidate() {
+    public function afterValidate() { 
         $this->publish = 1;
         $this->_catalogId = \yii\helpers\ArrayHelper::getValue($this->attributes,'terms.0.id');
-       
         return TRUE;
     }
     
@@ -88,7 +87,7 @@ class Validate extends \yii\base\Model
             return;
           
         }
-        
+   
         foreach($data as $index => $term){
             if($term['pid'] == 0 && $term['vid'] == Yii::$app->params['catalog']['vocabularyId']){
                 $rootTerm[] = $term;

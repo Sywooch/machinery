@@ -31,7 +31,7 @@ class ImageFromUrl implements IndexerInterface{
             return [];
         }
 
-        $this->insert->insertBatch(ImportImage::tableName(), $this->stack, ['data'], [\PDO::PARAM_STR]);
+        $this->insert->insertBatch(ImportImage::tableName(), $this->stack, ['cr32','sku','data'], [\PDO::PARAM_INT, \PDO::PARAM_STR,\PDO::PARAM_STR]);
         $this->stack = [];        
     }
 
@@ -43,55 +43,57 @@ class ImageFromUrl implements IndexerInterface{
     public function add($item){
        
         $copiedFiles = [];
-        $data = json_decode($item['data']);
-       
+        
         if($item['reindex'] != Reindex::NEW_ITEM){
             return false;
         }
+        
+        $data = json_decode($item['data']);
         
         if(!isset($data->images) || empty($data->images)){
            return false;
         }
         
-        $copiedFiles = $this->prepare($item['id'], $data->images);
+        $copiedFiles = $this->prepare($item, $data->images);
         $this->stack = array_merge($this->stack, $copiedFiles);
         return true;
     }
     
     /**
      * 
-     * @param int $itemId
+     * @param int $item
      * @param array $images
      * @return array | bool
      */
-    private function prepare($itemId, $images){
+    private function prepare($item, $images){
         $files = [];
-        foreach($images as $field => $items){
-            foreach($items as  $image){
+        foreach($images as $field => $imageItems){
+            foreach($imageItems as $image){
                 
                 if (filter_var($image, FILTER_VALIDATE_URL) === FALSE) {
                     continue;
                 }
+
+                $image = str_replace('/type1/', '/type8/', $image);
+                $files[] = [
+                    'cr32' => crc32 ( $item['sku'].$image ),
+                    'sku' => $item['sku'],
+                    'data' => json_encode( [
+                                'entity_id' => $item['id'],
+                                'field' => $field,
+                                'model' => $this->modelName,
+                                'path' => $this->itemsFileDirectory,
+                                'name' => '',
+                                'size' => 0,
+                                'mimetype' => '',
+                                'delta' => 0,
+                                'url' => $image
+                            ])
+                ];
                 
-                $files[]['data'] = json_encode( [
-                        'entity_id' => $itemId,
-                        'field' => $field,
-                        'model' => $this->modelName,
-                        'path' => $this->itemsFileDirectory,
-                        'name' => '',
-                        'size' => 0,
-                        'mimetype' => '',
-                        'delta' => 0,
-                        'url' => $image
-                    ]);
+               
             }            
         }
         return $files;
-    }
-    
-    
-    public  function copy(ImportImage $data){
-        $data = json_decode($data->data);
-        print_r($data); exit('s');
     }
 }

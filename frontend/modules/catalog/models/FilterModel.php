@@ -100,21 +100,16 @@ class FilterModel extends \yii\base\Model
     public function getFilterTermIds(TaxonomyItems $catalogTerm){
 
             $indexModel = $this->_indexModel;
-            $subQuery = (new \yii\db\Query())
-                        ->select('entity_id')
-                        ->from($indexModel::tableName())
-                        ->where(['term_id' => $catalogTerm->id])
-                        ->distinct();
-        
-            return  (new \yii\db\Query())
-                            ->select('term_id as id')
-                            ->from($indexModel::tableName())
-                            ->where([
-                                'entity_id' => $subQuery,
-                                'vocabulary_id' => Yii::$app->params['catalog']['filterVocabularyIds']
+            return (new \yii\db\Query())
+                            ->select('i1.term_id as id')
+                            ->from($indexModel::tableName().' as i1')
+                            ->innerJoin($indexModel::tableName().' as i2','i1.entity_id = i2.entity_id')
+                            ->where([ 
+                                'i2.term_id' => $catalogTerm->id
                             ])
                             ->distinct()
                             ->column();  
+        
     }
     
     public function getCountFilterTerms(array $data){

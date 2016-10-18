@@ -172,12 +172,19 @@ class ProductDefault extends ActiveRecord
      * @return \common\models\Alias
      */
     public function urlPattern(\common\models\Alias $alias){
-        $alias->alias = URLify::url($this->titlePattern()) .'-'. $this->id;        
+        $alias->alias = URLify::url($this->titlePattern()) .'-'. $this->id;     
+        $alias->url = 'product/default' . '?id=' . $this->owner->id . '&model='. ModelHelper::getModelName($this->owner);
         $alias->groupAlias = URLify::url($this->title);
         $link = [];
-        $link = array_column($this->catalog, 'transliteration');
+        $catalog = $this->catalog;
+        usort($catalog, function($a, $b){
+            if ($a->pid == $b->pid) {
+                return 0;
+            }
+            return ($a->pid < $b->pid) ? -1 : 1;
+        });
+        $link = array_column($catalog, 'transliteration');
         $alias->prefix = implode('/', $link);
-
         return $alias;
     }
     

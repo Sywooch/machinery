@@ -54,7 +54,7 @@ class UrlBehavior extends Behavior
      * @return Alias
      */
     private function createAlias(){
-        
+       
         if($this->alias->one()){
             return $this->alias;
         }

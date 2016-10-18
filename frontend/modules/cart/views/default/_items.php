@@ -10,7 +10,7 @@ use common\modules\orders\helpers\OrdersHelper;
 
 <?php foreach($order->items as $item):?>
 <div class="row cart-item" id="order-item-<?=$item->id?>">
-    <div class="col-lg-2 col-md-2 col-sm-2">
+    <div class="col-lg-2 col-md-2 col-sm-2 ">
         <?php if(isset($form)):?>
             <?=CheckboxX::widget([
                 'name'=>'chb_'.$item->id,
@@ -22,10 +22,10 @@ use common\modules\orders\helpers\OrdersHelper;
         if(isset($item->origin->photos) && !empty($item->origin->photos)){
             $img = Html::img('/'.Style::getPreviewUrl($item->origin->photos[0], '100x100'), ['class' => 'img-responsive']);
         }else{
-            $img = Html::img('/files/no-photo.png');
+            $img = Html::img('/files/nophoto_100x100.jpg',['class' => 'img-responsive']);
         }
         ?>
-        <?= Html::a($img, ['/'.$item->origin->alias->alias, 'id' => $item->entity_id], ['class' => '']); ?>
+        <?= Html::a($img, ['/'.$item->origin->url->alias], ['class' => '']); ?>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6">
         <span class="product-status ">
@@ -33,7 +33,7 @@ use common\modules\orders\helpers\OrdersHelper;
                     <span class="<?=$status->transliteration;?>"><?=$status->name;?></span>
                 <?php endforeach;?>
         </span>
-        <?= Html::a($item->origin->titleDescription, ['/'.$item->origin->alias->alias, 'id' => $item->entity_id], ['class' => '']); ?>
+        <?= Html::a($item->origin->titleDescription, ['/'.$item->origin->url->alias], ['class' => '']); ?>
         <div class="info">
             <div class="sku">
                 <span class="lb">Код</span>

@@ -3,9 +3,9 @@ use frontend\modules\catalog\widgets\Filter\Asset;
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use frontend\modules\catalog\helpers\FilterHelper;
 use kartik\slider\Slider;
 use yii\widgets\ActiveForm;
+use frontend\modules\catalog\helpers\CatalogHelper;
 
 Asset::register($this);
 
@@ -16,7 +16,7 @@ Asset::register($this);
 <div id="filter" class="filter">
     <section class="price-range">
         <span class="h4">Цена</span>
-        <?=Html::textInput ( 'FilterModel[priceMin]', $filter->priceMin , ['id' => 'priceMin'])?>
+        <?=Html::textInput ( 'FilterModel[priceMin]', $filter->min , ['id' => 'priceMin'])?>
         <?=$form->field($model, 'priceRange',['template' => '{input}{error}'])->widget(Slider::classname(), [
             'pluginOptions'=>[
                 'min' => 0,
@@ -28,7 +28,7 @@ Asset::register($this);
             ]
         ]);
         ?>
-        <?=Html::textInput ( 'FilterModel[priceMax]', $filter->priceMax, ['id' => 'priceMax'] )?>  грн      
+        <?=Html::textInput ( 'FilterModel[priceMax]', $filter->max, ['id' => 'priceMax'] )?>  грн      
     </section>
     <?php foreach($vocabularies as $vocabulary): ?>
         <?php if(isset($filterItems[$vocabulary->id])):?>
@@ -36,7 +36,7 @@ Asset::register($this);
                 <span class="h4"><?=$vocabulary->name;?></span>
                 <div>
                     <?php foreach($filterItems[$vocabulary->id] as $index => $term): ?>
-                        <span data-url="<?=Url::toRoute(['/catalog', 'term' => $term]); ?><?=Url::toRoute(['/filter', 'term' => $term]); ?>" class="filter-item <?=FilterHelper::isActive($filter,$term)?'active':'';?>"><?=$term->name;?></span>
+                        <span data-url="/<?=CatalogHelper::filterLink($term);?>" class="filter-item <?=isset($filter->terms[$term->id]) ? 'active':'';?>"><?=$term->name;?></span>
                     <?php endforeach; ?>
                 </div>
             </section>

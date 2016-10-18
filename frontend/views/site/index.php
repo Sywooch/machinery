@@ -10,7 +10,9 @@ $this->title = 'Интернет-магазин №1';
 <div class="site-index">
     
     <div class="asd-index">
-        <?=$this->render('_slider',['slider' => $slider]);?>
+        <?php if($slider):?>
+            <?=$this->render('_slider',['slider' => $slider]);?>
+        <?php endif;?>
         <?=$this->render('_actions',['actions' => $actions]);?>
     </div>
     

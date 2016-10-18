@@ -34,7 +34,7 @@ class AliasRule extends UrlRule {
     }
     private function parseAliasUrl(){
         $alias = Alias::find()->where(['alias' => Yii::$app->request->pathInfo])->one();
-    
+
         if(!$alias){
             return false;
         } 

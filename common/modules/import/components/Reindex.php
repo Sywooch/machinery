@@ -7,7 +7,7 @@ namespace common\modules\import\components;
  */
 class Reindex extends \yii\base\Model
 {
-    const MAX_REINDEX_ITEMS = 100;
+    const MAX_REINDEX_ITEMS = 1000;
     
     const NEW_ITEM = 1;
     const REINDEX = 2;
