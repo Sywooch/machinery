@@ -11,22 +11,25 @@ use frontend\modules\catalog\components\FilterParams;
 
 class FilterWidget extends \yii\bootstrap\Widget
 {
-    public $search; 
-    private $_urlRule;
+    const CACHE_TIME = 60*60*5;
+    
+    public $search;
+    public $url;
     private $_model;
     private $_vocabularies;
 
 
     public function init(){
-       $this->_urlRule = new CatalogUrlRule();
+       if(!$this->url){
+           $this->url = Yii::$app->url;
+       }
        if($this->search){
            $this->_model = new FilterModel($this->search);
        }
     }
-
+    
     public function run()
     {    
-
         return $this->getFilteForm();
     }
     
@@ -53,13 +56,7 @@ class FilterWidget extends \yii\bootstrap\Widget
      * @return mixed
      */
     private function getFilteForm(){
-        $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
-        $filter = clone FilterParams::getInstance();
-        $catalogTerms = $filter->index[$catalogVocabularyId];
-
-        $catalogMainTerm = reset($catalogTerms);
-        $filterTerms = $this->getFilterTermsByTerm($catalogMainTerm);
-        
+        $filterTerms = $this->getFilterTermsByTerm($this->url->main);
         if(empty($filterTerms)){
             return;
         }
@@ -67,18 +64,16 @@ class FilterWidget extends \yii\bootstrap\Widget
         $filterItemsCount = []; //$this->_model->getCountFilterTerms($terms); //TODO: uncomment
         
         return $this->render('filter-widget', [
-                'filterItems' => ArrayHelper::index($filterTerms,'id','vid'),
+                'filterItems' => ArrayHelper::index($filterTerms,'id', 'vid'),
                 'filterItemsCount' => $filterItemsCount,
                 'vocabularies' => $this->vocabularies,
                 'model' => $this->_model,
-                'filter' => FilterParams::getInstance()
+                'filter' => $this->url
         ]);
     }
 
     private function getFilterTermsByTerm(TaxonomyItems $term){
-        
         $filterTerms = Yii::$app->cache->get("filter:catalog:{$term->id}");
-
         if ($filterTerms === false) {
 
             $filterTermIds = $this->_model->getFilterTermIds($term);
@@ -89,10 +84,8 @@ class FilterWidget extends \yii\bootstrap\Widget
 
             $filterTerms = ArrayHelper::index(TaxonomyItems::findAll($filterTermIds), 'id');
             
-            Yii::$app->cache->set("filter:catalog:{$term->id}", $filterTerms, 60*60*5);
+            Yii::$app->cache->set("filter:catalog:{$term->id}", $filterTerms, self::CACHE_TIME);
         }
-        
         return $filterTerms;
-        
     }
 }

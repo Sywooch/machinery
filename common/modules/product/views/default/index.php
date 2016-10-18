@@ -43,7 +43,7 @@ $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
         
         <h1><?=Html::encode($this->title);?></h1>
         <div class="btn-group custom" role="group" aria-label="...">
-            <a type="button" class="btn btn-default" href="/<?=$product->alias->alias?>">Характеристики</a>
+            <a type="button" class="btn btn-default" href="/<?=$product->url->alias?>">Характеристики</a>
             <a type="button" class="btn btn-default" href="/<?=$product->groupAlias->alias?>/otzyvy">Отзывы</a>
         </div>
 

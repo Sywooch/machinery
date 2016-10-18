@@ -42,8 +42,10 @@ class ImporterController extends Controller
             }
 
             while (($line = $import->read()) !== FALSE) {
-
-                $validator->sku = $line['sku'];
+                if(empty($line)){
+                    continue;
+                }
+                $validator->sku = $line['sku']; 
                 
                 if(($line = $import->parseTerms($line)) === false){
                     $source->addMessage('[1001] Ошибка парсинга терминов.', $validator);
@@ -61,6 +63,7 @@ class ImporterController extends Controller
                 $validator->group = ImportHelper::getGroup($validator->attributes);
                
                 if($validator->validate()){
+                    
                     $import->add($validator);
                 }else{
                     foreach($validator->getErrors() as $field => $errors){

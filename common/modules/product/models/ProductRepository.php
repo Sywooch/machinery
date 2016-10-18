@@ -76,11 +76,10 @@ class ProductRepository extends \backend\models\ProductSearch
      * 
      * @return \backend\models\ProductSearch
      */
-    public function searchItemsByFilter(FilterParams $filter){
-
+    public function searchItemsByFilter($filter){
         $query = (new \yii\db\Query())
-                        ->select(['id'])
-                        ->from($this->_model->tableName())
+                        ->select(['t0.id'])
+                        ->from($this->_model->tableName().' as t0')
                         ->distinct()
                         ->orderBy([
                             'rating' => SORT_DESC
@@ -95,11 +94,11 @@ class ProductRepository extends \backend\models\ProductSearch
 
         ]);
         
-        $where = null;
+        $where = [];
         $indexModel = $this->_indexModel;
         $indexTable = $indexModel::tableName();
-        foreach($filter->index as $id => $value){
-            $query->innerJoin($indexTable . " {$indexTable}{$id}", "{$indexTable}{$id}.entity_id = id");
+        foreach($filter->getTerms([$filter->main]) as $id => $value){
+            $query->innerJoin($indexTable . " {$indexTable}{$id}", "{$indexTable}{$id}.entity_id = t0.id");
             $where["{$indexTable}{$id}.term_id"] = is_array($value) ? ArrayHelper::getColumn($value, 'id') : $value->id;
         }
         $query->andFilterWhere($where);
@@ -115,9 +114,9 @@ class ProductRepository extends \backend\models\ProductSearch
     public function getCategoryMostRatedItems(TaxonomyItems $taxonomyItem, $limit = 5){
         $indexModel = $this->_indexModel;
         return (new \yii\db\Query())
-                        ->select('id')
-                        ->from($this->_model->tableName())
-                        ->innerJoin($indexModel::tableName(), 'entity_id = id')
+                        ->select('t0.id')
+                        ->from($this->_model->tableName().' as t0')
+                        ->innerJoin($indexModel::tableName(), 'entity_id = t0.id')
                         ->where([
                             'term_id' => $taxonomyItem->id,
                             'publish' => self::PUBLISH,

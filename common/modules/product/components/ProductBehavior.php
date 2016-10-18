@@ -37,6 +37,7 @@ class ProductBehavior extends Behavior
     }
     
     public function getFeature(){
+      
         if(!$this->owner->features){
             return [];
         } 

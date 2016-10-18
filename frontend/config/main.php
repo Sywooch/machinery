@@ -35,6 +35,7 @@ return [
         ],
     ],
     'components' => [
+        'url' => 'frontend\modules\catalog\components\Url',
         'request' => [
             'baseUrl' => '',
 	],

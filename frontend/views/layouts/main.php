@@ -27,7 +27,16 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
     
     <header class="header">
-        <div class="container-fluid"></div>
+       
+        <div class="container-fluid">
+            <div class="addition-menu">
+                <a href="/">Акции</a>
+                <a href="/">Обзоры</a>
+                <a href="/">Гарантия и сервис</a>
+                <a href="/">Оплата и доставка</a>
+                <a href="/">Контакты</a>
+            </div>
+        </div>
     </header>
     
     <?php

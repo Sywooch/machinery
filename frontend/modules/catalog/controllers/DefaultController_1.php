@@ -10,7 +10,6 @@ use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\models\TaxonomyItemsSearch;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 use frontend\modules\catalog\helpers\CatalogHelper;
-use frontend\modules\catalog\components\Url;
 
 /**
  * Site controller
@@ -45,19 +44,26 @@ class DefaultController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex(Url $filter)
+    public function actionIndex($filter)
     {   
-
-        if(!$filter->main){
+       
+        print_r($filter); exit();
+        
+        $catalogVocabularyId = Yii::$app->params['catalog']['vocabularyId'];
+        $catalogTerms = $filter->index[$catalogVocabularyId];
+       
+        $catalogMain = array_shift($catalogTerms);
+        $catalogSub = array_shift($catalogTerms);
+      
+        if(!$catalogMain){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
         
-        $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($filter->main));
-
-        if(!$filter->category){
+        $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($catalogMain));
+        if(!$catalogSub){
             $childrensTerms = TaxonomyItems::findAll([
-                'vid' => $filter->main->vid,
-                'pid' => $filter->main->id
+                'vid' => $catalogMain->vid,
+                'pid' => $catalogMain->id
             ]); 
             
             if($childrensTerms){
@@ -70,21 +76,27 @@ class DefaultController extends Controller
                     ];
                 }
                 return $this->render('categories',[
-                    'parent' => $filter->main,
+                    'parent' => $catalogMain,
                     'items' => $items
                 ]);
             }
         }
+        
+        $index = $filter->index;
+        array_shift($index[$catalogVocabularyId]);
+        $filter->index = $index;
+
         $dataProvider = $searchModel->searchItemsByFilter($filter);
         $products = $searchModel->getProducstByIds($dataProvider->getKeys());
-
+        
         return $this->render('index',[
-            'parent' => $filter->main,
-            'current' => $filter->category,
+            'parent' => $catalogMain,
+            'current' => $catalogSub,
             'dataProvider' => $dataProvider,
             'products' => $products,
             'search' => $searchModel,
         ]);
+        
     }
 
 }

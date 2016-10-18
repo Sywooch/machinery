@@ -13,8 +13,18 @@ return [
         'buyButtonText' => 'В корзину',
         'models' => [
             11 => \backend\models\ProductDefault::class,
-            12 => \backend\models\ProductPC::class
+            12 => \backend\models\ProductPC::class,
+            3784 => \backend\models\ProductAV::class,
+            3887 => \backend\models\ProductBitovaya::class,
+            3888 => \backend\models\ProductBuilding::class,
+            3889 => \backend\models\ProductSport::class,
+            5408 => \backend\models\ProductHardware::class,
+            3891 => \backend\models\ProductAccessories::class,
+            3892 => \backend\models\ProductAuto::class
         ],
-        'filterVocabularyIds' => [2,31,32,33,34,40,47,48,51]
+        'filterVocabularyIds' => [
+            2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,
+            51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67
+            ]
     ],
 ];

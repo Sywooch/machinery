@@ -2,8 +2,11 @@
 
 namespace frontend\modules\catalog\helpers;
 
+use Yii;
 use yii\base\InvalidParamException;
 use common\modules\taxonomy\models\TaxonomyItems;
+use yii\helpers\ArrayHelper;
+use frontend\modules\catalog\components\Url;
 
 class CatalogHelper {
     
@@ -87,6 +90,40 @@ class CatalogHelper {
             }
         }
         return [];
+    }
+    
+    
+     public static function link(array $items){
+        $return = [];
+        foreach($items as $item){
+            $return[] = $item['transliteration'];
+        }
+        return implode('/', $return);
+    }
+    
+    public static function filterLink(TaxonomyItems $term){
+        $terms = Yii::$app->url->filterTerms; 
+
+        if(isset($terms[$term->id])){
+            unset($terms[$term->id]);
+        }else{
+            $terms[$term->id] = $term;
+        }        
+        
+        $prepare = [];
+        foreach($terms as $term){
+            $prepare[$term->vid][] = $term->id;
+        }
+        $return = [];
+        foreach($prepare as $vid => $ids){
+            $return[] = Url::TERM_INDICATOR . $vid . '-' . implode('-', $ids);
+        }
+        
+        if(empty($return)){
+           return Yii::$app->url->catalogPath; 
+        }
+        
+        return Yii::$app->url->catalogPath . DIRECTORY_SEPARATOR . Url::FILTER_INDICATOR . DIRECTORY_SEPARATOR . implode('_', $return);
     }
     
 }
