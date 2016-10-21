@@ -14,18 +14,5 @@ class ProductPC extends ProductDefault
     {
         return 'product_pc';
     }
-    
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        
-        $behaviors = parent::behaviors();
-        $behaviors[0] = [
-                    'class' => \common\modules\taxonomy\components\TaxonomyBehavior::class,
-                    'indexModel' => \backend\models\ProductPCIndex::class
-                ];
-        return $behaviors;
-    }
+
 }

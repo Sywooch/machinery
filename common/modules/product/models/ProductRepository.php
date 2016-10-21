@@ -4,10 +4,10 @@ namespace common\modules\product\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use common\helpers\ModelHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 use yii\data\ActiveDataProvider;
-use frontend\modules\catalog\components\FilterParams;
+use common\modules\product\models\ProductIndex;
+use common\modules\product\models\ProductIndexPivot;
 
 /**
  * ProductDefaultSearch represents the model behind the search.
@@ -16,7 +16,11 @@ class ProductRepository extends \backend\models\ProductSearch
 {
     const PUBLISH = 1;
     
-    /**
+    public function __construct($model) {
+        parent::__construct($model);
+    }
+
+        /**
      * 
      * @param array $ids
      * @return mixed
@@ -77,13 +81,12 @@ class ProductRepository extends \backend\models\ProductSearch
      * @return \backend\models\ProductSearch
      */
     public function searchItemsByFilter($filter){
+        
+      
         $query = (new \yii\db\Query())
                         ->select(['t0.id'])
                         ->from($this->_model->tableName().' as t0')
-                        ->distinct()
-                        ->orderBy([
-                            'rating' => SORT_DESC
-                        ]);
+                        ->distinct();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -91,18 +94,37 @@ class ProductRepository extends \backend\models\ProductSearch
                 'pageSize' => Yii::$app->params['catalog']['defaultPageSize'],
             ],
             'key' => 'id',
-
         ]);
         
+        /*
         $where = [];
-        $indexModel = $this->_indexModel;
-        $indexTable = $indexModel::tableName();
+        $pivotTable = $this->_model->pivotModel->tableName();
+        $query->innerJoin($pivotTable, $pivotTable.".id = t0.id");
         foreach($filter->getTerms([$filter->main]) as $id => $value){
-            $query->innerJoin($indexTable . " {$indexTable}{$id}", "{$indexTable}{$id}.entity_id = t0.id");
-            $where["{$indexTable}{$id}.term_id"] = is_array($value) ? ArrayHelper::getColumn($value, 'id') : $value->id;
+            $where[$pivotTable.'.t'.$value->vid][] = $value->id; 
         }
         $query->andFilterWhere($where);
+        return $dataProvider;*/
+        
+        
+        $where = [];
+  
+        $indexTable = $this->_model->indexModel->tableName();
+        
+        
+        $index = ArrayHelper::map($filter->getTerms([$filter->main]),'id','id','vid');
+        
+        
+        foreach($index as $id => $values){
+            $query->innerJoin($indexTable . " {$indexTable}{$id}", "{$indexTable}{$id}.entity_id = t0.id");
+            $where["{$indexTable}{$id}.term_id"] = $values;
+        }
+        
+        //print_r($where); exit('s');
+
+        $query->andFilterWhere($where);
         return $dataProvider;
+        
     }
     
     /**
@@ -112,11 +134,11 @@ class ProductRepository extends \backend\models\ProductSearch
      * @return \backend\models\ProductSearch
      */
     public function getCategoryMostRatedItems(TaxonomyItems $taxonomyItem, $limit = 5){
-        $indexModel = $this->_indexModel;
+
         return (new \yii\db\Query())
                         ->select('t0.id')
                         ->from($this->_model->tableName().' as t0')
-                        ->innerJoin($indexModel::tableName(), 'entity_id = t0.id')
+                        ->innerJoin($this->_model->indexModel->tableName(), 'entity_id = t0.id')
                         ->where([
                             'term_id' => $taxonomyItem->id,
                             'publish' => self::PUBLISH,
@@ -135,11 +157,10 @@ class ProductRepository extends \backend\models\ProductSearch
      */
     public function getItemsByStatus(TaxonomyItems $status, $limit = 10){
         
-        $indexModel = $this->_indexModel;
         return (new \yii\db\Query())
-                        ->select('id')
-                        ->from($this->_model->tableName())
-                        ->innerJoin($indexModel::tableName(), 'entity_id = id')
+                        ->select('t0.id')
+                        ->from($this->_model->tableName().' t0')
+                        ->innerJoin($this->model->indexModel->tableName(), 'entity_id = t0.id')
                         ->where([
                             'term_id' => $status->id
                         ])

@@ -28,7 +28,11 @@ class CartHelper
        ]).'</div>';
     }
     
-    public function getConfirmModal(){
+    /**
+     * 
+     * @return string
+     */
+    public static function getConfirmModal(){
         return Modal::widget([
             'id' => 'buyConfirmModal',
             'header' => '<h3>Вы добавили в корзину</h3>',

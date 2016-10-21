@@ -78,6 +78,7 @@ class ImporterController extends Controller
                         break;
                     }
                 }
+               
             } 
             
             $import->flush();

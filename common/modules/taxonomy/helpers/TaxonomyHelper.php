@@ -44,7 +44,7 @@ class TaxonomyHelper {
                     $node['pid'] = 0;
                     $tree[$id] = &$node;
                 } else {
-                    $dataset[$node['pid']][$childKey][$id] = &$node;
+                    $dataset[$node['pid']][$childKey][] = &$node;
                 }
             } else {
                 $n = array_shift($node);
@@ -53,7 +53,6 @@ class TaxonomyHelper {
                 $tree[$id]['pid'] = 0;
             }
         }
-
         return $tree;
     }
     
@@ -99,7 +98,14 @@ class TaxonomyHelper {
         return $tree;
     }
     
-    public function nes2Flat($tree, $parent = 0, $weight = 0 ) {
+    /**
+     * 
+     * @param [] $tree
+     * @param ineger $parent
+     * @param integer $weight
+     * @return []
+     */
+    public static function nes2Flat($tree, $parent = 0, $weight = 0 ) {
         $d = [];
         $t = [];
 
@@ -151,7 +157,7 @@ class TaxonomyHelper {
     }
     
     public static function terms2IndexedArray($terms){
-        
+
        $terms = ArrayHelper::getColumn($terms, function ($element) {
             return [
                 'id' => $element->id,

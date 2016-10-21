@@ -10,6 +10,8 @@ use common\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
 use yii\helpers\ArrayHelper;
 use common\helpers\ModelHelper;
+use common\modules\product\models\ProductIndex;
+use common\modules\product\models\ProductIndexPivot;
 
 class ProductBehavior extends Behavior
 {
@@ -18,10 +20,18 @@ class ProductBehavior extends Behavior
     {
         return [
             ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSaveProduct',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSaveProduct'
+            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSaveProduct',
+            ActiveRecord::EVENT_INIT => 'afterInit',
         ];
     }
     
+    public function afterInit(){
+        $this->owner->indexModel = new ProductIndex($this->owner);
+        $this->owner->pivotModel = new ProductIndexPivot($this->owner);
+        parent::init();
+    }
+
+
     /** @inheritdoc */
     public function beforeSaveProduct($insert) {
         $terms = TaxonomyItems::find()->indexBy('vid')->where(['id' => $this->owner->terms])->all();

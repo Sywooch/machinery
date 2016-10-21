@@ -10,7 +10,6 @@ use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\import\models\Sources;
 use yii\helpers\ArrayHelper;
 use common\helpers\URLify;
-
 use common\helpers\ModelHelper;
 use common\modules\orders\models\PromoCodes;
 use common\modules\orders\models\PromoProducts;
@@ -41,7 +40,25 @@ use common\modules\orders\models\PromoProducts;
  */
 class ProductDefault extends ActiveRecord
 {
-    /**
+    
+    private $_indexModel;
+    private $_pivotModel;
+    
+    public function setPivotModel($model){
+        $this->_pivotModel = $model;
+    }
+    public function getPivotModel(){
+        return $this->_pivotModel;
+    }
+    
+    public function setIndexModel($model){
+        $this->_indexModel = $model;
+    }
+    public function getIndexModel(){
+        return $this->_indexModel;
+    }
+
+        /**
      * @inheritdoc
      */
     public static function tableName()
@@ -56,7 +73,7 @@ class ProductDefault extends ActiveRecord
     {
         return [
             [['source_id', 'user_id', 'available'], 'integer'],
-            [['sku', 'created', 'updated', 'title', 'model'], 'required'],
+            [['sku', 'title', 'model'], 'required'],
             [['price','old_price', 'rating'], 'number'],
             [['description', 'data', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 30],
@@ -103,14 +120,13 @@ class ProductDefault extends ActiveRecord
     {
         return [
                 [
-                    'class' => \common\modules\taxonomy\components\TaxonomyBehavior::class,
-                    'indexModel' => \backend\models\ProductDefaultIndex::class
+                    'class' => \common\modules\product\components\ProductBehavior::class,
+                ],
+                [
+                    'class' => \common\modules\taxonomy\components\TaxonomyBehavior::class
                 ],
                 [
                     'class' => \common\modules\file\components\FileBehavior::class,
-                ],
-                [
-                    'class' => \common\modules\product\components\ProductBehavior::class,
                 ],
                 [
                     'class' => \common\components\UrlBehavior::class,

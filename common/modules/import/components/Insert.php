@@ -16,7 +16,7 @@ use yii\base\InvalidValueException;
  */
 class Insert extends \yii\base\Model
 {
-    const INSERT_LIMIT  = 1;
+    const INSERT_LIMIT  = 1000;
     
     private $stack = [];
     private $model;
@@ -42,6 +42,7 @@ class Insert extends \yii\base\Model
      * @param int $catalogId
      */
     public function flush($catalogId = null){
+        echo "Flush start\n";
         if(empty($this->stack)){
             return;
         }
@@ -58,6 +59,8 @@ class Insert extends \yii\base\Model
     
     private function insert($currentCatalogId, array $items){
        
+       
+        
         $this->model = CatalogHelper::getModelByTerm(TaxonomyItems::findOne($currentCatalogId));
         $this->insertBatch($this->model->tableName(), $items, ImportHelper::productFields(), ImportHelper::productFieldTypes());
         $sku2Ids = $this->getIdsBySku(array_column($items, 'sku'));
@@ -69,9 +72,9 @@ class Insert extends \yii\base\Model
         $newTermIds = array_column($items, 'terms', 'sku');
         $insertTermsData = ImportHelper::insertTermsData($sku2Ids, $currentTermIds, $newTermIds);
         $deleteTermsData = ImportHelper::deleteTermsData($sku2Ids, $currentTermIds, $newTermIds);
-        $indexModel = $this->model->className() . 'Index';
-        $this->insertBatch($indexModel::tableName(), $insertTermsData, ImportHelper::termFields(), ImportHelper::termFieldTypes());
-        $this->deleteIndex($indexModel::tableName(), $deleteTermsData);
+        
+        $this->insertBatch($this->model->indexModel->tableName(), $insertTermsData, ImportHelper::termFields(), ImportHelper::termFieldTypes());
+        $this->deleteIndex($this->model->indexModel->tableName(), $deleteTermsData);
         
     }
     
@@ -103,10 +106,9 @@ class Insert extends \yii\base\Model
     
     private function getTermIdsByProdutIds(array $ids){
         $data = [];
-        $model = $this->model->className() . 'Index';
         $items = (new \yii\db\Query())
                         ->select(['entity_id','term_id'])
-                        ->from($model::tableName())
+                        ->from($this->model->indexModel->tableName())
                         ->where([
                             'entity_id' => $ids,
                         ])->all();
@@ -166,9 +168,8 @@ class Insert extends \yii\base\Model
             }
             $onDuplicateStrings[] = '`'.$column.'` = VALUES(`'.$column.'`) ';
         }
-        
         $sql = Yii::$app->db->queryBuilder->batchInsert($table, $columns, array_chunk($params, $countColumns));
-       
+      
         return Yii::$app->db->createCommand($sql . " ON DUPLICATE KEY UPDATE ".implode(',', $onDuplicateStrings))->execute();
 
     }

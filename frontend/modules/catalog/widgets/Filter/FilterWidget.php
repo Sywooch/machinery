@@ -56,7 +56,7 @@ class FilterWidget extends \yii\bootstrap\Widget
      * @return mixed
      */
     private function getFilteForm(){
-        $filterTerms = $this->getFilterTermsByTerm($this->url->main);
+        $filterTerms = $this->getFilterTermsByTerm($this->url->category);
         if(empty($filterTerms)){
             return;
         }

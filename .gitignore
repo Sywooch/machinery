@@ -16,3 +16,6 @@ console/config/.gitignore
 .idea/vcs.xml
 .idea/workspace.xml
 backend/web/.htaccess
+frontend/web/assets/
+frontend/runtime/debug/5809dd2cb24b6.data
+frontend/runtime/

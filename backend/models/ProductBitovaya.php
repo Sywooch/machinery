@@ -14,18 +14,4 @@ class ProductBitovaya extends ProductDefault
     {
         return 'product_bitovaya';
     }
-    
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        
-        $behaviors = parent::behaviors();
-        $behaviors[0] = [
-                    'class' => \common\modules\taxonomy\components\TaxonomyBehavior::class,
-                    'indexModel' => \backend\models\ProductBitovayaIndex::class
-                ];
-        return $behaviors;
-    }
 }
