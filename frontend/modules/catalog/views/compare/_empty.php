@@ -1,11 +1,16 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
+
+
+$this->title = Html::encode('Сравнение');
+$this->params['breadcrumbs'][] = $this->title;
 
 ?>
+<?= Breadcrumbs::widget([
+    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+]) ?>
+<h1><?=$this->title;?></h1>
 
 Нет продуктов для сравнения

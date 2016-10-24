@@ -49,7 +49,7 @@ use common\modules\orders\helpers\OrdersHelper;
                 шт.
             </span>
         </div>
-        <a href="/cart/default/remove?id=<?= $item->id ?>" class="cart-item-remove"><i class="glyphicon glyphicon-remove-circle"></i></a>
+        <a href="/cart/default/remove?id=<?= $item->id ?>" class="item-remove cart-item-remove"><i class="glyphicon glyphicon-remove-circle"></i></a>
         <?php endif;?>
         
         <span class="item-total">

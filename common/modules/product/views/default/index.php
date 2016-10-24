@@ -4,6 +4,7 @@ use frontend\modules\cart\Asset as CartAsset;
 use frontend\modules\cart\helpers\CartHelper;
 use common\modules\product\Asset as ProductAsset;
 use common\modules\product\helpers\ProductHelper;
+use frontend\modules\catalog\helpers\CatalogHelper;
 use kartik\rating\StarRating;
 use yii\widgets\Breadcrumbs;
 
@@ -34,7 +35,7 @@ $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
                 'pluginOptions' => ['displayOnly' => true, 'size' => 'xs']
             ]);
             ?>
-            <div class="print-wrapper" onclick="window.print();"><span class="glyphicon glyphicon-print"></span><a>Распечатать</a></div>
+            <div class="print-wrapper" onclick="window.print();"><span class="print-icon"></span><a>Распечатать</a></div>
         </div>
         
         
@@ -71,7 +72,13 @@ $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
                 </div>
                 <div class="inline">
                     <?php echo CartHelper::getBuyButton($product);?>
-                </div>   
+                </div>  
+               
+            </section>
+            <section class="buy-block">
+                 <div class="inline">
+                    <?php echo CatalogHelper::getCompareButton($product, $compareIds);?>
+                </div>  
             </section>
         </aside>
         

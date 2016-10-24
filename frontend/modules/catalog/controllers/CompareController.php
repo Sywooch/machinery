@@ -31,7 +31,7 @@ class CompareController extends Controller
         ];
     }
     
-    public function actionIndex(){
+    public function actionIndex($id = null){
      
         $compares = Compares::getItems();
         
@@ -48,15 +48,24 @@ class CompareController extends Controller
         
         $termIds = array_unique(ArrayHelper::getColumn($compares, 'term_id'));
         $terms = TaxonomyItems::find()->where(['id'=>$termIds])->indexBy('id')->all();
-      
+   
+        $current = isset($terms[$id]) ? $terms[$id] : reset($terms);
         
         return $this->render('index',[
+            'current' => $current,
             'terms' => $terms,
-            'models' => CatalogHelper::compareModelByTerm(reset($terms), $compares, $models),
+            'models' => CatalogHelper::compareModelByTerm($current, $compares, $models),
         ]);
        
     }
-    
+    public function actionRemove($id){
+
+        Compares::deleteAll([
+            'entity_id' => $id,
+            'session' => $_COOKIE['PHPSESSID']
+        ]);
+        return $this->redirect(Yii::$app->request->referrer);
+    }
     public function actionToggle(){
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -109,7 +118,8 @@ class CompareController extends Controller
                     'status' => 'success', 
                     'action' => 'deleted',
                     'id' => $compare->entity_id,
-                    'model' => $compare->model
+                    'model' => $compare->model,
+                    'count' => $compare->count
                 ];
         }
         
@@ -117,7 +127,8 @@ class CompareController extends Controller
                 'status' => 'success', 
                 'action' => 'added',
                 'id' => $compare->entity_id,
-                'model' => $compare->model
+                'model' => $compare->model,
+                'count' => $compare->count
             ];
     }
 }

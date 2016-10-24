@@ -127,7 +127,7 @@ class CatalogHelper {
                             '<i class="glyphicon glyphicon-ok"></i>'.
                         '</span>'.
                     '</div>'.
-                    '<label >сравнить</label>'.
+                    '<label >'.(isset($ids[$entity->id]) ? 'в сравнении' : 'сравнить').'</label>'.
                 '</div>';
     }
     

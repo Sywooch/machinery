@@ -6,6 +6,8 @@ use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use common\modules\product\models\ProductRepository;
 use common\helpers\ModelHelper;
+use frontend\modules\catalog\models\Compares;
+use yii\helpers\ArrayHelper;
 
 /**
  * Site controller
@@ -39,9 +41,10 @@ class DefaultController extends Controller
         if(empty($product)){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
-
+        $compares = ArrayHelper::map(Compares::getItems(),'entity_id','entity_id','model');
         return $this->render('index',[
             'product' => $product,
+            'compareIds' => isset($compares[$model]) ? $compares[$model] : [], 
         ]);
         
     }

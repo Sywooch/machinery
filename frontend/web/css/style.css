@@ -7,7 +7,6 @@ html,
 body {
     height: 100%;
     font-size: 14px;
-    font-family: 'PT Sans', Arial, sans-serif;
 }
 
 a:focus{
@@ -16,6 +15,7 @@ a:focus{
 .breadcrumb{
     background-color: #fff;
     padding-left: 0px;
+    font-size: 12px;
 }
 .breadcrumb a{
     color: #000;
@@ -89,7 +89,15 @@ a:focus{
 .control{
     border-bottom: 1px solid #ddd;
 }
-
+.item-remove {
+    text-decoration: none;
+    color: #ccc;
+    float: right;
+    margin-left: 20px;
+    border: none;
+    font-weight: normal;
+    font-size: 14px;
+}
 .footer {
     height: 60px;
     border-top: 1px solid #ddd;
@@ -284,6 +292,38 @@ a:hover{
 .product .left{
     border-right: 1px solid #ddd
 }
+.product .chb-compare .cbx-icon .glyphicon{
+    display: none;
+}
+.product .chb-compare .cbx{
+    border: none;
+    box-shadow: none;
+    width: auto;
+    height: auto;
+    margin-right: 0px;
+    margin-top: 0px;
+    width: 36px;
+    height: 26px;
+   
+}
+.product .chb-compare label{
+    margin-top: 7px;
+    float: left;
+    display: block;
+    
+    font-weight: normal;
+  
+}
+.product .chb-compare .cbx-icon{
+        background: url(../images/sprite.png) no-repeat -0px -24px;
+        display: block;
+        float: left;
+}
+.product .chb-compare.active .cbx-icon{
+    background-position: -0px -24px;
+}
+
+
 .produt-short{
     color: #999;
 }
@@ -307,6 +347,9 @@ aside section .inline{
 
 .characteristic{
     margin: 0px 0px 30px 0px;
+}
+.characteristic h3{
+    font-size: 20px;
 }
 .characteristic ul{
     list-style: none;
@@ -335,7 +378,7 @@ aside section .inline{
     float: left;
     color: #f37f00;
     display: block;
-    font-size: 16px;
+    font-size: 14px;
     text-transform: uppercase;
 }
 .product .rating-container{
@@ -361,11 +404,21 @@ aside section .inline{
 .print-wrapper{ 
     float: right;
     color: #f37f00; 
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
 }
-.print-wrapper span{
-    margin-right: 8px;
+.print-wrapper a{
+    border-bottom: 1px dashed #337ab7;
+}
+
+.print-icon{
+   background: url(../images/sprite.png) no-repeat -30px -28px;
+   display: block;
+    width: 24px;
+    height: 20px;
+    float: left;
+    margin-right: 3px;
+    margin-top: -1px;
 }
 
 .produt-gallery{
@@ -403,7 +456,7 @@ aside section .inline{
     content: '';
     width: 26px;
     height: 62px;
-    background: url('../images/icon-set-00.png') no-repeat 0px -67px;
+  
     display: block;
     float: right;
     top: 50%;
@@ -457,7 +510,6 @@ aside section .inline{
     border: 1px solid #f37f00; 
 }
 .buy-block button{
-    font-size: 16px;
     margin-top: 4px;
 }
 .buy-block .price{
@@ -497,14 +549,18 @@ aside section .inline{
     margin-top: 20px;
     clear: both;
 }
+.catalog-list .chb-compare{
+    float: right;
+}
 .items-counter {
     display: inline-block;
     background: #f37f00;
-    padding: .1em .5em;
+    padding: 3px 5px 2px 5px;
     position: relative;
-    margin-top: 16px;
+    margin-top: 14px;
     margin-left: 10px;
     color: #fff;
+    font-size: 13px;
 }
 .items-counter:before {
     content: '';
@@ -592,7 +648,7 @@ aside section .inline{
 .product-status span.hit{
     background-color: #a43a8d;
 }
-.catalog-category .title{
+.title{
     display: block;
     height: 46px;
     border: 0px;
@@ -601,18 +657,24 @@ aside section .inline{
     text-overflow: ellipsis;
     overflow: hidden;
 }
-.catalog-category .price{
+.price{
     color: #000;
     font-size: 18px;
     margin-bottom: 6px;
-    float: left;
+
     font-family: 'Roboto', sans-serif;
 }
-.catalog-category .price span{
+.price span{
     font-size: 13px;
     font-weight: normal;
     font-family: Arial;
 }
+.catalog-category .price{
+
+    float: left;
+
+}
+
 .catalog-category .old_price{
     float: left;
     font-size: 16px;
@@ -623,9 +685,9 @@ aside section .inline{
 .catalog-category .buy-btn-conteiner{
     clear: both;
 }
-.catalog-category .buy-button,.catalog-list .buy-button{
+ .buy-button{
     color: #2e6da4;
-    font-size: 14px;
+    font-size: 13px;
     border-color: #337ab7;
 }
 
@@ -657,7 +719,7 @@ aside section .inline{
 .catalog-list .price-conteiner{
     border: 1px solid #eee;
     padding: 5px 8px;
-    height: 44px;
+    height: 43px;
 }
 .catalog-list .price-conteiner .price {
     color: #000;
@@ -696,7 +758,6 @@ aside section .inline{
 }
 
 .buy-button{
-    font-size: 15px;
     padding: 4px 12px;
 }
 
@@ -706,6 +767,7 @@ aside section .inline{
     background-color: #faf7f0;
     border: 1px solid rgba(0,0,0,.1);
     margin-bottom: 60px;
+    font-family: 'PT Sans', Arial, sans-serif;
 }
 .filter .filter-item{
     border-radius: 3px;
@@ -803,7 +865,13 @@ aside section .inline{
 /* cart */
 
 #cart-block-widget{ float: right; height: 64px; border-left: 1px solid #eee; padding: 20px;}
-.mif-shopping-basket{ font-size: 24px; color: #f37f00; float: left; margin-right: 10px; }
+.mif-shopping-basket{ font-size: 24px; color: #f37f00; float: left; margin-right: 4px;
+background: url(../images/sprite.png) no-repeat -30px -0px;
+display: block;
+width: 24px;
+height: 24px;
+}
+
 .cart-items{ line-height: 2; font-style: italic; line-height: 2; color: #000; }
 #cart-block-widget a{
      border-color: rgba(35,82,124,.3);
@@ -840,6 +908,7 @@ aside section .inline{
 
 }
 .login{
+    font-size: 13px;
     float: right;
     height: 64px;
     border-left: 1px solid #eee;
@@ -1025,8 +1094,7 @@ aside section .inline{
 
 /* checkbox */
 .chb-compare{
-    margin-top: 5px;
-    float: right;
+    margin-top: 3px;
     margin-right: 20px;
 }
 .chb-compare .cbx-xs {
@@ -1045,13 +1113,14 @@ aside section .inline{
 .chb-compare .cbx{
     float: left;
     margin-right: 8px;
-    margin-top: 3px;
+    margin-top: 4px;
 }
 .chb-compare label{
     font-weight: normal;
     line-height: 1;
     cursor: pointer;
     border-bottom: 1px dashed #000;
+    font-size: 12px;
 }
 .cbx-loading {
     width: 25px;
@@ -1179,6 +1248,73 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
 
 .cbx-block + .cbx-block {
     margin: 5px 0 0 0;
+}
+
+/* compare */
+
+.cmpare-category{
+    display: inline-block;
+    margin-right: 20px;
+    border-bottom: 1px solid #000;
+
+    color: #000;
+    line-height: 1.2;
+    
+}
+.cmpare-category.active{
+    color: #fff;
+    border: 0px;
+    border-radius: 3px;
+    background: #f37f00;
+    padding: 3px 8px;
+}
+.compare-table{
+    margin-top: 20px;
+}
+.compare-table td{
+    padding: 4px 20px 4px 0px;
+    max-width: 280px;
+}
+
+#compare-block-widget{
+        padding: 20px;
+       float: right;
+       padding-right: 30px;
+       
+}
+#compare-block-widget a{
+    display: block;
+    height: 26px;
+    background: url('../images/sprite.png') no-repeat 0px -0px;
+    border: 0px;
+    color: #000;
+    padding-left: 30px;
+    position: relative;
+}
+#compare-block-widget a.active{
+    background-position: -0px -24px;
+    
+}
+#compare-block-widget a.active .compare-items{
+    color: #394144;
+}
+#compare-block-widget .compare-items{
+    font-weight: bold;
+    color: #ccc;
+    text-align: center;
+    font-size: 12px;
+    display: block;
+    line-height: 1.6;
+    position: absolute;
+    top: -5px;
+    right: -6px;
+}
+.compare-item-remove{
+    margin-right: 20px;
+    opacity: 0;
+}
+.item:hover .compare-item-remove{
+    opacity: 1;
 }
 
 

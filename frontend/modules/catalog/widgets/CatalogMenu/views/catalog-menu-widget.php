@@ -13,7 +13,7 @@ Asset::register($this);
 
     <div id="layout">
         <div class="main-navigation">
-            <a href="/" class="logo"><img src="/images/logo.png"></a>
+            <!--a href="/" class="logo"><img src="/images/logo.png"></a-->
             <ul class="main-navigation__inner">
                 <?php foreach($menuItems as $index => $mainItem):?>
       

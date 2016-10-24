@@ -59,4 +59,13 @@ class Compares extends \yii\db\ActiveRecord
              ])
              ->all();
     }
+    
+    public static function getCount(){
+        return $subQuery = (new \yii\db\Query())->select('COUNT(id)')
+                ->from(self::tableName())
+                ->where([
+                    'session' => $_COOKIE['PHPSESSID']
+                ])
+                ->count();
+    }
 }
