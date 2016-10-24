@@ -123,7 +123,7 @@ class TaxonomyItemsSearch extends TaxonomyItems
      * @param int $vid
      * @param array $order
      */
-    public function setOrder(int $vid, array $order){
+    public function setOrder($vid, array $order){
         
         $models = TaxonomyItems::findAll([
             'vid' => $vid

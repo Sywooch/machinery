@@ -8,6 +8,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\modules\product\models\ProductRepository;
 use frontend\modules\catalog\helpers\CatalogHelper;
+use common\helpers\ModelHelper;
 use backend\models\AdsSlider;
 use backend\models\AdsActions;
 use backend\models\Review;
@@ -73,6 +74,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+       
+       
+        
         $catalog = [];
         $catalog[] = TaxonomyItems::findOne(11);
         $catalog[] = TaxonomyItems::findOne(12);
@@ -85,7 +89,7 @@ class SiteController extends Controller
         $terms = TaxonomyItems::find()->where(['vid' => 47])->all();
         
         foreach($catalog as $item){
-            $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($item));
+            $searchModel = new ProductRepository(ModelHelper::getModelByTerm($item));
             foreach($terms as $term){
                 if(!isset($models[$term->id])){
                     $models[$term->id] = [];

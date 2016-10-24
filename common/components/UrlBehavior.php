@@ -11,6 +11,7 @@ use common\helpers\URLify;
 class UrlBehavior extends Behavior
 {
     private $_alias;
+    
     public function events()
     {
         return [
@@ -18,33 +19,53 @@ class UrlBehavior extends Behavior
         ];
     }
     
-    public function getAlias(){  
-        return $this->owner->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName($this->owner)]);
-    }
-    
+    /**
+     * 
+     * @return Alias
+     */
     public function getUrl(){
-        
         if($this->_alias){
             return $this->_alias;
         }
+        
         if($this->owner->alias){
             return $this->owner->alias;
         }
-       
+        
         $this->_alias = $this->createAlias();
-       
         return  $this->_alias;
     }
+    
+    /**
+     * 
+     * @return Alias
+     */
     public function getGroupUrl(){
         if($this->_alias){
             return $this->_alias->group;
         }
         return $this->owner->groupAlias;
     }
+    
+    /**
+     * 
+     * @return Alias
+     */
+    public function getAlias(){  
+        return $this->owner->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName($this->owner)]);
+    }
+    
+    /**
+     * 
+     * @return Alias
+     */
     public function getGroupAlias(){
         return $this->owner->hasOne(Alias::className(), ['entity_id' => 'group'])->where(['model' => Alias::GROUP_MODEL]);
     }
     
+    /**
+     * 
+     */
     public function afterDelete(){
         Alias::deleteAll(['entity_id' => $this->owner->id, 'model' => ModelHelper::getModelName($this->owner)]);
     }

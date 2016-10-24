@@ -13,7 +13,7 @@ use yii\helpers\ArrayHelper;
     
     <?= Select2::widget([
             'name' => ModelHelper::getModelName($field->model) . '[' .$field->attribute . '][]',
-            'value' => array_column($field->model->{$field->attribute}, 'id'),
+            'value' => ArrayHelper::getColumn($field->model->{$field->attribute}, 'id'),
             'options' => [
                 'placeholder' => 'Select terms ...', 
                 'multiple' => true,

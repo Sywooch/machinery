@@ -16,7 +16,7 @@ $map = [
 ];
 
 
-$this->title = isset($tab) ? $product->title . ' ' . $map[$tab] : Html::encode($product->titleDescription);
+$this->title = isset($tab) ? $product->title . ' ' . $map[$tab] : Html::encode($product->name);
 $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
 ?>
 

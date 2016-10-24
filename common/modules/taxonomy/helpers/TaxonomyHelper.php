@@ -5,6 +5,7 @@ namespace common\modules\taxonomy\helpers;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use common\modules\taxonomy\components\TermValidator;
+use common\modules\taxonomy\models\TaxonomyItems;
 
 class TaxonomyHelper {
     
@@ -30,27 +31,52 @@ class TaxonomyHelper {
     
     /**
      * 
+     * @param array $terms
+     * @return []
+     */
+    public static function order(array $terms){
+        $tree = self::treeMap($terms);
+        return array_reverse(self::tree2Flat(reset($tree)));
+    }
+    
+    /**
+     * 
+     * @param TaxonomyItems $tree
+     * @param array $terms
+     * @return TaxonomyItems
+     */
+    private static function tree2Flat(TaxonomyItems $tree, &$terms = []){
+        if(!empty($tree->childrens)){
+            foreach($tree->childrens as $children){
+               self::tree2Flat($children, $terms); 
+            }
+        }
+        $tree->childrens = [];
+        $terms[] = $tree;
+        return $terms;
+    }
+
+    
+
+
+    /**
+     * 
      * @param array $dataset
      * @param string $childKey
      * @return array
      */
     private static function treeMap(array $dataset, $childKey = 'children') {
-
-        $tree = array();
+        $dataset = ArrayHelper::index($dataset, 'id');
+        
+        $tree = [];
         foreach ($dataset as $id => &$node) {
-
-            if (key_exists('pid',$node)) {
-                if (!$node['pid']) {
-                    $node['pid'] = 0;
-                    $tree[$id] = &$node;
-                } else {
-                    $dataset[$node['pid']][$childKey][] = &$node;
+            if (isset($node->pid)) {
+                if (!$node->pid) {
+                    $node->pid = 0;
+                    $tree[$node->id] = &$node;
+                }else{
+                    $dataset[$node->pid]->childrens[] = &$node;
                 }
-            } else {
-                $n = array_shift($node);
-                $id = key($n);
-                $tree += $n;
-                $tree[$id]['pid'] = 0;
             }
         }
         return $tree;
@@ -64,13 +90,13 @@ class TaxonomyHelper {
      * @return array
      */
     private function treeDepth(array $tree, $maxDepth, $curDepth = 0) {
-        foreach ($tree as $index => $itm) {
-            if (isset($itm['children']) && $curDepth + 1 > $maxDepth){
-                unset($itm['children']);
-            }elseif (isset($itm['children'])){
-                $itm['children'] = self::treeDepth($itm['children'], $maxDepth, $curDepth + 1);
+        foreach ($tree as $index => $item) {
+            if (!empty($item->childrens) && $curDepth + 1 > $maxDepth){
+                $item->childrens = [];
+            }elseif (!empty($item->childrens)){
+                $item->childrens = self::treeDepth($item->childrens, $maxDepth, $curDepth + 1);
             }
-            $tree[$index] = $itm;
+            $tree[$index] = $item;
         }
         return $tree;
     }
@@ -87,17 +113,49 @@ class TaxonomyHelper {
             return $tree;
         }
         
-        foreach ($tree as $index => $itm) {
-            if ($itm['id'] == $parent){
-                return [$index => $itm];
-            }elseif (isset($itm['children'])){
-                $tree = self::treeParent($itm['children'], $parent);
+        foreach ($tree as $index => $item) {
+            if ($item->id == $parent){
+                return [$index => $item];
+            }elseif (isset($item->childrens)){
+                $tree = self::treeParent($item->childrens, $parent);
             }
                 
         }
         return $tree;
     }
     
+    /**
+     * 
+     * @param array $terms
+     * @return int
+     */
+    public function countChildren(TaxonomyItems $tree){
+        $count = count($tree->childrens);
+        if($count){
+            foreach($tree->childrens as $children){
+               $count += self::countChildren($children); 
+            }
+        }
+        
+        return $count;
+    }
+    
+    /**
+     * 
+     * @param TaxonomyItems $term
+     * @return TaxonomyItems
+     */
+    public function lastChildren(TaxonomyItems $term){
+        
+        if(empty($term->childrens)){
+            return $term;
+        }
+
+        foreach($term->childrens as $children){
+           return self::lastChildren($children); 
+        }    
+    }
+
     /**
      * 
      * @param [] $tree
@@ -156,6 +214,11 @@ class TaxonomyHelper {
         return $fields;
     }
     
+    /**
+     * 
+     * @param [] $terms
+     * @return JSON
+     */
     public static function terms2IndexedArray($terms){
 
        $terms = ArrayHelper::getColumn($terms, function ($element) {

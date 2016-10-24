@@ -17,29 +17,30 @@ Asset::register($this);
             <ul class="main-navigation__inner">
                 <?php foreach($menuItems as $index => $mainItem):?>
       
-                <li class="menu-item menu-item_expandable menu-item_products menu-item_cat_<?=$mainItem['id'];?>  ">
+                <li class="menu-item menu-item_expandable menu-item_products menu-item_cat_<?=$mainItem->id;?>  ">
                     <span class="menu-item__link-container">
-                        <a href="/<?=CatalogHelper::link([$mainItem]);?>" class="link_side-menu"><?=$mainItem['name']?></a>
+                        <a href="/<?=CatalogHelper::link([$mainItem]);?>" class="link_side-menu"><?=$mainItem->name?></a>
                     </span>
-                    <?php if(isset($mainItem['children'])):?>
+                    <?php if(!empty($mainItem->childrens)):?>
                         <?php
-                            $childrens = TaxonomyHelper::nes2Flat($mainItem['children']);
-                            $childrensCount = count($childrens);
+                            $childrensCount = TaxonomyHelper::countChildren($mainItem);
                             $chunkCount = $columnsCount = ceil ($childrensCount / CatalogMenuWidget::MAX_ITEMS_IN_COLUMN);
                             $columnsCount = max($columnsCount, 1);
                         ?>
                         <div class="subcategory-list subcategory-list_products " style=" column-count: <?=$columnsCount;?>; -moz-column-count: <?=$columnsCount;?>; min-width: <?=($columnsCount*250);?>px; top: 0px;"> 
-                            <?php foreach($childrens as $childrenItem):?>
+                            <?php foreach($mainItem->childrens as $childrenItem):?>
                                 <div class="subcategory-list-item ">
-                                    <?php if($mainItem['id'] == $childrenItem['pid']):?>
-                                        <span class="h3 subcategory-list-item__link-title  ">
-                                            <a href="/<?=CatalogHelper::link([$mainItem, $childrenItem]);?>" class="subcategory-list-item__link"><?=$childrenItem['name']?></a>
-                                        </span>
-                                    <?php else: ?>
+
+                                    <span class="subcategory-list-item__link-title  ">
+                                        <a href="/<?=CatalogHelper::link([$mainItem, $childrenItem]);?>" class=""><?=$childrenItem->name?></a>
+                                    </span>
+                                    <?php foreach($childrenItem->childrens as $childrenItem2):?>
+
                                         <div class="subcategory-list-item__link-title_level2">
-                                            <a href="/<?=CatalogHelper::link([$mainItem, $childrenItem]);?>" class="subcategory-list-item__link"><?=$childrenItem['name']?></a>
+                                            <a href="/<?=CatalogHelper::link([$mainItem, $childrenItem2]);?>" class="subcategory-list-item__link"><?=$childrenItem2->name?></a>
                                         </div>
-                                    <?php endif; ?>
+
+                                    <?php endforeach;?>
                                 </div>
                             <?php endforeach;?>
                         </div>

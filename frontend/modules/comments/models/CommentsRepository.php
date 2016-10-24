@@ -89,9 +89,9 @@ class CommentsRepository extends Model {
                         'thread'
                     ])
                     ->from(Comments::tableName())
-                    ->leftJoin(User::tableName().' as user', 'user.id = comments.user_id')
-                    ->leftJoin(Profile::tableName().' as profile', 'profile.user_id = comments.user_id')
-                    ->leftJoin(File::tableName().' as file', 'file.entity_id = comments.user_id AND file.model="'.ModelHelper::getModelName(Profile::class).'" AND file.field="avatar" AND file.delta = 0')
+                    ->leftJoin(User::tableName().' AS "user"', '"user".id = comments.user_id')
+                    ->leftJoin(Profile::tableName().' AS "profile"', '"profile".user_id = comments.user_id')
+                    ->leftJoin(File::tableName().' as file', 'file.entity_id = comments.user_id AND file.model=\''.ModelHelper::getModelName(Profile::class).'\' AND file.field=\'avatar\' AND file.delta = 0')
                     ->where([
                         'comments.entity_id' => $model->entity_id,
                         'comments.model' => $model->model  

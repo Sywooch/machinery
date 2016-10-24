@@ -21,7 +21,7 @@ class CartHelper
            'entity' => ModelHelper::getModelName($product),
            'class' => [
                 'btn',
-                'btn-primary',
+                'btn-default',
                 'buy-button',
                 'buy-button-'.$product->id
             ]

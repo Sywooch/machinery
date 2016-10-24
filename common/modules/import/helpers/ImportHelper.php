@@ -42,21 +42,6 @@ class ImportHelper
 
     /**
      * 
-     * @param array $data
-     * @return string
-     */
-    public static function getGroup($data){
-        if(!isset($data['terms']['Бренд'])){
-            return false;
-        }
-        $group = [];
-        $group[] = key($data['terms']['Бренд']); // brend
-        $group[] = $data['model'];
-        return crc32(implode(' ', $group));
-    }
-
-    /**
-     * 
      * @param array $sku2Ids
      * @param array $currentTermIds
      * @param array $newTermIds

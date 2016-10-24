@@ -6,12 +6,7 @@ use Yii;
 use common\modules\product\helpers\ProductHelper;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
-use common\modules\product\models\ProductRepository;
-use common\modules\taxonomy\models\TaxonomyItems;
-use yii\helpers\ArrayHelper;
-use common\helpers\ModelHelper;
 use common\modules\product\models\ProductIndex;
-use common\modules\product\models\ProductIndexPivot;
 
 class ProductBehavior extends Behavior
 {
@@ -25,102 +20,24 @@ class ProductBehavior extends Behavior
         ];
     }
     
+    /**
+     * 
+     * @inheritdoc
+     */
     public function afterInit(){
         $this->owner->indexModel = new ProductIndex($this->owner);
-        $this->owner->pivotModel = new ProductIndexPivot($this->owner);
         parent::init();
     }
 
-
-    /** @inheritdoc */
+    /**
+     * 
+     * @inheritdoc
+     */
     public function beforeSaveProduct($insert) {
-        $terms = TaxonomyItems::find()->indexBy('vid')->where(['id' => $this->owner->terms])->all();
-        $this->owner->group = $this->getGroup($terms);
-        
-        if(!$this->owner->user_id){
-            $this->owner->user_id = Yii::$app->user->id;
-        }
-        
-        if(!$this->owner->features){
-            $this->owner->features = json_encode(ProductHelper::getCharacteristicsByTerms($terms));
-        } 
+        $this->owner->group = ProductHelper::createGroup($this->owner->attributes);
+        $this->owner->user_id = $this->owner->user_id ? $this->owner->user_id : Yii::$app->user->id;
     }
     
-    public function getFeature(){
-      
-        if(!$this->owner->features){
-            return [];
-        } 
-        return json_decode($this->owner->features);
-    }
-
-
-    /**
-     * 
-     * @return float
-     */
-    public function getGroupRating(){
-        $search = new ProductRepository($this->owner);
-        return $search->getGroupRatingByModel($this->owner);
-    }
-
-    /**
-     * 
-     * @param array $terms
-     * @return int
-     */
-    private function getGroup(array $terms){
-        $group = [];
-        $group[] = ArrayHelper::getValue($terms, '2.name'); // brend
-        $group[] = $this->owner->model;
-        return crc32(implode(' ', $group));
-    }
-    
-    public function getShortDescription(){
-        $model = $this->owner;
-        if($model->short){
-            return $model->short;
-        }
-        $model->short = $this->shortPattern();
-        $model::updateAll(['short' => $model->short ], ['id' => $model->id]);
-        return $model->short;
-    }
-    
-    public function getTitleDescription(){
-       return $this->titlePattern();
-    }
-    
-    /**
-     * 
-     * @return string
-     */
-    public function shortPattern(){
-        if(method_exists ( $this->owner , 'shortPattern' )){
-            return $this->owner->shortPattern();
-        }
-        $terms = ArrayHelper::index($this->terms, 'vid');
-        $short = [];
-        $short[] = ArrayHelper::getValue($terms, '36.name'); // OC
-        $short = array_filter($short);
-        return implode(',', $short);
-    }
-    
-    /**
-     * 
-     * @return string
-     */
-    public function titlePattern(){
-        if(method_exists ( $this->owner , 'titlePattern' )){
-            return $this->owner->titlePattern();
-        }
-        $terms = ArrayHelper::index($this->owner->terms, 'vid');
-        $title = [];
-        $title[] = $this->owner->title;
-        $title[] = ArrayHelper::getValue($terms, '36.name'); // OC
-        $title[] = ArrayHelper::getValue($terms, '31.name'); // color
-        $title = array_filter($title);
-        return implode(' ', $title);
-    }
 }
 
 ?>

@@ -45,7 +45,7 @@ CartAsset::register($this);
     </div>
 </div>
 <div class="produt-short">
-    <?=Html::encode($model->shortDescription);?>
+    <?=Html::encode($model->specification);?>
 </div>
 
 <div class="body ">

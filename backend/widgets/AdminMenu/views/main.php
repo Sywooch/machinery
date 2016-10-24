@@ -14,7 +14,7 @@ Asset::register($this);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-leaf pull-left"></span>Главная</span>', ['/'], ['class' => $widget->isActive()]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-edit  pull-left"></span>Текстовые страницы</span>', ['/pages'], ['class' => $widget->isActive(['pages'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-info-sign  pull-left"></span>Информация брендов</span>', ['/brand-info'], ['class' => $widget->isActive(['brand-info'])]);
-    echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-asterisk  pull-left"></span>Каталог</span>', ['/product-default'], ['class' => $widget->isActive(['product-default','product-pc'])]);
+    echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-asterisk  pull-left"></span>Каталог</span>', ['/product-default'], ['class' => $widget->isActive(['product-default','product-pc','product-av'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-shopping-cart pull-left"></span>Заказы<span class="badge">' . StatusRepository::countStatus([1], Orders::class) . '</span></span>', ['/orders'], ['class' => $widget->isActive(['orders'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-cog  pull-left"></span>Настройка продукта</span>', ['/orders/promo-codes'], ['class' => $widget->isActive(['product'])]);
     echo Html::a('<span class="menu-item"><span class="glyphicon glyphicon-list-alt pull-left"></span>ADS</span>', ['/ads-slider'], ['class' => $widget->isActive(['ads-slider','ads-actions'])]);

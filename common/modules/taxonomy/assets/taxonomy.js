@@ -8,7 +8,7 @@ taxonomy.init = function(){
     
     this.vid = vocabularyId;
     this.pid = parentId;
-    
+
     taxonomy.writeTree(tree);
     taxonomy.nesTable();
 }
@@ -30,11 +30,15 @@ taxonomy.nesTable = function(){
 }
 
 taxonomy.writeTree = function(tree){
+    console.log(tree);
     var ol = this.treeBuild(tree);
     this.conteiner.append(ol);  
 }
 
 taxonomy.treeBuild = function(tree){
+    
+
+    
     var ol = $('<ol>').addClass('dd-list');
     for(var key in tree){
         
@@ -63,8 +67,8 @@ taxonomy.treeBuild = function(tree){
         
         li.append(div);  
         
-        if(tree[key].children != undefined){
-            li.append(this.treeBuild(tree[key].children));
+        if(tree[key].childrens != undefined){
+            li.append(this.treeBuild(tree[key].childrens));
         }
         
         ol.append(li);

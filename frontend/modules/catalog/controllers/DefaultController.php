@@ -4,12 +4,13 @@ namespace frontend\modules\catalog\controllers;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use frontend\modules\catalog\components\FilterParams;
+use common\helpers\ModelHelper;
 use common\modules\product\models\ProductRepository;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\models\TaxonomyItemsSearch;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
-use frontend\modules\catalog\helpers\CatalogHelper;
+use yii\helpers\ArrayHelper;
+use frontend\modules\catalog\models\Compares;
 use frontend\modules\catalog\components\Url;
 
 /**
@@ -51,8 +52,8 @@ class DefaultController extends Controller
         if(!$filter->main){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
-        
-        $searchModel = new ProductRepository(CatalogHelper::getModelByTerm($filter->main));
+        $productModel = ModelHelper::getModelByTerm($filter->main);
+        $searchModel = new ProductRepository($productModel);
 
         if(!$filter->category){
             $childrensTerms = TaxonomyItems::findAll([
@@ -77,12 +78,16 @@ class DefaultController extends Controller
         }
         $dataProvider = $searchModel->searchItemsByFilter($filter);
         $products = $searchModel->getProducstByIds($dataProvider->getKeys());
-
+        
+        $productModelName = ModelHelper::getModelName($productModel);
+        $compares = ArrayHelper::map(Compares::getItems(),'entity_id','entity_id','model');
+     
         return $this->render('index',[
             'parent' => $filter->main,
             'current' => $filter->category,
             'dataProvider' => $dataProvider,
             'products' => $products,
+            'compareIds' => isset($compares[$productModelName]) ? $compares[$productModelName] : [], 
             'search' => $searchModel,
         ]);
     }

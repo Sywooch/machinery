@@ -5,6 +5,7 @@ use common\modules\file\helpers\StyleHelper;
 use yii\helpers\ArrayHelper;
 use kartik\rating\StarRating;
 use common\modules\product\helpers\ProductHelper;
+use frontend\modules\catalog\helpers\CatalogHelper;
 ?>
 
 <div class="item">
@@ -34,11 +35,14 @@ use common\modules\product\helpers\ProductHelper;
                             <span class="<?=$status->transliteration;?>"><?=$status->name;?></span>
                         <?php endforeach;?>
                 </span>
-                <?=Html::a(Html::encode($product->titleDescription), ['/'.$product->url->alias],['class'=>'title']); ?>
+                <?=Html::a(Html::encode($product->name), ['/'.$product->url->alias],['class'=>'title']); ?>
                 <div class="produt-short"><?php echo Html::encode($product->short); ?></div>
                 <div class="price-conteiner">
                     <span class="price"><?php echo \Yii::$app->formatter->asCurrency($product->price); ?></span>
-                    <?php echo CartHelper::getBuyButton($product);?>
+                    
+                    <?= CartHelper::getBuyButton($product);?>
+                    <?= CatalogHelper::getCompareButton($product, $compareIds);?>
+                    
                 </div>
             </div>
 </div>    

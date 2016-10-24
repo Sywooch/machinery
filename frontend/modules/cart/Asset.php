@@ -10,9 +10,9 @@ class Asset extends AssetBundle
     /**
      * @inheritdoc
      */
-   // public $sourcePath = '/frontend/modules/cart/assets';
-    public $basePath = '@webroot';
-    public $baseUrl = '/frontend/modules/cart/assets';
+    public $sourcePath = '@webroot/../modules/cart/assets';
+    //public $basePath = '@webroot';
+  //  public $baseUrl = '/frontend/modules/cart/assets';
     public $css = [
         'cart.css',
     ];

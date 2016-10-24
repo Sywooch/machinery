@@ -94,7 +94,7 @@ class TaxonomyBehavior extends Behavior
      * @return object
      */
     private function getFiledsTerms($field = null){
-        if($this->owner->indexModel){
+        if(isset($this->owner->indexModel) && $this->owner->indexModel){
             return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable($this->owner->indexModel->tableName(), ['entity_id' => 'id'], function($query) use($field){
                 $query->where(['field' => $field]);
             });
@@ -111,7 +111,7 @@ class TaxonomyBehavior extends Behavior
      * @return object
      */
     public function getTerms($field = null){
-        if($this->owner->indexModel){ 
+        if(isset($this->owner->indexModel) && $this->owner->indexModel){ 
             return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable($this->owner->indexModel->tableName(), ['entity_id' => 'id'], function($query) use($field){
                 $query->filterWhere(['field' => $field]);
             });

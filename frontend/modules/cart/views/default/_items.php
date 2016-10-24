@@ -33,7 +33,7 @@ use common\modules\orders\helpers\OrdersHelper;
                     <span class="<?=$status->transliteration;?>"><?=$status->name;?></span>
                 <?php endforeach;?>
         </span>
-        <?= Html::a($item->origin->titleDescription, ['/'.$item->origin->url->alias], ['class' => '']); ?>
+        <?= Html::a($item->origin->name, ['/'.$item->origin->url->alias], ['class' => '']); ?>
         <div class="info">
             <div class="sku">
                 <span class="lb">Код</span>
