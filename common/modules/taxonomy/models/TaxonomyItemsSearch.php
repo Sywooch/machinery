@@ -95,9 +95,11 @@ class TaxonomyItemsSearch extends TaxonomyItems
      * @return []
      */
     public function getTaxonomyItemsByVid($vid){
-        return TaxonomyItems::findAll([
+        return TaxonomyItems::find()->where([
             'vid' => $vid
-        ]);
+        ])->orderBy([
+            'weight' => SORT_ASC
+        ])->all();
     }
     
     /**
@@ -109,6 +111,9 @@ class TaxonomyItemsSearch extends TaxonomyItems
                 ->select(['id', 'pid', 'vid', 'name', 'transliteration', 'transliteration', 'weight' ])
                 ->from(TaxonomyItems::TABLE_TAXONOMY_ITEMS)
                 ->where(['vid' => $vid])
+                ->orderBy([
+                    'weight' => SORT_ASC
+                ])
                 ->indexBy('id')
                 ->all();
     }
@@ -118,7 +123,7 @@ class TaxonomyItemsSearch extends TaxonomyItems
      * @param int $vid
      * @param array $order
      */
-    public function setOrder(int $vid, array $order){
+    public function setOrder($vid, array $order){
         
         $models = TaxonomyItems::findAll([
             'vid' => $vid

@@ -98,7 +98,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'available',
             'price',
             'rating',
-            'publish',
             'created',
             'updated',
             'title',

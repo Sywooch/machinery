@@ -16,4 +16,8 @@ console/config/.gitignore
 .idea/vcs.xml
 .idea/workspace.xml
 backend/web/.htaccess
+frontend/web/assets/
+frontend/runtime/
+backend/runtime/
+console/runtime/
 

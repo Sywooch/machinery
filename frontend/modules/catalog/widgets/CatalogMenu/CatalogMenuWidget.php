@@ -17,7 +17,8 @@ class CatalogMenuWidget extends \yii\bootstrap\Widget
     
     public function run()
     {
-        $items = $this->taxonomyItemsSearch->getItemsByVid($this->vocabularyId);
+        $items = $this->taxonomyItemsSearch->getTaxonomyItemsByVid($this->vocabularyId);
+
         return $this->render('catalog-menu-widget', [
                 'menuItems' => TaxonomyHelper::tree($items),
         ]);

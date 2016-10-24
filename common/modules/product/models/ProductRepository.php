@@ -4,10 +4,10 @@ namespace common\modules\product\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use common\helpers\ModelHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 use yii\data\ActiveDataProvider;
-use frontend\modules\catalog\components\FilterParams;
+use common\modules\product\models\ProductIndex;
+use common\modules\product\models\ProductIndexPivot;
 
 /**
  * ProductDefaultSearch represents the model behind the search.
@@ -16,7 +16,11 @@ class ProductRepository extends \backend\models\ProductSearch
 {
     const PUBLISH = 1;
     
-    /**
+    public function __construct($model) {
+        parent::__construct($model);
+    }
+
+        /**
      * 
      * @param array $ids
      * @return mixed
@@ -47,43 +51,31 @@ class ProductRepository extends \backend\models\ProductSearch
     
     /**
      * 
-     * @param array $ids
-     * @return mixed
+     * @param string|array $groups
+     * @return type
      */
     public function getProductsByGroup($groups){
         $model = $this->_model;
-        return $model::find()->where(['group' => $groups])
-                ->with([
-                    'files',
-                    'alias',
-                    'groupAlias'
-                ])
-                ->groupBy('group')->all();
+        
+        return (new \yii\db\Query())
+                        ->select(['t0.id'])
+                        ->from($this->_model->tableName().' as t0')
+                        ->where(['group' => $groups])
+                        ->distinct()
+                        ->column();
     }
    
-        
-    public function getGroupRatingByModel($model){
-        $query = (new \yii\db\Query())
-                ->from($model::tableName())
-                ->where([
-                    'group' => $model->group,
-                ])->andWhere(['>', 'rating', 0]);
-        
-        return $query->average('rating');
-    }
-
     /**
      * 
      * @return \backend\models\ProductSearch
      */
     public function searchItemsByFilter($filter){
+        
+      
         $query = (new \yii\db\Query())
                         ->select(['t0.id'])
                         ->from($this->_model->tableName().' as t0')
-                        ->distinct()
-                        ->orderBy([
-                            'rating' => SORT_DESC
-                        ]);
+                        ->distinct();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -91,18 +83,21 @@ class ProductRepository extends \backend\models\ProductSearch
                 'pageSize' => Yii::$app->params['catalog']['defaultPageSize'],
             ],
             'key' => 'id',
-
         ]);
-        
+ 
         $where = [];
-        $indexModel = $this->_indexModel;
-        $indexTable = $indexModel::tableName();
-        foreach($filter->getTerms([$filter->main]) as $id => $value){
+        $indexTable = $this->_model->indexModel->tableName();
+        $index = ArrayHelper::map($filter->getTerms([$filter->main]),'id','id','vid');
+        foreach($index as $id => $values){
             $query->innerJoin($indexTable . " {$indexTable}{$id}", "{$indexTable}{$id}.entity_id = t0.id");
-            $where["{$indexTable}{$id}.term_id"] = is_array($value) ? ArrayHelper::getColumn($value, 'id') : $value->id;
+            $where["{$indexTable}{$id}.term_id"] = $values;
         }
+        
+        //print_r($where); exit('s');
+
         $query->andFilterWhere($where);
         return $dataProvider;
+        
     }
     
     /**
@@ -112,17 +107,15 @@ class ProductRepository extends \backend\models\ProductSearch
      * @return \backend\models\ProductSearch
      */
     public function getCategoryMostRatedItems(TaxonomyItems $taxonomyItem, $limit = 5){
-        $indexModel = $this->_indexModel;
+
         return (new \yii\db\Query())
                         ->select('t0.id')
-                        ->from($this->_model->tableName().' as t0')
-                        ->innerJoin($indexModel::tableName(), 'entity_id = t0.id')
+                        ->from($this->_model->tableName().' AS t0')
+                        ->innerJoin($this->_model->indexModel->tableName(), 'entity_id = t0.id')
                         ->where([
-                            'term_id' => $taxonomyItem->id,
-                            'publish' => self::PUBLISH,
-                            
+                            'term_id' => $taxonomyItem->id
                         ])
-                        ->groupBy('group')
+                        ->distinct()
                         ->limit($limit)
                         ->all();
     }
@@ -135,11 +128,10 @@ class ProductRepository extends \backend\models\ProductSearch
      */
     public function getItemsByStatus(TaxonomyItems $status, $limit = 10){
         
-        $indexModel = $this->_indexModel;
         return (new \yii\db\Query())
-                        ->select('id')
-                        ->from($this->_model->tableName())
-                        ->innerJoin($indexModel::tableName(), 'entity_id = id')
+                        ->select('t0.id')
+                        ->from($this->_model->tableName().' t0')
+                        ->innerJoin($this->model->indexModel->tableName(), 'entity_id = t0.id')
                         ->where([
                             'term_id' => $status->id
                         ])

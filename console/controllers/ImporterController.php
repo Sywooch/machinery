@@ -10,6 +10,7 @@ use common\modules\import\Import;
 use common\modules\import\models\TemporaryTerms;
 use yii\helpers\Console;
 use common\modules\import\helpers\ImportHelper;
+use common\modules\product\helpers\ProductHelper;
 
 class ImporterController extends Controller 
 {
@@ -60,7 +61,7 @@ class ImporterController extends Controller
                 }
                 
                 $validator->setAttributes($line);
-                $validator->group = ImportHelper::getGroup($validator->attributes);
+                $validator->group = ProductHelper::createGroup($validator->attributes);
                
                 if($validator->validate()){
                     
@@ -78,6 +79,7 @@ class ImporterController extends Controller
                         break;
                     }
                 }
+               
             } 
             
             $import->flush();

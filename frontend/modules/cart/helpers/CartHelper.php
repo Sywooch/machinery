@@ -21,14 +21,18 @@ class CartHelper
            'entity' => ModelHelper::getModelName($product),
            'class' => [
                 'btn',
-                'btn-primary',
+                'btn-default',
                 'buy-button',
                 'buy-button-'.$product->id
             ]
        ]).'</div>';
     }
     
-    public function getConfirmModal(){
+    /**
+     * 
+     * @return string
+     */
+    public static function getConfirmModal(){
         return Modal::widget([
             'id' => 'buyConfirmModal',
             'header' => '<h3>Вы добавили в корзину</h3>',

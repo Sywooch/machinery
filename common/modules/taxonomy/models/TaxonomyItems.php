@@ -13,12 +13,13 @@ use common\helpers\URLify;
  * @property string $name
  * @property integer $weight
  */
-class TaxonomyItems extends \yii\db\ActiveRecord
+class TaxonomyItems extends \yii\db\ActiveRecord implements \JsonSerializable
 {
     
     const TABLE_TAXONOMY_ITEMS = 'taxonomy_items';
     
     private $_parent;
+    public $childrens = [];
 
     /**
      * @inheritdoc
@@ -38,6 +39,14 @@ class TaxonomyItems extends \yii\db\ActiveRecord
             [['vid', 'pid', 'weight'], 'integer'],
             [['name','transliteration'], 'string', 'max' => 255],
         ];
+    }
+    
+    public function jsonSerialize() {
+        
+        $attributes = $this->attributes;
+        $attributes['childrens'] = $this->childrens;
+        return $attributes;
+       
     }
     
     /**

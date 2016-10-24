@@ -3,57 +3,11 @@
 namespace frontend\modules\catalog\helpers;
 
 use Yii;
-use yii\base\InvalidParamException;
 use common\modules\taxonomy\models\TaxonomyItems;
-use yii\helpers\ArrayHelper;
+use common\helpers\ModelHelper;
 use frontend\modules\catalog\components\Url;
 
 class CatalogHelper {
-    
-    
-    /**
-     * 
-     * @param TaxonomyItems $taxonomyItem
-     * @return object
-     * @throws InvalidParamException
-     */
-    public static function getModelByTerm(TaxonomyItems $taxonomyItem){
-        $modelIndex = \Yii::$app->params['catalog']['models'];
-
-        if(isset($modelIndex[$taxonomyItem->id])){
-            return new $modelIndex[$taxonomyItem->id];
-        }elseif(isset($modelIndex[$taxonomyItem->pid])){
-            return new $modelIndex[$taxonomyItem->pid];
-        }else{
-            throw new InvalidParamException(\Yii::t('yii', 'Model not fount.'));
-        }
-    }
-
-    /**
-     * @param int $id
-     * @return string
-     */
-    public function getModelByTermId($id){
-
-        if(isset(\Yii::$app->params['catalog']['models'][$id])){
-            return new \Yii::$app->params['catalog']['models'][$id];
-        }
-        return false;
-    }
-
-    /**
-     * 
-     * @param string $name
-     * @return boolean|string
-     */
-    public function getModelByName($name){
-        foreach(\Yii::$app->params['catalog']['models'] as $model){
-            if(false !== strrpos($model, $name)){
-                return new $model();
-            }
-        }
-        return false;
-    }
     
     /**
      * 
@@ -76,31 +30,25 @@ class CatalogHelper {
         }
         return $params;
     }
-
-
+    
     /**
+     * 
      * @param array $items
-     * @param int $vocabularyId
-     * @return array
+     * @return string
      */
-    public static function getItemByVocabularyIdOne(array $items, $vocabularyId){
-        foreach($items as $item){
-            if($item['vid'] == $vocabularyId){
-                return $item;
-            }
-        }
-        return [];
-    }
-    
-    
-     public static function link(array $items){
+    public static function link(array $items){
         $return = [];
         foreach($items as $item){
-            $return[] = $item['transliteration'];
+            $return[] = $item->transliteration;
         }
         return implode('/', $return);
     }
     
+    /**
+     * 
+     * @param TaxonomyItems $term
+     * @return string
+     */
     public static function filterLink(TaxonomyItems $term){
         $terms = Yii::$app->url->filterTerms; 
 
@@ -124,6 +72,63 @@ class CatalogHelper {
         }
         
         return Yii::$app->url->catalogPath . DIRECTORY_SEPARATOR . Url::FILTER_INDICATOR . DIRECTORY_SEPARATOR . implode('_', $return);
+    }
+    
+    /**
+     * 
+     * @param TaxonomyItems $term
+     * @param array $compares
+     * @param array $models
+     * @return []
+     */
+    public static function compareModelByTerm(TaxonomyItems $term, array $compares, array $models){
+        $data = [];
+        
+        foreach ($compares as $item){
+            if($item->term_id == $term->id){
+                $data[] = $models[$item->model][$item->entity_id];
+            }
+        } 
+        return $data;
+    }
+
+    /**
+     * 
+     * @param array $models
+     * @return []
+     */
+    public static function compareFeatures(array $models){
+
+        foreach ($models as $model){
+            $data[] = $model->feature;
+        }
+        
+        $features = [];
+        foreach ($data as $items){
+            foreach ($items as $title => $item){
+                foreach ($item as $feature){
+                    $features[$title][$feature->name][] = $feature->value;
+                }
+            } 
+        }
+
+        return $features;
+    }
+    
+    /**
+     * 
+     * @param type $product
+     * @return type
+     */
+    public static function getCompareButton($entity, array $ids = []){
+        return '<div class="cbx-container chb-compare chb-compare-'.$entity->id.' '.(isset($ids[$entity->id]) ? 'active' : '').'" data-id="'.$entity->id.'" data-model="'.ModelHelper::getModelName($entity).'">'.
+                    '<div class="cbx cbx-xs cbx-active" tabindex="1000">'.
+                        '<span class="cbx-icon"> '.
+                            '<i class="glyphicon glyphicon-ok"></i>'.
+                        '</span>'.
+                    '</div>'.
+                    '<label >сравнить</label>'.
+                '</div>';
     }
     
 }

@@ -20,7 +20,6 @@ class FilterModel extends \yii\base\Model
     public function __construct(ProductRepository $search = null) {
         if($search !== null){
             $this->_model = $search->model;
-            $this->_indexModel = $this->_model->className() . 'Index';        
         }
     }
     
@@ -99,11 +98,11 @@ class FilterModel extends \yii\base\Model
      */
     public function getFilterTermIds(TaxonomyItems $catalogTerm){
 
-            $indexModel = $this->_indexModel;
+            $indexModel = $this->_model->indexModel;
             return (new \yii\db\Query())
                             ->select('i1.term_id as id')
-                            ->from($indexModel::tableName().' as i1')
-                            ->innerJoin($indexModel::tableName().' as i2','i1.entity_id = i2.entity_id')
+                            ->from($indexModel->tableName().' as i1')
+                            ->innerJoin($indexModel->tableName().' as i2','i1.entity_id = i2.entity_id')
                             ->where([ 
                                 'i2.term_id' => $catalogTerm->id
                             ])

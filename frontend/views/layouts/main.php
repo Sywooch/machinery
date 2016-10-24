@@ -4,12 +4,12 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use frontend\modules\cart\widgets\CartBlockWidget as CartBlock;
 use frontend\modules\catalog\widgets\CatalogMenu\CatalogMenuWidget as CatalogMenu;
 use frontend\widgets\SearchForm\SearchFormWidget as SearchForm;
+use frontend\modules\catalog\widgets\Compare\CompareWidget;
 
 AppAsset::register($this);
 ?>
@@ -51,6 +51,7 @@ AppAsset::register($this);
             <div class="col-lg-5 menu-action-items">
                 <?=$this->render('_login');?>
                 <?=CartBlock::widget();?>
+                <?=CompareWidget::widget();?>
             </div>
         </div>
     </div>

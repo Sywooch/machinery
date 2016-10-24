@@ -10,8 +10,9 @@ class Asset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $basePath = '@webroot';
-    public $baseUrl = '/frontend/modules/catalog/widgets/Filter/assets';
+     public $sourcePath = '@webroot/../modules/catalog/widgets/Filter/assets';
+   // public $basePath = '@webroot';
+   // public $baseUrl = '/frontend/modules/catalog/widgets/Filter/assets';
 
     public $css = [
     ];

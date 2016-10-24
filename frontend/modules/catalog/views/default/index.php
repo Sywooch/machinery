@@ -28,7 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]); ?>
         <?php foreach($products as $product):?>
             <?=$this->render('_itemA',[
-                'product' => $product
+                'product' => $product,
+                'compareIds' => $compareIds,
             ]);?>
         <?php endforeach; ?>
         <?=LinkPager::widget([
@@ -44,7 +45,3 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
  <?=CartHelper::getConfirmModal();?>
-
-
-
-

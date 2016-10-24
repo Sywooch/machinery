@@ -14,7 +14,7 @@ class Status extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'status';
+        return 'statuses';
     }
 
     /**

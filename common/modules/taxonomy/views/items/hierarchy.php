@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = 'Ordering';
     
  
     <script>
-        var tree = <?=  json_encode($tree) ?>;
+        var tree = <?= json_encode($tree) ?>;
         var vocabularyId = <?= $vocabularyId;?>;
         var parentId = <?= $parentTerm?$parentTerm->pid:0;?>;
     </script>

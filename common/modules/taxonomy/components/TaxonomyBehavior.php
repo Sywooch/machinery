@@ -5,19 +5,18 @@ namespace common\modules\taxonomy\components;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use common\helpers\ModelHelper;
-use yii\base\InvalidParamException;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\models\TaxonomyIndex;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 
 class TaxonomyBehavior extends Behavior
 {
-    public $indexModel;
-    
+
     public function __set($name, $value){
         $this->$name = $value;
     }
     
+
     public function events()
     {
         return [
@@ -29,9 +28,8 @@ class TaxonomyBehavior extends Behavior
     }
     
     public function afterDelete(){
-        if($this->indexModel){      
-            $model = $this->indexModel;   
-            $model::deleteAll(['entity_id' => $this->owner->id]);
+        if($this->owner->indexModel){   
+            $this->owner->indexModel->deleteAll(['entity_id' => $this->owner->id]);
         }else{
             TaxonomyIndex::deleteAll(['entity_id' => $this->owner->id, 'model' => ModelHelper::getModelName($this->owner)]);
         }
@@ -57,21 +55,14 @@ class TaxonomyBehavior extends Behavior
         $termFields = TaxonomyHelper::getTermFields($this->owner);
         foreach($termFields as $field => $rule){
             if(!empty($this->owner->$field)){
-                if($this->indexModel){
-                    $model = $this->indexModel;
-                    $model::deleteAll([
+                if($this->owner->indexModel){
+                    $this->owner->indexModel->deleteAll([
                             'entity_id' => $this->owner->id,
                             'field' => $field
                         ]);
                     $this->_terms = TaxonomyItems::findAll(['id' => $this->owner->$field]);
                     foreach($this->_terms as $term){
-                        \Yii::createObject([
-                           'class' => $model,
-                           'term_id' => $term->id,
-                           'vocabulary_id' => $term->vid,
-                           'entity_id' => $this->owner->id,
-                           'field' => $field,
-                        ])->save(); 
+                        $this->owner->indexModel->insert($term, $field);
                     }
                 }else{
                     TaxonomyIndex::deleteAll([
@@ -103,9 +94,8 @@ class TaxonomyBehavior extends Behavior
      * @return object
      */
     private function getFiledsTerms($field = null){
-        if($this->indexModel){
-            $model = $this->indexModel;   
-            return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable($model::tableName(), ['entity_id' => 'id'], function($query) use($field){
+        if(isset($this->owner->indexModel) && $this->owner->indexModel){
+            return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable($this->owner->indexModel->tableName(), ['entity_id' => 'id'], function($query) use($field){
                 $query->where(['field' => $field]);
             });
         }else{
@@ -121,9 +111,8 @@ class TaxonomyBehavior extends Behavior
      * @return object
      */
     public function getTerms($field = null){
-        if($this->indexModel){
-            $model = $this->indexModel;   
-            return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable($model::tableName(), ['entity_id' => 'id'], function($query) use($field){
+        if(isset($this->owner->indexModel) && $this->owner->indexModel){ 
+            return $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable($this->owner->indexModel->tableName(), ['entity_id' => 'id'], function($query) use($field){
                 $query->filterWhere(['field' => $field]);
             });
         }else{

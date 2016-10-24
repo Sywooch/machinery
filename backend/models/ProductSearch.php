@@ -8,6 +8,7 @@ use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\modules\product\models;
 
 /**
  * ProductDefaultSearch represents the model behind the search.
@@ -27,12 +28,9 @@ class ProductSearch extends Model
     public $index;
     
     protected $_model;
-    protected $_indexModel;
 
     public function __construct($model) {
         $this->_model = $model;
-        $this->_indexModel = $model->className() . 'Index';
-        
     }
     /**
      * @inheritdoc

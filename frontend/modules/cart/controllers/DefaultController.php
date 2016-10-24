@@ -4,12 +4,10 @@ namespace frontend\modules\cart\controllers;
 
 use Yii;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\web\BadRequestHttpException;
-use yii\filters\VerbFilter;
-use frontend\modules\catalog\helpers\CatalogHelper;
 use common\modules\orders\widgets\delivery\DeliveryFactory;
 use common\modules\orders\models\Orders;
+use common\helpers\ModelHelper;
 
 /**
  * ItemsController implements the CRUD actions for TaxonomyItems model.
@@ -107,7 +105,7 @@ class DefaultController extends Controller
 
     public function actionAdd($entityId, $entityName){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        if(($model = CatalogHelper::getModelByName($entityName)) === false){
+        if(($model = ModelHelper::getModelByName($entityName)) === false){
             throw new BadRequestHttpException();
         }
         $product = $model::findOne($entityId);

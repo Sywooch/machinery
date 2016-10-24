@@ -160,7 +160,7 @@ class ItemsController extends Controller
         }
 
         if (($taxonomyItemsSearch->load(Yii::$app->request->get()) && $taxonomyItemsSearch->validate())) {
-            $terms = $taxonomyItemsSearch->getItemsByVid( $taxonomyItemsSearch->vid);
+            $terms = $taxonomyItemsSearch->getTaxonomyItemsByVid($taxonomyItemsSearch->vid);
             $tree = TaxonomyHelper::tree($terms, $taxonomyItemsSearch->pid);
             $parentTerm = $taxonomyItemsSearch::findOne($taxonomyItemsSearch->pid);
 

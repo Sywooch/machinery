@@ -2,12 +2,10 @@
 namespace common\modules\product\controllers;
 
 use Yii;
-use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use common\modules\product\models\ProductRepository;
-use common\modules\taxonomy\models\TaxonomyItems;
-use frontend\modules\catalog\helpers\CatalogHelper;
+use common\helpers\ModelHelper;
 
 /**
  * Site controller
@@ -35,10 +33,10 @@ class DefaultController extends Controller
     public function actionIndex($id, $model)
     {   
 
-        $searchModel = new ProductRepository(CatalogHelper::getModelByName($model));
+        $searchModel = new ProductRepository(ModelHelper::getModelByName($model));
         $product = $searchModel->getProductById($id);
        
-        if(empty($product) || !$product->publish ){
+        if(empty($product)){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
 
@@ -54,8 +52,11 @@ class DefaultController extends Controller
      */
     public function actionOtzyvy($id, $model, $tab)
     {   
-        $searchModel = new ProductRepository(CatalogHelper::getModelByName($model));
-        $products = $searchModel->getProductsByGroup($id);
+        $searchModel = new ProductRepository(ModelHelper::getModelByName($model));
+        $ids = $searchModel->getProductsByGroup($id);
+        $products = $searchModel->getProducstByIds($ids);
+        
+       
         
         if(empty($products)){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));

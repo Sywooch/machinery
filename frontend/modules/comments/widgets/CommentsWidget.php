@@ -40,13 +40,15 @@ class CommentsWidget extends \yii\base\Widget {
             } else {
               // print_r($model->getErrors()); exit();
             }
-
+       
             $dataProvider = $commentsRepository->getCommentsList($model);
+            
             $avatar = File::find()->where([
                     'entity_id' => Yii::$app->user->id,
                     'model' => 'Profile'
                 ])->one();
-            $comments = $dataProvider->getModels();            
+            $comments = $dataProvider->getModels();        
+            
             return $this->render('comments', [
                     'model' => $model,
                     'dataProvider' => $dataProvider,

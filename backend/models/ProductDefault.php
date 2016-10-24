@@ -2,45 +2,28 @@
 
 namespace backend\models;
 
-use Yii;
-use \yii\db\ActiveRecord;
+use yii\db\ActiveRecord;
 use common\modules\taxonomy\components\TermValidator;
 use yii\behaviors\TimestampBehavior;
-use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\import\models\Sources;
-use yii\helpers\ArrayHelper;
 use common\helpers\URLify;
-
 use common\helpers\ModelHelper;
 use common\modules\orders\models\PromoCodes;
 use common\modules\orders\models\PromoProducts;
+use common\modules\product\helpers\ProductHelper;
 
-/**
- * This is the model class for table "product_default".
- *
- * @property integer $id
- * @property integer $group
- * @property integer $source_id
- * @property integer $user_id
- * @property string $sku
- * @property integer $available
- * @property double $price
- * @property double $rating
- * @property integer $publish
- * @property integer $created
- * @property integer $updated
- * @property string $title
- * @property string $short
- * @property string $description
- * @property string $data
- *
- * @property User $user
- * @property Sources $source
- * @property ProductDefaultIndex[] $productDefaultIndices
- * @property TaxonomyItems[] $terms
- */
+
 class ProductDefault extends ActiveRecord
 {
+    
+    private $_indexModel;
+    private $_productHelper;
+
+    public function __construct($config = []) {
+        $this->_productHelper = new ProductHelper();
+        parent::__construct($config = []);
+    }
+
     /**
      * @inheritdoc
      */
@@ -56,7 +39,7 @@ class ProductDefault extends ActiveRecord
     {
         return [
             [['source_id', 'user_id', 'available'], 'integer'],
-            [['sku', 'created', 'updated', 'title', 'model'], 'required'],
+            [['sku', 'title', 'model'], 'required'],
             [['price','old_price', 'rating'], 'number'],
             [['description', 'data', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 30],
@@ -103,14 +86,13 @@ class ProductDefault extends ActiveRecord
     {
         return [
                 [
-                    'class' => \common\modules\taxonomy\components\TaxonomyBehavior::class,
-                    'indexModel' => \backend\models\ProductDefaultIndex::class
+                    'class' => \common\modules\product\components\ProductBehavior::class,
+                ],
+                [
+                    'class' => \common\modules\taxonomy\components\TaxonomyBehavior::class
                 ],
                 [
                     'class' => \common\modules\file\components\FileBehavior::class,
-                ],
-                [
-                    'class' => \common\modules\product\components\ProductBehavior::class,
                 ],
                 [
                     'class' => \common\components\UrlBehavior::class,
@@ -125,14 +107,41 @@ class ProductDefault extends ActiveRecord
             ];
     }
     
-    public function getPromoPrice(){
-        if(isset($this->promoCode)){
-            return $this->price - $this->promoCode->discount;
-        }
-        return $this->price;
+    
+    /**
+     * 
+     * @return \common\modules\product\helpers\ProductHelper
+     */
+    public function getHelper(){
+        return $this->_productHelper;
     }
 
     /**
+     * 
+     * @param mixed $model
+     */
+    public function setIndexModel($model){
+        $this->_indexModel = $model;
+    }
+    
+    /**
+     * 
+     * @return mixed
+     */
+    public function getIndexModel(){
+        return $this->_indexModel;
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getPromoPrice(){
+        return $this->_productHelper->promoPrice($this);
+    }
+
+    /**
+     * 
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
@@ -141,6 +150,7 @@ class ProductDefault extends ActiveRecord
     }
     
     /**
+     * 
      * @return \yii\db\ActiveQuery
      */
     public function getSource()
@@ -149,6 +159,7 @@ class ProductDefault extends ActiveRecord
     }
     
     /**
+     * 
      * @return \yii\db\ActiveQuery
      */
     public function getPromoCode()
@@ -159,11 +170,23 @@ class ProductDefault extends ActiveRecord
     }
     
     /**
+     * 
      * @return \yii\db\ActiveQuery
      */
     public function getPromo()
     {
         return $this->hasOne(PromoProducts::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName(self::class)]);
+    }
+    
+    /**
+     * 
+     * @return []
+     */
+    public function getFeature(){
+        if(!$this->owner->features){
+            return [];
+        } 
+        return json_decode($this->owner->features);
     }
 
     /**
@@ -172,46 +195,29 @@ class ProductDefault extends ActiveRecord
      * @return \common\models\Alias
      */
     public function urlPattern(\common\models\Alias $alias){
-        $alias->alias = URLify::url($this->titlePattern()) .'-'. $this->id;     
-        $alias->url = 'product/default' . '?id=' . $this->owner->id . '&model='. ModelHelper::getModelName($this->owner);
-        $alias->groupAlias = URLify::url($this->title);
-        $link = [];
-        $catalog = $this->catalog;
-        usort($catalog, function($a, $b){
-            if ($a->pid == $b->pid) {
-                return 0;
-            }
-            return ($a->pid < $b->pid) ? -1 : 1;
-        });
-        $link = array_column($catalog, 'transliteration');
-        $alias->prefix = implode('/', $link);
-        return $alias;
+        return $this->helper->urlPattern($this, $alias);
     }
     
     /**
      * 
      * @return string
      */
-    public function shortPattern(){
-        $terms = ArrayHelper::index($this->terms, 'vid');
-        $short = [];
-        $short[] = 'диагональ: '.ArrayHelper::getValue($terms, '32.name') . '"'; // display
-        $short[] = ArrayHelper::getValue($terms, '36.name'); // OC
-        $short = array_filter($short);
-        return implode(',', $short);
+    public function getSpecification(){
+        if($this->short){
+            return $this->short;
+        }
+        $this->short = $this->helper->shortPattern($this);
+        if($this->short){
+            $this::updateAll(['short' => $this->short ], ['id' => $this->id]);
+        }
+        return $this->short;
     }
     
     /**
      * 
      * @return string
      */
-    public function titlePattern(){
-        $terms = ArrayHelper::index($this->terms, 'vid');
-        $title = [];
-        $title[] = $this->title;
-        $title[] = ArrayHelper::getValue($terms, '36.name'); // OC
-        $title[] = ArrayHelper::getValue($terms, '31.name'); // color
-        $title = array_filter($title);
-        return implode(' ', $title);
+    public function getName(){
+        return $this->helper->titlePattern($this);
     }
 }

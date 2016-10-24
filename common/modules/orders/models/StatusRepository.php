@@ -19,7 +19,7 @@ class StatusRepository extends Object
                 ->one();
     }
     
-    public function countStatus($statuses, $model) {
+    public static function countStatus($statuses, $model) {
         return (new \yii\db\Query())
                         ->select('COUNT(id)')
                         ->from($model::tableName())

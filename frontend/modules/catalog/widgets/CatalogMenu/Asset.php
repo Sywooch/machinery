@@ -10,8 +10,9 @@ class Asset extends AssetBundle
     /**
      * @inheritdoc
      */
+    public $sourcePath = '@webroot/../modules/catalog/widgets/CatalogMenu/assets';
     public $basePath = '@webroot';
-    public $baseUrl = '/frontend/modules/catalog/widgets/CatalogMenu/assets';
+    //public $baseUrl = '/frontend/modules/catalog/widgets/CatalogMenu/assets';
 
     public $css = [
         'catalog.menu.css',
