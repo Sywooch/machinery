@@ -25,7 +25,6 @@ class ProductBehavior extends Behavior
      * @inheritdoc
      */
     public function afterInit(){
-        $this->owner->indexModel = new ProductIndex($this->owner);
         parent::init();
     }
 
@@ -36,6 +35,7 @@ class ProductBehavior extends Behavior
     public function beforeSaveProduct($insert) {
         $this->owner->group = ProductHelper::createGroup($this->owner->attributes);
         $this->owner->user_id = $this->owner->user_id ? $this->owner->user_id : Yii::$app->user->id;
+        $this->owner->index = array_merge($this->owner->catalog, $this->owner->terms);
     }
     
 }

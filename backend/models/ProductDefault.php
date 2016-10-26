@@ -6,17 +6,16 @@ use yii\db\ActiveRecord;
 use common\modules\taxonomy\components\TermValidator;
 use yii\behaviors\TimestampBehavior;
 use common\modules\import\models\Sources;
-use common\helpers\URLify;
 use common\helpers\ModelHelper;
 use common\modules\orders\models\PromoCodes;
 use common\modules\orders\models\PromoProducts;
 use common\modules\product\helpers\ProductHelper;
+use common\modules\taxonomy\models\TaxonomyItems;
 
 
 class ProductDefault extends ActiveRecord
 {
     
-    private $_indexModel;
     private $_productHelper;
 
     public function __construct($config = []) {
@@ -38,6 +37,7 @@ class ProductDefault extends ActiveRecord
     public function rules()
     {
         return [
+            [['index'], 'each', 'rule' => ['integer']],
             [['source_id', 'user_id', 'available'], 'integer'],
             [['sku', 'title', 'model'], 'required'],
             [['price','old_price', 'rating'], 'number'],
@@ -78,7 +78,13 @@ class ProductDefault extends ActiveRecord
         ];
     }
     
-    
+    public static function populateRecord($model, $row){
+        parent::populateRecord($model, $row);
+    }
+
+
+
+
     /**
      * @inheritdoc
      */
@@ -87,9 +93,6 @@ class ProductDefault extends ActiveRecord
         return [
                 [
                     'class' => \common\modules\product\components\ProductBehavior::class,
-                ],
-                [
-                    'class' => \common\modules\taxonomy\components\TaxonomyBehavior::class
                 ],
                 [
                     'class' => \common\modules\file\components\FileBehavior::class,
@@ -116,22 +119,6 @@ class ProductDefault extends ActiveRecord
         return $this->_productHelper;
     }
 
-    /**
-     * 
-     * @param mixed $model
-     */
-    public function setIndexModel($model){
-        $this->_indexModel = $model;
-    }
-    
-    /**
-     * 
-     * @return mixed
-     */
-    public function getIndexModel(){
-        return $this->_indexModel;
-    }
-    
     /**
      * 
      * @return type
@@ -220,4 +207,43 @@ class ProductDefault extends ActiveRecord
     public function getName(){
         return $this->helper->titlePattern($this);
     }
+    
+    /**
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTerms()
+    {
+        return $this->hasMany(TaxonomyItems::className(), ['id' => 'index']); 
+    }
+    
+    /**
+     * 
+     * @param mixed $data
+     */
+    public function setTerms($data)
+    {
+        $this->terms = $data;
+    }
+    
+    /**
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCatalog()
+    {
+        return $this->hasMany(TaxonomyItems::className(), ['id' => 'index'])
+                ->where(['vid' => 1]);
+    }
+    
+    /**
+     * 
+     * @param mixed $data
+     */
+    public function setCatalog($data)
+    {
+        $this->catalog = $data;
+    }
+    
 }
+

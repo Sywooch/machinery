@@ -30,12 +30,12 @@ class ProductRepository extends \backend\models\ProductSearch
             return [];
         }
         $model = $this->_model;
-        return $model::find()->where(['id' => $ids])
+        return  $model::find()->where(['id' => $ids])
                 ->with([
+                    'terms',
                     'files',
                     'alias',
-                    'groupAlias',
-                    'terms'
+                    'groupAlias'  
                 ])->all();
     }
     
@@ -73,8 +73,8 @@ class ProductRepository extends \backend\models\ProductSearch
         
       
         $query = (new \yii\db\Query())
-                        ->select(['t0.id'])
-                        ->from($this->_model->tableName().' as t0')
+                        ->select(['id'])
+                        ->from($this->_model->tableName())
                         ->distinct();
 
         $dataProvider = new ActiveDataProvider([
@@ -86,16 +86,12 @@ class ProductRepository extends \backend\models\ProductSearch
         ]);
  
         $where = [];
-        $indexTable = $this->_model->indexModel->tableName();
         $index = ArrayHelper::map($filter->getTerms([$filter->main]),'id','id','vid');
         foreach($index as $id => $values){
-            $query->innerJoin($indexTable . " {$indexTable}{$id}", "{$indexTable}{$id}.entity_id = t0.id");
-            $where["{$indexTable}{$id}.term_id"] = $values;
+            $where[] = 'index && ARRAY['.implode(',', $values).']';
         }
         
-        //print_r($where); exit('s');
-
-        $query->andFilterWhere($where);
+        $query->where(implode(' AND ', $where));
         return $dataProvider;
         
     }
@@ -109,12 +105,9 @@ class ProductRepository extends \backend\models\ProductSearch
     public function getCategoryMostRatedItems(TaxonomyItems $taxonomyItem, $limit = 5){
 
         return (new \yii\db\Query())
-                        ->select('t0.id')
-                        ->from($this->_model->tableName().' AS t0')
-                        ->innerJoin($this->_model->indexModel->tableName(), 'entity_id = t0.id')
-                        ->where([
-                            'term_id' => $taxonomyItem->id
-                        ])
+                        ->select('id')
+                        ->from($this->_model->tableName())
+                        ->where(['&&', 'index', new \yii\db\Expression('ARRAY['.$taxonomyItem->id.']')])
                         ->distinct()
                         ->limit($limit)
                         ->all();
@@ -129,12 +122,9 @@ class ProductRepository extends \backend\models\ProductSearch
     public function getItemsByStatus(TaxonomyItems $status, $limit = 10){
         
         return (new \yii\db\Query())
-                        ->select('t0.id')
-                        ->from($this->_model->tableName().' t0')
-                        ->innerJoin($this->model->indexModel->tableName(), 'entity_id = t0.id')
-                        ->where([
-                            'term_id' => $status->id
-                        ])
+                        ->select('id')
+                        ->from($this->_model->tableName())
+                        ->where(['&&', 'index', new \yii\db\Expression('ARRAY['.$status->id.']')])
                         ->limit($limit)
                         ->column();
     }

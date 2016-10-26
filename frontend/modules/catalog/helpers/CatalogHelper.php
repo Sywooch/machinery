@@ -100,14 +100,14 @@ class CatalogHelper {
     public static function compareFeatures(array $models){
 
         foreach ($models as $model){
-            $data[] = $model->feature;
+            $data[$model->id] = $model->feature;
         }
         
         $features = [];
-        foreach ($data as $items){
+        foreach ($data as $entityId => $items){
             foreach ($items as $title => $item){
                 foreach ($item as $feature){
-                    $features[$title][$feature->name][] = $feature->value;
+                    $features[$title][$feature->name][$entityId] = $feature->value;
                 }
             } 
         }

@@ -5,23 +5,37 @@ namespace common\modules\import\components;
 use Yii;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\import\helpers\ImportHelper;
-use frontend\modules\catalog\helpers\CatalogHelper;
-use common\models\Alias;
+use backend\models\ProductDefault;
 use common\modules\import\models\Validate;
 use common\modules\import\components\Reindex;
 use yii\base\InvalidValueException;
+use common\helpers\ModelHelper;
 
 /**
 *
  */
 class Insert extends \yii\base\Model
 {
-    const INSERT_LIMIT  = 1000;
+    const INSERT_LIMIT  = 100;
+    const TEMP_TABLE = 'temporary_entitys';
     
     private $stack = [];
     private $model;
 
-    /**
+    
+    public function init(){
+
+        Yii::$app->db->createCommand('DROP TABLE IF EXISTS "'.self::TEMP_TABLE.'" ')->execute();
+        Yii::$app->db->createCommand('
+            CREATE UNLOGGED TABLE "'.self::TEMP_TABLE.'" (
+                LIKE '.ProductDefault::tableName().' INCLUDING DEFAULTS
+            )')->execute();
+        Yii::$app->db->createCommand('CREATE INDEX temp_sku_idx ON  "'.self::TEMP_TABLE.'" (sku)')->execute();
+        Yii::$app->db->createCommand('ALTER TABLE "'.self::TEMP_TABLE.'" DROP COLUMN id RESTRICT')->execute();
+        Yii::$app->db->createCommand('ALTER TABLE "'.self::TEMP_TABLE.'" ALTER COLUMN "index" TYPE integer[]')->execute();
+    }
+
+        /**
      * @param Validate $data
      */
     public function add(Validate $validate){
@@ -42,7 +56,6 @@ class Insert extends \yii\base\Model
      * @param int $catalogId
      */
     public function flush($catalogId = null){
-        echo "Flush start\n";
         if(empty($this->stack)){
             return;
         }
@@ -58,67 +71,43 @@ class Insert extends \yii\base\Model
     }
     
     private function insert($currentCatalogId, array $items){
-       
-       
+
+        $this->model = ModelHelper::getModelByTerm(TaxonomyItems::findOne($currentCatalogId));
+        $this->insertBatch(self::TEMP_TABLE, $items, ImportHelper::productFields());
+
+        $this->up($this->model);
         
-        $this->model = CatalogHelper::getModelByTerm(TaxonomyItems::findOne($currentCatalogId));
-        $this->insertBatch($this->model->tableName(), $items, ImportHelper::productFields(), ImportHelper::productFieldTypes());
-        $sku2Ids = $this->getIdsBySku(array_column($items, 'sku'));
+    }
+    
+    private function up($model){
         
         /*
-         * terms
+        $updateFields = '';
+        foreach(ImportHelper::productFields() as $field){
+            $field = '"'.$field.'"';
+            $updateFields .= $updateFields ? ',':'';
+            $updateFields .= $field.' = t1.'.$field;
+        }
+        
+        $sql = 'update '.$model->tableName().' as t0 set
+		'.$updateFields.'
+                from (SELECT "'.implode('","', ImportHelper::productFields()).'" from '.self::TEMP_TABLE.') as t1("'.implode('","', ImportHelper::productFields()).'") 
+                where t1.sku = t0.sku;';
+        
+        Yii::$app->db->createCommand($sql)->execute(); 
+         * 
          */
-        $currentTermIds = $this->getTermIdsByProdutIds($sku2Ids);
-        $newTermIds = array_column($items, 'terms', 'sku');
-        $insertTermsData = ImportHelper::insertTermsData($sku2Ids, $currentTermIds, $newTermIds);
-        $deleteTermsData = ImportHelper::deleteTermsData($sku2Ids, $currentTermIds, $newTermIds);
         
-        $this->insertBatch($this->model->indexModel->tableName(), $insertTermsData, ImportHelper::termFields(), ImportHelper::termFieldTypes());
-        $this->deleteIndex($this->model->indexModel->tableName(), $deleteTermsData);
-        
-    }
-    
-    private function deleteIndex($table, array $items){
-        if(empty($items)){
-            return;
-        }
-        $where = [];
-        foreach($items as $entityId => $termsIds){
-            $temporary = 'entity_id = '.$entityId;
-            if(!empty($termsIds)){
-                $temporary .= ' AND term_id IN ('.implode(',', $termsIds).')';
-            }
-            $where[] = "({$temporary})";
-        }
-        return (new \yii\db\Query())->createCommand()->delete($table, implode(' OR ', $where))->execute();
+        $fields = ImportHelper::productFields();
+        unset($fields[array_search('sku', $fields)]);
+        $sql = 'insert into '.$model->tableName().'("'.implode('","', ImportHelper::productFields()).'")'.
+                'select DISTINCT ON ("sku") "sku", "'.implode('","', $fields).'" from '.self::TEMP_TABLE.' WHERE sku NOT IN(SELECT sku FROM '.$model->tableName().')';
+        Yii::$app->db->createCommand($sql)->execute();
+        Yii::$app->db->createCommand('TRUNCATE '.self::TEMP_TABLE.' RESTRICT')->execute();
     }
 
 
-    private function getIdsBySku(array $sku){
-        return (new \yii\db\Query())
-                        ->select(['id','sku'])
-                        ->from($this->model->tableName())
-                        ->indexBy('sku')
-                        ->where([
-                            'sku' => $sku,
-                        ])->column();
-    }
-    
-    private function getTermIdsByProdutIds(array $ids){
-        $data = [];
-        $items = (new \yii\db\Query())
-                        ->select(['entity_id','term_id'])
-                        ->from($this->model->indexModel->tableName())
-                        ->where([
-                            'entity_id' => $ids,
-                        ])->all();
-        foreach($items as $item){
-            $data[$item['entity_id']][] = $item['term_id'];
-        }
-        return $data;
-    }
-
-    public function insertBatch($table, array $data, array $columns, array $types){
+    public function insertBatch($table, array $data, array $columns){
 
         if (!$table) {
             throw new InvalidValueException('Param $table can not be empty');
@@ -131,46 +120,41 @@ class Insert extends \yii\base\Model
         if (empty($data)) {
             throw new InvalidValueException('Param $data can not be empty');
         }
-        
-        if (empty($types)) {
-            throw new InvalidValueException('Param $types can not be empty');
-        }
-        
 
-        
         $params = [];
-        $paramsType = [];
         $sortedColumns = [];
-        array_walk_recursive($data, function($value, $key) use (&$params, $types, &$paramsType, $columns, &$sortedColumns){
-            if(!is_numeric($key) && in_array($key, $columns)){
-               $params[] = $value;
-               $paramsType[] = $types[$key];
-               if(!in_array($key, $sortedColumns)){
-                   $sortedColumns[] = $key;
-               }
-            }  
-        });
-
+        
+        
+        foreach($data as $values){
+            foreach($values as $key => $value){
+                if(in_array($key, $columns)){
+                    $params[] = $value;
+                    if(!in_array($key, $sortedColumns)){
+                        $sortedColumns[] = $key;
+                    }
+                }
+            }
+        }
+      
         $columns = $sortedColumns;
         unset($sortedColumns);
 
         $countData = count($data);
         $countColumns = count($columns);
-        
+       
         if(count($params) < $countData * $countColumns){
             throw new BadParam('Param $data is not valid');
         }
-
+        /*
         $onDuplicateStrings = [];
         foreach ($columns as $column) {
             if($column == 'crc32'){
                 $onDuplicateStrings[] = '`reindex` =  ' . Reindex::REINDEX;
             }
             $onDuplicateStrings[] = '`'.$column.'` = VALUES(`'.$column.'`) ';
-        }
+        }*/
         $sql = Yii::$app->db->queryBuilder->batchInsert($table, $columns, array_chunk($params, $countColumns));
-      
-        return Yii::$app->db->createCommand($sql . " ON DUPLICATE KEY UPDATE ".implode(',', $onDuplicateStrings))->execute();
+        return Yii::$app->db->createCommand($sql)->execute();
 
     }
 

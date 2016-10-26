@@ -22,9 +22,11 @@ use backend\models\ProductDefault;
 class Sources extends \yii\db\ActiveRecord
 {
     const TIRES = 500;
-    const STATUS_ACTIVE = 'active';
-    const STATUS_PAUSE = 'pause';
+    const STATUS_ACTIVE = 1;
+    const STATUS_PAUSE = 0;
     
+    private $_file;
+    private $_fields;
     private $_messages;
     /**
      * @inheritdoc
@@ -92,6 +94,7 @@ class Sources extends \yii\db\ActiveRecord
             $message = "[{$validate->sku}] ".$message;
         }
         $this->_messages[] = $message;
+        return $message;
     }
 
     public function countMessages(){
@@ -100,5 +103,39 @@ class Sources extends \yii\db\ActiveRecord
 
     public function getMessages($message){
         return $this->messages;
+    }
+
+    public function open(){ 
+        $this->_file = @fopen(Yii::getAlias('@app').'/../files/import/source_' . $this->id . '_' . date('Y-m-d') . '.csv', 'r');
+        return $this->_file;
+    }
+    
+    public function close(){
+        fclose($this->_file);
+    }
+
+
+
+
+    public function read(){
+        if(!$this->_file){
+            return false;
+        }
+        
+        $line = fgetcsv($this->_file, 20000, ";");
+        if($line !== false && empty($this->_fields)){
+            $this->_fields = $line;
+            $line = fgetcsv($this->_file, 20000, ";");
+        }
+        if($line !== false){
+            array_walk($line, function(&$item){
+               $item = rtrim(trim($item, '"'),'"');
+            });
+            if(count($this->_fields) != count($line)){
+              return [];
+            }
+            $line = array_combine($this->_fields, $line);
+        }
+        return $line;
     }
 }

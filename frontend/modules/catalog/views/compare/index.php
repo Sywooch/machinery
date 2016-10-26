@@ -36,9 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php foreach($items as $name => $values):?>
     <tr>
         <td><?=$name;?></td>
-        <?php for($i=0; $i<count($models); $i++):?>
-        <td><?=isset($values[$i])?$values[$i]:'';?></td>
-        <?php endfor;?>
+        <?php foreach($models as $model):?>
+        <td><?=isset($values[$model->id])?$values[$model->id]:'-';?></td>
+        <?php endforeach;?>
     </tr>
     <?php endforeach;?>
 <?php endforeach;?>

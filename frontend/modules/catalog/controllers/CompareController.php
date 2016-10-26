@@ -66,6 +66,7 @@ class CompareController extends Controller
         ]);
         return $this->redirect(Yii::$app->request->referrer);
     }
+    
     public function actionToggle(){
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

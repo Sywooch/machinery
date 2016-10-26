@@ -85,7 +85,7 @@ class ProductHelper {
         $alias->alias = URLify::url($product->helper->titlePattern($product)) .'-'. $product->id;     
         $alias->url = 'product/default' . '?id=' . $product->id . '&model='. ModelHelper::getModelName($product);
         $alias->groupAlias = URLify::url($product->title);
-        
+
         $link = ArrayHelper::getColumn(TaxonomyHelper::order($product->catalog), 'transliteration');
         $alias->prefix = implode('/', $link);
         

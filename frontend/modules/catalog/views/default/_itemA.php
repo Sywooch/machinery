@@ -31,9 +31,9 @@ use frontend\modules\catalog\helpers\CatalogHelper;
             </div>
             <div class="right">
                 <span class="product-status ">
-                        <?php foreach(ProductHelper::getStatuses($product->terms) as $status):?>
-                            <span class="<?=$status->transliteration;?>"><?=$status->name;?></span>
-                        <?php endforeach;?>
+                    <?php foreach(ProductHelper::getStatuses($product->terms) as $status):?>
+                        <span class="<?=$status->transliteration;?>"><?=$status->name;?></span>
+                    <?php endforeach;?>
                 </span>
                 <?=Html::a(Html::encode($product->name), ['/'.$product->url->alias],['class'=>'title']); ?>
                 <div class="produt-short"><?php echo Html::encode($product->short); ?></div>

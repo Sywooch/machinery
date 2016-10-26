@@ -31,7 +31,7 @@ a:focus{
 }
 .btn-group.custom .btn:hover{
     background-color: #f37f00;
-    color: #000;
+    color: #fff;
     border-color: #f37f00;
 }
 .btn-group.custom .btn.active{
@@ -1061,7 +1061,9 @@ height: 24px;
     float: left;
     margin-right: 20px;
 }
-.reviews h3 a{
+.reviews h4 a{
+    color: #000;
+    
     border-color: rgba(22,131,198,.3);
 }
 .review-item .date,.review-view .date{
@@ -1274,6 +1276,7 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
 .compare-table td{
     padding: 4px 20px 4px 0px;
     max-width: 280px;
+    min-width: 180px;
 }
 
 #compare-block-widget{
