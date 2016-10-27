@@ -28,8 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'code',
             'count',
             'discount',
-            'time',
-
+            [
+                'attribute' => 'time',
+                'format' => 'raw',
+                'value' => function ($model) {                      
+                        return $model->time->format('Y-m-d H:i:s');
+                },
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}{delete}'

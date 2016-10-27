@@ -2,11 +2,7 @@
 
 use yii\helpers\Html;
 use frontend\modules\cart\Asset as CartAsset;
-use frontend\modules\cart\helpers\CartHelper;
-use common\modules\file\helpers\StyleHelper;
-use yii\helpers\ArrayHelper;
 use yii\widgets\Breadcrumbs;
-use kartik\rating\StarRating;
 
 CartAsset::register($this);
 
@@ -35,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
         
     </div>
 </div>
-<?=CartHelper::getConfirmModal();?>
 
 
 

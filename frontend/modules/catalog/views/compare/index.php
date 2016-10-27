@@ -22,26 +22,27 @@ $this->params['breadcrumbs'][] = $this->title;
     <table class="compare-table characteristic">
     <tr>
         <td></td>
-        <?php foreach($models as $model):?>
-        <td><?=$this->render('_item', ['product' => $model]); ?></td>
+        <?php foreach($compares as $item):?>
+        <?php if($item->term_id != $current->id ){
+            continue;
+        }?>
+        <td><?=$this->render('_item', ['product' => $compareModels[$item->entity_id], 'item' => $item]); ?></td>
         <?php endforeach;?>   
     </tr>
-<?php foreach(CatalogHelper::compareFeatures($models) as $title => $items):?>
-    <tr>
+<?php foreach(CatalogHelper::compareFeatures($compareModels) as $title => $items):?>
+    <tr class="h">
         <td class="lb"><h3><?=$title;?></h3></td>
-        <?php for($i=0; $i<count($models); $i++):?> 
+        <?php for($i=0; $i<count($compareModels); $i++):?> 
         <td></td>
         <?php endfor;?>
     </tr>
     <?php foreach($items as $name => $values):?>
-    <tr>
+    <tr class="h">
         <td><?=$name;?></td>
-        <?php foreach($models as $model):?>
+        <?php foreach($compareModels as $model):?>
         <td><?=isset($values[$model->id])?$values[$model->id]:'-';?></td>
         <?php endforeach;?>
     </tr>
     <?php endforeach;?>
 <?php endforeach;?>
 </table>    
-    
-<?=CartHelper::getConfirmModal();?>

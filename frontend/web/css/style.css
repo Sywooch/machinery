@@ -247,6 +247,9 @@ a:hover{
   top: 60px;
 }
 /* profile */
+.tabs-profile{
+    margin-bottom: 30px;
+}
 .profile-img{
     float: left;
     text-align: center;  
@@ -267,7 +270,7 @@ a:hover{
 .profile-info{
     margin-left: 40px;
     float: left;
-     font-size: 15px;
+    font-size: 14px;
 }
 .profile-info label{
     width: 100px;
@@ -277,7 +280,7 @@ a:hover{
     color: #e85222;
 }
 .my-orders .header{
-
+    padding-top: 15px;
     padding-right: 10px;
     height: 50px;
     background-color: #faf7f0;
@@ -292,10 +295,10 @@ a:hover{
 .product .left{
     border-right: 1px solid #ddd
 }
-.product .chb-compare .cbx-icon .glyphicon{
+.product .chb-compare .cbx-icon .glyphicon,.product .chb-wish .cbx-icon .glyphicon{
     display: none;
 }
-.product .chb-compare .cbx{
+.product .chb-compare .cbx,.product .chb-wish .cbx{
     border: none;
     box-shadow: none;
     width: auto;
@@ -306,7 +309,7 @@ a:hover{
     height: 26px;
    
 }
-.product .chb-compare label{
+.product .chb-compare label,.product .chb-wish label{
     margin-top: 7px;
     float: left;
     display: block;
@@ -314,15 +317,17 @@ a:hover{
     font-weight: normal;
   
 }
-.product .chb-compare .cbx-icon{
+.product .chb-compare .cbx-icon,.product .chb-wish .cbx-icon{
         background: url(../images/sprite.png) no-repeat -0px -24px;
         display: block;
         float: left;
 }
-.product .chb-compare.active .cbx-icon{
+.product .chb-compare.active .cbx-icon, .product .chb-wish.active .cbx-icon{
     background-position: -0px -24px;
 }
-
+.product .chb-compare.chb-wish .cbx-icon,.product .chb-wish.chb-wish .cbx-icon{
+    background-position: -28px -50px;
+}
 
 .produt-short{
     color: #999;
@@ -361,15 +366,14 @@ aside section .inline{
     line-height: 2;
     
 }
-.characteristic span{
+.characteristic .h span{
     text-align: left;
     font-weight: initial;
     font-size:14px;
-    color: #000;
     padding: 0px;
     line-height: 2;
 }
-.characteristic .label{
+.characteristic li span:first-child{
     float: left;
     width: 400px;
 }
@@ -539,7 +543,7 @@ aside section .inline{
 }
 .scroll-nav__wrapper ol a{
     color: #000;
-    font-size: 14px;
+    font-size: 13px;
     border-bottom: 1px solid rgba(102,102,102,.5);
 }
 .scroll-nav__wrapper .in-view{
@@ -653,7 +657,7 @@ aside section .inline{
     height: 46px;
     border: 0px;
     text-decoration: underline;
-    font-size: 16px;
+    font-size: 14px;
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -1095,29 +1099,32 @@ height: 24px;
 
 
 /* checkbox */
-.chb-compare{
+.cbx.cbx-xs{
+    border: 2px solid #f37f00
+}
+.chb-compare,.chb-wish{
     margin-top: 3px;
     margin-right: 20px;
 }
-.chb-compare .cbx-xs {
+.chb-compare .cbx-xs,.chb-wish .cbx-xs{
     border: 2px solid #f37f00;
 }
-.chb-compare .glyphicon{
+.chb-compare .glyphicon,.chb-wish .glyphicon{
     display: none;
 }
 .cbx-icon .glyphicon{
     left: -1px;
     top: 0px;
 }
-.chb-compare.active .glyphicon{
+.chb-compare.active .glyphicon,.chb-wish.active .glyphicon{
     display: initial;
 }
-.chb-compare .cbx{
+.chb-compare .cbx,.chb-wish .cbx{
     float: left;
     margin-right: 8px;
     margin-top: 4px;
 }
-.chb-compare label{
+.chb-compare label,.chb-wish label{
     font-weight: normal;
     line-height: 1;
     cursor: pointer;
@@ -1279,13 +1286,19 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
     min-width: 180px;
 }
 
-#compare-block-widget{
+#wish-block-widget{
+        border-left: 1px solid #eee;
+}
+#wish-block-widget a{
+    background-position: -28px -73px;
+}
+.sub-widget{
         padding: 20px;
        float: right;
        padding-right: 30px;
        
 }
-#compare-block-widget a{
+.sub-widget a{
     display: block;
     height: 26px;
     background: url('../images/sprite.png') no-repeat 0px -0px;
@@ -1294,14 +1307,16 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
     padding-left: 30px;
     position: relative;
 }
-#compare-block-widget a.active{
+.sub-widget a.active{
     background-position: -0px -24px;
-    
 }
-#compare-block-widget a.active .compare-items{
+#wish-block-widget a.active{
+    background-position: -28px -50px;
+}
+.sub-widget a.active .items-count{
     color: #394144;
 }
-#compare-block-widget .compare-items{
+.sub-widget .items-count{
     font-weight: bold;
     color: #ccc;
     text-align: center;
@@ -1320,4 +1335,49 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
     opacity: 1;
 }
 
+/* table list */
+.table-list-item .cbx-container{
+    float: left;
+    margin-right: 30px;
+}
+#multi-delete-button{
+    margin-top: -6px;
+    padding: 4px 12px;
+    display: none;
+    margin-left: 10px;
+}
+#multi-text{
+    margin-left: 10px;
+}
+.header-table-list{
+    padding-right: 10px;
+    padding-top: 12px;
+    height: 50px;
+    background-color: #faf7f0;
+    margin: 0px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+    padding-left: 16px;
+    border: none;
+}
 
+.table-list-item .item-total{
+    font-weight: 700;
+    float: right;
+    font-size: 15px;
+    line-height: 2.4;
+}
+
+.table-list-item{
+    padding: 10px 15px;
+    margin-bottom: 0px;
+}
+
+.table-list-item .item-remove{
+    opacity: 0;
+    margin-top: -24px;
+}
+.table-list-item:hover .item-remove{
+    opacity: 1;
+}

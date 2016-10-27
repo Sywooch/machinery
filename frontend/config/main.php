@@ -83,7 +83,9 @@ return [
             'rules' => [
                 ['class' => 'frontend\components\AliasRule'],
                 ['class' => 'common\modules\product\components\ProductUrlRule'],
-                ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
+                ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],
+                'user/<userId:\d+>/wish' => 'catalog/wish',
+                'user/<userId:\d+>/wish/remove/<id:\d+>' => 'catalog/wish/remove'
             ],
 	],
         'view' => [

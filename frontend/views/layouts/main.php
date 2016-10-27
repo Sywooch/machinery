@@ -10,6 +10,9 @@ use frontend\modules\cart\widgets\CartBlockWidget as CartBlock;
 use frontend\modules\catalog\widgets\CatalogMenu\CatalogMenuWidget as CatalogMenu;
 use frontend\widgets\SearchForm\SearchFormWidget as SearchForm;
 use frontend\modules\catalog\widgets\Compare\CompareWidget;
+use frontend\modules\catalog\widgets\Wish\WishWidget;
+use yii\bootstrap\Modal;
+
 
 AppAsset::register($this);
 ?>
@@ -51,6 +54,7 @@ AppAsset::register($this);
             <div class="col-lg-5 menu-action-items">
                 <?=$this->render('_login');?>
                 <?=CartBlock::widget();?>
+                <?=WishWidget::widget();?>
                 <?=CompareWidget::widget();?>
             </div>
         </div>
@@ -69,6 +73,13 @@ AppAsset::register($this);
     </div>
 </footer>
 
+    <?=Modal::widget([
+            'id' => 'modalShow',
+            'header' => '<span></span>',
+        ]);?>
+    <script>
+        window.userId = <?=Yii::$app->user->id ? Yii::$app->user->id : 0;?>;
+    </script>
 <?php $this->endBody() ?>
 </body>
 </html>

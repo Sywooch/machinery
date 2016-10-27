@@ -5,23 +5,23 @@ namespace frontend\modules\catalog\models;
 use Yii;
 
 /**
- * This is the model class for table "compares".
+ * This is the model class for table "wishlist".
  *
  * @property integer $id
- * @property string $session
  * @property integer $entity_id
  * @property string $model
+ * @property integer $user_id
  */
-class Compares extends \yii\db\ActiveRecord
+class Wishlist extends \yii\db\ActiveRecord
 {
-    const MAX_ITEMS_COMPARE = 100;
-        
+    const MAX_ITEMS_WISH = 500;
+            
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'compares';
+        return 'wishlist';
     }
 
     /**
@@ -30,9 +30,9 @@ class Compares extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['session', 'entity_id', 'term_id', 'model'], 'required'],
-            [['term_id','entity_id'], 'integer'],
-            [['session', 'model'], 'string', 'max' => 255],
+            [['entity_id', 'model', 'user_id'], 'required'],
+            [['entity_id', 'user_id'], 'integer'],
+            [['model'], 'string', 'max' => 50],
         ];
     }
 
@@ -43,29 +43,27 @@ class Compares extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'session' => 'Session',
             'entity_id' => 'Entity ID',
             'model' => 'Model',
+            'user_id' => 'User ID',
         ];
     }
     
-    public static function getItems(){
+    public static function getItems($userId = null){
         return self::find()->where([
-                'session' => $_COOKIE['PHPSESSID']
+                'user_id' => $userId ? $userId : Yii::$app->user->id
              ])
-             ->limit(self::MAX_ITEMS_COMPARE)
-             ->orderBy([
-                 'id' =>  SORT_DESC
-             ])
-             ->all();
+            ->limit(self::MAX_ITEMS_WISH)
+            ->all();
     }
     
     public static function getCount(){
         return (new \yii\db\Query())->select('COUNT(id)')
                 ->from(self::tableName())
                 ->where([
-                    'session' => $_COOKIE['PHPSESSID']
+                    'user_id' => \Yii::$app->user->id
                 ])
                 ->count();
     }
+    
 }

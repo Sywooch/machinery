@@ -35,7 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'code.code',
             'code.count',
             'code.discount',
-            'code.time',
+            [
+                'label'  => 'time',
+                'value'  => $model->code->time->format('Y-m-d H:i:s'),
+            ],
             'entity_id',
             'model',
             'productTitle'

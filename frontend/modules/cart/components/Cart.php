@@ -114,6 +114,7 @@ class Cart extends Object
             return null;
         }
         if(($item = $order->getItem($id)) !== null && $item->delete()){
+            $order = $this->getOrder(null);
             $order->save();
             return $order;
         }

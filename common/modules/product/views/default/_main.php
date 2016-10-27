@@ -61,10 +61,10 @@ CartAsset::register($this);
 <div class="characteristic">
     <?php foreach($model->feature as $name => $features):?>
     <h3><?=$name?></h3>
-    <ul class="">
+    <ul>
         <?php foreach($features as $items):?>
-        <li class="">
-            <span class="label"><?=$items->name?></span>
+        <li>
+            <span ><?=$items->name?></span>
             <span><?=$items->value?></span>
         </li> 
         <?php endforeach;?>

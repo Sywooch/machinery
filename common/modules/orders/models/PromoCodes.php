@@ -35,8 +35,8 @@ class PromoCodes extends \yii\db\ActiveRecord
         return [
             [['code', 'discount'], 'required'],
             [['count', 'discount'], 'integer'],
-            [['time'], 'safe'],
             [['code'], 'string', 'max' => 50],
+            [['time'],'safe'],
             [['code'], 'unique'],
         ];
     }

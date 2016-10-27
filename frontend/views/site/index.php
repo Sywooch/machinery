@@ -1,6 +1,5 @@
 <?php
 use frontend\modules\cart\Asset as CartAsset;
-use frontend\modules\cart\helpers\CartHelper;
 
 CartAsset::register($this);
 
@@ -34,5 +33,4 @@ $this->title = 'Интернет-магазин №1';
      <?=$this->render('_reviews',['reviews' => $reviews]);?>
     
 </div>
-<?=CartHelper::getConfirmModal();?>  
 

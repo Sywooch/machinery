@@ -31,7 +31,17 @@ class ProductHelper {
         return $breadcrumb;
     }
     
-    public static function getStatuses(array $terms){
+    /**
+     * 
+     * @param mixed $terms
+     * @return []
+     */
+    public static function getStatuses($terms = []){
+        
+        if(empty($terms)){
+            return [];
+        }
+        
         $return = [];
         foreach($terms as $term){
             if($term->vid == self::STATUS_TERMS_VID){

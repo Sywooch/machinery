@@ -86,7 +86,7 @@ class CatalogHelper {
         
         foreach ($compares as $item){
             if($item->term_id == $term->id){
-                $data[] = $models[$item->model][$item->entity_id];
+                $data[$item->entity_id] = $models[$item->model][$item->entity_id];
             }
         } 
         return $data;
@@ -130,5 +130,22 @@ class CatalogHelper {
                     '<label >'.(isset($ids[$entity->id]) ? 'в сравнении' : 'сравнить').'</label>'.
                 '</div>';
     }
+    
+    /**
+     * 
+     * @param type $product
+     * @return type
+     */
+    public static function getWishButton($entity, array $ids = []){
+        return '<div class="cbx-container chb-wish chb-wish chb-wish-'.$entity->id.' '.(isset($ids[$entity->id]) ? 'active' : '').'" data-id="'.$entity->id.'" data-model="'.ModelHelper::getModelName($entity).'">'.
+                    '<div class="cbx cbx-xs cbx-active" tabindex="1000">'.
+                        '<span class="cbx-icon"> '.
+                            '<i class="glyphicon glyphicon-ok"></i>'.
+                        '</span>'.
+                    '</div>'.
+                    '<label >'.(isset($ids[$entity->id]) ? 'в избранном' : 'в избранное').'</label>'.
+                '</div>';
+    }
+    
     
 }

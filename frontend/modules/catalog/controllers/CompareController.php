@@ -43,25 +43,26 @@ class CompareController extends Controller
         $models = [];
         foreach($entityIds as $model => $ids){
             $modelClass = ModelHelper::getModelClass($model);
-            $models[$model] = $modelClass::find()->where(['id'=>$ids])->indexBy('id')->all();
+            $models[$model] = $modelClass::find()->where(['id' => $ids])->indexBy('id')->all();
         }
         
         $termIds = array_unique(ArrayHelper::getColumn($compares, 'term_id'));
         $terms = TaxonomyItems::find()->where(['id'=>$termIds])->indexBy('id')->all();
    
         $current = isset($terms[$id]) ? $terms[$id] : reset($terms);
-        
+               
         return $this->render('index',[
+            'compares' => $compares,
             'current' => $current,
             'terms' => $terms,
-            'models' => CatalogHelper::compareModelByTerm($current, $compares, $models),
+            'compareModels' => CatalogHelper::compareModelByTerm($current, $compares, $models),
         ]);
        
     }
     public function actionRemove($id){
 
         Compares::deleteAll([
-            'entity_id' => $id,
+            'id' => $id,
             'session' => $_COOKIE['PHPSESSID']
         ]);
         return $this->redirect(Yii::$app->request->referrer);

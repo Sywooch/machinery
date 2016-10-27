@@ -201,7 +201,7 @@ class Orders extends ActiveRecord
     {
         return $this->hasOne(OrdersItems::className(), ['order_id' => 'id'])->where(['id' => $id])->one(); 
     }
-    
+        
     public function getPaymentList(){
         return [
             'Default' => 'Наличными при получении',

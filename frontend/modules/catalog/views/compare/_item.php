@@ -10,7 +10,7 @@ use common\modules\product\helpers\ProductHelper;
 
 <div class="item">
 
-        <a href="/catalog/compare/remove?id=<?=$product->id?>" class="item-remove compare-item-remove"><i class="glyphicon glyphicon-remove-circle"></i></a>
+        <a href="/catalog/compare/remove?id=<?=$item->id?>" class="item-remove compare-item-remove"><i class="glyphicon glyphicon-remove-circle"></i></a>
     
         <?php if(($file = ArrayHelper::getValue($product->files, '0'))):?>
             <?=Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130')),['/'.$product->url->alias],['class'=>'img']);?>

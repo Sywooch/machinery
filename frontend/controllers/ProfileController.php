@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use dektrium\user\controllers\ProfileController as ProfileControllerBase;
 use common\helpers\ModelHelper;
 use common\modules\orders\models\Orders;
+use frontend\modules\catalog\models\Wishlist;
 
 class ProfileController extends ProfileControllerBase
 {

@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use frontend\modules\cart\Asset as CartAsset;
-use frontend\modules\cart\helpers\CartHelper;
 use yii\widgets\Breadcrumbs;
 use frontend\modules\catalog\widgets\Filter\FilterWidget;
 
@@ -44,4 +43,3 @@ $this->params['breadcrumbs'][] = $this->title;
         <?=FilterWidget::widget(['search' => $search, 'url' => Yii::$app->url]);?>
     </div>
 </div>
- <?=CartHelper::getConfirmModal();?>

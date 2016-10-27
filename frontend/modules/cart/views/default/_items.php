@@ -9,7 +9,7 @@ use common\modules\orders\helpers\OrdersHelper;
 ?>
 
 <?php foreach($order->items as $item):?>
-<div class="row cart-item" id="order-item-<?=$item->id?>">
+<div class="row table-list-item cart-item" id="order-item-<?=$item->id?>">
     <div class="col-lg-2 col-md-2 col-sm-2 ">
         <?php if(isset($form)):?>
             <?=CheckboxX::widget([
@@ -33,7 +33,7 @@ use common\modules\orders\helpers\OrdersHelper;
                     <span class="<?=$status->transliteration;?>"><?=$status->name;?></span>
                 <?php endforeach;?>
         </span>
-        <?= Html::a($item->origin->name, ['/'.$item->origin->url->alias], ['class' => '']); ?>
+        <?= Html::a($item->title, ['/'.$item->origin->url->alias], ['class' => '']); ?>
         <div class="info">
             <div class="sku">
                 <span class="lb">Код</span>

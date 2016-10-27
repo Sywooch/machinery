@@ -23,8 +23,8 @@ $this->title = 'Корзина';
             'id' => 'cart-form',
 
         ]); ?>
-        
-            <div class="row header">
+        <div class="header-table-list" data-url="/cart/default/remove">
+            <div class="row  ">
                 <div class="col-lg-6 col-md-6 col-sm-6"  id="chb-all-conteiner">
                     <?=CheckboxX::widget([
                         'name'=>'chb_all',
@@ -35,7 +35,7 @@ $this->title = 'Корзина';
                      <?= Html::a('Удалить выбранное', ['#'], ['class' => 'btn btn-default ', 'id' => 'multi-delete-button']); ?>
                 </div>
             </div>
- 
+        </div>
         <?=$this->render('_items',['order' => $cart->order, 'form' => $form]);?>
 
         <?php ActiveForm::end(); ?>

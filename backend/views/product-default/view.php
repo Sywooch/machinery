@@ -76,7 +76,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'code',
                 'count',
                 'discount',
-                'time',
+                [
+                    'label'  => 'time',
+                    'value'  => $code->time->format('Y-m-d H:i:s'),
+                ],
                 [
                     'label'  => 'action',
                     'value'  => Html::a("view", ['/product/promo-products/view', 'id' => $model->promo->id]),

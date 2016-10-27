@@ -31,7 +31,7 @@ compare.toggle = function(id, model){
                     $(compare.class+'-'+data.id).removeClass('active');
                     $(compare.class+'-'+data.id+' label').text('сравнить')
                 }
-                compare.wiget.find('.compare-items').text(data.count);
+                compare.wiget.find('.items-count').text(data.count);
                 if(data.count){
                     compare.wiget.find('a').addClass('active');
                 }else{

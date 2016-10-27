@@ -76,14 +76,15 @@ $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
                
             </section>
             <section class="buy-block">
-                 <div class="inline">
+                <div class="inline">
                     <?php echo CatalogHelper::getCompareButton($product, $compareIds);?>
-                </div>  
+                </div> 
+                <div class="inline">
+                    <?php echo CatalogHelper::getWishButton($product, $compareIds);?>
+                </div> 
             </section>
         </aside>
         
         
     </div>
 </div>
-
-<?=CartHelper::getConfirmModal();?> 

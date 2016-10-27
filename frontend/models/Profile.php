@@ -28,7 +28,8 @@ class Profile extends ProfileBase
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = [['birth','phone'], 'string', 'max' => 100];
+        $rules[] = [['phone'], 'string', 'max' => 100];
+        $rules[] = [['birth'], 'safe'];
         return $rules;
     }
     
@@ -44,9 +45,6 @@ class Profile extends ProfileBase
     }
     
     public function afterFind() {
-        if($this->birth){
-            $this->birth = date("d.m.Y", strtotime($this->birth));
-        }
         parent::afterFind();
     }
     
@@ -58,9 +56,6 @@ class Profile extends ProfileBase
     }
 
     public function beforeSave($insert) {
-        if($this->birth){
-            $this->birth = date("Y-m-d", strtotime($this->birth));
-        }
         return parent::beforeSave($insert);
     }
 }

@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 use kartik\editable\Editable;
 use kartik\file\FileInput;
 use common\modules\file\helpers\FileHelper;
-use yii\helpers\Url;
+use yii\widgets\Breadcrumbs;
 use yii\bootstrap\Modal;
 use yii\widgets\ActiveForm;
 use frontend\modules\cart\Asset as CartAsset;
@@ -16,7 +16,11 @@ CartAsset::register($this);
 $this->title = empty($profile->name) ? Html::encode($profile->user->username) : Html::encode($profile->name);
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<h1>Личный кабинет</h1>
+<?= Breadcrumbs::widget([
+    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+]) ?>
+<h1>Профиль</h1>
+<?= $this->render('_tabs',['id' => $profile->user_id, 'action' => 'profile']);?>
 <div class="row">
     <div class="col-lg-12  ">
         <div class="profile-img">
@@ -108,21 +112,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 <label>Дата рождения</label>
                 <?php if(Yii::$app->user->id == $profile->user_id):?>
                 <?= Editable::widget([
-                        'model'=> $profile,
-                        'attribute' => 'birth',
+                        'name' => 'Profile[birth]',
+                        'value' => $profile->birth->format('d.m.Y'),
                         'asPopover' => true,
                         'size'=>'md',
                         'inputType' => Editable::INPUT_WIDGET,
                         'widgetClass' => 'yii\widgets\MaskedInput',
                         'options' => [
-                            'mask' => '99.99.9999',
+                             'mask' => '99.99.9999'
                         ],
-                        'displayValue' => $profile->birth
-
                     ]);
                 ?>
                 <?php else: ?>
-                <?=$profile->birth;?>
+                <?=$profile->birth->format('d.m.Y')?>
                 <?php endif; ?>
             </div>
             

@@ -58,16 +58,15 @@ class DefaultController extends Controller
         $searchModel = new ProductRepository(ModelHelper::getModelByName($model));
         $ids = $searchModel->getProductsByGroup($id);
         $products = $searchModel->getProducstByIds($ids);
-        
-       
-        
+
         if(empty($products)){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
-
+        $compares = ArrayHelper::map(Compares::getItems(),'entity_id','entity_id','model');
         return $this->render('index',[
             'products' => $products,
             'product' => reset($products),
+            'compareIds' => isset($compares[$model]) ? $compares[$model] : [], 
             'tab' => $tab
         ]);
         
