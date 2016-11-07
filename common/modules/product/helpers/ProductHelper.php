@@ -12,7 +12,7 @@ use common\modules\taxonomy\helpers\TaxonomyHelper;
 class ProductHelper {
     
     const STATUS_TERMS_VID = 47;
-
+    const TOP_TERM_ID = 1095;
 
     /**
      * 
@@ -44,7 +44,7 @@ class ProductHelper {
         
         $return = [];
         foreach($terms as $term){
-            if($term->vid == self::STATUS_TERMS_VID){
+            if($term->vid == self::STATUS_TERMS_VID && $term->id != self::TOP_TERM_ID){
                 $return[] = $term;
             }
         }

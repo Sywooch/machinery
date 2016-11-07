@@ -25,7 +25,7 @@ class ProductRepository extends \backend\models\ProductSearch
      * @param array $ids
      * @return mixed
      */
-    public function getProducstByIds(array $ids){
+    public function getProductsByIds(array $ids){
         if(empty($ids)){
             return [];
         }
@@ -125,6 +125,21 @@ class ProductRepository extends \backend\models\ProductSearch
                         ->select('id')
                         ->from($this->_model->tableName())
                         ->where(['&&', 'index', new \yii\db\Expression('ARRAY['.$status->id.']')])
+                        ->limit($limit)
+                        ->column();
+    }
+    
+    /**
+     * 
+     * @param int $limit
+     * @return []
+     */
+    public function getItemsDiscount($limit = 10){
+        
+        return (new \yii\db\Query())
+                        ->select('id')
+                        ->from($this->_model->tableName())
+                        ->where(['>', 'old_price', 0])
                         ->limit($limit)
                         ->column();
     }

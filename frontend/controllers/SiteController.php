@@ -74,33 +74,28 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-       
-       
-        
-        $catalog = [];
-        $catalog[] = TaxonomyItems::findOne(11);
-        $catalog[] = TaxonomyItems::findOne(12);
-        
-        $models = [];
+        $catalog = TaxonomyItems::findAll([11,12,3784,3887,3888,3889,5408,3891,3892]);
+             
+        $models = [
+            'top' => [],
+            'discount' => []
+        ];
         $itemsAction = [];
         $itemsNew = [];
         $itemsHit = [];
         
-        $terms = TaxonomyItems::find()->where(['vid' => 47])->all();
+        $topTerm = TaxonomyItems::findOne(1095);
         
         foreach($catalog as $item){
             $searchModel = new ProductRepository(ModelHelper::getModelByTerm($item));
-            foreach($terms as $term){
-                if(!isset($models[$term->id])){
-                    $models[$term->id] = [];
-                }
-                $models[$term->id] = array_merge($models[$term->id],$searchModel->getProducstByIds($searchModel->getItemsByStatus($term, $limit = 10)));
-            }
+            $models['top'] = array_merge($models['top'],$searchModel->getProductsByIds($searchModel->getItemsByStatus($topTerm, $limit = 14)));
+            $models['discount'] = array_merge($models['discount'],$searchModel->getProductsByIds($searchModel->getItemsDiscount($limit = 14)));
+            
         }
         
         foreach($models as $index => $empty){
             shuffle($models[$index]);
-            $models[$index] = array_slice($models[$index],0,10);
+            $models[$index] = array_slice($models[$index],0,14);
         }
 
         return $this->render('index',[

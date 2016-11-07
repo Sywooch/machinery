@@ -98,24 +98,11 @@ class FilterModel extends \yii\base\Model
      */
     public function getFilterTermIds(TaxonomyItems $catalogTerm){
 
-           // $indexModel = $this->_model->indexModel;
-
             return (new \yii\db\Query())
                             ->select('id')
-                            ->from('(SELECT unnest(index) as id FROM product_default) as t0')
-                            ->distinct()
+                            ->from('(SELECT unnest(index) as id FROM '.$this->_model->tableName().' WHERE index && ARRAY['.$catalogTerm->id.']) as t0')
+                            ->distinct() //->createCommand()->getRawSql();
                             ->column();  
-            
-            return (new \yii\db\Query())
-                            ->select('i1.term_id as id')
-                            ->from($indexModel->tableName().' as i1')
-                            ->innerJoin($indexModel->tableName().' as i2','i1.entity_id = i2.entity_id')
-                            ->where([ 
-                                'i2.term_id' => $catalogTerm->id
-                            ])
-                            ->distinct()
-                            ->column();  
-        
     }
     
     public function getCountFilterTerms(array $data){

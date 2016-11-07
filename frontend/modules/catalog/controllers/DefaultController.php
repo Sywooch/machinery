@@ -64,7 +64,7 @@ class DefaultController extends Controller
             if($childrensTerms){
                 $items = [];
                 foreach($childrensTerms as $childrenTerm){
-                    $products = $searchModel->getProducstByIds($searchModel->getCategoryMostRatedItems($childrenTerm));
+                    $products = $searchModel->getProductsByIds($searchModel->getCategoryMostRatedItems($childrenTerm));
                     $items[$childrenTerm->id] = [
                         'term' => $childrenTerm,
                         'products' => $products
@@ -77,7 +77,7 @@ class DefaultController extends Controller
             }
         }
         $dataProvider = $searchModel->searchItemsByFilter($filter);
-        $products = $searchModel->getProducstByIds($dataProvider->getKeys());
+        $products = $searchModel->getProductsByIds($dataProvider->getKeys());
         
         $productModelName = ModelHelper::getModelName($productModel);
         $compares = ArrayHelper::map(Compares::getItems(),'entity_id','entity_id','model');

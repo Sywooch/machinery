@@ -57,7 +57,7 @@ class DefaultController extends Controller
     {   
         $searchModel = new ProductRepository(ModelHelper::getModelByName($model));
         $ids = $searchModel->getProductsByGroup($id);
-        $products = $searchModel->getProducstByIds($ids);
+        $products = $searchModel->getProductsByIds($ids);
 
         if(empty($products)){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));

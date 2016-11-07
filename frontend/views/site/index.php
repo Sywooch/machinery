@@ -15,13 +15,14 @@ $this->title = 'Интернет-магазин №1';
         <?=$this->render('_actions',['actions' => $actions]);?>
     </div>
     
+    
     <div class="btn-group custom" role="group" id="front-tabs-1">
-        <?php foreach($terms as $term):?>
-            <a type="button" class="btn btn-default <?=($term->id == 1095)? 'active' : '';?>" href="#" data-tab="tab-<?=$term->id;?>"><?=$term->name?></a>
-        <?php endforeach; ?>
+        <a type="button" class="btn btn-default active" href="#" data-tab="tab-top">Топ-100</a>
+        <a type="button" class="btn btn-default " href="#" data-tab="tab-discount">Суперцена</a>
     </div>
+    
     <?php foreach($models as $index => $products):?>
-        <div class="tab-items tab-catalog-category catalog-category <?=($index == 1095)? 'active' : '';?>" id="tab-<?=$index;?>">
+        <div class="tab-items tab-catalog-category catalog-category <?=($index == 'top')? 'active' : '';?>" id="tab-<?=$index;?>">
             <?php foreach($products as $product):?>
                 <?=$this->render('../../modules/catalog/views/default/_itemB',[
                     'product' => $product

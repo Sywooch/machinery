@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = Html::encode($model->title);
     <h1><?=Html::encode($model->title)?></h1>
     <div class="date"><?=Yii::$app->formatter->asDate($model->created_at, 'php:d F');?></div>
     <div class="body">
-        <?= HtmlPurifier::process($model->short, [
-                       'HTML.AllowedElements' => ['p','a','br','span','b','i','img'],
+        <?= HtmlPurifier::process($model->body, [
+                       'HTML.AllowedElements' => ['p','a','br','span','b','i','img','strong','h2'],
                        'AutoFormat.AutoParagraph' => false
                    ]);
         ?>

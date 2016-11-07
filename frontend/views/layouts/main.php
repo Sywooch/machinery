@@ -50,8 +50,8 @@ AppAsset::register($this);
     <div class="container-fluid">
         <div class="control row">
             <div class="col-lg-5"><?=SearchForm::widget();?></div>
-            <div class="col-lg-2"></div>
-            <div class="col-lg-5 menu-action-items">
+         
+            <div class="col-lg-7 menu-action-items">
                 <?=$this->render('_login');?>
                 <?=CartBlock::widget();?>
                 <?=WishWidget::widget();?>
@@ -67,7 +67,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container-fluid">
-        <p class="pull-left">&copy; ТехноСад <?= date('Y') ?></p>
+        <p class="pull-left">&copy; Магазин <?= date('Y') ?></p>
 
        
     </div>

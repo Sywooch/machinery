@@ -486,8 +486,7 @@ aside section .inline{
     height: auto;
     clear: both;
     position: initial;
-    margin-bottom: 10px;
-
+    margin-bottom: 0px;
 }
 .bx-wrapper ul li{
     list-style: none;
@@ -631,6 +630,7 @@ aside section .inline{
     color: #fff;
     overflow: hidden;
     margin-top: 6px;
+    margin-bottom: 6px;
 }
 .product-status span{
     display: block;
@@ -658,6 +658,7 @@ aside section .inline{
     border: 0px;
     text-decoration: underline;
     font-size: 14px;
+    line-height: 1.6;
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -681,10 +682,11 @@ aside section .inline{
 
 .catalog-category .old_price{
     float: left;
-    font-size: 16px;
+    font-size: 12px;
     color: #999;
     margin-left: 10px;
-    margin-top: 2px;
+    margin-top: 6px;
+    text-decoration: line-through;
 }
 .catalog-category .buy-btn-conteiner{
     clear: both;
@@ -956,13 +958,13 @@ height: 24px;
     font-size: 12px;
 }
 .login .popover{
-    top: 95px !important;
+    top: 97px !important;
     border-radius: 0px;
     border-top: 0px;
 }
 /* index */
 .site-index{
-    margin-top: 20px;
+
 }
 .site-index .catalog-category{
     margin-top: 20px;
@@ -993,7 +995,9 @@ height: 24px;
 .asd-index{
     overflow: hidden;
     margin-bottom: 0px;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
+    margin-left: -15px; 
+    margin-right: 10px;
 }
 .asd-index ul{
     padding: 0px;
@@ -1004,6 +1008,7 @@ height: 24px;
     float: left;
     height: 200px;
     position: relative;
+    margin-right: 15px;
 }
 .asd-index .bx-wrapper .bx-pager{
     padding-top: 0px;
@@ -1025,7 +1030,7 @@ height: 24px;
     background-color: #f37f00 !important;
 }
 .asd-index .actions{
-    margin-left: 20px;
+    margin-top: 15px;
     float: left;
     
 }
@@ -1055,7 +1060,11 @@ height: 24px;
     text-decoration: underline;
 }
 .reviews{
+    margin-top: 30px;
     clear: both;
+}
+.reviews .title{
+    height: auto;
 }
 .reviews-full .review-item{
     overflow: hidden;
@@ -1064,14 +1073,15 @@ height: 24px;
 .reviews img{
     float: left;
     margin-right: 20px;
+    margin-bottom: 30px;
 }
 .reviews h4 a{
-    color: #000;
-    
+    font-size: 22px;
     border-color: rgba(22,131,198,.3);
 }
 .review-item .date,.review-view .date{
     color: #999;
+    font-size: 12px;
 }
 .review-view .body{
     font-size: 15px;
@@ -1089,11 +1099,11 @@ height: 24px;
 }
 
 .reviews-full .review-item{
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .reviews-full .review-item a{
-    font-size: 22px;   
+    font-size: 18px;   
 }
 
 
