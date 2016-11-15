@@ -11,6 +11,7 @@ class ReviewController extends Controller
 {
     public function actionIndex()
     {
+        return 'a';
         return $this->render('index',[
             'models' => Review::find()->with('alias')->all(),
         ]);

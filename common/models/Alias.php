@@ -64,10 +64,10 @@ class Alias extends \yii\db\ActiveRecord
     public function beforeSave($insert) {
         
         if($this->prefix){
-           $this->alias = $this->prefix . DIRECTORY_SEPARATOR . $this->alias; 
+           $this->alias = $this->prefix . '/' . $this->alias; 
         }
         if($this->groupAlias && $this->prefix){
-           $this->groupAlias = $this->prefix . DIRECTORY_SEPARATOR . $this->groupAlias; 
+           $this->groupAlias = $this->prefix . '/' . $this->groupAlias; 
         }
         $aliasRepository = new AliasRepository();
         $this->group = $aliasRepository->saveGroup($this); 

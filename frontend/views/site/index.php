@@ -19,6 +19,7 @@ $this->title = 'Интернет-магазин №1';
     <div class="btn-group custom" role="group" id="front-tabs-1">
         <a type="button" class="btn btn-default active" href="#" data-tab="tab-top">Топ-100</a>
         <a type="button" class="btn btn-default " href="#" data-tab="tab-discount">Суперцена</a>
+        <a type="button" class="btn btn-default " href="#" data-tab="tab-interests">Сейчас смотрят</a>
     </div>
     
     <?php foreach($models as $index => $products):?>

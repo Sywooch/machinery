@@ -20,7 +20,7 @@ class ModelHelper {
     }
     
     public static function getModelClass($name){
-        $model = '\\backend\\models\\' . $name;
+        $model = '\\common\\modules\\store\\models\\' . $name;
         return $model::className();
     }
 
@@ -63,7 +63,7 @@ class ModelHelper {
      * @param string $name
      * @return boolean|string
      */
-    public function getModelByName($name){
+    public static function getModelByName($name){
         foreach(\Yii::$app->params['catalog']['models'] as $model){
             if(false !== strrpos($model, $name)){
                 return new $model();

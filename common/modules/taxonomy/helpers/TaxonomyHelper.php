@@ -129,7 +129,7 @@ class TaxonomyHelper {
      * @param array $terms
      * @return int
      */
-    public function countChildren(TaxonomyItems $tree){
+    public static function countChildren(TaxonomyItems $tree){
         $count = count($tree->childrens);
         if($count){
             foreach($tree->childrens as $children){
@@ -145,7 +145,7 @@ class TaxonomyHelper {
      * @param TaxonomyItems $term
      * @return TaxonomyItems
      */
-    public function lastChildren(TaxonomyItems $term){
+    public static function lastChildren(TaxonomyItems $term){
         
         if(empty($term->childrens)){
             return $term;

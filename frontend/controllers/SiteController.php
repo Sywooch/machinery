@@ -74,28 +74,33 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        
+                return $this->render('about');
+     
+        
         $catalog = TaxonomyItems::findAll([11,12,3784,3887,3888,3889,5408,3891,3892]);
-             
-        $models = [
-            'top' => [],
-            'discount' => []
-        ];
-        $itemsAction = [];
-        $itemsNew = [];
-        $itemsHit = [];
+        $models = Yii::$app->cache->get('index-models');
         
-        $topTerm = TaxonomyItems::findOne(1095);
-        
-        foreach($catalog as $item){
-            $searchModel = new ProductRepository(ModelHelper::getModelByTerm($item));
-            $models['top'] = array_merge($models['top'],$searchModel->getProductsByIds($searchModel->getItemsByStatus($topTerm, $limit = 14)));
-            $models['discount'] = array_merge($models['discount'],$searchModel->getProductsByIds($searchModel->getItemsDiscount($limit = 14)));
+        if($models === false){
+            $models = [
+                'top' => [],
+                'discount' => [],
+                'interests' => []
+            ];
+            $topTerm = TaxonomyItems::findOne(1095);
+            foreach($catalog as $item){
+                $searchModel = new ProductRepository(ModelHelper::getModelByTerm($item));
+                $models['top'] = array_merge($models['top'],$searchModel->getProductsByIds($searchModel->getItemsByStatus($topTerm, $limit = 14)));
+                $models['discount'] = array_merge($models['discount'],$searchModel->getProductsByIds($searchModel->getItemsDiscount($limit = 14)));
+                $models['interests'] = array_merge($models['interests'],$searchModel->getProductsBySku($searchModel->getItemsInterests($limit = 14)));
+
+            }
+            foreach($models as $index => $empty){
+                shuffle($models[$index]);
+                $models[$index] = array_slice($models[$index],0,14);
+            }
             
-        }
-        
-        foreach($models as $index => $empty){
-            shuffle($models[$index]);
-            $models[$index] = array_slice($models[$index],0,14);
+            Yii::$app->cache->set('index-models', $models, 60*5);
         }
 
         return $this->render('index',[
@@ -106,5 +111,22 @@ class SiteController extends Controller
             'reviews' => Review::find()->with('alias')->all(),
         ]);
     }
+    
+   
+    public function actionIndex2()
+    {
+
+        // Наследование по ссылке
+        $example = function () use (&$message) {
+            var_dump($message);
+        };
+
+
+        // Измененное в родительской области видимости значение
+        // остается тем же внутри вызова функции
+        $message = 'world';
+        echo $example();
+    }
  
 }
+

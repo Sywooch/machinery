@@ -4,12 +4,13 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
-            'class' => 'yii\caching\FileCache', //yii\caching\DummyCache //yii\caching\FileCache  
+            'class' => 'yii\caching\DummyCache', //yii\caching\DummyCache //yii\caching\FileCache  
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                ['class' => 'common\modules\store\components\StoreUrlRule'],
                 '<action:(login|logout)>' => 'user/security/<action>',
             ],
         ],
@@ -48,6 +49,11 @@ return [
         ],
         'import' => [
             'class' => 'common\modules\import\Module',
+        ],
+        'store' => [
+            'class' => 'common\modules\store\Module',
+            'defaultPageSize' => 20,
+            'buyButtonText' => 'В корзину',
         ],
     ], 
 ];

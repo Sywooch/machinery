@@ -23,7 +23,7 @@ class UrlBehavior extends Behavior
      * 
      * @return Alias
      */
-    public function getUrl(){
+    public function getUrl(){            
         if($this->_alias){
             return $this->_alias;
         }
@@ -93,11 +93,6 @@ class UrlBehavior extends Behavior
             $alias->url = strtolower(ModelHelper::getModelName($this->owner)).'/default' . '?id=' . $this->owner->id . '&model='. ModelHelper::getModelName($this->owner);
         }
 
-        if($alias->groupAlias && $alias->groupUrl == null){
-            $alias->groupUrl = 'product/default/group' . '?id=' . $this->owner->group . '&model='. ModelHelper::getModelName($this->owner); 
-            $alias->groupId = $this->owner->group;
-        }
-        
         $alias->save();
         return $alias;
     }

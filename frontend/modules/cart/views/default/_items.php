@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\checkbox\CheckboxX;
-use common\modules\product\helpers\ProductHelper;
+use common\modules\store\helpers\ProductHelper;
 use common\modules\file\helpers\StyleHelper as Style;
 use common\modules\orders\helpers\OrdersHelper;
 

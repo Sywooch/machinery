@@ -7,10 +7,10 @@ use yii\helpers\Html;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use frontend\modules\cart\widgets\CartBlockWidget as CartBlock;
-use frontend\modules\catalog\widgets\CatalogMenu\CatalogMenuWidget as CatalogMenu;
+use common\modules\store\widgets\CatalogMenu\CatalogMenuWidget as CatalogMenu;
 use frontend\widgets\SearchForm\SearchFormWidget as SearchForm;
-use frontend\modules\catalog\widgets\Compare\CompareWidget;
-use frontend\modules\catalog\widgets\Wish\WishWidget;
+use common\modules\store\widgets\Compare\CompareWidget;
+use common\modules\store\widgets\Wish\WishWidget;
 use yii\bootstrap\Modal;
 
 
