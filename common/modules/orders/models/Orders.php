@@ -116,8 +116,7 @@ class Orders extends ActiveRecord
         
         foreach($this->items as $item){
             $this->count += $item->count;
-            $price = OrdersHelper::isPromo($this, $item) ? $item->origin->promoPrice : $item->price;
-            $this->price += $price * $item->count;
+            $this->price += $item->price * $item->count;
         } 
         return parent::beforeSave($insert);
     }
@@ -203,6 +202,7 @@ class Orders extends ActiveRecord
     }
         
     public function getPaymentList(){
+        // TODO: Сделать систему оплат
         return [
             'Default' => 'Наличными при получении',
             'Card' => 'Банковской картой (онлайн)',

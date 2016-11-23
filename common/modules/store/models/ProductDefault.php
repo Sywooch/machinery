@@ -31,7 +31,7 @@ class ProductDefault extends ProductBase
             [['index'], 'each', 'rule' => ['integer']],
             [['source_id', 'user_id', 'available'], 'integer'],
             [['sku', 'title', 'model'], 'required'],
-            [['price','old_price', 'rating'], 'number'],
+            [['price','real_price','old_price', 'rating'], 'number'],
             [['description', 'data', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 30],
             [['model'], 'string', 'max' => 50],
@@ -98,14 +98,6 @@ class ProductDefault extends ProductBase
             ];
     }
     
-
-    /**
-     * 
-     * @return type
-     */
-    /*public function getPromoPrice(){
-        return $this->_productHelper->promoPrice($this);
-    }*/
 
     /**
      * 

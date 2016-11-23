@@ -6,6 +6,7 @@ use yii\db\ActiveRecord;
 use common\modules\product\helpers\ProductHelper;
 use common\modules\store\helpers\ProductHelperInterface;
 use common\models\Alias;
+use common\modules\store\classes\Pricer;
 
 
 class ProductBase extends ActiveRecord implements ProductInterface

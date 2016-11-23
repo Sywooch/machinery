@@ -4,17 +4,16 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\modules\import\models\SourcesSearch */
+/* @var $searchModel common\modules\product\models\PromoProductsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Sources';
+$this->title = 'Promo Products';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sources-index">
+<div class="promo-products-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -23,17 +22,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
-            'type',
-            'url:url',
-            'tires',
-            'status',
-            'date:datetime',
-            // 'messages:ntext',
-
+            'code_id',
+            'code.code',
+            'entity_id',
+            'model',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}'
+                'template' => '{view}{delete}'
             ],
         ],
     ]); ?>

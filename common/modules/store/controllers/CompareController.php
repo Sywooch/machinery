@@ -99,7 +99,7 @@ class CompareController extends Controller
             ];
         }
         
-        if(!($compare = $compareSearch->findOne($entity))){ 
+        if(!($compare = $compareSearch->getItem($entity))){ 
             $compare = Yii::createObject([
                 'class' => Compares::class,
                 'session' => $compareSearch->uus->id,
