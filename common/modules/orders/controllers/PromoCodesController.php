@@ -124,7 +124,7 @@ class PromoCodesController extends Controller
         ->select(['code as value', 'code as label'])
         ->asArray()
         ->where([
-            'like', 'code', $term
+            'like', 'code', strtoupper($term)
         ])->all();
        
     }

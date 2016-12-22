@@ -18,12 +18,6 @@ return [
         'cart' => [
             'class' => 'frontend\modules\cart\Module',
         ],
-        'product' => [
-            'class' => 'common\modules\product\Module',
-        ],
-        'catalog' => [
-            'class' => 'frontend\modules\catalog\Module',
-        ],
         'comments' => [
             'class' => 'frontend\modules\comments\Module'
 	],
@@ -35,7 +29,6 @@ return [
         ],
     ],
     'components' => [
-        'url' => 'frontend\modules\catalog\components\Url',
         'request' => [
             'baseUrl' => '',
 	],
@@ -82,8 +75,8 @@ return [
         'urlManager' => [
             'rules' => [
                 ['class' => 'frontend\components\AliasRule'],
-                ['class' => 'common\modules\product\components\ProductUrlRule'],
-                ['class' => 'frontend\modules\catalog\components\CatalogUrlRule'],  
+                'user/<userId:\d+>/wish' => 'store/wish',
+                'user/<userId:\d+>/wish/remove/<id:\d+>' => 'store/wish/remove'
             ],
 	],
         'view' => [

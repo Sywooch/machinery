@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'url:url',
             'tires',
             'status',
-            'date',
+            'date:datetime',
             // 'messages:ntext',
 
             [

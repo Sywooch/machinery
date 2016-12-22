@@ -9,9 +9,9 @@ use yii\helpers\HtmlPurifier;
 
 <div class="reviews">
     
-<h3>
+<h4>
      <a href="/review">Обзоры</a>
-</h3>
+</h4>
 
     <div class="row">
             <?php foreach($reviews as $review): ?>

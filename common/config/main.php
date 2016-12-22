@@ -4,12 +4,14 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
-            'class' => 'yii\caching\FileCache', //yii\caching\DummyCache //yii\caching\FileCache  
+            'class' => 'yii\caching\DummyCache', //yii\caching\DummyCache //yii\caching\FileCache  
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                ['class' => 'common\modules\store\components\StoreUrlRule'],
+                 ['class' => 'common\modules\store\components\ProductUrlRule'],
                 '<action:(login|logout)>' => 'user/security/<action>',
             ],
         ],
@@ -42,12 +44,25 @@ return [
         ],
         'file' => [
             'class' => 'common\modules\file\Module',
+            'storage' => 'common\modules\file\filestorage\storages\StorageDb',
+            'storages' => [
+                'local' => [
+                    'class' => 'common\modules\file\filestorage\storages\StorageLocal',
+                    'basePath' => '@app/../files',
+                    'baseUrl' => '@web/files'
+                ],
+            ]
         ],
         'orders' => [
             'class' => 'common\modules\orders\Module',
         ],
         'import' => [
             'class' => 'common\modules\import\Module',
+        ],
+        'store' => [
+            'class' => 'common\modules\store\Module',
+            'defaultPageSize' => 20,
+            'buyButtonText' => 'В корзину',
         ],
     ], 
 ];

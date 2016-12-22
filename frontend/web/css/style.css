@@ -7,7 +7,6 @@ html,
 body {
     height: 100%;
     font-size: 14px;
-    font-family: 'PT Sans', Arial, sans-serif;
 }
 
 a:focus{
@@ -16,6 +15,7 @@ a:focus{
 .breadcrumb{
     background-color: #fff;
     padding-left: 0px;
+    font-size: 12px;
 }
 .breadcrumb a{
     color: #000;
@@ -31,7 +31,7 @@ a:focus{
 }
 .btn-group.custom .btn:hover{
     background-color: #f37f00;
-    color: #000;
+    color: #fff;
     border-color: #f37f00;
 }
 .btn-group.custom .btn.active{
@@ -89,7 +89,15 @@ a:focus{
 .control{
     border-bottom: 1px solid #ddd;
 }
-
+.item-remove {
+    text-decoration: none;
+    color: #ccc;
+    float: right;
+    margin-left: 20px;
+    border: none;
+    font-weight: normal;
+    font-size: 14px;
+}
 .footer {
     height: 60px;
     border-top: 1px solid #ddd;
@@ -239,6 +247,9 @@ a:hover{
   top: 60px;
 }
 /* profile */
+.tabs-profile{
+    margin-bottom: 30px;
+}
 .profile-img{
     float: left;
     text-align: center;  
@@ -259,7 +270,7 @@ a:hover{
 .profile-info{
     margin-left: 40px;
     float: left;
-     font-size: 15px;
+    font-size: 14px;
 }
 .profile-info label{
     width: 100px;
@@ -269,7 +280,7 @@ a:hover{
     color: #e85222;
 }
 .my-orders .header{
-
+    padding-top: 15px;
     padding-right: 10px;
     height: 50px;
     background-color: #faf7f0;
@@ -284,6 +295,40 @@ a:hover{
 .product .left{
     border-right: 1px solid #ddd
 }
+.product .chb-compare .cbx-icon .glyphicon,.product .chb-wish .cbx-icon .glyphicon{
+    display: none;
+}
+.product .chb-compare .cbx,.product .chb-wish .cbx{
+    border: none;
+    box-shadow: none;
+    width: auto;
+    height: auto;
+    margin-right: 0px;
+    margin-top: 0px;
+    width: 36px;
+    height: 26px;
+   
+}
+.product .chb-compare label,.product .chb-wish label{
+    margin-top: 7px;
+    float: left;
+    display: block;
+    
+    font-weight: normal;
+  
+}
+.product .chb-compare .cbx-icon,.product .chb-wish .cbx-icon{
+        background: url(../images/sprite.png) no-repeat -0px -24px;
+        display: block;
+        float: left;
+}
+.product .chb-compare.active .cbx-icon, .product .chb-wish.active .cbx-icon{
+    background-position: -0px -24px;
+}
+.product .chb-compare.chb-wish .cbx-icon,.product .chb-wish.chb-wish .cbx-icon{
+    background-position: -28px -50px;
+}
+
 .produt-short{
     color: #999;
 }
@@ -308,6 +353,9 @@ aside section .inline{
 .characteristic{
     margin: 0px 0px 30px 0px;
 }
+.characteristic h3{
+    font-size: 20px;
+}
 .characteristic ul{
     list-style: none;
     margin: 0px;
@@ -318,15 +366,14 @@ aside section .inline{
     line-height: 2;
     
 }
-.characteristic span{
+.characteristic .h span{
     text-align: left;
     font-weight: initial;
     font-size:14px;
-    color: #000;
     padding: 0px;
     line-height: 2;
 }
-.characteristic .label{
+.characteristic li span:first-child{
     float: left;
     width: 400px;
 }
@@ -335,7 +382,7 @@ aside section .inline{
     float: left;
     color: #f37f00;
     display: block;
-    font-size: 16px;
+    font-size: 14px;
     text-transform: uppercase;
 }
 .product .rating-container{
@@ -361,11 +408,21 @@ aside section .inline{
 .print-wrapper{ 
     float: right;
     color: #f37f00; 
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
 }
-.print-wrapper span{
-    margin-right: 8px;
+.print-wrapper a{
+    border-bottom: 1px dashed #337ab7;
+}
+
+.print-icon{
+   background: url(../images/sprite.png) no-repeat -30px -28px;
+   display: block;
+    width: 24px;
+    height: 20px;
+    float: left;
+    margin-right: 3px;
+    margin-top: -1px;
 }
 
 .produt-gallery{
@@ -403,7 +460,7 @@ aside section .inline{
     content: '';
     width: 26px;
     height: 62px;
-    background: url('../images/icon-set-00.png') no-repeat 0px -67px;
+  
     display: block;
     float: right;
     top: 50%;
@@ -429,8 +486,7 @@ aside section .inline{
     height: auto;
     clear: both;
     position: initial;
-    margin-bottom: 10px;
-
+    margin-bottom: 0px;
 }
 .bx-wrapper ul li{
     list-style: none;
@@ -457,7 +513,6 @@ aside section .inline{
     border: 1px solid #f37f00; 
 }
 .buy-block button{
-    font-size: 16px;
     margin-top: 4px;
 }
 .buy-block .price{
@@ -487,7 +542,7 @@ aside section .inline{
 }
 .scroll-nav__wrapper ol a{
     color: #000;
-    font-size: 14px;
+    font-size: 13px;
     border-bottom: 1px solid rgba(102,102,102,.5);
 }
 .scroll-nav__wrapper .in-view{
@@ -497,14 +552,18 @@ aside section .inline{
     margin-top: 20px;
     clear: both;
 }
+.catalog-list .chb-compare{
+    float: right;
+}
 .items-counter {
     display: inline-block;
     background: #f37f00;
-    padding: .1em .5em;
+    padding: 3px 5px 2px 5px;
     position: relative;
-    margin-top: 16px;
+    margin-top: 14px;
     margin-left: 10px;
     color: #fff;
+    font-size: 13px;
 }
 .items-counter:before {
     content: '';
@@ -571,6 +630,7 @@ aside section .inline{
     color: #fff;
     overflow: hidden;
     margin-top: 6px;
+    margin-bottom: 6px;
 }
 .product-status span{
     display: block;
@@ -592,40 +652,48 @@ aside section .inline{
 .product-status span.hit{
     background-color: #a43a8d;
 }
-.catalog-category .title{
+.title{
     display: block;
     height: 46px;
     border: 0px;
     text-decoration: underline;
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 1.6;
     text-overflow: ellipsis;
     overflow: hidden;
 }
-.catalog-category .price{
+.price{
     color: #000;
     font-size: 18px;
     margin-bottom: 6px;
-    float: left;
+
     font-family: 'Roboto', sans-serif;
 }
-.catalog-category .price span{
+.price span{
     font-size: 13px;
     font-weight: normal;
     font-family: Arial;
 }
+.catalog-category .price{
+
+    float: left;
+
+}
+
 .catalog-category .old_price{
     float: left;
-    font-size: 16px;
+    font-size: 12px;
     color: #999;
     margin-left: 10px;
-    margin-top: 2px;
+    margin-top: 6px;
+    text-decoration: line-through;
 }
 .catalog-category .buy-btn-conteiner{
     clear: both;
 }
-.catalog-category .buy-button,.catalog-list .buy-button{
+ .buy-button{
     color: #2e6da4;
-    font-size: 14px;
+    font-size: 13px;
     border-color: #337ab7;
 }
 
@@ -657,7 +725,7 @@ aside section .inline{
 .catalog-list .price-conteiner{
     border: 1px solid #eee;
     padding: 5px 8px;
-    height: 44px;
+    height: 43px;
 }
 .catalog-list .price-conteiner .price {
     color: #000;
@@ -696,7 +764,6 @@ aside section .inline{
 }
 
 .buy-button{
-    font-size: 15px;
     padding: 4px 12px;
 }
 
@@ -706,6 +773,7 @@ aside section .inline{
     background-color: #faf7f0;
     border: 1px solid rgba(0,0,0,.1);
     margin-bottom: 60px;
+    font-family: 'PT Sans', Arial, sans-serif;
 }
 .filter .filter-item{
     border-radius: 3px;
@@ -803,7 +871,13 @@ aside section .inline{
 /* cart */
 
 #cart-block-widget{ float: right; height: 64px; border-left: 1px solid #eee; padding: 20px;}
-.mif-shopping-basket{ font-size: 24px; color: #f37f00; float: left; margin-right: 10px; }
+.mif-shopping-basket{ font-size: 24px; color: #f37f00; float: left; margin-right: 4px;
+background: url(../images/sprite.png) no-repeat -30px -0px;
+display: block;
+width: 24px;
+height: 24px;
+}
+
 .cart-items{ line-height: 2; font-style: italic; line-height: 2; color: #000; }
 #cart-block-widget a{
      border-color: rgba(35,82,124,.3);
@@ -840,6 +914,7 @@ aside section .inline{
 
 }
 .login{
+    font-size: 13px;
     float: right;
     height: 64px;
     border-left: 1px solid #eee;
@@ -883,13 +958,13 @@ aside section .inline{
     font-size: 12px;
 }
 .login .popover{
-    top: 95px !important;
+    top: 97px !important;
     border-radius: 0px;
     border-top: 0px;
 }
 /* index */
 .site-index{
-    margin-top: 20px;
+
 }
 .site-index .catalog-category{
     margin-top: 20px;
@@ -920,7 +995,9 @@ aside section .inline{
 .asd-index{
     overflow: hidden;
     margin-bottom: 0px;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
+    margin-left: -15px; 
+    margin-right: 10px;
 }
 .asd-index ul{
     padding: 0px;
@@ -931,6 +1008,7 @@ aside section .inline{
     float: left;
     height: 200px;
     position: relative;
+    margin-right: 15px;
 }
 .asd-index .bx-wrapper .bx-pager{
     padding-top: 0px;
@@ -952,7 +1030,7 @@ aside section .inline{
     background-color: #f37f00 !important;
 }
 .asd-index .actions{
-    margin-left: 20px;
+    margin-top: 15px;
     float: left;
     
 }
@@ -982,7 +1060,11 @@ aside section .inline{
     text-decoration: underline;
 }
 .reviews{
+    margin-top: 30px;
     clear: both;
+}
+.reviews .title{
+    height: auto;
 }
 .reviews-full .review-item{
     overflow: hidden;
@@ -991,12 +1073,15 @@ aside section .inline{
 .reviews img{
     float: left;
     margin-right: 20px;
+    margin-bottom: 30px;
 }
-.reviews h3 a{
+.reviews h4 a{
+    font-size: 22px;
     border-color: rgba(22,131,198,.3);
 }
 .review-item .date,.review-view .date{
     color: #999;
+    font-size: 12px;
 }
 .review-view .body{
     font-size: 15px;
@@ -1014,44 +1099,47 @@ aside section .inline{
 }
 
 .reviews-full .review-item{
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .reviews-full .review-item a{
-    font-size: 22px;   
+    font-size: 18px;   
 }
 
 
 
 /* checkbox */
-.chb-compare{
-    margin-top: 5px;
-    float: right;
+.cbx.cbx-xs{
+    border: 2px solid #f37f00
+}
+.chb-compare,.chb-wish{
+    margin-top: 3px;
     margin-right: 20px;
 }
-.chb-compare .cbx-xs {
+.chb-compare .cbx-xs,.chb-wish .cbx-xs{
     border: 2px solid #f37f00;
 }
-.chb-compare .glyphicon{
+.chb-compare .glyphicon,.chb-wish .glyphicon{
     display: none;
 }
 .cbx-icon .glyphicon{
     left: -1px;
     top: 0px;
 }
-.chb-compare.active .glyphicon{
+.chb-compare.active .glyphicon,.chb-wish.active .glyphicon{
     display: initial;
 }
-.chb-compare .cbx{
+.chb-compare .cbx,.chb-wish .cbx{
     float: left;
     margin-right: 8px;
-    margin-top: 3px;
+    margin-top: 4px;
 }
-.chb-compare label{
+.chb-compare label,.chb-wish label{
     font-weight: normal;
     line-height: 1;
     cursor: pointer;
     border-bottom: 1px dashed #000;
+    font-size: 12px;
 }
 .cbx-loading {
     width: 25px;
@@ -1181,4 +1269,125 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
     margin: 5px 0 0 0;
 }
 
+/* compare */
 
+.cmpare-category{
+    display: inline-block;
+    margin-right: 20px;
+    border-bottom: 1px solid #000;
+
+    color: #000;
+    line-height: 1.2;
+    
+}
+.cmpare-category.active{
+    color: #fff;
+    border: 0px;
+    border-radius: 3px;
+    background: #f37f00;
+    padding: 3px 8px;
+}
+.compare-table{
+    margin-top: 20px;
+}
+.compare-table td{
+    padding: 4px 20px 4px 0px;
+    max-width: 280px;
+    min-width: 180px;
+}
+
+#wish-block-widget{
+        border-left: 1px solid #eee;
+}
+#wish-block-widget a{
+    background-position: -28px -73px;
+}
+.sub-widget{
+        padding: 20px;
+       float: right;
+       padding-right: 30px;
+       
+}
+.sub-widget a{
+    display: block;
+    height: 26px;
+    background: url('../images/sprite.png') no-repeat 0px -0px;
+    border: 0px;
+    color: #000;
+    padding-left: 30px;
+    position: relative;
+}
+.sub-widget a.active{
+    background-position: -0px -24px;
+}
+#wish-block-widget a.active{
+    background-position: -28px -50px;
+}
+.sub-widget a.active .items-count{
+    color: #394144;
+}
+.sub-widget .items-count{
+    font-weight: bold;
+    color: #ccc;
+    text-align: center;
+    font-size: 12px;
+    display: block;
+    line-height: 1.6;
+    position: absolute;
+    top: -5px;
+    right: -6px;
+}
+.compare-item-remove{
+    margin-right: 20px;
+    opacity: 0;
+}
+.item:hover .compare-item-remove{
+    opacity: 1;
+}
+
+/* table list */
+.table-list-item .cbx-container{
+    float: left;
+    margin-right: 30px;
+}
+#multi-delete-button{
+    margin-top: -6px;
+    padding: 4px 12px;
+    display: none;
+    margin-left: 10px;
+}
+#multi-text{
+    margin-left: 10px;
+}
+.header-table-list{
+    padding-right: 10px;
+    padding-top: 12px;
+    height: 50px;
+    background-color: #faf7f0;
+    margin: 0px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+    padding-left: 16px;
+    border: none;
+}
+
+.table-list-item .item-total{
+    font-weight: 700;
+    float: right;
+    font-size: 15px;
+    line-height: 2.4;
+}
+
+.table-list-item{
+    padding: 10px 15px;
+    margin-bottom: 0px;
+}
+
+.table-list-item .item-remove{
+    opacity: 0;
+    margin-top: -24px;
+}
+.table-list-item:hover .item-remove{
+    opacity: 1;
+}

@@ -1,3 +1,4 @@
+
 <div id="cart-block-widget">
     
     <a href="/cart">

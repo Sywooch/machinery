@@ -4,7 +4,6 @@ namespace frontend\modules\cart\helpers;
 
 use Yii;
 use yii\helpers\Html;
-use yii\bootstrap\Modal;
 use common\helpers\ModelHelper;
 
 class CartHelper
@@ -28,15 +27,5 @@ class CartHelper
        ]).'</div>';
     }
     
-    /**
-     * 
-     * @return string
-     */
-    public static function getConfirmModal(){
-        return Modal::widget([
-            'id' => 'buyConfirmModal',
-            'header' => '<h3>Вы добавили в корзину</h3>',
-        ]);
-    }
 }
 

@@ -25,11 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'url:url',
             'tires',
             'status',
-            'date',
+            'date:datetime',
             [
                 'label' => 'Messages',
                 'value' => call_user_func(function ($model) {
-                    return implode('<br />', json_decode($model->messages));
+                    return $model->messages ? implode('<br />', json_decode($model->messages)) : '';
                 }, $model),
                 'format' => 'html'        
             ]

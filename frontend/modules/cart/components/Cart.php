@@ -8,7 +8,7 @@ use common\modules\orders\helpers\OrdersHelper;
 use common\modules\orders\models\Orders;
 use common\modules\orders\models\OrdersItems; 
 use common\helpers\ModelHelper;
-use common\modules\product\models\PromoCodes;
+use common\modules\store\models\ProductBase;
 
 class Cart extends Object
 {
@@ -56,10 +56,10 @@ class Cart extends Object
 
     /**
      * 
-     * @param object $entity
+     * @param ProductBase $entity
      * @return boolean|object
      */
-    public function addItem($entity){
+    public function addItem(ProductBase $entity){
         
         $workItem = null;
         
@@ -92,7 +92,6 @@ class Cart extends Object
                 'price' => $entity->price,
                 'entity' => json_encode($entity->attributes)
             ]);
-         
         }
         
         if($workItem && $workItem->save()){
@@ -114,6 +113,7 @@ class Cart extends Object
             return null;
         }
         if(($item = $order->getItem($id)) !== null && $item->delete()){
+            $order = $this->getOrder(null);
             $order->save();
             return $order;
         }

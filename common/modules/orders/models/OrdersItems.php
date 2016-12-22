@@ -64,14 +64,6 @@ class OrdersItems extends \yii\db\ActiveRecord
             'entity' => 'Entity',
         ];
     }
-    
-    
-    public function beforeSave($insert) {
-        if(OrdersHelper::isPromo($this->order,  $this)){
-           $this->price = $this->origin->promoPrice;
-        }
-        return parent::beforeSave($insert);
-    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -86,7 +78,7 @@ class OrdersItems extends \yii\db\ActiveRecord
      */
     public function getOrigin()
     {        
-        $model = '\\backend\\models\\' . $this->model;
+        $model = '\\common\\modules\\store\\models\\' . $this->model;
         return $this->hasOne($model, ['id' => 'entity_id'])->with(['promoCode']);
     }
     

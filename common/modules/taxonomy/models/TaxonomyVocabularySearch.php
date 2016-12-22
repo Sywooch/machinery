@@ -42,8 +42,6 @@ class TaxonomyVocabularySearch extends TaxonomyVocabulary
     {
         $query = TaxonomyVocabulary::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -51,12 +49,9 @@ class TaxonomyVocabularySearch extends TaxonomyVocabulary
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
         ]);
@@ -66,6 +61,7 @@ class TaxonomyVocabularySearch extends TaxonomyVocabulary
         return $dataProvider;
     }
     
+    /* deprecated
     public function getPrefixes($vocabularyIds = null){
         return (new \yii\db\Query())
             ->select(['prefix', 'id'])
@@ -77,5 +73,12 @@ class TaxonomyVocabularySearch extends TaxonomyVocabulary
             ->orderBy(['weight' => SORT_ASC])       
             ->column(); 
     }
+    */
     
+    
+    public function getVocabularies(){
+        return self::find()
+                ->indexBy('id')
+                ->orderBy(['weight' => SORT_ASC])->all(); 
+    }
 }

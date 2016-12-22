@@ -3,14 +3,17 @@
 namespace common\modules\import\models;
 
 use Yii;
-use common\modules\import\components\Reindex;
-use common\modules\import\helpers\ImportHelper;
+use common\modules\import\models\TemporaryTerms;
+use yii\helpers\ArrayHelper;
+use common\modules\product\helpers\ProductHelper;
+use common\modules\import\models\Sources;
 
 /**
 *
  */
 class Validate extends \yii\base\Model
 {   
+    public $id;
     public $sku;
     public $group;
     public $model;
@@ -19,15 +22,18 @@ class Validate extends \yii\base\Model
     public $short;
     public $features;
     public $terms;
-    public $termIds;
+    public $index;
     public $price;
     public $user_id;
     public $source_id;
     public $images;
     public $publish;
     public $url;
+    public $available;
 
     private $_catalogId;
+    private $_temporaryTerms;
+    private $_source;
 
     /**
      * @inheritdoc
@@ -39,7 +45,7 @@ class Validate extends \yii\base\Model
             [['group','source_id', 'publish', 'user_id'], 'integer'],
             [['description', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 20],
-            [['model'], 'string', 'max' => 255],
+            [['model'], 'string', 'max' => 100],
             [['title'], 'string', 'max' => 255],
             [['terms'], 'validateTerms'],
             [['price'], 'double'],
@@ -47,21 +53,60 @@ class Validate extends \yii\base\Model
         ];
     }
     
-    public function afterValidate() { 
+    public function beforeValidate() { 
+        $this->id = 1;
         $this->publish = 1;
-        $this->_catalogId = \yii\helpers\ArrayHelper::getValue($this->attributes,'terms.0.id');
-        return TRUE;
+        $this->available = 1;
+        $this->user_id = 1;
+        $this->source_id = $this->_source->id;
+        $this->group = ProductHelper::createGroup($this->attributes);
+
+        if($this->terms === false){
+            $this->addError('terms', '[1001] Ошибка парсинга терминов.');  
+            return false;
+        }
+        
+        if($this->images === false){
+            $this->addError('terms', '[1002] Ошибка парсинга изображений.'); 
+            return false;
+        }
+        
+        return parent::beforeValidate();
+    }
+    
+    public function setDefault(){
+        foreach($this->attributes as $name => $value){
+            $this->$name = null;
+        }
+    }
+
+    public function afterValidate() { 
+        if(!$this->attributes['terms']){
+            var_dump($this->attributes); exit();
+        }
+        $this->index = ArrayHelper::getColumn($this->attributes['terms'], 'id');
+        $this->_catalogId = ArrayHelper::getValue($this->attributes,'terms.0.id');
+        return parent::afterValidate();
     }
     
     public function getCatalogId(){
         return $this->_catalogId;
     }
     
-    public function validateTerms($attribute, $params){
-        
-        $rootTerm = [];
-        $data = TemporaryTerms::getTermIds($this->$attribute); 
+    public function setTemporaryTerms(TemporaryTerms $temporaryTerms){
+        $this->_temporaryTerms = $temporaryTerms;
+    }
+    
+    public function setSource(Sources $source){
+        $this->_source = $source;
+    }
 
+
+    public function validateTerms($attribute, $params){
+       
+        $rootTerm = [];
+        $data = $this->_temporaryTerms->getTerms($this->$attribute); 
+       
         if(count($this->$attribute, COUNT_RECURSIVE) - count($this->$attribute) !== count($data)){  
             
             $vocabularies = $this->$attribute;
@@ -83,11 +128,9 @@ class Validate extends \yii\base\Model
             }
             
             $this->addError($attribute, 'Не удалось распознать термины: '.  implode('; ', $messages));
-
             return;
-          
         }
-   
+
         foreach($data as $index => $term){
             if($term['pid'] == 0 && $term['vid'] == Yii::$app->params['catalog']['vocabularyId']){
                 $rootTerm[] = $term;
@@ -99,8 +142,7 @@ class Validate extends \yii\base\Model
             $this->addError($attribute, 'Не указан главный раздел или указано больше одного.');
             return;
         }
-        
-        $this->terms = array_replace($rootTerm, $data);   
+        $this->terms = array_merge($rootTerm, $data);           
     }
 
 }

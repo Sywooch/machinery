@@ -1,40 +1,30 @@
 <?php
 
-
 namespace backend\widgets\AdminMenu;
 
 use Yii;
+use yii\helpers\Html;
+use backend\widgets\AdminMenu\Url;
 
 class TopMenu extends \yii\bootstrap\Widget
 {
     const ACTIVE_CLASS = 'active';
 
+    public $url;
+
     public function run()
     {
+        if(!$this->url){
+            $this->url = new Url(); 
+        }
         return $this->render('top', [
             'widget' => $this,
         ]);
     }
     
-    private function getUrlParams(){
-        $params = explode('/', Yii::$app->requestedRoute);
-        return $params;
+    public function a($text, $url){
+        $this->url->url = $url;
+        return Html::a('<div>'.$text.'</div>', [$this->url->url], ['class' => $this->url->isActive ? self::ACTIVE_CLASS:'']);
     }
-    
-    public function isActive(array $menuItems = []) {
-
-        if (!Yii::$app->requestedRoute && !$menuItems){
-            return self::ACTIVE_CLASS;
-        }
-        
-        if (!$menuItems){
-            return;
-        }
-        $params = $this->getUrlParams();
-        //print_r($params); print_r($menuItems); print_r(array_intersect($params, $menuItems));  exit('S');
-        if (!empty(array_intersect($params, $menuItems))){
-            return self::ACTIVE_CLASS;
-        }
-        return;
-    }
+     
 }

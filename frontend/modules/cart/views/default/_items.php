@@ -2,14 +2,14 @@
 
 use yii\helpers\Html;
 use kartik\checkbox\CheckboxX;
-use common\modules\product\helpers\ProductHelper;
+use common\modules\store\helpers\ProductHelper;
 use common\modules\file\helpers\StyleHelper as Style;
 use common\modules\orders\helpers\OrdersHelper;
 
 ?>
 
 <?php foreach($order->items as $item):?>
-<div class="row cart-item" id="order-item-<?=$item->id?>">
+<div class="row table-list-item cart-item" id="order-item-<?=$item->id?>">
     <div class="col-lg-2 col-md-2 col-sm-2 ">
         <?php if(isset($form)):?>
             <?=CheckboxX::widget([
@@ -33,7 +33,7 @@ use common\modules\orders\helpers\OrdersHelper;
                     <span class="<?=$status->transliteration;?>"><?=$status->name;?></span>
                 <?php endforeach;?>
         </span>
-        <?= Html::a($item->origin->name, ['/'.$item->origin->url->alias], ['class' => '']); ?>
+        <?= Html::a($item->title, ['/'.$item->origin->url->alias], ['class' => '']); ?>
         <div class="info">
             <div class="sku">
                 <span class="lb">Код</span>
@@ -49,7 +49,7 @@ use common\modules\orders\helpers\OrdersHelper;
                 шт.
             </span>
         </div>
-        <a href="/cart/default/remove?id=<?= $item->id ?>" class="cart-item-remove"><i class="glyphicon glyphicon-remove-circle"></i></a>
+        <a href="/cart/default/remove?id=<?= $item->id ?>" class="item-remove cart-item-remove"><i class="glyphicon glyphicon-remove-circle"></i></a>
         <?php endif;?>
         
         <span class="item-total">

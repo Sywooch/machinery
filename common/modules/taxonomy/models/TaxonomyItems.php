@@ -3,6 +3,7 @@ namespace common\modules\taxonomy\models;
 
 use common\modules\taxonomy\models\TaxonomyVocabulary;
 use common\helpers\URLify;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "taxonomy_items".
@@ -95,4 +96,5 @@ class TaxonomyItems extends \yii\db\ActiveRecord implements \JsonSerializable
         $this->_parent = self::findOne($this->pid);
         return $this->_parent;
     }
+
 }

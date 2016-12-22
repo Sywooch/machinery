@@ -32,7 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'code',
             'count',
             'discount',
-            'time',
+            [
+                'label'  => 'time',
+                'value'  => $model->time->format('Y-m-d H:i:s'),
+            ],
         ],
     ]) ?>
 

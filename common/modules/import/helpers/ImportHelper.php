@@ -132,8 +132,7 @@ class ImportHelper
             return false;
         }
         
-        $line['images'] = $images;
-        return $line;
+        return $images;
     }
 
     /**
@@ -148,7 +147,7 @@ class ImportHelper
             return false;
         }
         
-        $temporary = $line['terms'];//str_replace('"', '', $line['terms']);
+        $temporary = $line['terms'];
         if($temporary == ''){
             return false;
         }
@@ -171,9 +170,7 @@ class ImportHelper
         if(empty($terms)){
             return false;
         }
-
-        $line['terms'] = $terms;
-        return $line;
+        return $terms;
     }
     
     public static function productFieldTypes(){
@@ -181,6 +178,7 @@ class ImportHelper
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
+            \PDO::PARAM_INT,
             \PDO::PARAM_STR, 
             \PDO::PARAM_STR,
             \PDO::PARAM_STR,
@@ -190,7 +188,7 @@ class ImportHelper
             \PDO::PARAM_INT,
             \PDO::PARAM_INT,
             \PDO::PARAM_INT,
-            \PDO::PARAM_INT,
+            \PDO::PARAM_STR,
             \PDO::PARAM_STR
         ];
     }
@@ -199,17 +197,18 @@ class ImportHelper
                     'sku',
                     'group',
                     'price',
+                    'available',
                     'model',
                     'title',
                     'description',
                     'features',
                     'short',
-                    'reindex',
+                    'status',
                     'crc32',
-                    'publish',
                     'user_id',
                     'source_id',
-                    'data'
+                    'data',
+                    'index'
                ];
     }
     public static function termFieldTypes(){

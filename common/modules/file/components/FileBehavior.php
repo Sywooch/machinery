@@ -1,100 +1,86 @@
 <?php
-
 namespace common\modules\file\components;
 
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
-use common\helpers\ModelHelper;
-use common\modules\file\models\File;
 use common\modules\file\helpers\FileHelper;
-use yii\helpers\FileHelper as BaseFileHelper;
+use common\modules\file\Uploader;
+use common\modules\file\Finder;
 
 class FileBehavior extends Behavior
 {
-    public function __set($name, $value){
-        $this->$name = $value;
-    }
-    
+    private $_fileFields;
+
     /**
     * @inheritdoc
     */
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_INSERT => 'afterInsert',
-            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
+            ActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
+            ActiveRecord::EVENT_BEFORE_UPDATE => 'afterSave',
+            ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
             ActiveRecord::EVENT_INIT => 'afterInit',
         ];
     }
     
-    public function afterInit() {
-       $fileFields =  FileHelper::getFileFields($this->owner);
-       foreach($fileFields as $field => $rule){
-            $this->$field = $this->getFiles($field);
-       }
-    }
-   
-    public function afterDelete(){
-        $fields = FileHelper::getFileFields($this->owner);
-        foreach ($fields as $fieldName => $field){
-            $files = $this->owner->{$fieldName};
-            foreach ($files as $file){
-               $path = \Yii::$app->basePath . '/../' . $file->path . '/' . $file->name;
-               if(is_file($path)){
-                   unlink($path);
-               }
-               $file->delete();
-            }
-        }
-    }
     /**
      * @inheritdoc
      */
-    public function afterInsert($event){
-        
-        $token = \Yii::$app->request->post('_csrf');
-        
-        $fields = FileHelper::getFileFields($this->owner);
-
-        foreach ($fields as $fieldName => $field){
-            $path = FileHelper::getTempDirectory() . '/' . md5($token . $fieldName); 
-            if(!is_dir($path)){
-                continue;
-            }
-
-            $files = BaseFileHelper::findFiles($path);
-            foreach($files as $file){
-                $fileName = basename($file);
-                copy ( $file , FileHelper::getPath($this->owner). '/' . $fileName );
-                $fileModel = \Yii::createObject([
-                            'class' => File::class,
-                            'entity_id' => $this->owner->id,
-                            'field' => $fieldName,
-                            'model' => ModelHelper::getModelName($this->owner),
-                            'name' => $fileName,
-                            'path' => FileHelper::getUrl($this->owner),
-                            'mimetype' => BaseFileHelper::getMimeType($file),
-                            'size' => filesize($file)
-                         ]);
-                $fileModel->save();
-            }
-            BaseFileHelper::removeDirectory($path);
-        }
+    public function afterInit() {
+        $this->_fileFields =  FileHelper::getFileFields($this->owner);
     }
     
     /**
-     * 
-     * @return object
+     * @inheritdoc
      */
-    public function getFiles(){
-         return $this->owner->hasMany(File::className(), ['entity_id' => 'id'])
-                 ->where(['model'=>  ModelHelper::getModelName($this->owner)])
-                 ->orderBy([
-                     'delta' => SORT_ASC
-                 ]);
+    public function canGetProperty($name, $checkVars = true ){
+        if(isset($this->_fileFields[$name])){
+            if(!isset($this->$name)){
+                $this->$name = Finder::getInstances($this->owner, $name);
+            }
+            return true;
+        }
+        parent::canGetProperty($name, $checkVars);
     }
     
+    /**
+     * @inheritdoc
+     */
+    public function canSetProperty($name, $checkVars = true) {
+        if(isset($this->_fileFields[$name])){
+            return true;
+        }
+        parent::canSetProperty($name, $checkVars);
+    }
+   
+    /**
+     * @inheritdoc
+     */
+    public function __set($name, $value){
+        if(isset($this->_fileFields[$name])){
+            $this->$name = $value;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave(){
+        Uploader::save($this->owner);
+    }
     
+    /**
+     * @inheritdoc
+     */
+    public function beforeDelete(){
+        foreach($this->_fileFields as $rules){
+            $field = current($rules);
+            foreach($this->owner->{$field} as $instance){
+                $instance->delete();
+            }
+        }
+    }     
 }
 
 ?>

@@ -20,4 +20,5 @@ frontend/web/assets/
 frontend/runtime/
 backend/runtime/
 console/runtime/
+/TempData/
 
