@@ -32,7 +32,6 @@ AppAsset::register($this);
 ?>
 <body class="<?= $bodyClass; ?>">
 
-
         <?php $this->beginBody() ?>
         <div class="wrap">
 

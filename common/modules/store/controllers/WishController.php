@@ -16,19 +16,7 @@ use backend\models\User;
  */
 class WishController extends Controller
 {
-    
 
-    /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
     
     public function actionIndex($userId){
         $user = User::findOne($userId);

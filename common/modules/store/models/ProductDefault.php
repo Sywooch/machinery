@@ -10,6 +10,7 @@ use common\helpers\ModelHelper;
 use common\modules\orders\models\PromoCodes;
 use common\modules\orders\models\PromoProducts;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\modules\file\models\File;
 
 class ProductDefault extends ProductBase
 {
@@ -72,7 +73,7 @@ class ProductDefault extends ProductBase
     public static function populateRecord($model, $row){
         parent::populateRecord($model, $row);
     }
-
+    
     /**
      * @inheritdoc
      */
@@ -98,7 +99,7 @@ class ProductDefault extends ProductBase
             ];
     }
     
-
+   
     /**
      * 
      * @return \yii\db\ActiveQuery
@@ -148,7 +149,13 @@ class ProductDefault extends ProductBase
         return json_decode($this->owner->features);
     }
 
-    
+    /**
+     * 
+     * @return [] File
+     */
+    public function getFiles(){
+         return \common\modules\file\Finder::getInstances($this);
+    }
     
     /**
      * 

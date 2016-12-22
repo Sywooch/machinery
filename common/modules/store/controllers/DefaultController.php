@@ -17,18 +17,6 @@ class DefaultController extends Controller
 {
 
     /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
-
-    /**
      *
      * @return mixed
      */
@@ -37,7 +25,7 @@ class DefaultController extends Controller
         if(!$url->main){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
-        
+
         $product = Yii::$container->get(ProductDefault::class);
         $finder = Yii::$container->get(Finder::class, [$product]);
         $dataProvider = $finder->search($url);

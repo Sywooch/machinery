@@ -20,19 +20,6 @@ use common\modules\store\classes\uus\UUS;
 class CompareController extends Controller
 {
     
-
-    /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
-    
     public function actionIndex($id = null){
      
         $compareSearch = Yii::$container->get(ComparesSearch::class);

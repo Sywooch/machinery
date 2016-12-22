@@ -2,10 +2,6 @@
 
 namespace common\modules\file\models;
 
-use Yii;
-use yii\web\UploadedFile;
-use yii\helpers\ArrayHelper;
-use common\helpers\ModelHelper;
 
 /**
  * This is the model class for table "files".
@@ -23,6 +19,8 @@ use common\helpers\ModelHelper;
 class File extends \yii\db\ActiveRecord
 {
     
+    const SCENARIO_ENTITY_VALIDATE = 'Entity validate';
+    
     const TABLE_FILES = 'files';
    
     /**
@@ -32,6 +30,13 @@ class File extends \yii\db\ActiveRecord
     {
         return self::TABLE_FILES;
     }
+    
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_ENTITY_VALIDATE] = ['field','model','name','path','size','delta','mimetype'];
+        return $scenarios;
+    }
 
     /**
      * @inheritdoc
@@ -39,9 +44,9 @@ class File extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['entity_id', 'field', 'model', 'name', 'path'], 'required'],
+            [['entity_id', 'field', 'model', 'name', 'path', 'storage'], 'required'],
             [['entity_id', 'size', 'delta'], 'integer'],
-            [['field', 'model'], 'string', 'max' => 50],
+            [['field', 'model', 'storage'], 'string', 'max' => 50],
             [['name', 'path'], 'string', 'max' => 255],
             [['mimetype'], 'string', 'max' => 30],
         ];

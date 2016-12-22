@@ -2,6 +2,7 @@
 namespace common\modules\store\controllers;
 
 use Yii;
+use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use common\modules\product\models\ProductRepository;
@@ -22,7 +23,7 @@ class ProductController extends Controller
     /**
      * @inheritdoc
      */
-    public function actions()
+    public function behaviors()
     {
         return [
             'access' => [
@@ -33,13 +34,22 @@ class ProductController extends Controller
                         'actions' => ['list', 'update', 'view', 'create', 'delete'],
                         'roles' => ['admin'],
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'otzyvy']
+                    ],
                 ],
             ],
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
             ],
         ];
     }
+    
+    
     
     /**
      * Lists all ProductDefault models.
@@ -80,8 +90,11 @@ class ProductController extends Controller
         $model = new ProductDefault();
         $model->loadDefaultValues();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            \common\modules\file\Uploader::getInstances($model);
+            if($model->save()){
+                 return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -97,15 +110,19 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);        
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-         //   print_r($model->getErrors()); exit('s');
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        $model = $this->findModel($id); 
+
+        if ($model->load(Yii::$app->request->post())) {
+            \common\modules\file\Uploader::getInstances($model);
+            if($model->save()){
+                 return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+        
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+        
     }
 
     /**

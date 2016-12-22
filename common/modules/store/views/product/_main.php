@@ -13,7 +13,7 @@ CartAsset::register($this);
     <?php
     $items = [];
     foreach($model->files as $file){
-        $items[] =  Html::img('/'.StyleHelper::getPreviewUrl($file, '700x700'),['class' => 'img-responsive']); 
+        $items[] =  Html::img(StyleHelper::getPreviewUrl($file, '700x700'),['class' => 'img-responsive']); 
     }
 
     echo BxSlider::widget([
@@ -38,7 +38,7 @@ CartAsset::register($this);
 
     <div id="bx-pager">
         <?php foreach($model->files as $index => $file):?>
-            <a data-slide-index="<?=$index?>" href=""> <?=Html::img('/'.StyleHelper::getPreviewUrl($file, '100x100'),[]); ?></a>
+            <a data-slide-index="<?=$index?>" href=""> <?=Html::img(StyleHelper::getPreviewUrl($file, '100x100'),[]); ?></a>
         <?php endforeach; ?>
     </div>
 </div>

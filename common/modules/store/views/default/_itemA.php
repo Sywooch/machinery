@@ -17,7 +17,7 @@ use common\modules\store\helpers\CatalogHelper;
                         ]);
                 ?>
                 <?php if(($file = ArrayHelper::getValue($product->files, '0'))):?>
-                    <?=Html::a(Html::img('/'.StyleHelper::getPreviewUrl($file, '130x130'),['class' => 'img-responsive']),['/'.$product->url->alias],['class' => 'img']);?>
+                    <?=Html::a(Html::img(StyleHelper::getPreviewUrl($file, '130x130'),['class' => 'img-responsive']),['/'.$product->url->alias],['class' => 'img']);?>
                 <?php else:?>
                     <?=Html::a(Html::img('/files/nophoto_100x100.jpg',['class' => 'img-responsive']),['/'.$product->url->alias],['class' => 'img']);?>
                 <?php endif;?>

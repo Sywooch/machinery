@@ -44,7 +44,7 @@ FileAsset::register($this);
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
     
-    <?= $form->field($model, 'photos[]')->widget(FileInput::classname(),FileHelper::FileInputConfig($model, 'photos')); ?>
+    <?= $form->field($model, 'photos[]')->widget(FileInput::classname(), FileHelper::FileInputConfig($model, 'photos')); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

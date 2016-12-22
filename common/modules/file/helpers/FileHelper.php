@@ -2,14 +2,12 @@
 
 namespace common\modules\file\helpers;
 
-use common\helpers\URLify;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use common\modules\file\models\File;
-use common\helpers\ModelHelper;
 use yii\helpers\FileHelper as BaseFileHelper;
 use common\modules\file\helpers\StyleHelper;
+use common\modules\file\filestorage\InstanceInterface;
 
 class FileHelper {
     
@@ -62,7 +60,7 @@ class FileHelper {
      * @param File $file
      * @return string
      */
-    public static function getToken(File $file){
+    public static function getToken(InstanceInterface $file){
         return md5(Yii::$app->request->cookieValidationKey . Yii::$app->request->getUserIP() . $file->size . $file->id);
     }
     
@@ -92,7 +90,7 @@ class FileHelper {
      * @param string $name
      * @return string
      */
-    public function text2url($name){
+    public static function text2url($name){
         $url = [
             time(),
             URLify::url ($name, 60, "", true),
@@ -119,7 +117,7 @@ class FileHelper {
         
         foreach($files as $file){
             if (strpos($file->mimetype, "image") !== false){
-                $initialPreview[] = $style ? Html::img('/'.StyleHelper::getPreviewUrl($file, $style->resolution)) : Html::img('/' . $file->path . '/' . $file->name, ['class' => 'file-preview-image']); 
+                $initialPreview[] = $style ? Html::img(StyleHelper::getPreviewUrl($file, $style->resolution)) : Html::img($file->path . '/' . $file->name, ['class' => 'file-preview-image']); 
             } 
         }
         return $initialPreview;
@@ -191,9 +189,9 @@ class FileHelper {
         return [
             'options' => ['multiple' => true],
             'pluginOptions' => [
-                'uploadUrl' => Url::to([self::AJAX_UPLOAD_URL, 'id' => $model->id , 'field' => $field, 'style' => self::$style ? self::$style->resolution : '', 'token' => Yii::$app->request->getCsrfToken()]),
-                'showUpload' => true,
-                'showRemove' => true,
+             //   'uploadUrl' => Url::to([self::AJAX_UPLOAD_URL, 'id' => $model->id , 'field' => $field, 'style' => self::$style ? self::$style->resolution : '', 'token' => Yii::$app->request->getCsrfToken()]),
+                'showUpload' => false,
+                'showRemove' => false,
                 'initialPreview' => self::getFileInputPreviews($files, self::$style),
                 'initialPreviewConfig' => self::getFileInputPreviewsConfig($files),
                 'overwriteInitial' => false,
@@ -207,7 +205,7 @@ class FileHelper {
      * @param StyleHelper $style
      * @return boolean|string
      */
-    public static function createPreview(File $file, StyleHelper $style){
+    public static function createPreview(InstanceInterface $file, StyleHelper $style){
         if(!$file || strpos($file->mimetype, 'image') === false){
             return false;
         }

@@ -12,7 +12,7 @@ use yii\base\Action;
 use yii\base\Exception;
 use yii\base\UserException;
 use yii\web\NotFoundHttpException;
-use common\modules\file\models\File;
+use common\modules\file\filestorage\Instance;
 use common\modules\file\helpers\FileHelper;
 use common\modules\file\helpers\StyleHelper;
 
@@ -108,7 +108,7 @@ class ErrorAction extends Action
         } elseif($exception instanceof NotFoundHttpException
                 && ($style = new StyleHelper(Yii::$app->request->url)) 
                 && $style->validate()){
-                $url = FileHelper::createPreview(File::findOne($style->getFileId()), $style);
+                $url = FileHelper::createPreview(Instance::findOne($style->getFileId()), $style);
                 if($url){
                     header("Content-type: ".$file->mimetype);
                     header ("Accept-Ranges: bytes");

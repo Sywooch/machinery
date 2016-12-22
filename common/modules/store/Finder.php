@@ -46,8 +46,7 @@ class Finder extends Object{
                     'files',
                     'alias',
                     'groupAlias'  
-                ]);
-        
+                ]); 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [

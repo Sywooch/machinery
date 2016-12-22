@@ -11,6 +11,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 ['class' => 'common\modules\store\components\StoreUrlRule'],
+                 ['class' => 'common\modules\store\components\ProductUrlRule'],
                 '<action:(login|logout)>' => 'user/security/<action>',
             ],
         ],
@@ -43,6 +44,14 @@ return [
         ],
         'file' => [
             'class' => 'common\modules\file\Module',
+            'storage' => 'common\modules\file\filestorage\storages\StorageDb',
+            'storages' => [
+                'local' => [
+                    'class' => 'common\modules\file\filestorage\storages\StorageLocal',
+                    'basePath' => '@app/../files',
+                    'baseUrl' => '@web/files'
+                ],
+            ]
         ],
         'orders' => [
             'class' => 'common\modules\orders\Module',
