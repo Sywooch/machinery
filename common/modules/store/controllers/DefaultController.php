@@ -4,7 +4,7 @@ namespace common\modules\store\controllers;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use common\modules\store\models\ProductDefault;
+use common\modules\store\models\product\ProductDefault;
 use common\modules\store\components\StoreUrlRule;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\store\Finder;
@@ -26,9 +26,11 @@ class DefaultController extends Controller
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
 
-        $product = Yii::$container->get(ProductDefault::class);
-        $finder = Yii::$container->get(Finder::class, [$product]);
-        $dataProvider = $finder->search($url);
+        $module = Yii::$app->getModule('store');
+        $model = $module->models[$url->main->id];
+        $finder = Yii::$container->get(Finder::class, [new $model]);
+        
+        $dataProvider = $finder->searchByUrl($url);
         return $this->render('index',[
             'finder' => $finder,
             'url' => $url,
@@ -36,7 +38,6 @@ class DefaultController extends Controller
             'parent' => $url->main,
             'current' => $url->category,
             'products' => $dataProvider->models,
-            'compareIds' => [],
         ]);
         
        
@@ -52,9 +53,9 @@ class DefaultController extends Controller
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
         
-        $product = Yii::$container->get(ProductDefault::class);
-        $finder = Yii::$container->get(Finder::class, [$product]);
-
+        $module = Yii::$app->getModule('store');
+        $model = $module->models[$url->main->id];
+        $finder = Yii::$container->get(Finder::class, [new $model]);
         
         $childrensTerms = TaxonomyItems::findAll([
             'vid' => $url->main->vid,
@@ -67,7 +68,7 @@ class DefaultController extends Controller
 
         $items = [];
         foreach($childrensTerms as $childrenTerm){
-            $products = $finder->findById($finder->getMostRatedId($childrenTerm));
+            $products = $finder->getProductsByIds($finder->getMostRatedId($childrenTerm));
             $items[$childrenTerm->id] = [
                 'term' => $childrenTerm,
                 'products' => $products

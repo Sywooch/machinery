@@ -1,11 +1,10 @@
 <?php
-use frontend\modules\cart\helpers\CartHelper;
 use yii\helpers\Html;
 use common\modules\file\helpers\StyleHelper;
 use yii\helpers\ArrayHelper;
 use kartik\rating\StarRating;
 use common\modules\store\helpers\ProductHelper;
-
+use common\modules\store\helpers\CartHelper;
 ?>
 
 <div class="item">

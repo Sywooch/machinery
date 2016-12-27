@@ -4,15 +4,14 @@ namespace common\modules\store\controllers;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\Controller;
-use common\modules\store\models\Compares;
-use common\modules\store\models\ComparesSearch;
+use common\modules\store\models\compare\Compares;
 use yii\helpers\ArrayHelper;
-use common\helpers\ModelHelper;
+use yii\helpers\StringHelper;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\store\helpers\CatalogHelper;
 use common\modules\store\classes\uus\UUS;
-
+use common\modules\store\Finder;
 
 /**
  * Site controller
@@ -22,18 +21,16 @@ class CompareController extends Controller
     
     public function actionIndex($id = null){
      
-        $compareSearch = Yii::$container->get(ComparesSearch::class);
+        $finder = Yii::$container->get(Finder::class);
         
-        $compares = $compareSearch->items;
-        
-        if(empty($compares)){
-           return $this->render('_empty');
+        if(empty($compares = $finder->getCompareItems())){
+           return $this->render('_empty', []);
         }
-        
+  
         $entityIds = ArrayHelper::map($compares, 'entity_id', 'entity_id', 'model');
         $models = [];
         foreach($entityIds as $model => $ids){
-            $modelClass = ModelHelper::getModelClass($model);
+            $modelClass = '\\common\\modules\\store\\models\\product\\' . $model;
             $models[$model] = $modelClass::find()->where(['id' => $ids])->indexBy('id')->all();
         }
         
@@ -60,13 +57,13 @@ class CompareController extends Controller
     }
     
     public function actionToggle(){
+        
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
-        if(!class_exists($model = ModelHelper::getModelClass(Yii::$app->request->post('model')))){
-            throw new InvalidParamException();
-        }
+        $model = '\\common\\modules\\store\\models\\product\\' . Yii::$app->request->post('model');
+        $finder = Yii::$container->get(Finder::class, [new $model]);
         
-        if(!($entity = $model::findOne(Yii::$app->request->post('id')))){
+        if(!($entity = $finder->getProductById(Yii::$app->request->post('id')))){
             throw new InvalidParamException();
         }
         
@@ -77,41 +74,32 @@ class CompareController extends Controller
             throw new InvalidParamException();
         }
 
-        $compareSearch = Yii::$container->get(ComparesSearch::class);
-        
-        if($compareSearch->count > Compares::MAX_ITEMS_COMPARE){
+        if($finder->comparesSearch->count > $finder->module->maxItemsToCompare){
             return [
                 'status' => 'error', 
                 'message' => 'Добавлено максимальное количество продуктов в сравнение.'
             ];
         }
-        
-        if(!($compare = $compareSearch->getItem($entity))){ 
+ 
+        if(!($compare = $entity->compare)){ 
             $compare = Yii::createObject([
                 'class' => Compares::class,
-                'session' => $compareSearch->uus->id,
+                'session' => $finder->uus->id,
                 'term_id' => $term->id,
                 'entity_id' => $entity->id,
-                'model' => ModelHelper::getModelName($entity),
+                'model' => StringHelper::basename($entity::className()),
             ]);
             $compare->save();
         }else{
             $compare->delete();
-            return [
-                    'status' => 'success', 
-                    'action' => 'deleted',
-                    'id' => $compare->entity_id,
-                    'model' => $compare->model,
-                    'count' => $compareSearch->count
-                ];
         }
         
         return [
                 'status' => 'success', 
-                'action' => 'added',
+                'action' => $compare->isNewRecord ? 'deleted' : 'added' ,
                 'id' => $compare->entity_id,
                 'model' => $compare->model,
-                'count' => $compareSearch->count
+                'count' => $finder->comparesSearch->count
             ];
     }
 }

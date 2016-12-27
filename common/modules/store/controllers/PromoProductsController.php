@@ -3,8 +3,8 @@
 namespace common\modules\store\controllers;
 
 use Yii;
-use common\modules\orders\models\PromoProducts;
-use common\modules\orders\models\PromoProductsSearch;
+use common\modules\store\models\promo\PromoProducts;
+use common\modules\store\models\promo\PromoProductsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

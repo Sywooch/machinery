@@ -2,10 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
-use frontend\modules\cart\Asset as CartAsset;
+use common\modules\store\CartAsset;
 use yii\widgets\Breadcrumbs;
 use common\modules\store\widgets\Filter\FilterWidget;
-use common\modules\store\helpers\ProductHelper;
 
 CartAsset::register($this);
 
@@ -29,7 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach($products as $product):?>
             <?=$this->render('_itemA',[
                 'product' => $product,
-                'compareIds' => $compareIds,
             ]);?>
         <?php endforeach; ?>
         <?=LinkPager::widget([

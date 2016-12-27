@@ -2,14 +2,14 @@
 namespace common\modules\store\controllers;
 
 use Yii;
+use yii\helpers\StringHelper;
 use yii\base\InvalidParamException;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use common\modules\store\models\Wishlist;
+use common\modules\store\models\wish\Wishlist;
 use yii\helpers\ArrayHelper;
-use common\helpers\ModelHelper;
-use common\modules\store\models\WishlistSearch;
-use backend\models\User;
+use common\models\User;
+use common\modules\store\Finder;
 
 /**
  * Site controller
@@ -25,17 +25,16 @@ class WishController extends Controller
             throw new NotFoundHttpException('Страница не найдена.');
         }
         
-        $wishSearch = Yii::$container->get(WishlistSearch::class);
+        $finder = Yii::$container->get(Finder::class);
         
-        $wishList = $wishSearch->getItems($user);
-        if(empty($wishList)){
+        if(empty($wishList = $finder->getWishItems(Yii::$app->user->identity))){
            return $this->render('_empty', ['user' => $user]);
         }
-        
+
         $entityIds = ArrayHelper::map($wishList, 'entity_id', 'entity_id', 'model');
         $models = [];
         foreach($entityIds as $model => $ids){
-            $modelClass = ModelHelper::getModelClass($model);
+            $modelClass = '\\common\\modules\\store\\models\\product\\' . $model;
             $models[$model] = $modelClass::find()->where(['id' => $ids])->indexBy('id')->all();
         }
         
@@ -60,58 +59,38 @@ class WishController extends Controller
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
           
-        $id = Yii::$app->request->post('id');
-        $model = Yii::$app->request->post('model');
+        $model = '\\common\\modules\\store\\models\\product\\' . Yii::$app->request->post('model');
+        $finder = Yii::$container->get(Finder::class, [new $model]);
+        
+        if(!($entity = $finder->getProductById(Yii::$app->request->post('id')))){
+            throw new InvalidParamException();
+        }
 
-        if(!class_exists($model = ModelHelper::getModelClass($model))){
-            throw new InvalidParamException();
-        }
-        
-        if(!($entity = $model::findOne($id))){
-            throw new InvalidParamException();
-        }
-        
-        $wishSearch = Yii::$container->get(WishlistSearch::class);
-        
-        if($wishSearch->count > Wishlist::MAX_ITEMS_WISH){
+        if($finder->wishSearch->count > $finder->module->maxItemsToWish){
             return [
                 'status' => 'error', 
                 'message' => 'Добавлено максимальное количество продуктов в избранном.'
             ];
         }
-        
-        
-        $wish = Wishlist::find()->where([
-                'user_id' => Yii::$app->user->id,
-                'entity_id' => $id,
-                'model' => ModelHelper::getModelName($model)
-             ])->One();
 
-        if(!($wish = $wishSearch->getItem($entity))){
-             $wish = Yii::createObject([
+        if(!($wish = $entity->wish)){
+            $wish = Yii::createObject([
                 'class' => Wishlist::class,
                 'user_id' => Yii::$app->user->id,
                 'entity_id' => $entity->id,
-                'model' => ModelHelper::getModelName($model)
+                'model' => StringHelper::basename($entity::className())
             ]);
             $wish->save();
         }else{
             $wish->delete();
-            return [
-                    'status' => 'success', 
-                    'action' => 'deleted',
-                    'id' => $wish->entity_id,
-                    'model' => $wish->model,
-                    'count' => $wishSearch->count
-                ];
         }
         
         return [
                 'status' => 'success', 
-                'action' => 'added',
+                'action' => $wish->isNewRecord ? 'deleted' : 'added' ,
                 'id' => $wish->entity_id,
                 'model' => $wish->model,
-                'count' => $wishSearch->count
+                'count' => $finder->wishSearch->count
             ];
     }
     

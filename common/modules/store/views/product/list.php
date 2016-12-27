@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ProductDefaultSearch */
@@ -40,7 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'description:ntext',
             // 'data:ntext',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [   
+                'class' => 'yii\grid\ActionColumn',
+                'urlCreator'=>function($action, $model, $key, $index){
+                   return [$action,'id' => $model->id, 'model'=> StringHelper::basename(get_class($model))];
+                },
+                'template'=>'{view}  {delete}',
+            ],
         ],
     ]); ?>
 </div>

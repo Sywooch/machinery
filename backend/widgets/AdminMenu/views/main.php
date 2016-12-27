@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 use backend\widgets\AdminMenu\Asset;
-use common\modules\orders\models\Orders;
-use common\modules\orders\models\StatusRepository;
+use common\modules\store\models\order\Orders;
+use common\modules\store\models\status\StatusRepository;
 
 Asset::register($this);
 
@@ -11,18 +11,18 @@ Asset::register($this);
 
 <div class="widget-menu-block">
     <?php
-    echo $widget->a('Главная','/','glyphicon-leaf');
-    echo $widget->a('Информация брендов','/brand-info','glyphicon-info-sign');
-    echo $widget->a('Текстовые страницы','/pages','glyphicon-edit');
-    echo $widget->a('Каталог','/store/product/list','glyphicon-asterisk');
-    echo $widget->a('Ордеры '.StatusRepository::countStatus([1], Orders::class),'/orders/default', 'glyphicon-shopping-cart');
-    echo $widget->a('Слайдер','/ads-slider','glyphicon-list-alt');
-    echo $widget->a('Акции','/ads-actions','glyphicon-list-alt');
-    echo $widget->a('Обзоры','/review','glyphicon-list-alt');
-    echo $widget->a('Адреса магазинов','/shop-address','glyphicon-map-marker');
-    echo $widget->a('Отчет импорта','/import/sources','glyphicon-info-sign');
-    echo $widget->a('Таксономия','/taxonomy/vocabulary','glyphicon-list-alt');
-    echo $widget->a('Пользователи','/user/admin','glyphicon-user');
+    echo $widget->a('Главная','/');
+    echo $widget->a('Информация брендов','/brand-info');
+    echo $widget->a('Текстовые страницы','/pages');
+    echo $widget->a('Каталог','/store/product/list?model=ProductDefault', ['active-url' => ['/store/product/list','/store/promo-products','/store/group-characteristics']]);
+    echo $widget->a('Ордеры '.StatusRepository::countStatus([1], Orders::class),'/store/orders');
+    echo $widget->a('Слайдер','/ads-slider');
+    echo $widget->a('Акции','/ads-actions');
+    echo $widget->a('Обзоры','/review');
+    echo $widget->a('Адреса магазинов', '/store/shop-address', ['active-url' => ['/store/shop-address']]); 
+    echo $widget->a('Отчет импорта','/import/sources');
+    echo $widget->a('Таксономия','/taxonomy/vocabulary');
+    echo $widget->a('Пользователи','/user/admin');
     ?>
 </div>
 

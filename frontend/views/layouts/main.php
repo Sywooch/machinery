@@ -6,7 +6,7 @@
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
-use frontend\modules\cart\widgets\CartBlockWidget as CartBlock;
+use common\modules\store\widgets\CartBlock\CartBlockWidget as CartBlock;
 use common\modules\store\widgets\CatalogMenu\CatalogMenuWidget as CatalogMenu;
 use frontend\widgets\SearchForm\SearchFormWidget as SearchForm;
 use common\modules\store\widgets\Compare\CompareWidget;

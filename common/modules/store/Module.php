@@ -12,6 +12,8 @@ class Module extends \yii\base\Module
     public $defaultPageSize = 20;
     public $buyButtonText = 'Купить';
     public $maxItemsToCompare = 100;
+    public $maxItemsToWish = 100;
+    public $models;
 
     public function init()
     {

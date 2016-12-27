@@ -2,7 +2,7 @@
 namespace common\modules\store\widgets\Compare;
 
 use Yii;
-use common\modules\store\models\ComparesSearch;
+use common\modules\store\models\compare\ComparesSearch;
 
 class CompareWidget extends \yii\bootstrap\Widget
 {

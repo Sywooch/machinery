@@ -15,9 +15,6 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
-        'cart' => [
-            'class' => 'frontend\modules\cart\Module',
-        ],
         'comments' => [
             'class' => 'frontend\modules\comments\Module'
 	],
@@ -45,7 +42,7 @@ return [
             'errorAction' => 'site/error',
         ],
         'cart' => [
-            'class' => 'frontend\modules\cart\components\Cart',
+            'class' => 'common\modules\store\components\Cart',
         ],
         'event' => [
             'class' => 'frontend\components\EventComponent',
