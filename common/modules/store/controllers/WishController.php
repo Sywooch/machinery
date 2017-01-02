@@ -3,13 +3,14 @@ namespace common\modules\store\controllers;
 
 use Yii;
 use yii\helpers\StringHelper;
-use yii\base\InvalidParamException;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
 use common\modules\store\models\wish\Wishlist;
 use yii\helpers\ArrayHelper;
 use common\models\User;
 use common\modules\store\Finder;
+use common\modules\store\helpers\ProductHelper;
 
 /**
  * Site controller
@@ -34,7 +35,7 @@ class WishController extends Controller
         $entityIds = ArrayHelper::map($wishList, 'entity_id', 'entity_id', 'model');
         $models = [];
         foreach($entityIds as $model => $ids){
-            $modelClass = '\\common\\modules\\store\\models\\product\\' . $model;
+            $modelClass = ProductHelper::getClass($model);
             $models[$model] = $modelClass::find()->where(['id' => $ids])->indexBy('id')->all();
         }
         
@@ -59,11 +60,16 @@ class WishController extends Controller
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
           
-        $model = '\\common\\modules\\store\\models\\product\\' . Yii::$app->request->post('model');
-        $finder = Yii::$container->get(Finder::class, [new $model]);
+        $model = ProductHelper::getModel(Yii::$app->request->post('model'));
+        
+        if(!$model){
+            throw new BadRequestHttpException();
+        }
+        
+        $finder = Yii::$container->get(Finder::class, [$model]);
         
         if(!($entity = $finder->getProductById(Yii::$app->request->post('id')))){
-            throw new InvalidParamException();
+            throw new BadRequestHttpException();
         }
 
         if($finder->wishSearch->count > $finder->module->maxItemsToWish){

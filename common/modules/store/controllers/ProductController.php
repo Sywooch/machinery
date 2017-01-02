@@ -5,10 +5,8 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use yii\helpers\ArrayHelper;
+use common\modules\store\helpers\ProductHelper;
 use common\modules\store\models\product\ProductInterests;
-use common\modules\store\models\product\ProductSearch;
-use common\modules\store\models\compare\ComparesSearch;
 use common\modules\store\models\promo\PromoCodes;
 use common\modules\store\Finder;
 
@@ -56,8 +54,7 @@ class ProductController extends Controller
      */
     public function actionList($model)
     {
-        $model = Yii::createObject('\\common\\modules\\store\\models\\product\\' . $model);
-        $finder = Yii::$container->get(Finder::class, [$model]);
+        $finder = Yii::$container->get(Finder::class, [ProductHelper::getModel($model)]);
         $dataProvider = $finder->search(Yii::$app->request->queryParams);
         return $this->render('list', [
             'searchModel' => $finder->produtSearch,
@@ -144,9 +141,7 @@ class ProductController extends Controller
      */
     public function actionIndex($id, $model)
     {   
-      
-        $model = Yii::createObject('\\common\\modules\\store\\models\\product\\' . $model);
-        $finder = Yii::$container->get(Finder::class, [$model]);
+        $finder = Yii::$container->get(Finder::class, [ProductHelper::getModel($model)]);
         $product = $finder->getProductById($id);
 
         if(empty($product)){
@@ -166,9 +161,7 @@ class ProductController extends Controller
      */
     public function actionOtzyvy($id, $model, $tab)
     {   
-        $model = Yii::createObject('\\common\\modules\\store\\models\\product\\' . $model);
-        $finder = Yii::$container->get(Finder::class, [$model]);
-
+        $finder = Yii::$container->get(Finder::class, [ProductHelper::getModel($model)]);
         $products = $finder->getProductsByGroup($id);
 
         if(empty($products)){
@@ -183,7 +176,7 @@ class ProductController extends Controller
 
     protected function findModel($id, $model)
     {
-        $model = '\\common\\modules\\store\\models\\product\\' .$model;
+        $model = ProductHelper::getClass($model);
         if (($model = $model::findOne($id)) !== null) {
             return $model;
         } else {

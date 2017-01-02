@@ -2,7 +2,7 @@
 
 namespace common\modules\store\models\promo;
 
-use yii\helpers\StringHelper;
+use common\modules\store\helpers\ProductHelper;
 
 
 /**
@@ -64,7 +64,7 @@ class PromoProducts extends \yii\db\ActiveRecord
      */
     public function getProductTitle()
     {
-        $model = '\\common\\modules\\store\\models\\product\\' . $this->model;
+        $model = ProductHelper::getClass($this->model);
         $product  = $this->hasOne($model, ['id' => 'entity_id'])->one();
         return $product->title;
     }

@@ -39,7 +39,7 @@ class ProductSearch extends Model
     public function rules()
     {
         return [
-            [['source_id', 'available'], 'integer'],
+            [['source_id', 'available','id'], 'integer'],
             [['price','old_price'], 'number'],
             [['description', 'short', 'features'], 'string'],
             [['sku'], 'string', 'max' => 30],

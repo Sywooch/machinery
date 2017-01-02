@@ -4,7 +4,7 @@ namespace common\modules\store\helpers;
 
 use Yii;
 use common\modules\taxonomy\models\TaxonomyItems;
-use common\helpers\ModelHelper;
+use yii\helpers\StringHelper;
 
 class CatalogHelper {
     
@@ -90,7 +90,7 @@ class CatalogHelper {
      * @return type
      */
     public static function getCompareButton($entity){
-        return '<div class="cbx-container chb-compare chb-compare-'.$entity->id.' '.(isset($entity->compare) ? 'active' : '').'" data-id="'.$entity->id.'" data-model="'.ModelHelper::getModelName($entity).'">'.
+        return '<div class="cbx-container chb-compare chb-compare-'.$entity->id.' '.(isset($entity->compare) ? 'active' : '').'" data-id="'.$entity->id.'" data-model="'.StringHelper::basename(get_class($entity)).'">'.
                     '<div class="cbx cbx-xs cbx-active" tabindex="1000">'.
                         '<span class="cbx-icon"> '.
                             '<i class="glyphicon glyphicon-ok"></i>'.
@@ -106,7 +106,7 @@ class CatalogHelper {
      * @return type
      */
     public static function getWishButton($entity, array $ids = []){
-        return '<div class="cbx-container chb-wish chb-wish chb-wish-'.$entity->id.' '.(isset($entity->wish) ? 'active' : '').'" data-id="'.$entity->id.'" data-model="'.ModelHelper::getModelName($entity).'">'.
+        return '<div class="cbx-container chb-wish chb-wish chb-wish-'.$entity->id.' '.(isset($entity->wish) ? 'active' : '').'" data-id="'.$entity->id.'" data-model="'.StringHelper::basename(get_class($entity)).'">'.
                     '<div class="cbx cbx-xs cbx-active" tabindex="1000">'.
                         '<span class="cbx-icon"> '.
                             '<i class="glyphicon glyphicon-ok"></i>'.

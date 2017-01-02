@@ -2,9 +2,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
-use common\modules\store\PromoAsset;
+use common\modules\store\widgets\PromoCode\Asset;
 
-PromoAsset::register($this);
+Asset::register($this);
 
 ?>
 

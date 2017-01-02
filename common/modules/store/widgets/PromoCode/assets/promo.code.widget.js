@@ -17,7 +17,7 @@ promoWidget.init = function(){
 }
 
 promoWidget.checkCode = function(code){
-   $.get('/orders/promo-codes/use-promo-ajax',{code:code},function(data){
+   $.get('/store/promo-codes/use-promo-ajax',{code:code},function(data){
        if(data.status == 'error'){
            promoWidget.field.next().html(data.message);
        }else{

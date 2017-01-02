@@ -14,22 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="cart-orders-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?php if ($model->status) echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php
-        if ($model->status)
-            Html::a('Delete', ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-default',
-                'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
-                    'method' => 'post',
-                ],
-            ])
-            ?>
-    </p>
-
-
     <?php
     $un = '';
 

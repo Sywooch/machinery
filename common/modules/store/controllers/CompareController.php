@@ -2,11 +2,12 @@
 namespace common\modules\store\controllers;
 
 use Yii;
-use yii\base\InvalidParamException;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use common\modules\store\models\compare\Compares;
 use yii\helpers\ArrayHelper;
 use yii\helpers\StringHelper;
+use common\modules\store\helpers\ProductHelper;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\store\helpers\CatalogHelper;
@@ -30,7 +31,7 @@ class CompareController extends Controller
         $entityIds = ArrayHelper::map($compares, 'entity_id', 'entity_id', 'model');
         $models = [];
         foreach($entityIds as $model => $ids){
-            $modelClass = '\\common\\modules\\store\\models\\product\\' . $model;
+            $modelClass = ProductHelper::getClass($model);
             $models[$model] = $modelClass::find()->where(['id' => $ids])->indexBy('id')->all();
         }
         
@@ -60,18 +61,23 @@ class CompareController extends Controller
         
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
-        $model = '\\common\\modules\\store\\models\\product\\' . Yii::$app->request->post('model');
-        $finder = Yii::$container->get(Finder::class, [new $model]);
+        $model = ProductHelper::getModel(Yii::$app->request->post('model'));
+        
+        if(!$model){
+            throw new BadRequestHttpException();
+        }
+
+        $finder = Yii::$container->get(Finder::class, [$model]);
         
         if(!($entity = $finder->getProductById(Yii::$app->request->post('id')))){
-            throw new InvalidParamException();
+            throw new BadRequestHttpException();
         }
         
         $tree =  TaxonomyHelper::tree($entity->catalog);
         $term = TaxonomyHelper::lastChildren(reset($tree));
         
         if(!$term){
-            throw new InvalidParamException();
+            throw new BadRequestHttpException();
         }
 
         if($finder->comparesSearch->count > $finder->module->maxItemsToCompare){

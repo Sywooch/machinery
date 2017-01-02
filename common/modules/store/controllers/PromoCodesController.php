@@ -1,11 +1,11 @@
 <?php
 
-namespace common\modules\orders\controllers;
+namespace common\modules\store\controllers;
 
 use Yii;
-use common\modules\orders\models\PromoProducts;
-use common\modules\orders\models\PromoCodes;
-use common\modules\orders\models\PromoCodesSearch;
+use common\modules\store\models\promo\PromoProducts;
+use common\modules\store\models\promo\PromoCodes;
+use common\modules\store\models\promo\PromoCodesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

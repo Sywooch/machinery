@@ -2,6 +2,8 @@
 
 namespace common\modules\store\helpers;
 
+use Yii;
+use yii\helpers\StringHelper;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use common\models\Alias;
@@ -115,5 +117,33 @@ class ProductHelper{
         return crc32(implode(' ', $group));
     }
     
+    
+    /**
+     * 
+     * @param string $name
+     * @return boolean|\common\modules\store\helpers\model
+     */
+    public static function getModel($name){
+        if(($class = self::getClass($name))){
+            return new $class;
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     * @param string $name
+     * @return boolean|\common\modules\store\helpers\model
+     */
+    public static function getClass($name){
+        $module = Yii::$app->getModule('store');
+        
+        foreach($module->models as $model){
+            if(StringHelper::basename($model) == $name){
+                return $model;
+            }
+        }
+        return false;
+    }
     
 }

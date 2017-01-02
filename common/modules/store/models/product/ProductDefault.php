@@ -7,7 +7,6 @@ use yii\helpers\StringHelper;
 use common\modules\taxonomy\components\TermValidator;
 use yii\behaviors\TimestampBehavior;
 use common\modules\import\models\Sources;
-use common\helpers\ModelHelper;
 use common\modules\store\models\promo\PromoCodes;
 use common\modules\store\models\promo\PromoProducts;
 use common\modules\taxonomy\models\TaxonomyItems;
@@ -154,7 +153,7 @@ class ProductDefault extends ActiveRecord implements ProductInterface
     public function getPromoCode()
     {
         return $this->hasOne(PromoCodes::className(), ['id' => 'code_id'])->viaTable(PromoProducts::tableName(), ['entity_id' => 'id'], function($query){
-                $query->where(['model' => ModelHelper::getModelName(self::class)]);
+                $query->where(['model' => StringHelper::basename(self::class)]);
             });
     }
     
@@ -164,7 +163,7 @@ class ProductDefault extends ActiveRecord implements ProductInterface
      */
     public function getPromo()
     {
-        return $this->hasOne(PromoProducts::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName(self::class)]);
+        return $this->hasOne(PromoProducts::className(), ['entity_id' => 'id'])->where(['model' => StringHelper::basename(self::class)]);
     }
     
     /**

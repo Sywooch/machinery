@@ -2,8 +2,7 @@
 
 namespace common\modules\store\models\order;
 
-use Yii;
-use common\modules\store\helpers\OrdersHelper;
+use common\modules\store\helpers\ProductHelper;
 
 /**
  * This is the model class for table "orders_items".
@@ -78,7 +77,7 @@ class OrdersItems extends \yii\db\ActiveRecord
      */
     public function getOrigin()
     {        
-        $model = '\\common\\modules\\store\\models\\product\\' . $this->model;
+        $model = ProductHelper::getClass($this->model);
         return $this->hasOne($model, ['id' => 'entity_id'])->with(['promoCode']);
     }
     

@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\web\BadRequestHttpException;
 use common\modules\store\widgets\delivery\DeliveryFactory;
 use common\modules\store\models\order\Orders;
+use common\modules\store\helpers\ProductHelper;
 
 /**
  * ItemsController implements the CRUD actions for TaxonomyItems model.
@@ -110,9 +111,14 @@ class CartController extends Controller
     public function actionAdd($entityId, $model){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
-        $model = Yii::createObject('\\common\\modules\\store\\models\\product\\' . $model);
-
+        $model = ProductHelper::getClass($model);
+        
+        if(!$model){
+            throw new BadRequestHttpException();
+        }
+        
         $product = $model::findOne($entityId);
+        
         if(!$product){
             throw new BadRequestHttpException();
         }
