@@ -12,6 +12,7 @@ Asset::register($this);
 <div class="widget-menu-block">
     <?php
     echo $widget->a('Главная','/');
+    echo $widget->a('Меню','/menu');
     echo $widget->a('Информация брендов','/brand-info');
     echo $widget->a('Текстовые страницы','/pages');
     echo $widget->a('Каталог','/store/product/list?model=ProductDefault', ['active-url' => ['/store/product/list','/store/promo-products','/store/group-characteristics']]);
