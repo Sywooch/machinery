@@ -12,8 +12,8 @@ use backend\widgets\AdminMenu\Asset;
             echo Html::a('<div>Аудио Видео</div>', ['/product-av'], ['class' => $widget->isActive(['product-av'])]);
         }*/
         
-        if($widget->url->getIsParentActive('/store/product/list')){
-            echo $widget->a('Продукты','/store/product/list');
+        if($widget->url->getIsParentActive(['/store/product/list','/store/promo-products','/store/group-characteristics'])){
+            echo $widget->a('Продукты','/store/product/list?model=ProductDefault');
             echo $widget->a('Промо продукты','/store/promo-products');
             echo $widget->a('Группы характеристик','/store/group-characteristics');
         }

@@ -2,16 +2,17 @@
 
 namespace common\modules\store\helpers;
 
+use Yii;
+use yii\helpers\StringHelper;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use common\models\Alias;
 use common\helpers\URLify;
 use common\helpers\ModelHelper;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
-use common\modules\store\helpers\ProductHelperInterface;
-use common\modules\store\models\ProductInterface;
+use common\modules\store\models\product\ProductInterface;
 
-class ProductHelper implements ProductHelperInterface{
+class ProductHelper{
     
     const STATUS_TERMS_VID = 47;
     const TOP_TERM_ID = 1095;
@@ -116,5 +117,33 @@ class ProductHelper implements ProductHelperInterface{
         return crc32(implode(' ', $group));
     }
     
+    
+    /**
+     * 
+     * @param string $name
+     * @return boolean|\common\modules\store\helpers\model
+     */
+    public static function getModel($name){
+        if(($class = self::getClass($name))){
+            return new $class;
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     * @param string $name
+     * @return boolean|\common\modules\store\helpers\model
+     */
+    public static function getClass($name){
+        $module = Yii::$app->getModule('store');
+        
+        foreach($module->models as $model){
+            if(StringHelper::basename($model) == $name){
+                return $model;
+            }
+        }
+        return false;
+    }
     
 }

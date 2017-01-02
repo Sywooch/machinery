@@ -5,14 +5,11 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use common\modules\product\models\ProductRepository;
-use common\helpers\ModelHelper;
-use yii\helpers\ArrayHelper;
-use common\modules\store\models\ProductInterests;
-use common\modules\store\models\ProductDefault;
-use common\modules\store\models\ComparesSearch;
-use common\modules\store\models\ProductSearch;
-use common\modules\orders\models\PromoCodes;
+use common\modules\store\helpers\ProductHelper;
+use common\modules\store\models\product\ProductInterests;
+use common\modules\store\models\promo\PromoCodes;
+use common\modules\store\Finder;
+
 
 /**
  * Site controller
@@ -55,12 +52,12 @@ class ProductController extends Controller
      * Lists all ProductDefault models.
      * @return mixed 
      */
-    public function actionList()
+    public function actionList($model)
     {
-        $searchModel = new ProductSearch(new ProductDefault());
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $finder = Yii::$container->get(Finder::class, [ProductHelper::getModel($model)]);
+        $dataProvider = $finder->search(Yii::$app->request->queryParams);
         return $this->render('list', [
-            'searchModel' => $searchModel,
+            'searchModel' => $finder->produtSearch,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -70,11 +67,11 @@ class ProductController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id, $model)
     {
         $promoCodes = new PromoCodes();
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id, $model),
             'promoCodes' => $promoCodes
         ]);
     }
@@ -84,10 +81,10 @@ class ProductController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($model)
     {
 
-        $model = new ProductDefault();
+        $model = new $model;
         $model->loadDefaultValues();
 
         if ($model->load(Yii::$app->request->post())) {
@@ -108,9 +105,9 @@ class ProductController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $model)
     {
-        $model = $this->findModel($id); 
+        $model = $this->findModel($id, $model); 
 
         if ($model->load(Yii::$app->request->post())) {
             \common\modules\file\Uploader::getInstances($model);
@@ -131,27 +128,11 @@ class ProductController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $model)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id, $model)->delete();
 
         return $this->redirect(['index']);
-    }
-    
-    /**
-     * Finds the ProductDefault model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return ProductDefault the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = ProductDefault::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
     }
 
     /**
@@ -160,20 +141,16 @@ class ProductController extends Controller
      */
     public function actionIndex($id, $model)
     {   
-        $product = ProductDefault::findOne($id);
-        
+        $finder = Yii::$container->get(Finder::class, [ProductHelper::getModel($model)]);
+        $product = $finder->getProductById($id);
+
         if(empty($product)){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
-        
-        ProductInterests::push($product);
-        
-        $compareSearch = Yii::$container->get(ComparesSearch::class);
 
-        $compares = ArrayHelper::map($compareSearch,'entity_id','entity_id','model');
+        ProductInterests::push($product);
         return $this->render('index',[
             'product' => $product,
-            'compareIds' => isset($compares[$model]) ? $compares[$model] : [], 
         ]);
         
     }
@@ -184,22 +161,26 @@ class ProductController extends Controller
      */
     public function actionOtzyvy($id, $model, $tab)
     {   
-        $searchModel = new ProductRepository(ModelHelper::getModelByName($model));
-        $ids = $searchModel->getProductsByGroup($id);
-        $products = $searchModel->getProductsByIds($ids);
+        $finder = Yii::$container->get(Finder::class, [ProductHelper::getModel($model)]);
+        $products = $finder->getProductsByGroup($id);
 
         if(empty($products)){
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
-        $compares = ArrayHelper::map(Compares::getItems(),'entity_id','entity_id','model');
         return $this->render('index',[
             'products' => $products,
-            'product' => reset($products),
-            'compareIds' => isset($compares[$model]) ? $compares[$model] : [], 
+            'product' => current($products),
             'tab' => $tab
-        ]);
-        
+        ]);   
     }
 
-    
+    protected function findModel($id, $model)
+    {
+        $model = ProductHelper::getClass($model);
+        if (($model = $model::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 }

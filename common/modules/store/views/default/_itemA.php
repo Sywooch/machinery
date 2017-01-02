@@ -1,5 +1,5 @@
 <?php
-use frontend\modules\cart\helpers\CartHelper;
+use common\modules\store\helpers\CartHelper;
 use yii\helpers\Html;
 use common\modules\file\helpers\StyleHelper;
 use yii\helpers\ArrayHelper;
@@ -41,7 +41,7 @@ use common\modules\store\helpers\CatalogHelper;
                     <span class="price"><?php echo \Yii::$app->formatter->asCurrency($product->price); ?></span>
                     
                     <?= CartHelper::getBuyButton($product);?>
-                    <?= CatalogHelper::getCompareButton($product, $compareIds);?>
+                    <?= CatalogHelper::getCompareButton($product);?>
                     
                 </div>
             </div>

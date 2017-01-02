@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
-use frontend\modules\cart\Asset as CartAsset;
+use common\modules\store\CartAsset;
 use common\modules\file\helpers\StyleHelper;
 use yii2mod\bxslider\BxSlider;
 

@@ -5,8 +5,8 @@ namespace common\components;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use common\models\Alias;
-use common\helpers\ModelHelper;
 use common\helpers\URLify;
+use yii\helpers\StringHelper;
 
 class UrlBehavior extends Behavior
 {
@@ -52,7 +52,7 @@ class UrlBehavior extends Behavior
      * @return Alias
      */
     public function getAlias(){  
-        return $this->owner->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['model' => ModelHelper::getModelName($this->owner)]);
+        return $this->owner->hasOne(Alias::className(), ['entity_id' => 'id'])->where(['model' => StringHelper::basename(get_class($this->owner))]);
     }
     
     /**
@@ -67,7 +67,7 @@ class UrlBehavior extends Behavior
      * 
      */
     public function afterDelete(){
-        Alias::deleteAll(['entity_id' => $this->owner->id, 'model' => ModelHelper::getModelName($this->owner)]);
+        Alias::deleteAll(['entity_id' => $this->owner->id, 'model' => StringHelper::basename(get_class($this->owner))]);
     }
     
     /**
@@ -85,12 +85,12 @@ class UrlBehavior extends Behavior
             'entity_id' => $this->owner->id,
             'url' => null,
             'alias' => null,
-            'model' => ModelHelper::getModelName($this->owner),
+            'model' => StringHelper::basename(get_class($this->owner)),
         ]);
         
         $alias = method_exists ( $this->owner , 'urlPattern' ) ? $this->owner->urlPattern($alias) : $this->urlPattern($alias);
         if($alias->url == null){
-            $alias->url = strtolower(ModelHelper::getModelName($this->owner)).'/default' . '?id=' . $this->owner->id . '&model='. ModelHelper::getModelName($this->owner);
+            $alias->url = strtolower(StringHelper::basename(get_class($this->owner))).'/default' . '?id=' . $this->owner->id . '&model='. StringHelper::basename(get_class($this->owner));
         }
 
         $alias->save();

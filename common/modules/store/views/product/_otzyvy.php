@@ -1,10 +1,10 @@
 <?php
 use frontend\modules\comments\widgets\CommentsWidget;
-use common\helpers\ModelHelper;
+use yii\helpers\StringHelper;
 ?>
 
 <?=CommentsWidget::widget([
             'entity_id' => $model->id,
-            'model' => ModelHelper::getModelName($model),
+            'model' => StringHelper::basename(get_class($model)),
             'maxThread' => 4
     ]);

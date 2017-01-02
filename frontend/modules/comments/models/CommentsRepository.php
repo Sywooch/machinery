@@ -6,9 +6,9 @@ use frontend\modules\comments\models\Comments;
 use dektrium\user\models\User;
 use dektrium\user\models\Profile;
 use common\modules\file\models\File;
-use common\helpers\ModelHelper;
 use yii\data\ActiveDataProvider;
 use yii\base\Model;
+use yii\helpers\StringHelper;
 
 class CommentsRepository extends Model {
 
@@ -61,7 +61,7 @@ class CommentsRepository extends Model {
                     ->from(Comments::tableName())
                     ->leftJoin(User::tableName().' as user', 'user.id = comments.user_id')
                     ->leftJoin(Profile::tableName().' as profile', 'profile.user_id = comments.user_id')
-                    ->leftJoin(File::tableName().' as file', 'file.entity_id = comments.user_id AND file.model="'.ModelHelper::getModelName(Profile::class).'" AND file.field="avatar" AND file.delta = 0')
+                    ->leftJoin(File::tableName().' as file', 'file.entity_id = comments.user_id AND file.model="'.StringHelper::basename(Profile::class).'" AND file.field="avatar" AND file.delta = 0')
                     ->where([
                         'comments.id' => $model->id
                     ])->one();
@@ -91,7 +91,7 @@ class CommentsRepository extends Model {
                     ->from(Comments::tableName())
                     ->leftJoin(User::tableName().' AS "user"', '"user".id = comments.user_id')
                     ->leftJoin(Profile::tableName().' AS "profile"', '"profile".user_id = comments.user_id')
-                    ->leftJoin(File::tableName().' as file', 'file.entity_id = comments.user_id AND file.model=\''.ModelHelper::getModelName(Profile::class).'\' AND file.field=\'avatar\' AND file.delta = 0')
+                    ->leftJoin(File::tableName().' as file', 'file.entity_id = comments.user_id AND file.model=\''.StringHelper::basename(Profile::class).'\' AND file.field=\'avatar\' AND file.delta = 0')
                     ->where([
                         'comments.entity_id' => $model->entity_id,
                         'comments.model' => $model->model  

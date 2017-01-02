@@ -1,5 +1,5 @@
 <?php
-use frontend\modules\cart\helpers\CartHelper;
+use common\modules\store\helpers\CartHelper;
 use yii\helpers\Html;
 use common\modules\file\helpers\StyleHelper;
 use yii\helpers\ArrayHelper;

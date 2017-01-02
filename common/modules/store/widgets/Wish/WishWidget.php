@@ -1,8 +1,7 @@
 <?php
 namespace common\modules\store\widgets\Wish;
 
-use Yii;
-use common\modules\store\models\WishlistSearch;
+use common\modules\store\models\wish\WishlistSearch;
 
 class WishWidget extends \yii\bootstrap\Widget
 {

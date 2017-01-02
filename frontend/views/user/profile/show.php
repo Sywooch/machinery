@@ -9,7 +9,7 @@ use common\modules\file\helpers\FileHelper;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap\Modal;
 use yii\widgets\ActiveForm;
-use frontend\modules\cart\Asset as CartAsset;
+use common\modules\store\CartAsset;
 
 CartAsset::register($this);
 
@@ -151,6 +151,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?=Html::a('Печатная версия',['/orders/default/print', 'id' => $order->id],['target' => '_blank','class' => 'pull-right'])?>
     </div>
 </div>
-<?=$this->render('../../../modules/cart/views/default/_items',['order' => $order]);?>
+<?=$this->render('../../../../common/modules/store/views/cart/_items',['order' => $order]);?>
 <?php endforeach;?>
 </div>

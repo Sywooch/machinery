@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use frontend\modules\cart\Asset as CartAsset;
+use common\modules\store\CartAsset;
 use yii\widgets\Breadcrumbs;
 
 CartAsset::register($this);

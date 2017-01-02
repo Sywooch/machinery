@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
-use frontend\modules\cart\Asset as CartAsset;
-use frontend\modules\cart\helpers\CartHelper;
+use common\modules\store\CartAsset;
+use common\modules\store\helpers\CartHelper;
 use common\modules\store\helpers\ProductHelper;
 use common\modules\store\helpers\CatalogHelper;
 use kartik\rating\StarRating;
@@ -75,10 +75,10 @@ $this->params['breadcrumbs'] = ProductHelper::getBreadcrumb($product);
             </section>
             <section class="buy-block">
                 <div class="inline">
-                    <?php echo CatalogHelper::getCompareButton($product, $compareIds);?>
+                    <?php echo CatalogHelper::getCompareButton($product);?>
                 </div> 
                 <div class="inline">
-                    <?php echo CatalogHelper::getWishButton($product, $compareIds);?>
+                    <?php echo CatalogHelper::getWishButton($product);?>
                 </div> 
             </section>
         </aside>

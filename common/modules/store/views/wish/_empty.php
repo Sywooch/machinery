@@ -13,6 +13,5 @@ $this->params['breadcrumbs'][] = $this->title;
     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
 ]) ?>
 <h1><?=$this->title;?></h1>
-<?= $this->render('../../../../views/user/profile/_tabs',['id' => $user->id, 'action' => 'wish']);?>
 
 <div>Пока еще не добавлено продуктов</div>

@@ -5,9 +5,8 @@ namespace frontend\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use dektrium\user\controllers\ProfileController as ProfileControllerBase;
-use common\helpers\ModelHelper;
-use common\modules\orders\models\Orders;
-use frontend\modules\catalog\models\Wishlist;
+use yii\helpers\StringHelper;
+use common\modules\store\models\order\Orders;
 
 class ProfileController extends ProfileControllerBase
 {
@@ -53,7 +52,7 @@ class ProfileController extends ProfileControllerBase
            if($attributes != $profile->attributes){
                if($profile->validate()){
                    $profile->save();
-                   return ['output' => current(Yii::$app->request->post(ModelHelper::getModelName($profile))), 'message' => ''];
+                   return ['output' => current(Yii::$app->request->post(StringHelper::basename(get_class($profile)))), 'message' => ''];
                }else{
                    return ['output' => '', 'message' => current($profile->user->getErrors())[0]];
                }
@@ -66,7 +65,7 @@ class ProfileController extends ProfileControllerBase
                $profile->user->scenario = 'update';
                if($profile->user->validate()){
                    $profile->user->save();
-                   return ['output' => current(Yii::$app->request->post(ModelHelper::getModelName($profile->user))), 'message' => ''];
+                   return ['output' => current(Yii::$app->request->post(StringHelper::basename(get_class($profile->user)))), 'message' => ''];
                }else{
                    return ['output' => '', 'message' => current($profile->user->getErrors())[0]];
                }

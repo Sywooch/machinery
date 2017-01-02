@@ -6,8 +6,8 @@ use yii\bootstrap\Modal;
 use yii\jui\AutoComplete;
 use yii\helpers\Url;
 use yii\web\JsExpression;
-use common\modules\orders\PromoAsset;
-use common\helpers\ModelHelper;
+use common\modules\store\PromoAsset;
+use yii\helpers\StringHelper;
 
 PromoAsset::register($this);
 
@@ -23,8 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Update', ['update', 'id' => $model->id, 'model' => StringHelper::basename(get_class($model))], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->id, 'model' => StringHelper::basename(get_class($model))], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ?> 
         <br/>
         <div class="form-group">
-            <?= Html::submitButton( 'add', ['class' =>  'btn btn-primary', 'onClick' => "promo.add($('#add-code'),'".$model->id."','".ModelHelper::getModelName($model)."');"]) ?>
+            <?= Html::submitButton( 'add', ['class' =>  'btn btn-primary', 'onClick' => "promo.add($('#add-code'),'".$model->id."','".StringHelper::basename(get_class($model))."');"]) ?>
         </div>
         <?php Modal::end(); ?>
     </p>

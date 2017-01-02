@@ -4,7 +4,6 @@ namespace backend\widgets\AdminMenu;
 
 use Yii;
 use yii\helpers\Html;
-use backend\widgets\AdminMenu\Url;
 
 class TopMenu extends \yii\bootstrap\Widget
 {
