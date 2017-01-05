@@ -42,6 +42,8 @@ FileAsset::register($this);
     
     <?= $form->field($model, 'old_price')->textInput() ?>
 
+    <?= $form->field($model, 'short')->textarea(['rows' => 3]) ?>
+    
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
     
     <?= $form->field($model, 'photos[]')->widget(FileInput::classname(), FileHelper::FileInputConfig($model, 'photos')); ?>
