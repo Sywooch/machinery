@@ -54,9 +54,11 @@ class ProductController extends Controller
      */
     public function actionList($model)
     {
-        $finder = Yii::$container->get(Finder::class, [ProductHelper::getModel($model)]);
+        $model = ProductHelper::getModel($model);
+        $finder = Yii::$container->get(Finder::class, [$model]);
         $dataProvider = $finder->search(Yii::$app->request->queryParams);
         return $this->render('list', [
+            'model' => $model,
             'searchModel' => $finder->produtSearch,
             'dataProvider' => $dataProvider,
         ]);
@@ -84,13 +86,13 @@ class ProductController extends Controller
     public function actionCreate($model)
     {
 
-        $model = new $model;
+        $model = ProductHelper::getModel($model);
         $model->loadDefaultValues();
 
         if ($model->load(Yii::$app->request->post())) {
             \common\modules\file\Uploader::getInstances($model);
             if($model->save()){
-                 return $this->redirect(['view', 'id' => $model->id]);
+                 return $this->redirect(['view', 'id' => $model->id, 'model' => \yii\helpers\StringHelper::basename(get_class($model))]);
             }
         } else {
             return $this->render('create', [
@@ -112,7 +114,7 @@ class ProductController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             \common\modules\file\Uploader::getInstances($model);
             if($model->save()){
-                 return $this->redirect(['view', 'id' => $model->id]);
+                 return $this->redirect(['view', 'id' => $model->id, 'model' => \yii\helpers\StringHelper::basename(get_class($model))]);
             }
         }
         
@@ -132,7 +134,7 @@ class ProductController extends Controller
     {
         $this->findModel($id, $model)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'model' => $model]);
     }
 
     /**
