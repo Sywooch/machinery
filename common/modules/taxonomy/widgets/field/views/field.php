@@ -6,13 +6,14 @@ use yii\web\JsExpression;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 use common\helpers\ModelHelper;
 use yii\helpers\ArrayHelper;
+use yii\helpers\StringHelper;
 
 ?>
 
 <div class="field-group">
     
     <?= Select2::widget([
-            'name' => ModelHelper::getModelName($field->model) . '[' .$field->attribute . '][]',
+            'name' => StringHelper::basename(get_class($field->model)) . '[' .$field->attribute . '][]',
             'value' => ArrayHelper::getColumn($field->model->{$field->attribute}, 'id'),
             'options' => [
                 'placeholder' => 'Select terms ...', 
@@ -22,7 +23,7 @@ use yii\helpers\ArrayHelper;
                 'allowClear' => true,
                 'minimumInputLength' => 1,
                 'ajax' => [
-                    'url' => '/admin/'. TaxonomyHelper::AJAX_SELECT_URL . '?vocabularyId=' . $field->vocabularyId,
+                    'url' => '/'. TaxonomyHelper::AJAX_SELECT_URL . '?vocabularyId=' . $field->vocabularyId,
                     'dataType' => 'json',
                     'data' => new JsExpression('function(params) { return {name:params.term}; }')
                 ],
