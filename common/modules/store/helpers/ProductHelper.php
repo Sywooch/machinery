@@ -8,7 +8,6 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use common\models\Alias;
 use common\helpers\URLify;
-use common\helpers\ModelHelper;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 use common\modules\store\models\product\ProductInterface;
 
@@ -95,9 +94,9 @@ class ProductHelper{
      */
     public function urlPattern(ProductInterface $entity, Alias $alias){
         $alias->alias = URLify::url($entity->helper->titlePattern($entity)) .'-'. $entity->id;     
-        $alias->url = 'store/product?id=' . $entity->id . '&model='. ModelHelper::getModelName($entity);
+        $alias->url = 'store/product?id=' . $entity->id . '&model='. StringHelper::basename(get_class($entity));
         $alias->groupAlias = URLify::url($entity->title);
-        $alias->groupUrl = 'store/product/group?id=' . $entity->group . '&model='. ModelHelper::getModelName($entity); 
+        $alias->groupUrl = 'store/product/group?id=' . $entity->group . '&model='. StringHelper::basename(get_class($entity)); 
         $alias->groupId = $entity->group;
         
         $link = ArrayHelper::getColumn(TaxonomyHelper::order($entity->catalog), 'transliteration');
