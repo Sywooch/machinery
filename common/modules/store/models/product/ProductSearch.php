@@ -11,7 +11,7 @@ use common\modules\store\components\StoreUrlRule;
 
 class ProductSearch extends Model
 {
-    private $_model;
+    protected $_model;
     
     public $id;
     public $group;
@@ -29,6 +29,18 @@ class ProductSearch extends Model
         parent::__construct($config);
     }
     
+    /**
+     * 
+     * @return ProductInterface
+     */
+    public function getModel(){
+        return $this->_model;
+    }
+    
+    /**
+     * 
+     * @param ProductInterface $model
+     */
     public function setModel(ProductInterface $model){
         $this->_model = $model;
     }
