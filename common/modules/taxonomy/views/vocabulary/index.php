@@ -32,12 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{list} {hierarchy} {update} {delete}',
                 'buttons' => [
                     'list' => function ($url, $model) {
-                        return Html::a('<i class="glyphicon glyphicon-list-alt"></i>', '/admin/taxonomy/items?TaxonomyItemsSearch[vid]=' . $model->id, [
+                        return Html::a('<i class="glyphicon glyphicon-list-alt"></i>', '/taxonomy/items?TaxonomyItemsSearch[vid]=' . $model->id, [
                                 'title' => Yii::t('yii', 'List'),
                         ]);
                     },
                     'hierarchy' =>  function ($url, $model) {
-                        return Html::a('<i class="glyphicon glyphicon-align-right"></i>', '/admin/taxonomy/items/hierarchy/?TaxonomyItemsSearch[vid]=' . $model->id, [
+                        return Html::a('<i class="glyphicon glyphicon-align-right"></i>', '/taxonomy/items/hierarchy/?TaxonomyItemsSearch[vid]=' . $model->id, [
                             'title' => Yii::t('yii', 'Hierarchy'),
                         ]);
                     },      
