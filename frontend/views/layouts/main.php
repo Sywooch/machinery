@@ -47,6 +47,7 @@ AppAsset::register($this);
     ?>
     
 <div class="wrap">
+    test
     <div class="container-fluid">
         <div class="control row">
             <div class="col-lg-5"><?=SearchForm::widget();?></div>
