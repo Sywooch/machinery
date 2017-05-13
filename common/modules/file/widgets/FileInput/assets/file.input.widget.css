@@ -1,0 +1,117 @@
+.file-input.theme-explorer {
+    display: block;
+    width: 100%;
+    padding: 0px;
+    margin: 15px 0;
+    background: #f5f6fA;
+    border-radius: 4px;
+    line-height: normal;
+    text-align: left;
+    overflow: hidden;
+
+}
+
+.file-input .btn-default {
+    background-color: transparent;
+}
+
+.file-input .btn-default:hover {
+    background-color: transparent;
+}
+
+.file-input.theme-explorer .btn.btn-primary {
+    border-radius: 0px 4px 4px 0px;
+}
+
+.file-input.theme-explorer .file-preview {
+    border-radius: 0px;
+    border: 0px solid #ddd;
+    padding: 0px;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+.file-input.theme-explorer .file-drop-zone {
+    border: 0px dashed #aaa;
+    border-radius: 0px;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0px;
+}
+
+.file-input.theme-explorer .file-caption-main {
+    padding: 15px;
+}
+
+.file-input.theme-explorer table {
+    border: none;
+    margin-bottom: 0px;
+}
+
+.file-input.theme-explorer table td {
+    border: none;
+    padding: 15px 15px;
+    border-top: 1px solid #e8e8e8;
+}
+
+.file-input.theme-explorer table tr {
+    position: relative;
+    margin: 0;
+    padding: 20px 15px;
+    -webkit-animation: fileuploaderSlideIn 0.4s ease;
+    animation: fileuploaderSlideIn 0.4s ease;
+}
+
+.file-input.theme-explorer table tr:first-child td {
+    border: none;
+}
+
+.file-input.theme-explorer .file-drag-handle,
+.file-input.theme-explorer .kv-file-zoom,
+.file-input.theme-explorer .kv-file-upload,
+.file-input.theme-explorer .fileinput-remove,
+.file-input.theme-explorer .file-upload-indicator,
+.file-input.theme-explorer .fileinput-upload {
+    display: none;
+}
+
+.file-input.theme-explorer .kv-file-remove {
+    margin-top: 10px;
+    border: none;
+}
+
+.file-input.theme-explorer .kv-file-content {
+    width: 1%;
+}
+
+.file-input.theme-explorer .kv-file-content img {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 4px;
+}
+
+.file-input.theme-explorer .file-details-cell {
+    text-align: left;
+    max-width: 480px;
+}
+
+.file-input.theme-explorer .file-actions-cell {
+    width: 1%;
+}
+
+.file-input.theme-explorer .file-details-cell .explorer-caption {
+    width: 100%;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 1;
+}
+
+.file-input.theme-explorer .file-details-cell samp {
+    font-size: 12px;
+    color: #979fb8;
+}
+

@@ -14,6 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'prefix')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'transliteration')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'weight')->textInput() ?>
 
     <div class="form-group">

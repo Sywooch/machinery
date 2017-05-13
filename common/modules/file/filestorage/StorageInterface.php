@@ -4,14 +4,54 @@ use yii\db\ActiveRecordInterface;
 use yii\web\UploadedFile;
 
 interface StorageInterface{
-    public function getEntity();
+
+    /**
+     * @return ActiveRecordInterface
+     */
+    public function getEntity() : ActiveRecordInterface;
+
+    /**
+     * @param ActiveRecordInterface $entity
+     */
     public function setEntity(ActiveRecordInterface $entity);
-    public function getInstance();
+
+    /**
+     * @return UploadedFile
+     */
+    public function getInstance() : UploadedFile;
+
+    /**
+     * @param UploadedFile $instance
+     */
     public function setInstance(UploadedFile $instance);
+
+    /**
+     * @return string
+     */
     public function getField();
+
+    /**
+     * @param string $field
+     */
     public function setField(string $field);
-    public function save();
-    public function getName();
-    public function getUrl();
+
+    /**
+     * @return bool
+     */
+    public function save() : bool;
+
+    /**
+     * @return string
+     */
+    public function getName() : string;
+
+    /**
+     * @return string
+     */
+    public function getUrl() : string;
+
+    /**
+     * @param InstanceInterface $instance
+     */
     public function delete(InstanceInterface $instance);
 }

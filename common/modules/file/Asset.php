@@ -3,7 +3,7 @@
 namespace common\modules\file;
 
 use yii\web\AssetBundle;
- 
+
 class Asset extends AssetBundle
 {
     /**
@@ -11,11 +11,9 @@ class Asset extends AssetBundle
      */
     public $basePath = '@webroot';
     public $baseUrl = '/common/modules/file/assets';
-    public $css = [
-        'file.css'
-    ];
+    public $css = [];
 
-    public $js = [   
+    public $js = [
     ];
 
 }

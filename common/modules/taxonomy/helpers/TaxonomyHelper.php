@@ -2,22 +2,49 @@
 
 namespace common\modules\taxonomy\helpers;
 
-use yii\helpers\Html;
+use yii\db\ActiveRecordInterface;
 use yii\helpers\ArrayHelper;
-use common\modules\taxonomy\components\TermValidator;
+use common\modules\taxonomy\validators\TaxonomyAttributeValidator;
 use common\modules\taxonomy\models\TaxonomyItems;
 
 class TaxonomyHelper {
-    
-    const AJAX_SELECT_URL = 'taxonomy/items/terms-ajax';
+
     /**
-     * 
      * @param array $terms
-     * @param int $parent
-     * @param int $depth
+     * @param array $excludedIds
      * @return array
      */
-    public static function tree(array $terms, $parent = 0, $depth = NULL) {
+    public static function toArray(array $terms, array $excludedIds = [])
+    {
+
+        $terms = array_filter($terms, function ($item) use ($excludedIds) {
+            return !in_array($item->id, $excludedIds);
+        });
+
+        $terms = array_values($terms);
+
+        return ArrayHelper::toArray($terms, [
+            TaxonomyItems::class => [
+                'id',
+                'vid',
+                'pid',
+                'name',
+                'weight',
+                'childrens',
+                'vocabulary'
+            ]
+        ]);
+
+    }
+
+    /**
+     * @param array $terms
+     * @param int|null $parent
+     * @param null $depth
+     * @return array
+     */
+    public static function tree(array $terms, int $parent = null, $depth = NULL)
+    {
 
         $tree = self::treeMap($terms);
 
@@ -55,9 +82,6 @@ class TaxonomyHelper {
         $terms[] = $tree;
         return $terms;
     }
-
-    
-
 
     /**
      * 
@@ -123,10 +147,9 @@ class TaxonomyHelper {
         }
         return $tree;
     }
-    
+
     /**
-     * 
-     * @param array $terms
+     * @param TaxonomyItems $tree
      * @return int
      */
     public static function countChildren(TaxonomyItems $tree){
@@ -157,11 +180,10 @@ class TaxonomyHelper {
     }
 
     /**
-     * 
-     * @param [] $tree
-     * @param ineger $parent
-     * @param integer $weight
-     * @return []
+     * @param $tree
+     * @param int $parent
+     * @param int $weight
+     * @return array
      */
     public static function nes2Flat($tree, $parent = 0, $weight = 0 ) {
         $d = [];
@@ -186,26 +208,26 @@ class TaxonomyHelper {
         }
         return $d;
     }
-    
+
     /**
-     * 
-     * @param mixed $model
+     * @param ActiveRecordInterface $model
      * @return array
      */
-    public static function getTermFields($model){ 
+    public static function getTermAttributes(ActiveRecordInterface $model)
+    {
         $fields = [];
         $rules = $model->rules();
         foreach($rules as $rule){
-            if($rule[1] == TermValidator::class){
+            $field = array_shift($rule);
+            $type = current($rule);
+            if($type == TaxonomyAttributeValidator::class){
                 $fieldsTmp = [];
-                if(is_array($rule[0])){
-                    $fieldsTmp = $rule[0];
+                if(is_array($field)){
+                    $fieldsTmp = $field;
                 }else{
-                    $fieldsTmp[] = $rule[0];
+                    $fieldsTmp[] = $field;
                 }
-                
-                unset($rule[0]);
-                
+
                 foreach($fieldsTmp as $field){
                     $fields[$field] = array_merge([$field], $rule);
                 }
@@ -213,21 +235,23 @@ class TaxonomyHelper {
         }
         return $fields;
     }
-    
-    /**
-     * 
-     * @param [] $terms
-     * @return JSON
-     */
-    public static function terms2IndexedArray($terms){
 
+    /**
+     * @param array $terms
+     * @return string
+     */
+    public static function terms2IndexedArray(array $terms)
+    {
+       if(!is_array($terms) || !(current($terms) instanceof TaxonomyItems)){
+           return json_encode([]);
+       }
        $terms = ArrayHelper::getColumn($terms, function ($element) {
             return [
                 'id' => $element->id,
                 'name' => $element->name.':'.$element->vocabulary->name
             ]; 
         });
-        
+
         return json_encode(ArrayHelper::map($terms, 'id', 'name'));
     }
     

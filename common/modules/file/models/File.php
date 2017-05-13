@@ -18,11 +18,11 @@ namespace common\modules\file\models;
  */
 class File extends \yii\db\ActiveRecord
 {
-    
+
     const SCENARIO_ENTITY_VALIDATE = 'Entity validate';
-    
+
     const TABLE_FILES = 'files';
-   
+
     /**
      * @inheritdoc
      */
@@ -30,11 +30,11 @@ class File extends \yii\db\ActiveRecord
     {
         return self::TABLE_FILES;
     }
-    
+
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_ENTITY_VALIDATE] = ['field','model','name','path','size','delta','mimetype'];
+        $scenarios[self::SCENARIO_ENTITY_VALIDATE] = ['field', 'model', 'name', 'path', 'size', 'delta', 'mimetype'];
         return $scenarios;
     }
 

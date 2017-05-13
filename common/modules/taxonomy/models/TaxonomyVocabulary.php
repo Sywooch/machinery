@@ -3,7 +3,7 @@
 namespace common\modules\taxonomy\models;
 
 use Yii;
-use yii\validators\UniqueValidator;
+use common\helpers\URLify;
 
 
 /**
@@ -33,7 +33,7 @@ class TaxonomyVocabulary extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['weight'], 'double'],
-            [['name'], 'string', 'max' => 255],
+            [['name','transliteration'], 'string', 'max' => 255],
             [['prefix'], 'unique'],
         ];
     }
@@ -56,5 +56,16 @@ class TaxonomyVocabulary extends \yii\db\ActiveRecord
             ->select('COUNT(*)')
             ->from(TaxonomyItems::TABLE_TAXONOMY_ITEMS)
             ->where(['vid' => $this->id])->scalar(); 
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert) {
+        parent::beforeSave($insert);
+        if(!$this->transliteration){
+            $this->transliteration = URLify::url($this->name);
+        }
+        return true;
     }
 }

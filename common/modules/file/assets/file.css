@@ -1,3 +1,6 @@
 .file-thumbnail-footer .file-footer-caption{ display: none;}
 .file-thumbnail-footer  .file-drag-handle{ display: none; }
 .file-thumbnail-footer  .kv-file-zoom{ display: none; }
+.file-preview-image{
+    height: 160px;
+}

@@ -2,12 +2,9 @@
 
 namespace common\modules\taxonomy\models;
 
-use Yii;
+use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\modules\taxonomy\models\TaxonomyVocabulary;
-use common\modules\taxonomy\models\TaxonomyItems;
-
 
 class TaxonomyVocabularySearch extends TaxonomyVocabulary
 {
@@ -60,25 +57,5 @@ class TaxonomyVocabularySearch extends TaxonomyVocabulary
 
         return $dataProvider;
     }
-    
-    /* deprecated
-    public function getPrefixes($vocabularyIds = null){
-        return (new \yii\db\Query())
-            ->select(['prefix', 'id'])
-            ->from(TaxonomyVocabulary::TABLE_TAXONOMY_VOCABULARY) 
-            ->indexBy('id') 
-            ->filterWhere([
-                'id' => $vocabularyIds
-            ])    
-            ->orderBy(['weight' => SORT_ASC])       
-            ->column(); 
-    }
-    */
-    
-    
-    public function getVocabularies(){
-        return self::find()
-                ->indexBy('id')
-                ->orderBy(['weight' => SORT_ASC])->all(); 
-    }
+
 }

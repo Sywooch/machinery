@@ -2,19 +2,32 @@
 
 namespace common\modules\taxonomy\controllers;
 
-use Yii;
+use yii;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\models\TaxonomyItemsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
+use yii\web\Response;
+use yii\base\Module;
+use common\modules\taxonomy\Taxonomy;
+use common\modules\taxonomy\models\TaxonomyItemsHierarchy;
 
 /**
  * ItemsController implements the CRUD actions for TaxonomyItems model.
  */
 class ItemsController extends Controller
 {
+
+    private $_taxonomy;
+
+    public function __construct($id, Module $module, Taxonomy $taxonomy, array $config = [])
+    {
+        $this->_taxonomy = $taxonomy;
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * @inheritdoc
      */
@@ -26,7 +39,7 @@ class ItemsController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'update', 'view', 'create', 'delete', 'hierarchy','terms-ajax'],
+                        'actions' => ['index', 'update', 'view', 'create', 'delete', 'hierarchy', 'order', 'terms-ajax'],
                         'roles' => ['admin'],
                     ],
                 ],
@@ -35,6 +48,7 @@ class ItemsController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'order' => ['POST'],
                 ],
             ],
         ];
@@ -47,7 +61,7 @@ class ItemsController extends Controller
     public function actionIndex()
     {
         $searchModel = new TaxonomyItemsSearch();
-        
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -76,14 +90,13 @@ class ItemsController extends Controller
     {
         $model = new TaxonomyItems();
         $model->load(Yii::$app->request->queryParams);
-        $parentTerm = new TaxonomyItems();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['create', 'TaxonomyItems' => ['vid' => $model->vid]]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'parentTerm' => $parentTerm
+                'parentTerm' => new TaxonomyItems()
             ]);
         }
     }
@@ -97,13 +110,13 @@ class ItemsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
-        if($model->pid){
+
+        if ($model->pid) {
             $parentTerm = TaxonomyItems::findOne($model->pid);
-        }else{
+        } else {
             $parentTerm = new TaxonomyItems();
         }
-       
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -142,63 +155,52 @@ class ItemsController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
+
     /**
-     * 
-     * @return mixed
+     * @return array
      */
-    public function actionHierarchy() {
+    public function actionOrder()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $taxonomyItemsSearch = new TaxonomyItemsSearch();
-
-        if ($data = Yii::$app->request->post()) {
-            $orders = TaxonomyHelper::nes2Flat($data['data'],$data['pid']);
-            $taxonomyItemsSearch->setOrder($data['vid'], $orders);
-            
-            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->request->isPost) {
+            $this->_taxonomy->orderVocabulary(Yii::$app->request->post('vid'), Yii::$app->request->post('data'), Yii::$app->request->post('pid'));
             return ['result' => 'success'];
         }
 
-        if (($taxonomyItemsSearch->load(Yii::$app->request->get()) && $taxonomyItemsSearch->validate())) {
-            $terms = $taxonomyItemsSearch->getTaxonomyItemsByVid($taxonomyItemsSearch->vid);
-            $tree = TaxonomyHelper::tree($terms, $taxonomyItemsSearch->pid);
-            $parentTerm = $taxonomyItemsSearch::findOne($taxonomyItemsSearch->pid);
+        return [];
+    }
 
+    /**
+     * @return string
+     * @throws yii\base\InvalidConfigException
+     */
+    public function actionHierarchy()
+    {
+        $model = Yii::$container->get(TaxonomyItemsHierarchy::class);
+        if ($model->load(Yii::$app->request->get()) && $model->validate()) {
             return $this->render('hierarchy', [
-                        'model' => $taxonomyItemsSearch,
-                        'tree' => $tree,
-                        'vocabularyId' => $taxonomyItemsSearch->vid,
-                        'parentTerm' => $parentTerm, 
-                         
+                'model' => $model
             ]);
         }
-         
-        return $this->render('hierarchy', [
-                    'model' => $taxonomyItemsSearch,
-                    'tree' => [],
-        ]);
-    }
-    
-    public function actionTermsAjax($vocabularyId = null, $name, $exeptId = null){
 
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        
-        $taxonomyItemsSearch = new TaxonomyItemsSearch();
-        $terms = $taxonomyItemsSearch->getItemsByName($name, $vocabularyId);
-        
-        if(empty($terms)){
-            return ['results' => [] ];
-        }
-        
-        if($exeptId && key_exists($exeptId, $terms)){
-            unset($terms[$exeptId]);
-        }
-        
-        $terms = array_values($terms);
-        
-        return ['results' => $terms ];
-
+        return '';
     }
-    
-    
+
+    /**
+     * @param string $name
+     * @param null $vocabularyId
+     * @param null $excludedId
+     * @return array
+     */
+    public function actionTermsAjax(string $name, $vocabularyId = null, $excludedId = null)
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $terms = $this->_taxonomy->getItemsRepository()->findByName($name, $vocabularyId);
+
+        return ['results' => TaxonomyHelper::toArray($terms, [$excludedId])];
+    }
+
+
 }

@@ -2,29 +2,43 @@
 namespace common\modules\file;
 
 use Yii;
-use common\modules\file\InvalidStorageException;
 use common\modules\file\filestorage\Storage;
 
 class Module extends \yii\base\Module
 {
+    /**
+     * @var array Storage
+     */
     public $storages;
+
+    /**
+     * @var Storage
+     */
     public $storage;
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function init()
     {
         $this->createStorages();
         parent::init();
     }
 
-    private function createStorages(){
+    /**
+     * @throws InvalidStorageException
+     * @throws \yii\base\InvalidConfigException
+     */
+    private function createStorages()
+    {
         $storages = [];
-        foreach($this->storages as $name => $config){
+        foreach ($this->storages as $name => $config) {
             $class = array_shift($config);
             $storage = new $class($config);
-            if(!($storage instanceof Storage)){
+            if (!($storage instanceof Storage)) {
                 throw new InvalidStorageException();
             }
-            $storages[] = $storage; 
+            $storages[] = $storage;
         }
         $this->storages = $storages;
         $this->storage = Yii::$container->get($this->storage);

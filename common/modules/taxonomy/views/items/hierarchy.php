@@ -3,12 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\modules\taxonomy\Asset;
+use common\modules\taxonomy\helpers\TaxonomyHelper;
 
 Asset::register($this); 
-
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\TaxonomyItemsSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Hierarchy';
 $this->params['breadcrumbs'][] = ['label' => 'Taxonomy Vocabularies','url' => '/admin/taxonomy/vocabulary'];
@@ -37,9 +34,9 @@ $this->params['breadcrumbs'][] = 'Ordering';
     
  
     <script>
-        var tree = <?= json_encode($tree) ?>;
-        var vocabularyId = <?= $vocabularyId;?>;
-        var parentId = <?= $parentTerm?$parentTerm->pid:0;?>;
+        var tree = <?= json_encode(TaxonomyHelper::toArray($model->tree)) ?>;
+        var vocabularyId = <?= $model->vid;?>;
+        var parentId = <?= $model->parent ? $model->parent->pid : 0;?>;
     </script>
    
   <?php endif; ?>

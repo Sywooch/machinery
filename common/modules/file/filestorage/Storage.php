@@ -2,69 +2,85 @@
 namespace common\modules\file\filestorage;
 
 use yii\db\ActiveRecordInterface;
-use common\modules\file\filestorage\StorageInterface;
 use yii\web\UploadedFile;
 use yii\base\Object;
 
-abstract class Storage extends Object implements StorageInterface{
-    
+abstract class Storage extends Object implements StorageInterface
+{
+
+    /**
+     * @var ActiveRecordInterface
+     */
     protected $_entity;
+
+    /**
+     * @var string
+     */
     protected $_field;
+
+    /**
+     * @var UploadedFile
+     */
     protected $_instance;
 
-    public function __construct(array $config = []){
-        foreach($config as $key => $value){
+    /**
+     * Storage constructor.
+     * @param array $config
+     */
+    public function __construct(array $config = [])
+    {
+        foreach ($config as $key => $value) {
             $this->{$key} = $value;
         }
     }
-    
+
     /**
-     * 
-     * @return ActiveRecordInterface
+     * {@inheritdoc}
      */
-    public function getEntity() {
+    public function getEntity() : ActiveRecordInterface
+    {
         return $this->_entity;
     }
 
     /**
-     * 
-     * @param ActiveRecordInterface $entity
+     * {@inheritdoc}
      */
-    public function setEntity(ActiveRecordInterface $entity) {
+    public function setEntity(ActiveRecordInterface $entity)
+    {
         $this->_entity = $entity;
     }
-    
+
     /**
-     * 
-     * @return UploadedFile
+     * {@inheritdoc}
      */
-    public function getInstance() {
+    public function getInstance() : UploadedFile
+    {
         return $this->_instance;
     }
-    
+
     /**
-     * 
-     * @param UploadedFile $instance
+     * {@inheritdoc}
      */
-    public function setInstance(UploadedFile $instance) {
+    public function setInstance(UploadedFile $instance)
+    {
         $this->_instance = $instance;
     }
-    
+
     /**
-     * 
-     * @return string
+     * {@inheritdoc}
      */
-    public function getField(){
+    public function getField()
+    {
         return $this->_field;
     }
-    
+
     /**
-     * 
-     * @param string $field
+     * {@inheritdoc}
      */
-    public function setField(string $field){
+    public function setField(string $field)
+    {
         $this->_field = $field;
     }
-        
+
 }
 

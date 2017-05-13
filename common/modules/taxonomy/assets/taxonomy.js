@@ -11,7 +11,7 @@ taxonomy.init = function(){
 
     taxonomy.writeTree(tree);
     taxonomy.nesTable();
-}
+};
 
 taxonomy.nesTable = function(){
     var that = this;
@@ -22,18 +22,18 @@ taxonomy.nesTable = function(){
     that.button.attr('disabled', 'disabled');
     that.button.click(function(){ 
             var data = that.conteiner.nestable('serialize');
-            $.post('', {vid:that.vid, pid:that.pid, data:data}, function(){ 
+        $.post('/taxonomy/items/order', {vid: that.vid, pid: that.pid, data: data}, function () {
                 that.button.attr('disabled', 'disabled'); 
             });
             return false; 
         });
-}
+};
 
 taxonomy.writeTree = function(tree){
     console.log(tree);
     var ol = this.treeBuild(tree);
-    this.conteiner.append(ol);  
-}
+    this.conteiner.append(ol);
+};
 
 taxonomy.treeBuild = function(tree){
     
@@ -57,7 +57,7 @@ taxonomy.treeBuild = function(tree){
         
         var lnk = $('<a>');
         lnk.attr('title', 'List');
-        lnk.attr('href','hierarchy?TaxonomyItemsRepository[vid]='+tree[key].vid+'&TaxonomyItemsRepository[pid]='+tree[key].id);
+        lnk.attr('href', '?TaxonomyItemsHierarchy[vid]=' + tree[key].vid + '&TaxonomyItemsHierarchy[pid]=' + tree[key].id);
         lnk.append(i);
         
         var div = $('<div>');
@@ -74,4 +74,4 @@ taxonomy.treeBuild = function(tree){
         ol.append(li);
     }
     return ol;
-}
+};

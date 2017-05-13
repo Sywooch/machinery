@@ -24,7 +24,7 @@ use yii\web\JsExpression;
                 'ajax' => [
                     'url' => 'terms-ajax',
                     'dataType' => 'json',
-                    'data' => new JsExpression('function(params) { return {exeptId:"'.$model->id.'", vocabularyId:"'.$model->vid.'",name:params.term}; }')
+                    'data' => new JsExpression('function(params) { return {excludedId:"' . $model->id . '", vocabularyId:"' . $model->vid . '", name:params.term}; }')
                 ],
                 'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
                 'templateResult' => new JsExpression('function(term) { return term.name; }'),

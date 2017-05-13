@@ -3,18 +3,17 @@
 namespace common\modules\store\models\product;
 
 use yii\db\ActiveRecord;
-use yii\helpers\StringHelper; 
-use common\modules\taxonomy\components\TermValidator;
+use yii\helpers\StringHelper;
 use yii\behaviors\TimestampBehavior;
 use common\modules\import\models\Sources;
 use common\modules\store\models\promo\PromoCodes;
 use common\modules\store\models\promo\PromoProducts;
 use common\modules\taxonomy\models\TaxonomyItems;
-use common\modules\store\models\product\ProductInterface;
 use common\models\Alias;
 use common\modules\store\helpers\ProductHelper;
 use common\modules\store\models\wish\Wishlist;
 use common\modules\store\models\compare\Compares;
+use common\modules\taxonomy\validators\TaxonomyAttributeValidator;
 
 
 class ProductDefault extends ActiveRecord implements ProductInterface
@@ -44,7 +43,7 @@ class ProductDefault extends ActiveRecord implements ProductInterface
             [['model'], 'string', 'max' => 50],
             [['title'], 'string', 'max' => 255],
             [['sku'], 'unique'],
-            [['terms','catalog'], TermValidator::class],
+            [['terms', 'catalog'], TaxonomyAttributeValidator::class],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dektrium\user\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['source_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sources::className(), 'targetAttribute' => ['source_id' => 'id']],
             [['photos'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png', 'maxFiles' => 2],

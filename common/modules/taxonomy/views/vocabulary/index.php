@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'hierarchy' =>  function ($url, $model) {
-                        return Html::a('<i class="glyphicon glyphicon-align-right"></i>', '/taxonomy/items/hierarchy/?TaxonomyItemsSearch[vid]=' . $model->id, [
+                        return Html::a('<i class="glyphicon glyphicon-align-right"></i>', '/taxonomy/items/hierarchy/?TaxonomyItemsHierarchy[vid]=' . $model->id, [
                             'title' => Yii::t('yii', 'Hierarchy'),
                         ]);
                     },      

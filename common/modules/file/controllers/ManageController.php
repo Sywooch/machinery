@@ -29,17 +29,17 @@ class ManageController extends Controller
             ],
         ];
     }
-    
+
     /**
-     * 
-     * @param int $id
-     * @param string $token
-     * @return string
+     * @param $id
+     * @param $token
+     * @return array
+     * @throws NotFoundHttpException
      */
     public function actionDelete($id, $token)
-    { 
+    {
         $file = Instance::findOne($id);
-        if(!$file || $token != FileHelper::getToken($file)){
+        if (!$file || $token != FileHelper::getToken($file)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
         $file->delete();

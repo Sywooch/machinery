@@ -1,15 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use kartik\select2\Select2;
-use yii\web\JsExpression;
-use kartik\file\FileInput;
-use common\modules\taxonomy\helpers\TaxonomyHelper;
-use common\modules\file\helpers\FileHelper;
+use common\modules\file\widgets\FileInput\FileInputWidget;
 use common\modules\file\Asset as FileAsset;
-use common\modules\taxonomy\widgets\field\TaxonomyField;
+use common\modules\taxonomy\widgets\Field\TaxonomyField as TaxonomyField;
 
 FileAsset::register($this);
 
@@ -45,8 +40,8 @@ FileAsset::register($this);
     <?= $form->field($model, 'short')->textarea(['rows' => 3]) ?>
     
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-    
-    <?= $form->field($model, 'photos[]')->widget(FileInput::classname(), FileHelper::FileInputConfig($model, 'photos')); ?>
+
+    <?= $form->field($model, 'photos', ['template' => '{input}{error}'])->widget(FileInputWidget::class); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
