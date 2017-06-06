@@ -2,11 +2,16 @@
 @import 'https://fonts.googleapis.com/css?family=PT+Sans';
 @import url('https://fonts.googleapis.com/css?family=Roboto:500');
 
- 
+
 html,
 body {
     height: 100%;
     font-size: 14px;
+
+}
+
+body {
+    overflow-y: scroll;
 }
 
 a:focus{
@@ -24,7 +29,6 @@ a:focus{
     height: auto;
     margin: 0 auto -60px;
     padding: 0 0 60px;
-    margin-left: 220px;
 }
 .btn-group.custom .btn{
     padding: 4px 12px;
@@ -76,9 +80,6 @@ a:focus{
     border-color: #f37f00;
     color: #fff;
 }
-.wrap > .container {
-    padding: 70px 15px 20px;
-}
 
 .header {
     height: 40px;
@@ -86,9 +87,7 @@ a:focus{
     margin-left: 220px;
 
 }
-.control{
-    border-bottom: 1px solid #ddd;
-}
+
 .item-remove {
     text-decoration: none;
     color: #ccc;
@@ -160,7 +159,7 @@ a:hover{
 }
 
 /* search form */
-#search-from{ margin-top: 18px; }
+#search-from{ margin-top: 10px; margin-left: 30px; }
 #search-from .input-group-addon{
     background-color: #fff;
     margin: 0px;
@@ -180,7 +179,7 @@ a:hover{
 }
 
 #search-from .select2-selection__arrow{ display: none;}
-#search-from .select2-selection{ border-left: 0px; box-shadow: none; }
+#search-from .select2-selection{ box-shadow: none; }
 .select2-container.select2-container--krajee .select2-dropdown,
 .select2-container.select2-container--krajee.select2-container--open .select2-selection,
 .select2-container.select2-container--krajee .select2-selection:focus{ border-color: #ccc;}
@@ -870,9 +869,9 @@ aside section .inline{
 }
 /* cart */
 
-#cart-block-widget{ float: right; height: 64px; border-left: 1px solid #eee; padding: 20px;}
+#cart-block-widget{ float: right; padding: 10px;}
 .mif-shopping-basket{ font-size: 24px; color: #f37f00; float: left; margin-right: 4px;
-background: url(../images/sprite.png) no-repeat -30px -0px;
+background: url(../images/sprite.png) no-repeat -35px -0px;
 display: block;
 width: 24px;
 height: 24px;
@@ -885,10 +884,10 @@ height: 24px;
      font-size: 12px;
 }
 .cart-total{ 
-    color: #f37f00; 
+    color: #000;
     font-weight: bold;
     font-size: 13px; 
-    line-height: 2;
+    line-height: 2.3;
     margin-left: 8px;
 }
 
@@ -914,14 +913,34 @@ height: 24px;
 
 }
 .login{
-    font-size: 13px;
+    font-size: 10px;
     float: right;
-    height: 64px;
-    border-left: 1px solid #eee;
-    padding: 20px;
-    line-height: 2;
+    padding: 10px;
+    line-height: 2.3;
     overflow: hidden;
 }
+
+.login a{
+    float: left;
+    font-size: 13px;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 0px;
+    margin: 0px 20px;
+
+}
+.login a:last-child{
+    margin-right: 0px;
+}
+
+.login span{
+    float: left;
+    border-left: 1px solid #ddd;
+    height: 16px;
+    display: block;
+    margin-top: 6px;
+}
+
 .login a.popover-toggle{
     color: #000;
 }
@@ -1296,26 +1315,25 @@ label + .cbx-block, .cbx-block + label, .cbx-block + .cbx-block, label .cbx-bloc
     min-width: 180px;
 }
 
-#wish-block-widget{
-        border-left: 1px solid #eee;
-}
 #wish-block-widget a{
     background-position: -28px -73px;
 }
 .sub-widget{
-        padding: 20px;
+
        float: right;
-       padding-right: 30px;
+      padding: 15px 20px 5px 20px;
        
 }
 .sub-widget a{
     display: block;
     height: 26px;
-    background: url('../images/sprite.png') no-repeat 0px -0px;
     border: 0px;
     color: #000;
-    padding-left: 30px;
     position: relative;
+    font-size: 16px;
+}
+.mif-compare{
+    margin-right: 4px;
 }
 .sub-widget a.active{
     background-position: -0px -24px;

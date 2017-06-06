@@ -22,4 +22,4 @@ backend/runtime/
 console/runtime/
 /TempData/
 
-.idea/
+environments/

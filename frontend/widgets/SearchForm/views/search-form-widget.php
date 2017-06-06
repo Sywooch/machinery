@@ -17,20 +17,16 @@ use yii\web\JsExpression;
     
     <?= $form->field($model, 'search', ['template' => '{input}'])->widget(Select2::classname(), [
             'options' => [
-                'placeholder' => 'Поиск', 
+                'placeholder' => 'Я ищу...',
                 'multiple' => false,
                
                 ],
             'size' => Select2::SMALL,   
             'showToggleAll' => false,
             'addon' =>[
-                'prepend' => [
-                    'content' => '<span class="glyphicon glyphicon-search"></span>',
-                    'asButton' => false
-                ],
                 'append' => [
                     'content' => Html::submitButton('', [
-                            'class' => 'btn btn-default glyphicon glyphicon-menu-right',
+                            'class' => 'btn btn-default glyphicon glyphicon-search',
                             'title' => 'Поиск',
                         ]),
                     'asButton' => true

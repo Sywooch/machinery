@@ -29,7 +29,10 @@
         "kartik-v/yii2-widget-datepicker": "@dev",
         "kartik-v/yii2-editable": "*",
         "tigrov/yii2-pgsql": "*@dev",
-        "vova07/yii2-imperavi-widget": "*"
+        "vova07/yii2-imperavi-widget": "*",
+        "kartik-v/yii2-slider": "dev-master",
+        "yii2mod/yii2-bx-slider": "*",
+        "kartik-v/yii2-checkbox-x": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -28,30 +28,13 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-    
-    <header class="header">
-       
-        <div class="container-fluid">
-            <div class="addition-menu">
-                <a href="/">Акции</a>
-                <a href="/">Обзоры</a>
-                <a href="/">Гарантия и сервис</a>
-                <a href="/">Оплата и доставка</a>
-                <a href="/">Контакты</a>
-            </div>
-        </div>
-    </header>
-    
-    <?php
-        echo CatalogMenu::widget(['vocabularyId' => Yii::$app->params['catalog']['vocabularyId']]);
-    ?>
-    
+
 <div class="wrap">
-    <div class="container-fluid">
+    <div class="container">
         <div class="control row">
-            <div class="col-lg-5"><?=SearchForm::widget();?></div>
-         
-            <div class="col-lg-7 menu-action-items">
+            <div class="col-lg-7"><?=SearchForm::widget();?></div>
+
+            <div class="col-lg-5 menu-action-items">
                 <?=$this->render('_login');?>
                 <?=CartBlock::widget();?>
                 <?=WishWidget::widget();?>
@@ -59,6 +42,11 @@ AppAsset::register($this);
             </div>
         </div>
     </div>
+</div>
+
+<?=CatalogMenu::widget(['vocabularyId' => Yii::$app->params['catalog']['vocabularyId']]);?>
+    
+<div class="wrap">
     <div class="container-fluid">
         <?= Alert::widget() ?>
         <?= $content ?>
