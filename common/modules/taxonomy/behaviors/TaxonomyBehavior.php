@@ -60,6 +60,10 @@ class TaxonomyBehavior extends Behavior
                 $data = TaxonomyItems::findAll(explode(',', $data));
             } elseif ($data instanceof TaxonomyItems) {
                 $data = [$this->owner->{$attribute}];
+            }else{
+                if((int)current(array_values($data))){
+                    $data = TaxonomyItems::findAll($data);
+                }
             }
 
             $this->owner->{$attribute} = $data;

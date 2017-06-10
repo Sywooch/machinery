@@ -57,7 +57,11 @@ class Url extends Object implements UrlInterface{
     public function validate(){
         return $this->_catalogPathValid & $this->_filterPathValid;
     }
-    
+
+    /**
+     * @param array $except
+     * @return mixed
+     */
     public function getTerms(array $except = []){
         if(empty($this->_terms)){
             foreach($this->_catalogTerms as $term){
@@ -75,7 +79,10 @@ class Url extends Object implements UrlInterface{
         }
         return $terms;
     }
-    
+
+    /**
+     *
+     */
     public function parse(){
         if($this->_catalogPath){
             $this->parseCatalog();
@@ -120,7 +127,7 @@ class Url extends Object implements UrlInterface{
     }
     
     public function parseCatalog(){
-        $chanks = explode('/', $this->_catalogPath);  
+        $chanks = explode('/', $this->_catalogPath);
         $this->_catalogTerms = TaxonomyItems::find()
                 ->where([
                     'transliteration' => explode('/', $this->_catalogPath)
@@ -130,6 +137,7 @@ class Url extends Object implements UrlInterface{
             foreach($this->_catalogTerms as $term){
                 if(!$term->pid){
                     $this->_catalogMainTerm = $term;
+                    $this->_catalogCategoryTerm = $term;
                 }else{
                     $this->_catalogCategoryTerm = $term;
                 }

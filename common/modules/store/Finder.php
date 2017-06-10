@@ -2,119 +2,188 @@
 
 namespace common\modules\store;
 
+use common\modules\store\models\product\ProductRepository;
 use Yii;
 use yii\base\Object;
 use yii\data\ActiveDataProvider;
 use common\modules\store\classes\uus\UUS;
 use common\modules\store\components\StoreUrlRule;
 use common\modules\store\models\product\ProductInterface;
-use common\modules\store\models\product\ProductSearch;
 use common\modules\store\models\compare\ComparesSearch;
-use common\modules\store\models\wish\WishlistSearch;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\models\User;
+use yii\data\Sort;
 
-class Finder extends Object{
-    
+class Finder extends Object
+{
+
+    /**
+     * @var
+     */
     public $module;
+
+    /**
+     * @var ProductInterface|null
+     */
     public $model;
-    
-    private $_produtSearch;
+
+    /**
+     * @var ProductRepository
+     */
+    private $_productRepository;
+
+    /**
+     * @var ComparesSearch
+     */
     private $_comparesSearch;
-    private $_wishSearch;
+
+    /**
+     * @var UUS
+     */
     private $_uus;
 
+    private $_sort;
 
-    public function __construct(ProductInterface $model = null, ProductSearch $produtSearch, ComparesSearch $comparesSearch, WishlistSearch $wishlistSearch, UUS $uus, $config = array()) {
+    /**
+     * Finder constructor.
+     * @param ProductInterface|null $model
+     * @param ProductRepository $productRepository
+     * @param ComparesSearch $comparesSearch
+     * @param UUS $uus
+     * @param array $config
+     */
+    public function __construct(ProductInterface $model = null, ProductRepository $productRepository, ComparesSearch $comparesSearch, UUS $uus, $config = array())
+    {
         $this->_uus = $uus;
         $this->model = $model;
-        $this->_produtSearch = $produtSearch;
-        if($model){
-            $this->_produtSearch->model = $model;
+        $this->_productRepository = $productRepository;
+        if ($model) {
+            $this->_productRepository->setModel($model);
         }
         $this->_comparesSearch = $comparesSearch;
-        $this->_wishSearch = $wishlistSearch;
-        
+
         parent::__construct($config);
     }
-    
-    public function getUus(){
+
+    public function getUus()
+    {
         return $this->_uus;
     }
 
-    public function getProdutSearch(){
-        return  $this->_produtSearch;
-    }
-    
-    public function getComparesSearch(){
-        return  $this->_comparesSearch;
-    }
-    
-    public function getWishSearch(){
-        return  $this->_wishSearch;
+    public function getProdutSearch()
+    {
+        return $this->_produtSearch;
     }
 
-    
+    public function getComparesSearch()
+    {
+        return $this->_comparesSearch;
+    }
+
+    public function getWishSearch()
+    {
+        return $this->_wishSearch;
+    }
+
     /**
-     * 
-     * @param StoreUrlRule $url
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public function search($params = []){
+    public function search($params = [])
+    {
         return $this->_produtSearch->search($params);
     }
-    
+
     /**
-     * 
+     *
      * @param StoreUrlRule $url
      * @return ActiveDataProvider
      */
-    public function searchByUrl(StoreUrlRule $url){
-        return $this->_produtSearch->searchByUrl($url, $this->module->defaultPageSize);
+    public function searchByUrl(StoreUrlRule $url)
+    {
+        $this->_sort = new Sort([
+            'attributes' => [
+                'age',
+                'price-asc' => [
+                    'asc' => ['price' => SORT_ASC],
+                    'desc' => ['price' => SORT_ASC],
+                    'label' => 'от дешевых',
+                ],
+                'price-desc' => [
+                    'asc' => ['price' => SORT_DESC],
+                    'desc' => ['price' => SORT_DESC],
+                    'label' => 'от дорогих',
+                ],
+            ],
+        ]);
+
+        return $this->_productRepository->search($url, $this->_sort);
     }
 
     /**
-     * 
+     *
      * @param int $id
      * @return mixed
      */
-    public function getProductById($id){
+    public function getProductById($id)
+    {
         return current($this->getProductsByIds([$id]));
     }
-    
+
     /**
-     * 
+     *
      * @param array $ids
      * @return mixed
      */
-    public function getProductsByIds(array $ids){
+    public function getProductsByIds(array $ids)
+    {
         return $this->_produtSearch->getProductsByIds($ids);
     }
-    
+
     /**
-     * 
+     *
      * @param string|array $groups
      * @return [] mixed
      */
-    public function getProductsByGroup($groups){
+    public function getProductsByGroup($groups)
+    {
         return $this->getProductsByIds($this->_produtSearch->getProductIdsByGroup($groups));
     }
-    
+
     /**
-     * 
+     *
      * @param TaxonomyItems $taxonomyItem
      * @return type
      */
-    public function getMostRatedId(TaxonomyItems $taxonomyItem){
+    public function getMostRatedId(TaxonomyItems $taxonomyItem)
+    {
         return $this->_produtSearch->getMostRatedId($taxonomyItem);
     }
-    
-    
-    public function getWishItems(User $user){
+
+
+    public function getWishItems(User $user)
+    {
         return $this->_wishSearch->getItems($this->_wishSearch->getIds($user));
     }
-    
-    public function getCompareItems(ProductInterface $entity = null){
+
+    public function getCompareItems(ProductInterface $entity = null)
+    {
         return $this->_comparesSearch->getItems($this->_comparesSearch->getIds($entity));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSort()
+    {
+        return $this->_sort;
+    }
+
+    /**
+     * @param mixed $sort
+     */
+    public function setSort($sort)
+    {
+        $this->_sort = $sort;
     }
 }

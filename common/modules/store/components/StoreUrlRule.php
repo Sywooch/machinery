@@ -40,11 +40,10 @@ class StoreUrlRule extends Url implements UrlRuleInterface {
             $params = [
                 'url' => $this
             ]; 
-            
+
             if($this->category){
                 return ['store/default/index', $params];
             }
-            
             return ['store/default/sub-categories', $params];
         }  
         

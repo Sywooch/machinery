@@ -2,14 +2,16 @@
 
 namespace common\modules\taxonomy\models;
 
+
 class TaxonomyVocabularyRepository
 {
     /**
-     * @return array
+     * @param array $ids
+     * @return array|\yii\db\ActiveRecord[]
      */
-    public function getVocabularies()
-    {
-        return TaxonomyVocabulary::find()
-            ->all();
+    public function getByIds(array $ids){
+        return TaxonomyVocabulary::find()->where([
+            'id' => $ids
+        ])->all();
     }
 }

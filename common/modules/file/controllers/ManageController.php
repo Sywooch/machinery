@@ -1,6 +1,8 @@
 <?php
+
 namespace common\modules\file\controllers;
 
+use common\modules\realty\models\entity\Entity;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\modules\file\helpers\FileHelper;
@@ -39,10 +41,21 @@ class ManageController extends Controller
     public function actionDelete($id, $token)
     {
         $file = Instance::findOne($id);
+
         if (!$file || $token != FileHelper::getToken($file)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+
         $file->delete();
+
+        if($file->model == 'Entity'){
+            $model = Entity::findOne($file->entity_id);
+            if(!$model->save()){
+                print_r($model->getErrors()); exit('aaaaaaaaaaa');
+            }
+        }
+
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return ['success' => true];
     }

@@ -11,14 +11,18 @@ $id = 'f' . $fieldId . '-' . time();
 
 ?>
 
-<?= Html::activeFileInput($model, $attribute . '[]', ['id' => $id, 'multiple' => 'multiple']) ?>
+<span id="<?= $id ?>w">
 
-<?php
-$this->registerJs(
-    "FileInputWidget.init('#" . $id . "'," . Json::encode($initialPreview) . "," . Json::encode($initialPreviewConfig) . ")",
-    View::POS_END
-);
+    <?= Html::activeFileInput($model, $attribute . '[]', ['id' => $id, 'multiple' => 'multiple']) ?>
 
-?>
+    <?php
+    $this->registerJs(
+        "FileInputWidget.init('#" . $id . "'," . Json::encode($initialPreview) . "," . Json::encode($initialPreviewConfig) . "," . ($showRemove ? 1 : 0) . ")",
+        View::POS_END
+    );
+
+    ?>
+
+</span>
 
 

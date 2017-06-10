@@ -54,7 +54,7 @@ return [
         ],
         'store' => [
             'class' => 'common\modules\store\Module',
-            'defaultPageSize' => 20,
+            'defaultPageSize' => 21,
             'maxItemsToCompare' => 100,
             'maxItemsToWish' => 100,
             'buyButtonText' => 'В корзину',

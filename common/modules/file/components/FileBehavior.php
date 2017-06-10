@@ -19,12 +19,12 @@ class FileBehavior extends Behavior
     /**
      * @var array
      */
-    private $_fileFields;
+    protected $_fileFields;
 
     /**
      * @var FileRepository
      */
-    private $_repository;
+    protected $_repository;
 
     public function __construct(FileRepository $repository, array $config = [])
     {
@@ -89,7 +89,7 @@ class FileBehavior extends Behavior
     public function __set($name, $value)
     {
         if (isset($this->_fileFields[$name])) {
-            $this->$name = $value;
+            $this->{$name} = $value;
         }
     }
 
@@ -98,10 +98,10 @@ class FileBehavior extends Behavior
      */
     public function afterSave()
     {
-       Uploader::save($this->owner);
+        Uploader::save($this->owner);
         if($this->countField){
             $model = $this->owner;
-            $model::updateAll([$this->countField => (bool)$this->_repository->count($this->owner->id)], ['id' => $this->owner->id]);
+            $model::updateAll([$this->countField => (int)$this->_repository->count($this->owner->id)], ['id' => $this->owner->id]);
         }
     }
 

@@ -17,8 +17,9 @@ class DefaultController extends Controller
 {
 
     /**
-     *
-     * @return mixed
+     * @param StoreUrlRule $url
+     * @return string
+     * @throws NotFoundHttpException
      */
     public function actionIndex(StoreUrlRule $url)
     {   
@@ -29,23 +30,23 @@ class DefaultController extends Controller
         $module = Yii::$app->getModule('store');
         $model = $module->models[$url->main->id];
         $finder = Yii::$container->get(Finder::class, [new $model]);
-        
-        $dataProvider = $finder->searchByUrl($url);
+
         return $this->render('index',[
             'finder' => $finder,
             'url' => $url,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $finder->searchByUrl($url),
+            'sort' => $finder->sort,
             'parent' => $url->main,
             'current' => $url->category,
-            'products' => $dataProvider->models,
         ]);
         
        
     }
-    
+
     /**
-     *
-     * @return mixed
+     * @param StoreUrlRule $url
+     * @return string
+     * @throws NotFoundHttpException
      */
     public function actionSubCategories(StoreUrlRule $url)
     {   

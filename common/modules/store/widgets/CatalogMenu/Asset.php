@@ -15,10 +15,8 @@ class Asset extends AssetBundle
     public $baseUrl = '/common/modules/store/widgets/CatalogMenu/assets';
 
     public $css = [
-        'catalog.menu.css',
     ];
     public $js = [
-        'catalog.menu.js',
     ];
         
     public $depends = [

@@ -18,27 +18,24 @@ class TaxonomyAttributeValidator extends Validator
         }
 
         if (is_string($data)) {
-
             foreach (explode(',', $data) as $id) {
                 if (!(int)$id) {
                     $this->addError($model, $attribute, 'Invalid term input.');
                     return;
                 }
             }
-
         } elseif (is_array($data)) {
-            foreach ($data as $term) {
-                if (!($term instanceof TaxonomyItems)) {
-                    $this->addError($model, $attribute, 'Invalid term input.');
+            foreach ($data as $item) {
+
+                if (!(int)$item && !($item instanceof TaxonomyItems)) {
+                    $this->addError($model, $attribute, 'Invalid term or id input.');
                     return;
                 }
             }
 
         } elseif (!($data instanceof TaxonomyItems)) {
-
             $this->addError($model, $attribute, 'Invalid term input.');
             return;
-            
         }
     }
 

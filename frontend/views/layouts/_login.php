@@ -18,6 +18,6 @@ BootstrapPluginAsset::register($this);
     </div>
     <div id="popover-overlay" ></div>
     <?php else:?>
-     <a href="/login">Войти</a><span></span><a href="/user/register" >Регистрация</a>
+     <a href="/login">Войти</a><span></span><a href="/user/register" ><i class="fa fa-user-o" aria-hidden="true"></i> Регистрация</a>
     <?php endif;?>
 </div>

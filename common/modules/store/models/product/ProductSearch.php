@@ -92,51 +92,7 @@ class ProductSearch extends Model
 
         return $dataProvider;
     }
-    
-    /**
-     * 
-     * @param StoreUrlRule $url
-     * @return ActiveDataProvider
-     */
-    public function searchByUrl(StoreUrlRule $url, $limit){
-        $query = $this->_model->find()
-                ->with([
-                    'terms',
-                    'files',
-                    'alias',
-                    'groupAlias',
-                    'wish',
-                    'compare'
-                ]); 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => $limit,
-            ]
-        ]); 
-        
-        if(!$url->main){
-            return $dataProvider;
-        }
 
-        $query->where(['id' => $this->getIdsByIndex(
-                    ArrayHelper::map($url->getTerms([$url->main]),'id','id','vid')
-        )]);
-        
-        return $dataProvider;
-    }
-    
-    public function getIdsByIndex(array $index){
-        $query = (new \yii\db\Query())
-                        ->select(['id'])
-                        ->from($this->_model->tableName())
-                        ->distinct();
-        foreach($index as $values){
-            $query->andWhere(['&&', 'index', new Expression('ARRAY['.implode(',', $values).']')]);
-        }
-        return $query->column();
-    }
-        
     /**
      * 
      * @param TaxonomyItems $taxonomyItem

@@ -1,6 +1,7 @@
 <?php
 namespace common\modules\store\controllers;
 
+use common\modules\file\Uploader;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
@@ -90,7 +91,7 @@ class ProductController extends Controller
         $model->loadDefaultValues();
 
         if ($model->load(Yii::$app->request->post())) {
-            \common\modules\file\Uploader::getInstances($model);
+            Uploader::getInstances($model);
             if($model->save()){
                  return $this->redirect(['view', 'id' => $model->id, 'model' => \yii\helpers\StringHelper::basename(get_class($model))]);
             }
@@ -112,7 +113,7 @@ class ProductController extends Controller
         $model = $this->findModel($id, $model); 
 
         if ($model->load(Yii::$app->request->post())) {
-            \common\modules\file\Uploader::getInstances($model);
+            Uploader::getInstances($model);
             if($model->save()){
                  return $this->redirect(['view', 'id' => $model->id, 'model' => \yii\helpers\StringHelper::basename(get_class($model))]);
             }

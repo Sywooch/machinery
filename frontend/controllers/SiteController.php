@@ -75,7 +75,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         
-                return $this->render('about');
+                return $this->render('index');
      
         
         $catalog = TaxonomyItems::findAll([11,12,3784,3887,3888,3889,5408,3891,3892]);

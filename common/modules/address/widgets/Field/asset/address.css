@@ -1,0 +1,31 @@
+.address-container{ position: relative;}
+.address-container .find{ cursor: pointer;}
+.address-map-field{ min-height: 300px; margin-top: 10px;}
+.yamap{ min-height: 300px; margin-top: 10px;}
+.actionUpdate .ymaps-2-1-23-search_layout_normal {
+    width: 320px;
+}
+.address-container .description{ font-size: 12px; margin-top: 4px !important; margin-bottom: 4px;}
+.address-container .description a{ 
+      border-bottom: 1px solid #c9d7e7;
+    color: #0066aa;
+    outline: medium none;
+    text-decoration: none;
+}
+
+.address-container .results{
+    background-color: #fff;
+    border: 1px solid #f3f3f3;
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    display: none;
+}
+.address-container .results .itm{ padding: 14px 20px; border-bottom: 1px solid #f3f3f3; line-height: 1.4; cursor: pointer; font-size: 14px;}
+.address-container .results .itm:hover{ background-color: #ffeba0; }
+.address-container .results .itm .desc{ color: #ccc; font-size: 13px;}
+.address-container .results .itm .addr{ color: #49afe4; }
+.address-container .form-control{ border-radius: 3px !important; }
+
+
+

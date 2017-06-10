@@ -7,16 +7,13 @@ use common\modules\store\helpers\CatalogHelper;
 Asset::register($this);
 
 ?>
-<nav class="main-nav  ">
-    <div class="mobile-nav__bg "></div>
+<nav class="main-nav">
     <div class="container">
         <ul class="menu align-justify">
             <?php foreach ($menuItems as $index => $mainItem): ?>
-                <li class="main-nav__item   ">
-                    <a class="icon" href="/ua/actions/?section%5B%5D=5340">
+                <li class="main-nav__item  ">
+                    <a href="/" class="<?=$index == 11 ? 'active' : ''?>">
                         <?=$mainItem->name?>
-                        <!--div class="sale-count-wrapper"><span class="sale-count">271</span></div-->
-
                     </a>
                     <?php if (!empty($mainItem->childrens)): ?>
                     <ul class="secondary-nav row ">
@@ -24,11 +21,8 @@ Asset::register($this);
                         <?php foreach($mainItem->childrens as $childrenItem):?>
 
                         <li class="col-lg-3 sub-item">
-                            <a href="/ua/actions/?section%5B%5D=5337">
-                                <div class="row secondary-nav__item">
-                                    <div class="col-lg-9 item-text"><?=$childrenItem->name?></div>
-                                    <div class="col-lg-3"><img src="//27.ua//upload/uf/b38/01_sale_02_min.jpg" alt=""></div>
-                                </div>
+                            <a href="/">
+                                <?=$mainItem->name?>
                             </a>
                         </li>
 
@@ -38,8 +32,5 @@ Asset::register($this);
                 </li>
             <?php endforeach; ?>
         </ul>
-        <!--div class="main-nav__more show-for-newxlarge mainNavItemMoreJS">
-            <a class="icon-more-arrow"> Ще </a>
-        </div-->
     </div>
 </nav>

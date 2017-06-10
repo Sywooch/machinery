@@ -3,47 +3,32 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
+use yii\jui\AutoComplete;
 
 ?>
 
 
-    <?php
-    $form = ActiveForm::begin([
-                'id' => 'search-from',
-                'method' => 'get',
-                'options' => [],
-    ]);
-    ?>
-    
-    <?= $form->field($model, 'search', ['template' => '{input}'])->widget(Select2::classname(), [
-            'options' => [
-                'placeholder' => 'Я ищу...',
-                'multiple' => false,
-               
-                ],
-            'size' => Select2::SMALL,   
-            'showToggleAll' => false,
-            'addon' =>[
-                'append' => [
-                    'content' => Html::submitButton('', [
-                            'class' => 'btn btn-default glyphicon glyphicon-search',
-                            'title' => 'Поиск',
-                        ]),
-                    'asButton' => true
-                ]
-            ], 
-            'pluginOptions' => [
-                
-                'minimumInputLength' => 1,
-                'ajax' => [
-                    'url' => '/admin/',
-                    'dataType' => 'json',
-                    'data' => new JsExpression('function(params) { return {name:params.term}; }')
-                ], 
-            ],
-        ]);
-    ?>
+<?php
+$form = ActiveForm::begin([
+    'id' => 'search-from',
+    'method' => 'get',
+    'options' => [],
+]);
+?>
 
 
-    <?php ActiveForm::end(); ?>
+<div class="input-group ">
+    <?= $form->field($model, 'search',['template' => '{input}'])->widget(\yii\jui\AutoComplete::classname(), [
+        'clientOptions' => [
+            'source' => ['USA', 'RUS'],
+        ],
+        'options' => ['class' => 'form-control ui-autocomplete-input', 'placeholder' => 'Я шукаю...']
+    ]); ?>
+    <div class="input-group-btn">
+        <button type="submit" class="btn btn-default glyphicon glyphicon-search"></button>
+    </div>
+</div>
+
+
+<?php ActiveForm::end(); ?>
 
