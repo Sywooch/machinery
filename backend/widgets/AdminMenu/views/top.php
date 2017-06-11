@@ -6,14 +6,9 @@ use backend\widgets\AdminMenu\Asset;
 ?>
 <div class="widget-sub-menu-block">
     <?php
-        /*if ($widget->isActive(['product-default','product-pc','product-av'])) {
-            echo Html::a('<div>Мобильный</div>', ['/product-default'], ['class' => $widget->isActive(['product-default'])]);
-            echo Html::a('<div>Компьютеры</div>', ['/product-pc'], ['class' => $widget->isActive(['product-pc'])]);
-            echo Html::a('<div>Аудио Видео</div>', ['/product-av'], ['class' => $widget->isActive(['product-av'])]);
-        }*/
-        
-        if($widget->url->getIsParentActive(['/store/product/list','/store/promo-products','/store/group-characteristics'])){
-            echo $widget->a('Продукты','/store/product/list?model=ProductDefault');
+
+        if($widget->url->getIsParentActive(['/store/product/index','/store/promo-products','/store/group-characteristics'])){
+            echo $widget->a('Продукты','/store/product/index');
             echo $widget->a('Промо продукты','/store/promo-products');
             echo $widget->a('Группы характеристик','/store/group-characteristics');
         }

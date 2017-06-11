@@ -51,7 +51,7 @@ Asset::register($this);
                 <div>
                     <?php foreach ($filterItems[$vocabulary->id] as $index => $term): ?>
                         <span data-url="/<?= FiltertHelper::link($url, $term); ?>"
-                              class="filter-item <?= isset($url->terms[$term->id]) ? 'active' : ''; ?>"><?= $term->name; ?></span>
+                              class="filter-item <?= isset($url->terms[$term['id']]) ? 'active' : ''; ?>"><?= $term['name']; ?></span>
                     <?php endforeach; ?>
                 </div>
             </section>

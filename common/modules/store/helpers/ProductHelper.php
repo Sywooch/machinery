@@ -86,63 +86,25 @@ class ProductHelper{
         $title = array_filter($title);
         return implode(' ', $title);
     }
-    
+
     /**
-     * 
-     * @param mixed $entity
-     * @return string
+     * @param ProductInterface $entity
+     * @param Alias $alias
+     * @return Alias
      */
-    public function urlPattern(ProductInterface $entity, Alias $alias){
-        $alias->alias = URLify::url($entity->helper->titlePattern($entity)) .'-'. $entity->id;     
-        $alias->url = 'store/product?id=' . $entity->id . '&model='. StringHelper::basename(get_class($entity));
+    public static function urlPattern(ProductInterface $entity, Alias $alias){
+        $alias->alias = URLify::url(self::titlePattern($entity)) .'-'. $entity->id;
+        $alias->url = 'store/product?id=' . $entity->id;
         $alias->groupAlias = URLify::url($entity->title);
-        $alias->groupUrl = 'store/product/group?id=' . $entity->group . '&model='. StringHelper::basename(get_class($entity)); 
+        $alias->groupUrl = 'store/product/group?id=' . $entity->group;
         $alias->groupId = $entity->group;
-        
-        $link = ArrayHelper::getColumn(TaxonomyHelper::order($entity->catalog), 'transliteration');
-        $alias->prefix = implode('/', $link);
+
+        $terms = ArrayHelper::map($entity->terms,'pid','transliteration','vid')[1];
+        ksort ($terms);
+
+        $alias->prefix = implode('/', $terms);
 
         return $alias;
     }
-    
-    /**
-     * 
-     * @param [] $attributes
-     * @return int
-     */
-    public static function createGroup($attributes){
-        $group = [];
-        $group[] = $attributes['model'];
-        return crc32(implode(' ', $group));
-    }
-    
-    
-    /**
-     * 
-     * @param string $name
-     * @return boolean|\common\modules\store\helpers\model
-     */
-    public static function getModel($name){
-        if(($class = self::getClass($name))){
-            return new $class;
-        }
-        return false;
-    }
-    
-    /**
-     * 
-     * @param string $name
-     * @return boolean|\common\modules\store\helpers\model
-     */
-    public static function getClass($name){
-        $module = Yii::$app->getModule('store');
-        
-        foreach($module->models as $model){
-            if(StringHelper::basename($model) == $name){
-                return $model;
-            }
-        }
-        return false;
-    }
-    
+
 }

@@ -8,6 +8,8 @@ use common\modules\taxonomy\models\TaxonomyItems;
 class TaxonomyAttributeValidator extends Validator
 {
 
+    public $type = 'array';
+
     public function validateAttribute($model, $attribute)
     {
 
@@ -27,7 +29,7 @@ class TaxonomyAttributeValidator extends Validator
         } elseif (is_array($data)) {
             foreach ($data as $item) {
 
-                if (!(int)$item && !($item instanceof TaxonomyItems)) {
+                if (!($item instanceof TaxonomyItems) && !(int)$item) {
                     $this->addError($model, $attribute, 'Invalid term or id input.');
                     return;
                 }
@@ -37,6 +39,8 @@ class TaxonomyAttributeValidator extends Validator
             $this->addError($model, $attribute, 'Invalid term input.');
             return;
         }
+
+        return true;
     }
 
 }

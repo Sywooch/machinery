@@ -3,14 +3,12 @@
 namespace common\modules\store;
 
 use common\modules\store\models\product\ProductRepository;
-use Yii;
 use yii\base\Object;
 use yii\data\ActiveDataProvider;
 use common\modules\store\classes\uus\UUS;
 use common\modules\store\components\StoreUrlRule;
 use common\modules\store\models\product\ProductInterface;
 use common\modules\store\models\compare\ComparesSearch;
-use common\modules\taxonomy\models\TaxonomyItems;
 use common\models\User;
 use yii\data\Sort;
 
@@ -18,61 +16,44 @@ class Finder extends Object
 {
 
     /**
-     * @var
-     */
-    public $module;
-
-    /**
-     * @var ProductInterface|null
-     */
-    public $model;
-
-    /**
      * @var ProductRepository
      */
-    private $_productRepository;
+    protected $_productRepository;
 
     /**
      * @var ComparesSearch
      */
-    private $_comparesSearch;
+    protected $_comparesSearch;
 
     /**
      * @var UUS
      */
     private $_uus;
 
+    /**
+     * @var
+     */
     private $_sort;
 
     /**
      * Finder constructor.
-     * @param ProductInterface|null $model
      * @param ProductRepository $productRepository
      * @param ComparesSearch $comparesSearch
      * @param UUS $uus
      * @param array $config
      */
-    public function __construct(ProductInterface $model = null, ProductRepository $productRepository, ComparesSearch $comparesSearch, UUS $uus, $config = array())
+    public function __construct(ProductRepository $productRepository, ComparesSearch $comparesSearch, UUS $uus, $config = array())
     {
         $this->_uus = $uus;
-        $this->model = $model;
         $this->_productRepository = $productRepository;
-        if ($model) {
-            $this->_productRepository->setModel($model);
-        }
         $this->_comparesSearch = $comparesSearch;
 
-        parent::__construct($config);
+    //    parent::__construct($config);
     }
 
     public function getUus()
     {
         return $this->_uus;
-    }
-
-    public function getProdutSearch()
-    {
-        return $this->_produtSearch;
     }
 
     public function getComparesSearch()
@@ -83,15 +64,6 @@ class Finder extends Object
     public function getWishSearch()
     {
         return $this->_wishSearch;
-    }
-
-    /**
-     * @param array $params
-     * @return ActiveDataProvider
-     */
-    public function search($params = [])
-    {
-        return $this->_produtSearch->search($params);
     }
 
     /**
@@ -132,16 +104,6 @@ class Finder extends Object
 
     /**
      *
-     * @param array $ids
-     * @return mixed
-     */
-    public function getProductsByIds(array $ids)
-    {
-        return $this->_produtSearch->getProductsByIds($ids);
-    }
-
-    /**
-     *
      * @param string|array $groups
      * @return [] mixed
      */
@@ -151,21 +113,18 @@ class Finder extends Object
     }
 
     /**
-     *
-     * @param TaxonomyItems $taxonomyItem
-     * @return type
+     * @param User $user
+     * @return mixed
      */
-    public function getMostRatedId(TaxonomyItems $taxonomyItem)
-    {
-        return $this->_produtSearch->getMostRatedId($taxonomyItem);
-    }
-
-
     public function getWishItems(User $user)
     {
         return $this->_wishSearch->getItems($this->_wishSearch->getIds($user));
     }
 
+    /**
+     * @param ProductInterface|null $entity
+     * @return static[]
+     */
     public function getCompareItems(ProductInterface $entity = null)
     {
         return $this->_comparesSearch->getItems($this->_comparesSearch->getIds($entity));

@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use common\modules\file\widgets\FileInput\FileInputWidget;
 use common\modules\file\Asset as FileAsset;
 use common\modules\taxonomy\widgets\Field\TaxonomyField as TaxonomyField;
+use common\modules\store\widgets\GroupField\ProductGroupField;
 
 FileAsset::register($this);
 
@@ -20,16 +21,18 @@ FileAsset::register($this);
                 'options' => ['enctype' => 'multipart/form-data'],
     ]);
     ?>
-    
+
+
+
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'catalog')->widget(TaxonomyField::classname(), ['vocabularyId' => 1]); ?>
+    <?= $form->field($model, 'cid')->widget(TaxonomyField::classname(), ['vocabularyId' => 1]); ?>
 
     <?= $form->field($model, 'index')->widget(TaxonomyField::classname()); ?>
-        
-    <?= $form->field($model, 'model')->textInput(['maxlength' => 50]) ?>
     
     <?= $form->field($model, 'sku')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'group')->widget(ProductGroupField::classname()); ?>
 
     <?= $form->field($model, 'available')->textInput() ?>
 

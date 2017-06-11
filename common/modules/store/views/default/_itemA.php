@@ -35,7 +35,6 @@ use common\modules\store\helpers\CatalogHelper;
         </div>
     </div>
     <div class="clearfix rating-line">
-
         <a href="/<?= $product->groupUrl->alias; ?>/otzyvy" class="pull-left comments">
             <i class="fa fa-comment-o" aria-hidden="true"></i>
             <?= $product->comments; ?> отзыва

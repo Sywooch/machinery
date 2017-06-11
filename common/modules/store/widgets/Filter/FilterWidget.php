@@ -1,20 +1,29 @@
 <?php
+
 namespace common\modules\store\widgets\Filter;
 
 use Yii;
+use yii\bootstrap\Widget;
 use yii\helpers\ArrayHelper;
 use common\modules\store\models\FilterModel;
 use common\modules\taxonomy\models\TaxonomyItems;
+use common\modules\taxonomy\models\TaxonomyItemsRepository;
 use common\modules\taxonomy\models\TaxonomyVocabularyRepository;
+use common\modules\store\models\product\ProductRepository;
 
-class FilterWidget extends \yii\bootstrap\Widget
+class FilterWidget extends Widget
 {
     const CACHE_TIME = 60 * 60 * 5;
 
     /**
-     * @var \common\modules\store\Finder
+     * @var ProductRepository
      */
-    public $finder;
+    protected $_productRepository;
+
+    /**
+     * @var TaxonomyItemsRepository
+     */
+    protected $_taxonomyItemsRepository;
 
     /**
      * @var \common\modules\store\components\StoreUrlRule
@@ -31,20 +40,12 @@ class FilterWidget extends \yii\bootstrap\Widget
      */
     private $_model;
 
-    public function __construct(TaxonomyVocabularyRepository $vocabularyRepository, $config = array())
+    public function __construct(ProductRepository $productRepository, TaxonomyItemsRepository $taxonomyItemsRepository, TaxonomyVocabularyRepository $vocabularyRepository, $config = array())
     {
+        $this->_productRepository = $productRepository;
+        $this->_taxonomyItemsRepository = $taxonomyItemsRepository;
         $this->_vocabularyRepository = $vocabularyRepository;
         parent::__construct($config);
-    }
-
-    /**
-     *
-     */
-    public function init()
-    {
-        if ($this->finder) {
-            $this->_model = new FilterModel($this->finder);
-        }
     }
 
     /**
@@ -52,23 +53,8 @@ class FilterWidget extends \yii\bootstrap\Widget
      */
     public function run()
     {
-        return $this->getFilterForm();
-    }
-
-
-    /**
-     * @return string
-     */
-    private function getFilterForm()
-    {
-
-        $filterTerms = $this->getFilterTermsByTerm($this->url->category);
-        if (empty($filterTerms)) {
-            return;
-        }
-
         return $this->render('filter-widget', [
-            'filterItems' => ArrayHelper::index($filterTerms, 'id', 'vid'),
+            'filterItems' => $this->getFilterItemsByTerm($this->url->category),
             'filterItemsCount' => [],
             'vocabularies' => $this->_vocabularyRepository->getVocabularies(),
             'model' => $this->_model,
@@ -78,23 +64,29 @@ class FilterWidget extends \yii\bootstrap\Widget
 
     /**
      * @param TaxonomyItems $term
-     * @return array|mixed|void
+     * @return array
      */
-    private function getFilterTermsByTerm(TaxonomyItems $term)
+    private function getFilterItemsByTerm(TaxonomyItems $term)
     {
         $filterTerms = Yii::$app->cache->get("filter:catalog:{$term->id}");
         if ($filterTerms === false) {
 
-            $filterTermIds = $this->_model->getFilterTermIds($term);
+            $filterTermIds = $this->_productRepository->getCategoryTermIds($term);
 
             if (!$filterTermIds) {
-                return;
+                return [];
             }
 
-            $filterTerms = ArrayHelper::index(TaxonomyItems::findAll($filterTermIds), 'id');
+            $terms = $this->_taxonomyItemsRepository->getByIds($filterTermIds, true);
 
-            Yii::$app->cache->set("filter:catalog:{$term->id}", $filterTerms, self::CACHE_TIME);
+            if (!$terms) {
+                return [];
+            }
+
+            $terms = ArrayHelper::index($terms, 'id', 'vid');
+
+            Yii::$app->cache->set("filter:catalog:{$term->id}", $terms, self::CACHE_TIME);
         }
-        return $filterTerms;
+        return $terms;
     }
 }

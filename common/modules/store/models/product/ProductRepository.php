@@ -6,11 +6,18 @@ use yii\helpers\ArrayHelper;
 use yii\data\ActiveDataProvider;
 use common\modules\store\components\StoreUrlRule;
 use yii\data\Sort;
+use common\modules\taxonomy\models\TaxonomyItems;
 
 class ProductRepository
 {
 
-    public $_model;
+    /**
+     * @param int $id
+     * @return static
+     */
+    public function getById(int $id){
+        return Product::findOne($id);
+    }
 
     /**
      * @param StoreUrlRule $url
@@ -19,7 +26,7 @@ class ProductRepository
      */
     public function search(StoreUrlRule $url, Sort $sort = null)
     {
-        $query = $this->_model->find()
+        $query = Product::find()
             ->with([
                 'terms',
                 'files',
@@ -42,19 +49,30 @@ class ProductRepository
     }
 
     /**
-     * @return mixed
+     * @param TaxonomyItems $term
+     * @return array
      */
-    public function getModel()
+    public function getCategoryTermIds(TaxonomyItems $term)
     {
-        return $this->_model;
+        return (new \yii\db\Query())
+            ->select('id')
+            ->from('(SELECT unnest(index) as id FROM ' . Product::tableName() . ' WHERE index && ARRAY[' . $term->id . ']) as t0')
+            ->distinct()
+            ->column();
     }
 
     /**
-     * @param mixed $model
+     * @param string $name
+     * @param int|null $limit
+     * @return mixed
      */
-    public function setModel($model)
+    public function findByName(string $name, int $limit = null)
     {
-        $this->_model = $model;
+        return Product::find()
+            ->where(['like', 'title', $name])
+            ->limit($limit)
+            ->all();
     }
+
 }
 

@@ -24,3 +24,4 @@ console/runtime/
 
 environments/
 *.sql
+.idea/

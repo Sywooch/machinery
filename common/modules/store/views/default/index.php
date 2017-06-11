@@ -25,7 +25,7 @@ $products = $dataProvider->getModels();
     <div class="row ">
         <div class="col-lg-3">
             <noindex>
-                <?= FilterWidget::widget(['finder' => $finder, 'url' => $url]); ?>
+                <?= FilterWidget::widget(['url' => $url]); ?>
             </noindex>
         </div>
         <div class="col-lg-9">

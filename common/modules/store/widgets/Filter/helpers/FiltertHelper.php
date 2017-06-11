@@ -3,41 +3,41 @@
 namespace common\modules\store\widgets\Filter\helpers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use common\modules\store\components\StoreUrlRule;
 use common\modules\taxonomy\models\TaxonomyItems;
 
-class FiltertHelper {
-    
+class FiltertHelper
+{
+
     /**
-     * 
-     * @param TaxonomyItems $term
+     * @param StoreUrlRule $url
+     * @param array $term
      * @return string
      */
-    public static function link(StoreUrlRule $url, TaxonomyItems $term){
-        $terms = $url->filterTerms; 
+    public static function link(StoreUrlRule $url, array $term)
+    {
+        $terms = $url->filterTerms;
+        $term = (object)$term;
 
-        if(isset($terms[$term->id])){
+        if (isset($terms[$term->id])) {
             unset($terms[$term->id]);
-        }else{
+        } else {
             $terms[$term->id] = $term;
-        }        
-        
-        $prepare = [];
-        foreach($terms as $term){
-            $prepare[$term->vid][] = $term->id;
         }
+
         $return = [];
-        foreach($prepare as $vid => $ids){
+        foreach (ArrayHelper::map($terms, 'id', 'id', 'vid') as $vid => $ids) {
             $return[] = StoreUrlRule::TERM_INDICATOR . $vid . '-' . implode('-', $ids);
         }
-        
-        if(empty($return)){
-           return $url->catalogPath; 
+
+        if (empty($return)) {
+            return $url->catalogPath;
         }
-        
+
         return $url->catalogPath . DIRECTORY_SEPARATOR . StoreUrlRule::FILTER_INDICATOR . DIRECTORY_SEPARATOR . implode('_', $return);
     }
-    
-    
+
+
 }

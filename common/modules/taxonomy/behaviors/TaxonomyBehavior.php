@@ -60,8 +60,11 @@ class TaxonomyBehavior extends Behavior
                 $data = TaxonomyItems::findAll(explode(',', $data));
             } elseif ($data instanceof TaxonomyItems) {
                 $data = [$this->owner->{$attribute}];
-            }else{
-                if((int)current(array_values($data))){
+            } elseif (is_array($data)) {
+                $item = current(array_values($data));
+                if ($item instanceof TaxonomyItems) {
+
+                } elseif ((int)$item) {
                     $data = TaxonomyItems::findAll($data);
                 }
             }
@@ -77,6 +80,7 @@ class TaxonomyBehavior extends Behavior
     public function beforeSave()
     {
         $attributes = TaxonomyHelper::getTermAttributes($this->owner);
+
         $modelAttributes = $this->owner->attributes();
         foreach ($attributes as $attribute => $rule) {
 
@@ -87,7 +91,11 @@ class TaxonomyBehavior extends Behavior
             }
 
             if (in_array($attribute, $modelAttributes)) {
-                $this->owner->{$attribute} = ArrayHelper::getColumn($terms, 'id');
+                if(isset($rule['type']) && $rule['type'] == 'integer'){
+                    $this->owner->{$attribute} = $terms[0]->id;
+                }else{
+                    $this->owner->{$attribute} = ArrayHelper::getColumn($terms, 'id');
+                }
             }
         }
     }

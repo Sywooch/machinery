@@ -15,7 +15,7 @@ Asset::register($this);
     echo $widget->a('Меню','/menu');
     echo $widget->a('Информация брендов','/brand-info');
     echo $widget->a('Текстовые страницы','/pages');
-    echo $widget->a('Каталог','/store/product/list?model=ProductDefault', ['active-url' => ['/store/product/list','/store/promo-products','/store/group-characteristics']]);
+    echo $widget->a('Каталог','/store/product/index', ['active-url' => ['/store/product/index','/store/promo-products','/store/group-characteristics']]);
     echo $widget->a('Ордеры '.StatusRepository::countStatus([1], Orders::class),'/store/orders');
     echo $widget->a('Слайдер','/ads-slider');
     echo $widget->a('Акции','/ads-actions');

@@ -4,7 +4,6 @@ namespace common\modules\store\controllers;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use common\modules\store\models\product\ProductDefault;
 use common\modules\store\components\StoreUrlRule;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\store\Finder;
@@ -27,9 +26,7 @@ class DefaultController extends Controller
             throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
         }
 
-        $module = Yii::$app->getModule('store');
-        $model = $module->models[$url->main->id];
-        $finder = Yii::$container->get(Finder::class, [new $model]);
+        $finder = Yii::$container->get(Finder::class);
 
         return $this->render('index',[
             'finder' => $finder,
@@ -81,5 +78,28 @@ class DefaultController extends Controller
         ]);
  
     }
+
+    /**
+     * @param $id
+     * @param $model
+     * @param $tab
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionOtzyvy($id, $model, $tab)
+    {
+        $finder = Yii::$container->get(Finder::class, [ProductHelper::getModel($model)]);
+        $products = $finder->getProductsByGroup($id);
+
+        if (empty($products)) {
+            throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
+        }
+        return $this->render('index', [
+            'products' => $products,
+            'product' => current($products),
+            'tab' => $tab
+        ]);
+    }
+
  
 }

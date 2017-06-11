@@ -10,18 +10,25 @@ class TaxonomyItemsRepository
      * @param int $id
      * @return TaxonomyItems
      */
-    public function getById(int $id){
+    public function getById(int $id)
+    {
         return TaxonomyItems::findOne($id);
     }
 
     /**
      * @param array $ids
+     * @param bool $asArray
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function getByIds(array $ids){
-        return TaxonomyItems::find()->where([
+    public function getByIds(array $ids, bool $asArray = false)
+    {
+        $query = TaxonomyItems::find()->where([
             'id' => $ids
-        ])->all();
+        ]);
+        if ($asArray) {
+            $query->asArray();
+        }
+        return $query->all();
     }
 
     /**
