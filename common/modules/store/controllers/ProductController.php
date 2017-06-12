@@ -99,10 +99,12 @@ class ProductController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            // print_r($model->getErrors()); exit();
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
