@@ -4,17 +4,6 @@
 /nbproject/private/
 nbproject/project.properties
 nbproject/project.xml
-console/config/.gitignore
-.idea/.name
-.idea/deployment.xml
-.idea/encodings.xml
-.idea/inspectionProfiles/Project_Default.xml
-.idea/inspectionProfiles/profiles_settings.xml
-.idea/kolesoff.erisoft.com.ua.iml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/workspace.xml
 backend/web/.htaccess
 frontend/web/assets/
 frontend/runtime/
@@ -25,3 +14,6 @@ console/runtime/
 environments/
 *.sql
 .idea/
+.idea/*
+*.idea
+
