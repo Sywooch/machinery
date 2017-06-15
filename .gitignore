@@ -1,17 +1,6 @@
 /vendor
-/backend/web/assets
 /files
-/nbproject/private/
-nbproject/project.properties
-nbproject/project.xml
 backend/web/.htaccess
-frontend/web/assets/
-frontend/runtime/
-backend/runtime/
-console/runtime/
-/TempData/
-
-environments/
 *.sql
 .idea/
 .idea/*
