@@ -28,7 +28,7 @@ use common\modules\store\widgets\CatalogMenu\CatalogMenuWidget as CatalogMenu;
 
         <div class="row">
             <div class="col-lg-2">
-                <a class="logo"></a>
+                <a class="logo">SMARTER</a>
             </div>
             <div class="col-lg-6">
                 <ul class="phones">

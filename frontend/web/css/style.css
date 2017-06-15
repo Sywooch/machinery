@@ -64,7 +64,7 @@ h3 {
     background: none;
     padding: 15px 0px;
     font-size: 14px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .breadcrumb > li + li:before {
@@ -78,6 +78,10 @@ h3 {
 .breadcrumb a {
     font-size: 14px;
     border-bottom: 1px dotted;
+}
+
+.breadcrumb a:hover{
+    text-decoration: none;
 }
 
 .l1 {
@@ -146,12 +150,21 @@ h3 {
     box-shadow: 0px 6px 9px 0px rgba(50, 50, 50, 0.11);
 }
 
-a.logo {
-    display: block;
-    border: 2px solid #333;
-    width: 70px;
-    height: 70px;
-    float: left;
+
+ a.logo{
+     display: block;
+     float: left;
+    background-color: #ffde00;
+    color: #000;
+    padding: 10px 20px;
+    font-size: 22px;
+    font-weight: bold;
+     cursor: pointer;
+     text-decoration: none;
+}
+
+.l2 a.logo{
+    margin-top: 16px;
 }
 
 .l2 .phones {
@@ -358,23 +371,25 @@ a.logo {
 }
 
 .catalog-list h1 {
-    display: inline-block;
+    float: left;
 }
 
 .catalog-list .items-counter {
-    display: inline-block;
-    background: #f6f1e3;
+    float: left;
+    background: #f6ee38;
     padding: .1em .5em;
     position: relative;
     margin-left: 20px;
-    margin-top: -10px;
+    margin-top: 0px;
+    line-height: 1.7;
+    border-radius: 3px;
 }
 
 .catalog-list .items-counter:before {
     content: "";
     right: 100%;
     border-top: 7px solid transparent;
-    border-right: 7px solid #f6f1e3;
+    border-right: 7px solid #f6ee38;
     border-bottom: 7px solid transparent;
     position: absolute;
     margin-top: -6px;
@@ -453,6 +468,74 @@ a.logo {
     border-radius: 2px;
     position: absolute;
     margin-top: -26px;
+}
+
+.product #bx-pager a{
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    margin: 0 10px 0 0;
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+    height: 70px;
+    width: 70px;
+}
+
+.product .bx-wrapper{
+    box-shadow: none;
+}
+
+.product .buy-block{
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    float: left;
+    margin: 0 35px 0 0;
+    width: 100%;
+    padding: 0 0 10px 0;
+}
+
+.product .sku{
+    font-size: 12px;
+    color: #000;
+    background-color: #ffde00;
+    padding: 0 10px;
+    font-family: arial;
+    margin: 0 10px 10px 0;
+    white-space: nowrap;
+    float: left;
+    font-weight: normal;
+    line-height: 24px;
+    border-radius: 2px;
+}
+
+.product .rating-container{
+    font-size: 18px;
+    margin-top: 1px;
+    float: left;
+}
+
+.product #bx-pager a.active{
+    border-color: #ff7800;
+}
+
+.product .print-wrapper{
+    float: right;
+    color: #000000;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.product .print-wrapper i{
+    margin-right: 6px;
+    color: #1d8bcd;
+    font-size: 14px;
+}
+
+.product #bx-pager a img{
+    max-height: 100%;
+    max-width: 100%;
+    vertical-align: middle;
 }
 
 #filter {

@@ -17,7 +17,6 @@ $products = $dataProvider->getModels();
 
 ?>
 
-
 <div class="container catalog-list ">
     <?= Breadcrumbs::widget([
         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
@@ -29,12 +28,14 @@ $products = $dataProvider->getModels();
             </noindex>
         </div>
         <div class="col-lg-9">
-            <h1><?= Html::encode($current->name); ?></h1>
-            <div class="items-counter">Найдено: <?= $dataProvider->pagination->totalCount; ?></div>
+            <div class="clearfix">
+                <h1><?= Html::encode($current->name); ?></h1>
+                <div class="items-counter">Найдено: <?= $dataProvider->pagination->totalCount; ?></div>
+            </div>
             <div class="sort">
                 <span>Сортировка:</span>
-                <?=$sort->link('price-asc') ?>
-                <?=$sort->link('price-desc') ?>
+                <?= $sort->link('price-asc') ?>
+                <?= $sort->link('price-desc') ?>
             </div>
             <div class="row">
                 <?php foreach ($products as $product): ?>

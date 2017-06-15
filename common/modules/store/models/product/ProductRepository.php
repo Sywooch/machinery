@@ -15,7 +15,8 @@ class ProductRepository
      * @param int $id
      * @return static
      */
-    public function getById(int $id){
+    public function getById(int $id)
+    {
         return Product::findOne($id);
     }
 

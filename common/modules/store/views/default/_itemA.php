@@ -10,7 +10,7 @@ use common\modules\store\helpers\CatalogHelper;
 ?>
 
 
-<div class="item col-lg-4">
+<div class="item col-lg-3">
 
     <div class="img">
         <?php if (($file = ArrayHelper::getValue($product->files, '0'))): ?>

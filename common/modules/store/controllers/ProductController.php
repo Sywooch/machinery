@@ -35,12 +35,8 @@ class ProductController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['update', 'view', 'create', 'delete', 'find-ajax'],
+                        'actions' => ['index', 'update', 'view', 'create', 'delete', 'find-ajax'],
                         'roles' => ['admin'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['index', 'otzyvy']
                     ],
                 ],
             ],
@@ -163,6 +159,11 @@ class ProductController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * @param $id
+     * @return static
+     * @throws NotFoundHttpException
+     */
     protected function findModel($id)
     {
         if (($model = Product::findOne($id)) !== null) {

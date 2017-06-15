@@ -2,6 +2,7 @@
 
 namespace common\modules\store;
 
+use common\modules\store\models\product\Product;
 use common\modules\store\models\product\ProductRepository;
 use yii\base\Object;
 use yii\data\ActiveDataProvider;
@@ -48,7 +49,7 @@ class Finder extends Object
         $this->_productRepository = $productRepository;
         $this->_comparesSearch = $comparesSearch;
 
-    //    parent::__construct($config);
+        //    parent::__construct($config);
     }
 
     public function getUus()
@@ -93,13 +94,12 @@ class Finder extends Object
     }
 
     /**
-     *
      * @param int $id
-     * @return mixed
+     * @return Product
      */
-    public function getProductById($id)
+    public function getProductById(int $id) : Product
     {
-        return current($this->getProductsByIds([$id]));
+        return $this->_productRepository->getById($id);
     }
 
     /**

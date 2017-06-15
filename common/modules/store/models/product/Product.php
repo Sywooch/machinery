@@ -102,8 +102,7 @@ class Product extends ProductBase implements ProductInterface
     }
 
     /**
-     *
-     * @return []
+     * @return array
      */
     public function getFeature()
     {
@@ -150,14 +149,13 @@ class Product extends ProductBase implements ProductInterface
      */
     public function getSpecification()
     {
-        if ($this->short) {
-            return $this->short;
-        }
-        $this->short = $this->helper->shortPattern($this);
-        if ($this->short) {
+        $short = ProductHelper::shortPattern($this);
+
+        if (!$this->short && $short) {
             $this::updateAll(['short' => $this->short], ['id' => $this->id]);
         }
-        return $this->short;
+
+        return $short;
     }
 
     /**

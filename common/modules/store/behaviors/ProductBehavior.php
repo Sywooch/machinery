@@ -9,6 +9,9 @@ use yii\db\ActiveRecord;
 class ProductBehavior extends Behavior
 {
 
+    /**
+     * @return array
+     */
     public function events()
     {
         return [
