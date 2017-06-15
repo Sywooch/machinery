@@ -46,8 +46,7 @@ class TaxonomyIndexRepository
                     'model' => StringHelper::basename(get_class($entity))
                 ])->save();
             }
+            $this->_terms[$attribute] = [];
         }
-
-        $this->_terms[$attribute] = [];
     }
 }
