@@ -96,7 +96,7 @@ a.desc:after {
 }
 
 .no-padding{ padding: 0px;}
-.row{ margin: 0px;}
+.no-margin{ margin: 0px;}
 .wrap{ background-color: #34495e; padding: 0px; }
 .container-fluid{background-color: #ecf0f1; padding: 40px;}
 .main-panel{ padding: 0px 20px 30px 20px; border:1px solid #dee1e2; overflow: hidden;  }

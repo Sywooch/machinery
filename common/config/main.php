@@ -49,8 +49,8 @@ return [
                 ],
             ]
         ],
-        'import' => [
-            'class' => 'common\modules\import\Module',
+        'language' => [
+            'class' => 'common\modules\language\LanguageModule',
         ],
         'store' => [
             'class' => 'common\modules\store\Module',

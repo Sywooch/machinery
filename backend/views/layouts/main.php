@@ -42,7 +42,7 @@ AppAsset::register($this);
                 </div>
 
             <?php else: ?>
-                <div class="row">
+                <div class="row no-margin">
 
                     <div class="col-md-2 col-lg-2 no-padding">
                          <?= UserBlock::widget(); ?>

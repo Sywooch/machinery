@@ -10,8 +10,8 @@ return [
     'id' => 'app-frontend',
     'homeUrl' => '/',
     'timeZone' => 'Europe/Minsk',
+    'language' => 'de-DE',
     'basePath' => dirname(__DIR__),
-    'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
@@ -23,6 +23,16 @@ return [
     'components' => [
         'request' => [
             'baseUrl' => '',
+        ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'common\modules\language\DbMessageSource',
+                    //'basePath' => '@app/messages',
+                    'sourceLanguage' => 'en-US',
+                    'forceInsert' => true
+                ],
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
