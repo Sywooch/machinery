@@ -6,3 +6,4 @@ backend/web/.htaccess
 .idea/*
 *.idea
 
+DATA/
