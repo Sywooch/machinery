@@ -21,6 +21,7 @@ Asset::register($this);
     echo $widget->a('Адреса магазинов', '/store/shop-address', ['active-url' => ['/store/shop-address']]); 
     echo $widget->a('Отчет импорта','/import/sources');
     echo $widget->a('Таксономия','/taxonomy/vocabulary');
+    echo $widget->a('Переводы','/language/source-message/index', ['active-url' => ['/language/source-message','/language/message','/language/default']]);
     echo $widget->a('Пользователи','/user/admin');
     ?>
 </div>

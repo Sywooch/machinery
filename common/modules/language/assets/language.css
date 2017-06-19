@@ -1,0 +1,15 @@
+.translate-fields div{
+    margin-bottom: 4px;
+}
+.translate-fields label{
+    float: left;
+    font-weight: normal;
+
+    margin-bottom: 0px;
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+.translate-fields input{
+    width: 100%;
+}
