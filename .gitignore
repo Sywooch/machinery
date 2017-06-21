@@ -7,3 +7,6 @@ backend/web/.htaccess
 *.idea
 
 DATA/
+frontend/runtime/*
+frontend/web/assets/*
+node_modules/*
