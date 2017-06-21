@@ -10,7 +10,7 @@ return [
     'id' => 'app-frontend',
     'homeUrl' => '/',
     'timeZone' => 'Europe/Minsk',
-    'language' => 'de-DE',
+    'language' => 'en-EN',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -29,8 +29,7 @@ return [
                 'app*' => [
                     'class' => 'common\modules\language\DbMessageSource',
                     //'basePath' => '@app/messages',
-                    'sourceLanguage' => 'en-US',
-                    'forceInsert' => true
+                    'sourceLanguage' => 'en-US'
                 ],
             ],
         ],

@@ -2,12 +2,11 @@
 
 namespace frontend\models;
 
-use dektrium\user\models\RegistrationForm as BaseRegistrationForm;
 use yii;
+use dektrium\user\models\SettingsForm as SettingsFormBase;
 
-class RegistrationForm extends BaseRegistrationForm
+class SettingsForm extends SettingsFormBase
 {
-    public $captcha;
     public $password_repeat;
 
     /**
@@ -16,10 +15,8 @@ class RegistrationForm extends BaseRegistrationForm
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = ['captcha', 'required'];
-        $rules[] = ['captcha', 'captcha'];
         $rules[] = ['password_repeat', 'required'];
-        $rules[] = ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('user', 'Passwords don\'t match')];
+        $rules[] = ['password_repeat', 'compare', 'compareAttribute' => 'new_password', 'message' => Yii::t('user', 'Passwords don\'t match')];
         return $rules;
     }
 
@@ -29,7 +26,6 @@ class RegistrationForm extends BaseRegistrationForm
     public function attributeLabels()
     {
         $labels = parent::attributeLabels();
-        $labels['login'] =  Yii::t('user', 'Username');
         $labels['password_repeat'] =  Yii::t('user', 'Password repeat');
         return $labels;
     }
