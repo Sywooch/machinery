@@ -26,8 +26,7 @@ class LoginForm extends LoginFormBase
     public function attributeLabels()
     {
         $labels = parent::attributeLabels();
-        $labels['captcha'] = 'Код';
-        $labels['login'] = Yii::t('app', 'Username');
+        $labels['login'] =  Yii::t('user', 'Username');
         return $labels;
     }
 }

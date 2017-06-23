@@ -4,7 +4,6 @@ namespace common\modules\store\controllers;
 
 use common\modules\file\Uploader;
 use common\modules\store\models\product\Product;
-use common\modules\store\models\product\ProductBase;
 use common\modules\store\models\product\ProductRepository;
 use common\modules\store\models\product\ProductSearch;
 use Yii;
@@ -12,10 +11,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\web\Controller;
-use common\modules\store\helpers\ProductHelper;
-use common\modules\store\models\product\ProductInterests;
 use common\modules\store\models\promo\PromoCodes;
-use common\modules\store\Finder;
 
 
 /**

@@ -1,0 +1,32 @@
+.file-input-avatar .file-thumbnail-footer{
+    display: none;
+}
+.file-input-avatar .file-input{
+    text-align: center;
+}
+.file-preview{
+    text-align: center;
+    margin-bottom: 5px;
+}
+.file-input-avatar .btn-file{
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    margin: 0 auto;
+    width: 180px;
+}
+.file-input-avatar .btn-file input{
+    position: absolute;
+    top: 0px;
+    height: 40px;
+    opacity: 0;
+}
+
+.file-input-avatar .progress{
+    height: 4px;
+    margin-bottom: 5px;
+}
+
+.file-input-avatar .progress .progress-bar{
+    text-indent: 999999px;
+}

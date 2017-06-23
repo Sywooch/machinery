@@ -19,11 +19,9 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/font-awesome.min.css',
-        'css/style.css',
-       // 'css/metro-icons.min.css',
+        'css/style.css'
     ];
     public $js = [
-        'js/jquery.scrollNav.min.js',
         'js/scripts.js'
     ];
     public $depends = [

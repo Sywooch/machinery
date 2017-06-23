@@ -32,6 +32,8 @@ return [
             'cost' => 12,
             'admins' => ['root'],
             'modelMap' => [
+                'Account' => 'frontend\models\Account',
+                'SettingsForm' => 'frontend\models\SettingsForm',
                 'Profile' => 'frontend\models\Profile',
                 'User' => 'common\models\User',
                 'LoginForm' => 'common\models\LoginForm',
@@ -49,9 +51,9 @@ return [
                 ],
             ]
         ],
-        'language' => [
-            'class' => 'common\modules\language\LanguageModule',
-        ],
+     //   'language' => [
+      //      'class' => 'common\modules\language\LanguageModule',
+     //   ],
         'store' => [
             'class' => 'common\modules\store\Module',
             'defaultPageSize' => 21,
