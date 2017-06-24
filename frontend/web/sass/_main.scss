@@ -1,0 +1,57 @@
+
+.list-categories {
+	margin-bottom: 40px;
+	.item-cat {
+		height: 150px;
+		width: 150px;
+		background: #efefef;
+		margin: 10px;
+		position: relative;
+		text-align: center;
+		border: 1px solid #d9d9d9;
+		transition: background 100ms;
+		a {
+			text-decoration: none;
+		}
+		._count {
+			position: absolute;
+			padding: 3px 10px;
+			color: $greycolor;
+			background: $yellow;
+			top: 0;
+			right: 0;
+			font-size: 13px;
+			font-weight: 700;
+		}
+		._img {
+			display: table-cell;
+			width: 150px;
+			padding-top: 25px;
+			height: 107px;
+			vertical-align: middle;
+		}
+		._title {
+			color: $greycolor;
+			text-transform: uppercase;
+			display: block;
+			line-height: 1;
+			text-decoration: none !important;
+			font-size: 12px;
+		}
+		&.other-cat {
+			width: 100%;
+			height: 66px;
+			a {
+				@include flexbox();
+			}
+			
+		}
+		&:hover {
+			background: $yellow;
+			._count {
+				background: $greycolor;
+				color: #fff;
+			}
+		}
+	}
+}
