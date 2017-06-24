@@ -1,5 +1,5 @@
-$blue: #3bbfce;
-$margin: 16px;
+@import 'vars';
+@import 'mixins';
 
 .content-navigation {
   border-color: $blue;
