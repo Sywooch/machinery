@@ -36,8 +36,7 @@ return [
                 'SettingsForm' => 'frontend\models\SettingsForm',
                 'Profile' => 'frontend\models\Profile',
                 'User' => 'common\models\User',
-                'LoginForm' => 'common\models\LoginForm',
-                'RegistrationForm' => 'frontend\models\RegistrationForm',
+                'LoginForm' => 'common\models\LoginForm'
             ],
         ],
         'file' => [

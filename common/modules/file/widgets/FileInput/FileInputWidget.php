@@ -1,4 +1,5 @@
 <?php
+
 namespace common\modules\file\widgets\FileInput;
 
 use yii;
@@ -35,32 +36,9 @@ class FileInputWidget extends Widget
     {
         self::$fieldId++;
 
-        $initialPreview = [];
-        $initialPreviewConfig = [];
-
-        if ($this->model->{$this->attribute} && array_filter($this->model->{$this->attribute}) && current($this->model->{$this->attribute}) instanceof yii\db\ActiveRecord) {
-
-            $initialPreview = ArrayHelper::getColumn($this->model->{$this->attribute}, function ($item) {
-                return $item->path . '/' . $item->name;
-            });
-
-            $initialPreviewConfig = ArrayHelper::toArray($this->model->{$this->attribute}, [
-                Instance::class => [
-                    'key' => function ($item) {
-                        return $item->id;
-                    },
-                    'caption' => function ($item) {
-                        return $item->name;
-                    },
-                    'size' => function ($item) {
-                        return $item->size;
-                    },
-                    'url' => function ($item) {
-                        return $this->showRemove ? Url::to(['/file/manage/delete', 'id' => $item->id, 'token' => FileHelper::getToken($item)]) : '';
-                    }
-                ]
-            ]);
-        }
+        $multiple = FileHelper::isMultiple($this->model, $this->attribute);
+        $initialPreview = FileHelper::preview($this->model, $this->attribute);
+        $initialPreviewConfig = FileHelper::config($this->model, $this->attribute, $this->showRemove);
 
         return $this->render('field', [
             'model' => $this->model,
@@ -69,6 +47,7 @@ class FileInputWidget extends Widget
             'initialPreview' => $initialPreview,
             'initialPreviewConfig' => $initialPreviewConfig,
             'showRemove' => $this->showRemove,
+            'multiple' => $multiple
         ]);
     }
 

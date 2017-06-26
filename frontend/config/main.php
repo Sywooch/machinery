@@ -18,6 +18,9 @@ return [
         'user' => [
             'class' => 'dektrium\user\Module',
             'controllerMap' => [],
+            'modelMap' => [
+                'RegistrationForm' => 'frontend\models\RegistrationForm',
+            ],
         ],
     ],
     'components' => [

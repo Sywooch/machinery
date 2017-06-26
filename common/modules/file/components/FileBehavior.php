@@ -1,4 +1,5 @@
 <?php
+
 namespace common\modules\file\components;
 
 use yii\base\Behavior;
@@ -22,13 +23,19 @@ class FileBehavior extends Behavior
     protected $_fileFields;
 
     /**
+     * @var Uploader
+     */
+    protected $_uploader;
+
+    /**
      * @var FileRepository
      */
     protected $_repository;
 
-    public function __construct(FileRepository $repository, array $config = [])
+    public function __construct(FileRepository $repository, Uploader $uploader, array $config = [])
     {
         $this->_repository = $repository;
+        $this->_uploader = $uploader;
         parent::__construct($config);
     }
 
@@ -38,8 +45,9 @@ class FileBehavior extends Behavior
     public function events()
     {
         return [
+            ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
             ActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'afterSave',
+            ActiveRecord::EVENT_AFTER_UPDATE => 'afterSave',
             ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
             ActiveRecord::EVENT_INIT => 'afterInit',
         ];
@@ -96,10 +104,27 @@ class FileBehavior extends Behavior
     /**
      * @inheritdoc
      */
+    public function beforeValidate()
+    {
+        $this->_uploader->getInstances($this->owner);
+        foreach ($this->_fileFields as $rules) {
+            $field = current($rules);
+            $maxFiles = FileHelper::maxFiles($this->owner, $field);
+            $uploads = $this->_uploader->getUploads($field);
+            $this->owner->{$field} = Finder::getInstances($this->owner, $field)->all();
+            if ($maxFiles && count($this->owner->{$field}) + count($uploads) > $maxFiles) {
+                $this->owner->addError($field, "Max files is $maxFiles. Delete excess.");
+            }
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function afterSave()
     {
-        Uploader::save($this->owner);
-        if($this->countField){
+        $this->_uploader->save($this->owner);
+        if ($this->countField) {
             $model = $this->owner;
             $model::updateAll([$this->countField => (int)$this->_repository->count($this->owner->id)], ['id' => $this->owner->id]);
         }
