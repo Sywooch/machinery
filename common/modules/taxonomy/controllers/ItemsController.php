@@ -13,6 +13,7 @@ use yii\web\Response;
 use yii\base\Module;
 use common\modules\taxonomy\Taxonomy;
 use common\modules\taxonomy\models\TaxonomyItemsHierarchy;
+use common\modules\file\Uploader;
 
 /**
  * ItemsController implements the CRUD actions for TaxonomyItems model.
@@ -110,7 +111,6 @@ class ItemsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->pid) {
             $parentTerm = TaxonomyItems::findOne($model->pid);
         } else {
@@ -119,12 +119,12 @@ class ItemsController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'parentTerm' => $parentTerm
-            ]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+            'parentTerm' => $parentTerm
+        ]);
     }
 
     /**

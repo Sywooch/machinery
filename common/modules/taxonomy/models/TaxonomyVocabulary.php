@@ -16,7 +16,7 @@ use common\helpers\URLify;
 class TaxonomyVocabulary extends \yii\db\ActiveRecord
 {
     const TABLE_TAXONOMY_VOCABULARY = 'taxonomy_vocabulary';
-    
+
     /**
      * @inheritdoc
      */
@@ -32,8 +32,9 @@ class TaxonomyVocabulary extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['weight'], 'double'],
-            [['name','transliteration'], 'string', 'max' => 255],
+            [['weight'], 'integer'],
+            [['weight'], 'default', 'value' => 1],
+            [['name', 'transliteration'], 'string', 'max' => 255],
             [['prefix'], 'unique'],
         ];
     }
@@ -50,20 +51,22 @@ class TaxonomyVocabulary extends \yii\db\ActiveRecord
             'weight' => 'Weight',
         ];
     }
-    
-    public function countTerms(){
+
+    public function countTerms()
+    {
         return (new \yii\db\Query())
             ->select('COUNT(*)')
             ->from(TaxonomyItems::TABLE_TAXONOMY_ITEMS)
-            ->where(['vid' => $this->id])->scalar(); 
+            ->where(['vid' => $this->id])->scalar();
     }
 
     /**
      * @inheritdoc
      */
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         parent::beforeSave($insert);
-        if(!$this->transliteration){
+        if (!$this->transliteration) {
             $this->transliteration = URLify::url($this->name);
         }
         return true;

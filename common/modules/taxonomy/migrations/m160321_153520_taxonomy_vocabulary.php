@@ -8,13 +8,13 @@ class m160321_153520_taxonomy_vocabulary extends Migration
     public function up()
     {
         $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-        }
+
         $this->createTable('{{%taxonomy_vocabulary}}', [
-            'id' => Schema::TYPE_PK,
-            'name' => Schema::TYPE_STRING . '(255) NOT NULL',
+            'id' => $this->primaryKey(),
+            'name' => $this->string(255)->notNull(),
+            'prefix' => $this->string(50)->notNull(),
+            'transliteration' => $this->string(255)->notNull(),
+            'weight' => $this->integer()->notNull()->defaultValue(0)
         ], $tableOptions);
     }
 

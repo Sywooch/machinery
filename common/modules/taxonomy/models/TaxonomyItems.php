@@ -1,4 +1,5 @@
 <?php
+
 namespace common\modules\taxonomy\models;
 
 use yii\db\ActiveRecord;
@@ -8,11 +9,6 @@ class TaxonomyItems extends ActiveRecord
 {
 
     const TABLE_TAXONOMY_ITEMS = 'taxonomy_items';
-
-    /**
-     * @var
-     */
-    private $_parent;
 
     /**
      * @var array
@@ -38,6 +34,19 @@ class TaxonomyItems extends ActiveRecord
             [['name', 'transliteration'], 'string', 'max' => 50],
             [['vid', 'name'], 'unique', 'targetAttribute' => ['vid', 'name'], 'message' => 'The combination of Vid and Name has already been taken.'],
             [['name', 'vid'], 'unique', 'targetAttribute' => ['name', 'vid'], 'message' => 'The combination of Vid and Name has already been taken.'],
+            [['icon'], 'file', 'extensions' => 'png, jpg', 'maxFiles' => 1],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \common\modules\file\components\FileBehavior::class,
+            ]
         ];
     }
 
@@ -55,12 +64,8 @@ class TaxonomyItems extends ActiveRecord
     public function beforeSave($insert)
     {
         parent::beforeSave($insert);
-        if (!$this->pid) {
-            $this->pid = 0;
-        }
-        if (!$this->transliteration) {
-            $this->transliteration = URLify::url($this->name);
-        }
+        $this->pid = $this->pid ?? 0;
+        $this->transliteration = $this->transliteration ?? URLify::url($this->name);
         return true;
     }
 

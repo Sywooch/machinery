@@ -7,6 +7,7 @@ use common\modules\file\filestorage\Instance;
 use yii\db\ActiveRecordInterface;
 use yii\helpers\StringHelper;
 use common\modules\file\filestorage\InstanceInterface;
+use common\modules\file\helpers\FileHelper;
 
 class Finder
 {
@@ -18,7 +19,8 @@ class Finder
      */
     public static function getInstances(ActiveRecordInterface $entity, $field = null)
     {
-        return $entity->hasMany(Instance::class, ['entity_id' => 'id'])
+        return $entity
+            ->hasMany(Instance::class, ['entity_id' => 'id'])
             ->filterWhere([
                 'model' => StringHelper::basename(get_class($entity)),
                 'field' => $field,
