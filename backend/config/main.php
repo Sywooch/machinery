@@ -14,9 +14,13 @@ return [
     'modules' => [
         'taxonomy' => [
             'class' => 'common\modules\taxonomy\Module',
+            'languages' => function () {
+                $languages = \common\modules\language\models\Language::find()->all();
+                return \yii\helpers\ArrayHelper::map($languages, 'local', 'name');
+            },
         ],
         'rbac' => 'dektrium\rbac\RbacWebModule',
-    ], 
+    ],
     'components' => [
         'request' => [
             'baseUrl' => '',

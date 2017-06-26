@@ -16,6 +16,11 @@ class TaxonomyItems extends ActiveRecord
     public $childrens = [];
 
     /**
+     * @var array
+     */
+    private $_translations = [];
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -29,6 +34,7 @@ class TaxonomyItems extends ActiveRecord
     public function rules()
     {
         return [
+            [['translations'], 'safe'],
             [['vid', 'name'], 'required'],
             [['vid', 'pid', 'weight'], 'integer'],
             [['name', 'transliteration'], 'string', 'max' => 50],
@@ -66,6 +72,9 @@ class TaxonomyItems extends ActiveRecord
         parent::beforeSave($insert);
         $this->pid = $this->pid ?? 0;
         $this->transliteration = $this->transliteration ?? URLify::url($this->name);
+        $this->data = [
+            'translations' => $this->_translations
+        ];
         return true;
     }
 
@@ -89,6 +98,22 @@ class TaxonomyItems extends ActiveRecord
     public function getVocabulary()
     {
         return $this->hasOne(TaxonomyVocabulary::className(), ['id' => 'vid']);
+    }
+
+    /**
+     * @param array $translations
+     */
+    public function setTranslations($translations)
+    {
+        $this->_translations = $translations;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTranslations(): array
+    {
+        return $this->data['translations'] ?? [];
     }
 
 }

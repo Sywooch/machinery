@@ -17,6 +17,9 @@ FileAsset::register($this);
         'options' => ['enctype' => 'multipart/form-data'],
     ]); ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?php foreach ($languages as $key => $language): ?>
+        <?= $form->field($model, 'translations[' . $key . ']')->textInput()->label($language); ?>
+    <?php endforeach; ?>
     <?= $form->field($model, 'transliteration')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'pid')->widget(Select2::classname(), [
 
@@ -36,7 +39,7 @@ FileAsset::register($this);
     ]);
     ?>
 
-    <?= $form->field($model, 'icon', ['template' => '{input}{error}'])->widget(FileInputWidget::class,['showRemove' => true]); ?>
+    <?= $form->field($model, 'icon', ['template' => '{input}{error}'])->widget(FileInputWidget::class, ['showRemove' => true]); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
