@@ -19,14 +19,18 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/font-awesome.min.css',
+        'js/slick/slick.css',
         'css/style.css'
     ];
     public $js = [
+        'js/slick/slick.min.js',
+        'js/jquery.formstyler.min.js',
+        'js/jquery.ui.touch-punch.min.js',
         'js/scripts.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
-        // 'app\assets\BootstrAsset',
+//         'app\assets\BootstrAsset',
     ];
 }

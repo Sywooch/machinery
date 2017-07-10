@@ -1,0 +1,30 @@
+/** botstrap-rewrite */
+
+
+.btn {
+	border-radius: 0;
+	border: none;
+	outline: none;
+	box-shadow: none;
+	-webkit-appearance: none;
+}
+.btn-warning {
+	background: $yellow;
+	&:hover, &:active, &:focus {
+		background: $yellow;
+	}
+}
+.form-control, input, select {
+	border-radius: 0;
+}
+
+.panel {
+	border: none;
+	border-radius: 0;
+}
+.panel-primary {
+	> .panel-heading {
+		border: none;
+		background-color: $greyblack;
+	}
+}

@@ -29,9 +29,17 @@
     flex-wrap: $val;
 }
 @mixin just_btw(){
-    -ms-flex-pack: justify;
+    -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
     justify-content: space-between;
+}
+
+@mixin just-around(){
+    -ms-flex-pack: distribute;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
 }
 
 @mixin center_both(){

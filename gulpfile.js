@@ -6,47 +6,47 @@ var spritesmith = require('gulp.spritesmith');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
 var sourcemaps = require('gulp-sourcemaps');
-//var autoprefixer = require('gulp-autoprefixer');
+var autoprefixer = require('gulp-autoprefixer');
 
 
 
 gulp.task('sass', function () {
-    return gulp.src('./frontend/web/sass/*.scss')
-        //.pipe(sourcemaps.init())
-        /*.pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-            cascade: false
-        }))*/
-        .pipe(sass({outputStyle: 'compact'}).on('error', sass.logError))
-        //.pipe(sourcemaps.write())
+    return gulp.src('./frontend/web/sass/style.scss')
+        .pipe(sourcemaps.init())
         .pipe(concat('style.css'))
-        .pipe(gulp.dest('./frontend/web/css/'));
+        .pipe(sass({outputStyle: 'compact'}).on('error', sass.logError))
+        .pipe(autoprefixer({
+            browsers: ['last 50 versions', '> 1%', 'ie 8']
+        }))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('./frontend/web/css/'))
+    ;
 });
 
 gulp.task('image', function () {
-    return gulp.src('./frontend/web/images/src/*')
+    return gulp.src('frontend/web/images/src/*')
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
             use: [pngquant()],
             interlaced: true
         }))
-        .pipe(gulp.dest('./frontend/web/images/'))
+        .pipe(gulp.dest('frontend/web/images'))
 });
 
 gulp.task('sprite', function () {
-    var spriteData = gulp.src('./frontend/web/images/sprite-icons/*.png').pipe(spritesmith({
+    var spriteData = gulp.src('frontend/web/images/sprite-icons/*.png').pipe(spritesmith({
         imgName: 'sprite.png',
         cssName: '_sprite.scss',
         imgPath: '../images/sprite.png'
     }));
-    return spriteData.pipe(gulp.dest('./frontend/web/images/'));
+    return spriteData.pipe(gulp.dest('frontend/web/images/'));
 });
 
 gulp.task('watch', function () {
-    gulp.watch('./frontend/web/images/src/*', ['image']);
-    gulp.watch('./frontend/web/images/sprite-icons/*.png', ['sprite']);
-    gulp.watch('./frontend/web/sass/*.scss', ['sass']);
+    gulp.watch('frontend/web/images/src/*', ['image']);
+    gulp.watch('frontend/web/images/sprite-icons/*.png', ['sprite']);
+    gulp.watch('frontend/web/sass/*.scss', ['sass']);
 });
 
 
