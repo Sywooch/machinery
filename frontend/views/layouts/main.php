@@ -22,15 +22,15 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
+<div class="wrap">
 
 <?= $this->render('_header') ?>
 
-<div class="wrap">
 
         <?= Alert::widget() ?>
         <?= $content ?>
 
-</div>
+</div> <!-- .wrap -->
 
 <?= $this->render('_footer') ?>
 

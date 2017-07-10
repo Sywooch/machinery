@@ -1,0 +1,27 @@
+
+body {
+	color: $greyblack;
+	font: 12px/1.5em 'MuseoSC', 'Open sans';
+}
+a {
+	color: $greyblack;
+}
+.cf:after {
+	content: '';
+	display: block;
+	clear: both;
+	visibility: hidden;
+}
+.flexbox {
+	@include flexbox();
+}
+.flex-wrap {
+	@include wrap(wrap);
+}
+.just-around {
+	@include just-around();
+}
+
+.just-between {
+	@include just_btw();
+}

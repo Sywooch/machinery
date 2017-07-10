@@ -1,0 +1,32 @@
+
+@font-face {
+  font-family: 'MuseoSC';
+  src: url('fonts/MuseoSansCyrl_300.eot');
+  src: local('☺'), url('fonts/MuseoSansCyrl_300.woff') format('woff'), url('fonts/MuseoSansCyrl_300.ttf') format('truetype'), url('fonts/MuseoSansCyrl_300.svg') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MuseoSC';
+  src: url('fonts/MuseoSansCyrl_500.eot');
+  src: local('☺'), url('fonts/MuseoSansCyrl_500.woff') format('woff'), url('fonts/MuseoSansCyrl_500.ttf') format('truetype'), url('fonts/MuseoSansCyrl_500.svg') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MuseoSC';
+  src: url('fonts/MuseoSansCyrl_700.eot');
+  src: local('☺'), url('fonts/MuseoSansCyrl_700.woff') format('woff'), url('fonts/MuseoSansCyrl_700.ttf') format('truetype'), url('fonts/MuseoSansCyrl_700.svg') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;vertical-align:baseline;margin:0;padding:0}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
+
+ol,ul{list-style:none}
+blockquote,q{quotes:none}
+blockquote:before,blockquote:after,q:before,q:after{content:none}
+table{border-collapse:collapse;border-spacing:0}
