@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+use common\modules\taxonomy\helpers\TaxonomyHelper;
+use common\modules\taxonomy\models\TaxonomyItems;
 use frontend\components\MathCaptchaAction;
 use yii\web\Controller;
 use yii\filters\VerbFilter;

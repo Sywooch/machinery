@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use dektrium\user\Finder;
 use yii;
 use common\models\User;
 use dektrium\user\controllers\ProfileController as ProfileControllerBase;
@@ -11,7 +12,20 @@ use yii\helpers\Json;
 
 class ProfileController extends ProfileControllerBase
 {
-    /** @inheritdoc */
+    /**
+     * @var Uploader
+     */
+    private $_uploader;
+
+    public function __construct($id, \yii\base\Module $module, Finder $finder, Uploader $uploader, array $config = [])
+    {
+        $this->_uploader = $uploader;
+        parent::__construct($id, $module, $finder, $config);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -30,9 +44,9 @@ class ProfileController extends ProfileControllerBase
             $avatar->delete();
         }
 
-        Uploader::getInstances($model);
+        $this->_uploader->getInstances($model);
 
-        if($model->save()){
+        if($this->_uploader->save($model)){
 
             return Json::encode([
                 'files' => [

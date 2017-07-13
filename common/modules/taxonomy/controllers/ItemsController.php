@@ -14,12 +14,16 @@ use yii\base\Module;
 use common\modules\taxonomy\Taxonomy;
 use common\modules\taxonomy\models\TaxonomyItemsHierarchy;
 
+
 /**
  * ItemsController implements the CRUD actions for TaxonomyItems model.
  */
 class ItemsController extends Controller
 {
 
+    /**
+     * @var Taxonomy
+     */
     private $_taxonomy;
 
     public function __construct($id, Module $module, Taxonomy $taxonomy, array $config = [])
@@ -96,7 +100,8 @@ class ItemsController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'parentTerm' => new TaxonomyItems()
+                'parentTerm' => new TaxonomyItems(),
+                'languages' => $this->module->languages
             ]);
         }
     }
@@ -110,21 +115,17 @@ class ItemsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->pid) {
-            $parentTerm = TaxonomyItems::findOne($model->pid);
-        } else {
-            $parentTerm = new TaxonomyItems();
-        }
+        $parentTerm = $model->pid ? TaxonomyItems::findOne($model->pid) : new TaxonomyItems();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'parentTerm' => $parentTerm
-            ]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+            'parentTerm' => $parentTerm,
+            'languages' => $this->module->languages
+        ]);
     }
 
     /**

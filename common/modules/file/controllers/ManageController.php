@@ -46,15 +46,7 @@ class ManageController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-
         $file->delete();
-
-        if($file->model == 'Entity'){
-            $model = Entity::findOne($file->entity_id);
-            if(!$model->save()){
-                print_r($model->getErrors()); exit('aaaaaaaaaaa');
-            }
-        }
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return ['success' => true];
