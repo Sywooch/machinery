@@ -9,13 +9,14 @@ use yii\helpers\ArrayHelper;
 $this->title = Yii::t('user', 'Profile settings');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+<div class="container">
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3  sidebar sidebar-account">
         <?= $this->render('../profile/_photo', ['profile' => $model]) ?>
         <?= $this->render('../profile/_menu') ?>
     </div>
     <div class="col-md-9">
+        <div class="account-container">
         <?= $this->render('../profile/_head') ?>
         <?php $form = ActiveForm::begin([
             'id' => 'profile-form',
@@ -57,6 +58,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <?php ActiveForm::end(); ?>
+        </div>
 
     </div>
+</div>
 </div>

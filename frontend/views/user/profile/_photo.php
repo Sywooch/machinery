@@ -10,13 +10,13 @@ use common\modules\file\widgets\FileInputAvatar\FileInputAvatarWidget;
 
 $user = Yii::$app->user->identity;
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="block-user-avatar">
+    <div class="header-avatar"">
         <h3 class="panel-title">
             <?= empty($profile->name) ? Html::encode($profile->user->username) : Html::encode($profile->name); ?>
         </h3>
     </div>
-    <div class="panel-body">
+    <div class="_block">
         <?php if ($profile->user_id == Yii::$app->user->id): ?>
             <?php
             $form = ActiveForm::begin([
