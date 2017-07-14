@@ -1,13 +1,12 @@
-$blue: #3bbfce;
-$margin: 16px;
 
-.content-navigation {
-  border-color: $blue;
-  color: darken($blue, 9%);
-}
+@import 'vars';
+@import 'bootstrap-rewrite';
+@import 'jui-rewrite';
+@import 'mixins';
+@import 'reset';
+@import '../images/sprite';
+@import 'general';
 
-.border {
-  padding: $margin / 2;
-  margin: $margin / 2;
-  border-color: $blue;
-}
+@import 'header';
+@import 'main';
+@import 'footer';
