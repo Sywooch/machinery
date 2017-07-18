@@ -56,10 +56,9 @@ use yii\helpers\Html;
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 <img src="/images/langs/lang-de.png" alt="">CHANGE language <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">DE</a></li>
-                                <li><a href="#">RU</a></li>
-                                <li><a href="#">EN</a></li>
-                                <li><a href="#">UA</a></li>
+                                <li><a href="#"><img src="/images/langs/lang-de.png" alt=""> DE</a></li>
+                                <li><a href="#"><img src="/images/langs/lang-ru.png" alt=""> RU</a></li>
+                                <li><a href="#"><img src="/images/langs/lang-en.png" alt=""> EN</a></li>
                             </ul>
                         </li>
                     </ul>

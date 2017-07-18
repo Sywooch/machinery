@@ -1,0 +1,27 @@
+.soc-ic {
+  display: inline-block;
+  &:before {
+    content: '';
+    display: inline-block;
+  }
+}
+.ic-fb {
+  &:before {
+    @include sprite($ic-fb);
+  }
+}
+.ic-tw {
+  &:before {
+    @include sprite($ic-tw);
+  }
+}
+.ic-in {
+  &:before {
+    @include sprite($ic-in);
+  }
+}
+.ic-skype {
+  &:before {
+    @include sprite($ic-skype);
+  }
+}

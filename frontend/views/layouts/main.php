@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
+use frontend\assets\IEAsset;
 use common\widgets\Alert;
 
 use yii\bootstrap\Modal;
 
-
 AppAsset::register($this);
+IEAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

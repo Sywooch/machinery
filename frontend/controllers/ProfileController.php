@@ -16,6 +16,7 @@ class ProfileController extends ProfileControllerBase
      * @var Uploader
      */
     private $_uploader;
+    public $layout = 'account';
 
     public function __construct($id, \yii\base\Module $module, Finder $finder, Uploader $uploader, array $config = [])
     {
@@ -30,6 +31,9 @@ class ProfileController extends ProfileControllerBase
     {
         $behaviors = parent::behaviors();
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['photo-upload'], 'roles' => ['@']];
+        $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['favorite'], 'roles' => ['@']];
+        $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['published'], 'roles' => ['@']];
+
         return $behaviors;
     }
 
@@ -63,6 +67,20 @@ class ProfileController extends ProfileControllerBase
         }
 
         return '';
+    }
+
+    public function actionFavorite()
+    {
+        $id = \Yii::$app->user->getId();
+        $profile = $this->finder->findProfileById($id);
+        return $this->render('/user/profile/favorite', ['profile' => $profile,]);
+    }
+
+    public function actionPublished()
+    {
+        $id = \Yii::$app->user->getId();
+        $profile = $this->finder->findProfileById($id);
+        return $this->render('/user/profile/published', ['profile' => $profile,]);
     }
 
 }

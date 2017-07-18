@@ -32,16 +32,30 @@ use yii\helpers\Html;
                             <li><a href="#">RUB</a></li>
                         </ul>
                     </li>
-                    <li><a href="#" class="link-login"><i class="fa fa-key" aria-hidden="true"></i> LOGIN</a></li>
-                    <li><a href="#" class="link-register"><i class="fa fa-user-plus" aria-hidden="true"></i> REGISTER</a></li>
+                    <?php if(Yii::$app->user->isGuest): ?>
+
+                    <li><?= Html::a('<i class="fa fa-key" aria-hidden="true"></i> '.Yii::t('user', 'LOGIN'), ['/user/login'], ['class'=>'link-login']) ?></li>
+                    <li><?= Html::a('<i class="fa fa-user-plus" aria-hidden="true"></i> '.Yii::t('user', 'REGISTER'), ['/user/register'],['class'=>'link-register']) ?></li>
+                    <?php else: ?>
+                        <li class="dropdown">
+                            <?= Html::a('<i class="fa fa-user" aria-hidden="true"></i> '.Yii::t('user', 'Profile').' <span class="caret"></span>',
+                                ['/user/profile'],
+                                ['class'=>'link-profile dropdown-toggle', 'data-toggle'=>"dropdown", 'role'=>"button", 'aria-haspopup'=>"true", 'aria-expanded'=>"false"]) ?>
+                            <ul class="dropdown-menu">
+                                <li><?= Html::a('<i class="fa fa-cog" aria-hidden="true"></i> ' . Yii::t('user', 'View profile'), ['/user/profile']) ?></li>
+                                <li><?= Html::a('<i class="fa fa-user" aria-hidden="true"></i> ' . Yii::t('user', 'My Account'), ['/user/settings/account']) ?></li>
+                                <li><?= Html::a('<i class="fa fa-list" aria-hidden="true"></i> ' . Yii::t('app', 'My Listings'), ['profile/published']) ?></li>
+                                <li><?= Html::a('<i class="fa fa-heart" aria-hidden="true"></i> ' . Yii::t('app', 'My favorite'), ['profile/favorite']) ?></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img
                                 src="/images/langs/lang-de.png" alt="">CHANGE language <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">DE</a></li>
-                            <li><a href="#">RU</a></li>
-                            <li><a href="#">EN</a></li>
-                            <li><a href="#">UA</a></li>
+                            <li><a href="#"><img src="/images/langs/lang-de.png" alt=""> DE</a></li>
+                            <li><a href="#"><img src="/images/langs/lang-ru.png" alt=""> RU</a></li>
+                            <li><a href="#"><img src="/images/langs/lang-en.png" alt=""> EN</a></li>
                         </ul>
                     </li>
                     
@@ -66,7 +80,7 @@ use yii\helpers\Html;
 				<form class="search-form">
 					<div class="search-form-inner flexbox just-between">
 						<div class="form-group search-type-group">
-							<select name="" id="" class="search-type form-control input-lg">
+							<select name="" id="" class="search-type form-control">
 								<option value="">Lorem ipsum.</option>
 								<option value="">Veniam, voluptatibus?</option>
 								<option value="">Commodi, ducimus.</option>

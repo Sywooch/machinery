@@ -10,6 +10,7 @@ use common\modules\file\widgets\FileInputAvatar\FileInputAvatarWidget;
 
 $user = Yii::$app->user->identity;
 ?>
+<a href="#" type="button" class="open-filter btn-open-filter btn"><i class="ic-arr-orange-button"></i></a>
 <div class="block-user-avatar">
     <div class="header-avatar"">
         <h3 class="panel-title">

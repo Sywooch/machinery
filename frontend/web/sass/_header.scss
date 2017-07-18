@@ -53,6 +53,17 @@
 
 	}
 }
+.block-search-form {
+	.form-control, input, select {
+		height: 42px;
+	}
+	.search-submit-group {
+		.btn {
+			padding: 10px 15px;
+		}
+	}
+}
+
 
 .head-panel {
 	background: url(../img/bg-top.jpg) no-repeat center top;
@@ -69,5 +80,20 @@
 		&:hover {
 			color: $yellow;
 		}
+	}
+}
+
+.filter-drop-wrap {
+	position: relative;
+	z-index: 99;
+	.filter-drop-container {
+		display: none;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		min-width:100%;
+		width: 100%;
+		background: #f3f3f3 url("../images/basic-shadow.png") no-repeat center top;
 	}
 }

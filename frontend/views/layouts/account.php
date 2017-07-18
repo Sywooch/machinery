@@ -2,13 +2,16 @@
 
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
+use frontend\assets\IEAsset;
 use common\widgets\Alert;
 
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap\Modal;
 
+use common\widgets\Filter\FilterWidget;
 
 AppAsset::register($this);
+IEAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -41,6 +44,14 @@ AppAsset::register($this);
                     'activeItemTemplate' => '{link}'
                 ])
                 ?>
+        </div>
+    </div>
+    <div class="filter-drop-wrap">
+        <div class="filter-drop-container">
+            <div class="container">
+                <button class="btn-close close-drop">x</button>
+            <?= FilterWidget::widget(); ?>
+            </div>
         </div>
     </div>
         <?= Alert::widget() ?>
