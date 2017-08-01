@@ -1,4 +1,9 @@
 /** botstrap-rewrite */
+.clearfix, .collapse {
+	&:after, &:before {
+		content: '';
+	}
+}
 .h1 {
 	font-size: 30px;
 	font-weight: 700;
@@ -13,11 +18,24 @@
 	outline: none;
 	box-shadow: none;
 	-webkit-appearance: none;
+	//height: 41px;
 }
 .btn-warning {
 	background: $yellow;
 	&:hover, &:active, &:focus {
-		background: $yellow;
+		background: darken($yellow, 5%) !important;
+	}
+}
+.btn-danger {
+	background: $danger;
+	&:hover, &:active, &:focus {
+		background: darken($danger, 5%) !important;
+	}
+}
+.btn-primary {
+	background: $greyblack;
+	&:hover, &:active, &:focus {
+		background: darken($greyblack, 5%) !important;
 	}
 }
 .form-control, input, select {
@@ -40,5 +58,13 @@ label {
 	> .panel-heading {
 		border: none;
 		background-color: $greyblack;
+	}
+}
+
+.pagination {
+	> li {
+		> a, span {
+			margin-left: 2px;
+		}
 	}
 }

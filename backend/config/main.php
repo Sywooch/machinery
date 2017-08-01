@@ -23,7 +23,7 @@ return [
     ],
     'components' => [
         'request' => [
-            'baseUrl' => '',
+            'baseUrl' => '/admin/',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

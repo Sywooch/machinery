@@ -23,7 +23,7 @@ $this->title = 'Интернет-магазин №1';
         <div class="row">
             <div class="col-md-4 col-lg-4">
                 <div class="block-banners">
-                    <div class="banner"><a href="#"> <img src="/images/b2.png" alt=""></a></div>
+                    <div class="banner"><a href="#"> <img src="/images/b2-2.png" alt=""></a></div>
                     <div class="banner"><a href="#"> <img src="/images/b3.png" alt=""></a></div>
                     <div class="banner"><a href="#"> <img src="/images/b4.png" alt=""></a></div>
                     <div class="banner"><a href="#"> <img src="/images/b5.png" alt=""></a></div>
@@ -36,8 +36,7 @@ $this->title = 'Интернет-магазин №1';
                         <a href="#"><span class="_count">2150</span><span class="_img">
                         <img src="/images/cat1.png" alt="">
                         <img src="/images/cat1-hov.png" alt="">
-                        </span><span class="_title">Industrial
-machinery</span></a></div>
+                        </span><span class="_title">Industrial machinery</span></a></div>
                     <div class="item-cat">
                         <a href="#"><span class="_count">45231</span><span class="_img">
                         <img src="/images/cat2.png" alt="">
@@ -63,8 +62,7 @@ machinery </span></a></div>
                         <a href="#"><span class="_count">65</span><span class="_img">
                         <img src="/images/cat6.png" alt="">
                         <img src="/images/cat6-hov.png" alt="">
-                        </span><span class="_title">Agricultural 
-machinery</span></a></div>
+                        </span><span class="_title">Agricultural machinery</span></a></div>
                     <div class="item-cat">
                         <a href="#"><span class="_count">65</span><span class="_img">
                         <img src="/images/cat7.png" alt="">

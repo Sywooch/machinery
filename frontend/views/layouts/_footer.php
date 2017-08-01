@@ -48,7 +48,7 @@ use yii\helpers\Html;
                 <div class="footer-buttons-wrapper">
                     <a data-toggle="modal" data-target="#myModalFeedback" class="ask-b footer-button" href="#">ask any
                         questions</a>
-                    <a class="advent-b footer-button" href="#">add advent</a>
+                    <a class="advert-b footer-button" href="#">add advent</a>
                 </div>
                 <div class=" main-footer-language">
                     <ul class="menu-lang">

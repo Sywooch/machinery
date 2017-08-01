@@ -1,0 +1,442 @@
+
+.sidebar {
+  position: relative;
+
+  .h2 {
+    font-size: 14px;
+  }
+
+  .block-sidebar {
+    .item-ads {
+      img {
+        max-width: 100%;
+      }
+    }
+    .list-categories {
+      display: block;
+      padding: 0;
+      margin: 0;
+      padding-top: 8px;
+      li {
+        display: block;
+        padding: 0;
+        margin: 0;
+        + li {
+          border-top: 1px solid #545963;
+        }
+        a {
+          color: #fff;
+          display: block;
+          padding: 10px 16px;
+          .ic-cat {
+            display: inline-block;
+            position: relative;
+            height: 1.5em;
+            width: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+            &:before {
+              content: '';
+              display: inline-block;
+              position: absolute;
+              top: 50%;
+              transform: translate(0, -50%);
+              background-image: url(../images/sprite.png);
+              background-repeat: no-repeat;
+            }
+          }
+          &:hover {
+            background: $yellow;
+            text-decoration: none
+          }
+          span {
+            vertical-align: middle;
+          }
+          .ic-cat-machinery:before {
+            @include sprite-height($ic-cat-machinery);
+            @include sprite-width($ic-cat-machinery);
+            @include sprite-position($ic-cat-machinery);
+          }
+          .ic-cat-equipment:before {
+            @include sprite-height($ic-cat-equipment);
+            @include sprite-width($ic-cat-equipment);
+            @include sprite-position($ic-cat-equipment);
+          }
+          .ic-cat-industrial:before {
+            @include sprite-height($ic-cat-industrial);
+            @include sprite-width($ic-cat-industrial);
+            @include sprite-position($ic-cat-industrial);
+          }
+          .ic-cat-cranes:before {
+            @include sprite-height($ic-cat-cranes);
+            @include sprite-width($ic-cat-cranes);
+            @include sprite-position($ic-cat-cranes);
+          }
+          .ic-cat-forestry:before {
+            @include sprite-height($ic-cat-forestry);
+            @include sprite-width($ic-cat-forestry);
+            @include sprite-position($ic-cat-forestry);
+          }
+          .ic-cat-attachments:before {
+            @include sprite-height($ic-cat-attachments);
+            @include sprite-width($ic-cat-attachments);
+            @include sprite-position($ic-cat-attachments);
+          }
+          .ic-cat-forklifts:before {
+            @include sprite-height($ic-cat-forklifts);
+            @include sprite-width($ic-cat-forklifts);
+            @include sprite-position($ic-cat-forklifts);
+          }
+          .ic-cat-agricultural:before {
+            @include sprite-height($ic-cat-agricultural);
+            @include sprite-width($ic-cat-agricultural);
+            @include sprite-position($ic-cat-agricultural);
+          }
+          .ic-cat-recyclings:before {
+            @include sprite-height($ic-cat-recyclings);
+            @include sprite-width($ic-cat-recyclings);
+            @include sprite-position($ic-cat-recyclings);
+          }
+          .ic-cat-trailers:before {
+            @include sprite-height($ic-cat-trailers);
+            @include sprite-width($ic-cat-trailers);
+            @include sprite-position($ic-cat-trailers);
+          }
+          .ic-cat-containers:before {
+            @include sprite-height($ic-cat-containers);
+            @include sprite-width($ic-cat-containers);
+            @include sprite-position($ic-cat-containers);
+          }
+          .ic-cat-spare:before {
+            @include sprite-height($ic-cat-spare);
+            @include sprite-width($ic-cat-spare);
+            @include sprite-position($ic-cat-spare);
+          }
+          .ic-cat-engines:before {
+            @include sprite-height($ic-cat-engines);
+            @include sprite-width($ic-cat-engines);
+            @include sprite-position($ic-cat-engines);
+          }
+          .ic-cat-utility:before {
+            @include sprite-height($ic-cat-utility);
+            @include sprite-width($ic-cat-utility);
+            @include sprite-position($ic-cat-utility);
+          }
+          .ic-cat-municipal:before {
+            @include sprite-height($ic-cat-municipal);
+            @include sprite-width($ic-cat-municipal);
+            @include sprite-position($ic-cat-municipal);
+          }
+          .ic-cat-work:before {
+            @include sprite-height($ic-cat-work);
+            @include sprite-width($ic-cat-work);
+            @include sprite-position($ic-cat-work);
+          }
+          .ic-cat-others:before {
+            @include sprite-height($ic-cat-others);
+            @include sprite-width($ic-cat-others);
+            @include sprite-position($ic-cat-others);
+          }
+          &.active {
+            color: $yellow;
+            &:hover {
+              background: transparent;
+            }
+            .ic-cat-machinery:before {
+              @include sprite-position($ic-cat-machinery-act);
+            }
+            .ic-cat-equipment:before {
+              @include sprite-position($ic-cat-equipment-act);
+            }
+            .ic-cat-industrial:before {
+              @include sprite-position($ic-cat-industrial-act);
+            }
+            .ic-cat-cranes:before {
+              @include sprite-position($ic-cat-cranes-act);
+            }
+            .ic-cat-forestry:before {
+              @include sprite-position($ic-cat-forestry-act);
+            }
+            .ic-cat-attachments:before {
+              @include sprite-position($ic-cat-attachments-act);
+            }
+            .ic-cat-forklifts:before {
+              @include sprite-position($ic-cat-forklifts-act);
+            }
+            .ic-cat-agricultural:before {
+              @include sprite-position($ic-cat-agricultural-act);
+            }
+            .ic-cat-recyclings:before {
+              @include sprite-position($ic-cat-recyclings-act);
+            }
+            .ic-cat-trailers:before {
+              @include sprite-position($ic-cat-trailers-act);
+            }
+            .ic-cat-containers:before {
+              @include sprite-position($ic-cat-containers-act);
+            }
+            .ic-cat-spare:before {
+              @include sprite-position($ic-cat-spare-act);
+            }
+            .ic-cat-engines:before {
+              @include sprite-position($ic-cat-engines-act);
+            }
+            .ic-cat-utility:before {
+              @include sprite-position($ic-cat-utility-act);
+            }
+            .ic-cat-municipal:before {
+              @include sprite-position($ic-cat-municipal-act);
+            }
+            .ic-cat-work:before {
+              @include sprite-position($ic-cat-work-act);
+            }
+            .ic-cat-others:before {
+              @include sprite-position($ic-cat-others-act);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .block-sidebar-bg {
+    //background: url(../img/bg-sidebar.jpg) center 0px;
+    color: #fff;
+    background-color: #3b3f47;
+    .block-title {
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      background: #31343b;
+      padding: 13px 23px;
+    }
+  }
+  .block-bg-color {
+    .title-block {
+      padding: 10px 20px;
+      background: #5b5b5b;
+      line-height: 23px;
+    }
+  }
+  .block-bg-texture {
+    background: url(../img/bg-sidebar.jpg) center top;
+  }
+  .block-total-pay {
+    .block-content {
+      padding: 20px;
+    }
+    ._text {
+      font-size: 15px;
+      font-weight: 300;
+      margin-bottom: 16px;
+    }
+    .btn-pay {
+      width: 130px;
+      padding: 13px 10px;
+      line-height: 1;
+      font-weight: 700;
+      font-size: 18px;
+      text-align: center;
+      text-transform: uppercase;
+      i {
+        margin-left: 20px;
+        float: right;
+      }
+    }
+  }
+  .block-sidebar-packages {
+    .block-title {
+      background: transparent;
+      text-align: center;
+      margin-top: 5px;
+    }
+    .list-packages {
+      .package-item {
+        position: relative;
+        height: 70px;
+        margin-bottom: 10px;
+        background: #5b5b5b;
+
+        ._price {
+          width: 73px;
+          text-align: center;
+          vertical-align: middle;
+          font-size: 23px;
+          font-weight: bold;
+        }
+        ._title-block {
+          display: flex;
+          flex-wrap: wrap;
+          align-content: center;
+          padding: 14px;
+          border-left: 1px solid #3b3f47;
+          flex: 1;
+          ._title {
+            font-size: 14px;
+            text-transform: uppercase;
+            width: 100%;
+          }
+        }
+        label {
+          cursor: pointer;
+          flex: 1;
+        }
+        & .checked + label {
+          background: $yellow;
+        }
+        &.open {
+          //background: $yellow;
+          z-index: 9;
+          .info-btn-bg {
+            background: #5b5b5b;
+            .info-btn {
+              background: $yellow;
+              color: #fff;
+              border: none;
+              height: 21px;
+              width: 21px;
+            }
+          }
+
+        }
+
+      }
+    }
+  }
+  .block-list-enhancements {
+    ._text {
+      padding: 15px 20px;
+    }
+    .list-enhancements {
+      padding-bottom: 8px;
+    }
+  }
+  .item-enhancement {
+    position: relative;
+    padding: 13px 35px 8px 20px;
+    border-bottom: 1px solid #545963;
+    .inner-item-enhancement {
+      align-items: center;
+    }
+    &:first-child {
+      border-top: 1px solid #545963;
+    }
+    .jq-checkbox {
+      height: 16px;
+      width: 16px;
+      border-radius: 2px;
+      background: #f7f7f7;
+      border: 1px solid #cad2d9;
+      vertical-align: middle;
+      margin-right: 16px;
+      &.checked {
+        background: $yellow;
+        border-color: $yellow;
+        font-family: FontAwesome;
+        .jq-checkbox__div {
+          text-align: center;
+          line-height: 16px;
+          &:before {
+            content: "\f00c";
+          }
+        }
+      }
+    }
+    .label {
+      display: inline-block;
+      vertical-align: middle;
+      padding: 0;
+      text-align: left;
+      ._price {
+        display: inline-block;
+        width: 45px;
+        vertical-align: middle;
+        font-weight: bold;
+      }
+    }
+    & .checked + label {
+      color: $yellow;
+    }
+  }
+  .info-block {
+    width: 44px;
+    position: absolute;
+    //margin-right: -22px;
+    right: -22px;
+    top: 0;
+    height: 100%;
+    .info-btn-bg {
+      height: 100%;
+      position: relative;
+      position: relative;
+      z-index: 2;
+
+      .info-btn {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        border: 1px solid #3e4249;
+        background: #5b5b5b;
+        color: $yellow;
+        font-size: 16px;
+        height: 25px;
+        width: 25px;
+        display: block;
+        text-align: center;
+        line-height: 21px;
+        cursor: pointer;
+      }
+    }
+  }
+  .package-drop {
+    display: none;
+    background: #393939;
+    left: 15px;
+    top: 0;
+    padding: 0;
+    margin: 0;
+    width: 500px;
+    font-weight: 500;
+    position: absolute;
+    z-index: 1;
+    .info-inner {
+      padding: 30px 40px;
+    }
+    .h2 {
+      font-weight: 700;
+      font-size: 25px;
+      text-transform: uppercase;
+    }
+    .h3 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .list-options-package {
+      li {
+        .fa {
+          margin-right: 10px;
+        }
+        &.active {
+          .fa {
+            color: $yellow;
+          }
+        }
+        &.disabled {
+          .fa {
+            color: #ccc;
+          }
+        }
+      }
+
+    }
+  }
+  .item-ads {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    img {
+      max-width: 100%;
+    }
+  }
+}

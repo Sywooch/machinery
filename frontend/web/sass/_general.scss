@@ -13,6 +13,7 @@ a {
 	visibility: hidden;
 }
 .flexbox {
+	display: block;
 	@include flexbox();
 }
 .flex-wrap {
@@ -24,4 +25,13 @@ a {
 
 .just-between {
 	@include just_btw();
+}
+.white {
+	color: #fff;
+}
+.align-auto {
+	margin: auto;
+}
+.align-items-center {
+	align-items: center;
 }

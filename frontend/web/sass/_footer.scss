@@ -5,6 +5,22 @@
 	.col-footer-logo {
 		padding-top: 40px;
 	}
+	.main-footer-menu {
+		margin-top: 25px;
+		li {
+			float: left;
+			width: 50%;
+			margin-bottom: 16px;
+			a {
+				text-transform: uppercase;
+				font-size: 13px;
+				text-decoration: none;
+				&:hover {
+					color: $yellow;
+				}
+			}
+		}
+	}
 	.social-menu {
 		margin-top: 42px;
 		li {
@@ -30,6 +46,7 @@
 	background: #252e33;
 	color: #fff;
 	padding: 32px 20px 20px;
+	margin-bottom: 60px;
 	&:before {
 		content: '';
 		display: block;
@@ -63,5 +80,29 @@
 		cursor: pointer;
 		outline: none;
 		background: transparent;
+	}
+}
+.footer-buttons {
+	padding-top: 40px;
+	.footer-button {
+		display: inline-block;
+		width: 220px;
+		height: 40px;
+		text-transform: uppercase;
+		text-decoration: none;
+		text-align: center;
+		font-size: 15px;
+		font-weight: 700;
+		line-height: 40px;
+		margin-bottom: 15px;
+		&.ask-b {
+			color: $yellow;
+			border: 2px solid $yellow;
+			line-height: 36px;
+		}
+		&.advert-b {
+			background: $yellow;
+			color: #fff;
+		}
 	}
 }

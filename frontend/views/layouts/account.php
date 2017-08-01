@@ -12,6 +12,7 @@ use common\widgets\Filter\FilterWidget;
 
 AppAsset::register($this);
 IEAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -32,7 +33,7 @@ IEAsset::register($this);
 
     <div class="head-panel">
         <div class="container">
-            <h1 class="title h1">Admin panel</h1>
+            <h1 class="title h1"><?= (isset($this->blocks['title_panel'])) ? $this->blocks['title_panel'] : 'Admin panel'  ?></h1>
             <?=
                 Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
