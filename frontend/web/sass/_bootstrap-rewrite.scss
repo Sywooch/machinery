@@ -17,8 +17,26 @@
 	border: none;
 	outline: none;
 	box-shadow: none;
+	text-decoration: none;
 	-webkit-appearance: none;
 	//height: 41px;
+}
+.btn-default {
+	font-size: 13px;
+	text-transform: uppercase;
+	color: #2c363c;
+	border: 1px solid #9b9b9b;
+	background: transparent;
+	&:hover {
+		color: $yellow !important;
+		background: transparent !important;
+		border-color: $yellow !important;
+	}
+	&:active, &:focus {
+		color: #2c363c !important;
+		background: transparent !important;
+		border-color: #2c363c !important;
+	}
 }
 .btn-warning {
 	background: $yellow;
@@ -43,6 +61,9 @@
 	height: 41px;
 	border: 1px solid #9b9b9b;
 }
+.text-danger {
+	color: $danger;
+}
 label {
 	text-transform: uppercase;
 	font-size: 12px;
@@ -65,6 +86,24 @@ label {
 	> li {
 		> a, span {
 			margin-left: 2px;
+		}
+	}
+}
+
+.table {
+	> thead,
+	> tbody,
+	> tfoot, 
+	> thead, 
+	> tbody, 
+	> tfoot {
+		tr {
+			th, td {
+				border: none;
+			}
+		}
+		tr:nth-child(odd) {
+			background: #f5f5f5;
 		}
 	}
 }

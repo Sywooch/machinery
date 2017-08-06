@@ -147,10 +147,10 @@ $this->params['breadcrumbs'][] = 'Industrial machinery';
                     </form>
                 </div>
             </div>
-            <div class="block-sidebar block-ads">
-                <div class="item-ads"><a href="#"> <img src="/images/b2.png" alt=""></a></div>
-                <div class="item-ads"><a href="#"> <img src="/images/b4.png" alt=""></a></div>
-            </div>
+<!--            <div class="block-sidebar block-ads">-->
+<!--                <div class="item-ads"><a href="#"> <img src="/images/b2.png" alt=""></a></div>-->
+<!--                <div class="item-ads"><a href="#"> <img src="/images/b4.png" alt=""></a></div>-->
+<!--            </div>-->
             <div class="block-sidebar block-list-enhancements block-bg-color block-sidebar-bg">
                 <div class="h2 title-block grey-ttl  text-uppercase"><?= Yii::t('app', 'Listing Enhancements:') ?></div>
                 <div class="block-content">

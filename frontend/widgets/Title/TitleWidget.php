@@ -1,10 +1,10 @@
 <?php
-namespace frontend\widgets\SearchForm;
+namespace frontend\widgets\Titlewidget;
 
 use Yii;
 use frontend\widgets\SearchForm\models\SearchForm;
 
-class Titleidget extends \yii\bootstrap\Widget
+class Titlewidget extends \yii\bootstrap\Widget
 {
     public $title;
     

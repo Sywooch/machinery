@@ -32,6 +32,8 @@ class m170801_125200_create_packages_table extends Migration
             'term' => $this->integer(3),
             'weight' => $this->integer(3),
             'status' => $this->boolean(),
+            'term_advert' => $this->integer(3),
+            'quantity' => $this->integer(3),
         ]);
     }
 

@@ -1,37 +1,98 @@
-
 body {
-	color: $greyblack;
-	font: 12px/1.5em 'MuseoSC', 'Open sans';
+    color: $greyblack;
+    font: 12px/1.5em 'MuseoSC', 'Open sans';
 }
+
 a {
-	color: $greyblack;
+    color: $greyblack;
 }
+
 .cf:after {
-	content: '';
-	display: block;
-	clear: both;
-	visibility: hidden;
+    content: '';
+    display: block;
+    clear: both;
+    visibility: hidden;
 }
+
 .flexbox {
-	display: block;
-	@include flexbox();
+    display: block;
+    @include flexbox();
 }
+
 .flex-wrap {
-	@include wrap(wrap);
+    @include wrap(wrap);
 }
+
 .just-around {
-	@include just-around();
+    @include just-around();
 }
 
 .just-between {
-	@include just_btw();
+    @include just_btw();
 }
+
 .white {
-	color: #fff;
+    color: #fff;
 }
+
 .align-auto {
-	margin: auto;
+    margin: auto;
 }
+
 .align-items-center {
-	align-items: center;
+    align-items: center;
+}
+
+.blur-bg {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    z-index: 1;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(15px);
+}
+
+.slick-arrow {
+    height: 40px;
+    width: 40px;
+    margin-left: 5px;
+    background: #2c363c;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-radius: 0;
+    cursor: pointer;
+    text-indent: -900px;
+    &:before {
+        content: '';
+        background-image: url(../images/sprite.png);
+        height: 20px;
+        width: 10px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -5px;
+        margin-top: -10px;
+    }
+    &:hover {
+        background: $yellow;
+    }
+    &.slick-prev {
+        order: 3;
+        &:before {
+            @include sprite-position($arr-left);
+        }
+    }
+    &.slick-next {
+        order: 4;
+        &:before {
+            @include sprite-position($arr-right);
+        }
+    }
 }

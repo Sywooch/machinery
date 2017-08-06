@@ -66,8 +66,12 @@ $( document ).ready(function() {
             dots: false,
             asNavFor: '.big-images-slider',
             slidesToShow: 5,
-            // centerMode: true,
+            centerMode: true,
+            centerPadding: '0px',
+            appendArrows: '.small-images',
             focusOnSelect: true
+        }).on('afterChange', function(event, slick, currentSlide){
+            $('#slide-number').text(currentSlide+1);
         })
     } catch(e){}
     try{
