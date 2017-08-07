@@ -21,6 +21,7 @@ return [
             'modelMap' => [
                 'RegistrationForm' => 'frontend\models\RegistrationForm',
             ],
+            'layout' => '@frontend/views/layouts/account',
         ],
     ],
     'components' => [

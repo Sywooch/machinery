@@ -34,7 +34,7 @@ class Language extends ActiveRecord
     {
         return [
             [['url', 'local', 'name'], 'required'],
-            [['default', 'date_update', 'date_create'], 'integer'],
+            [['default', 'date_update', 'date_create', 'status'], 'integer'],
             [['url', 'local', 'name'], 'string', 'max' => 255],
         ];
     }
@@ -52,6 +52,7 @@ class Language extends ActiveRecord
             'default' => 'Default',
             'date_update' => 'Date Update',
             'date_create' => 'Date Create',
+            'status' => 'Status',
         ];
     }
 

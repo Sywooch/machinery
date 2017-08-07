@@ -23,7 +23,7 @@ $this->title = 'Интернет-магазин №1';
         <div class="row">
             <div class="col-md-4 col-lg-4">
                 <div class="block-banners">
-                    <div class="banner"><a href="#"> <img src="/images/b2.png" alt=""></a></div>
+                    <div class="banner"><a href="#"> <img src="/images/b2-2.png" alt=""></a></div>
                     <div class="banner"><a href="#"> <img src="/images/b3.png" alt=""></a></div>
                     <div class="banner"><a href="#"> <img src="/images/b4.png" alt=""></a></div>
                     <div class="banner"><a href="#"> <img src="/images/b5.png" alt=""></a></div>
@@ -36,8 +36,7 @@ $this->title = 'Интернет-магазин №1';
                         <a href="#"><span class="_count">2150</span><span class="_img">
                         <img src="/images/cat1.png" alt="">
                         <img src="/images/cat1-hov.png" alt="">
-                        </span><span class="_title">Industrial
-machinery</span></a></div>
+                        </span><span class="_title">Industrial machinery</span></a></div>
                     <div class="item-cat">
                         <a href="#"><span class="_count">45231</span><span class="_img">
                         <img src="/images/cat2.png" alt="">
@@ -63,8 +62,7 @@ machinery </span></a></div>
                         <a href="#"><span class="_count">65</span><span class="_img">
                         <img src="/images/cat6.png" alt="">
                         <img src="/images/cat6-hov.png" alt="">
-                        </span><span class="_title">Agricultural 
-machinery</span></a></div>
+                        </span><span class="_title">Agricultural machinery</span></a></div>
                     <div class="item-cat">
                         <a href="#"><span class="_count">65</span><span class="_img">
                         <img src="/images/cat7.png" alt="">
@@ -138,17 +136,7 @@ equipment</span></a>
             </div>
         </div>
         <div class="row row-list-news">
-            <?php for($i=0; $i<3; $i++): ?>
-            <div class="col-md-4"><article class="news-item">
-                <div class="news-item-ttl h3"><a href="#">Заголовок статьи которая здесь показывается на 2 строки максимум</a></div>
-                <figure><img src="/images/port.jpg" alt=""></figure>
-                <div class="news-item-anons">
-                    <p>Таким образом реализация намеченных плановых заданий требуют определения и уточнения модели развития. Разнообразный и богатый опыт дальнейшее развитие различных...</p>
-                </div>
-                <div class="news-item-link-more"><a href="#">Read more <i class="fa fa-chevron-right" aria-hidden="true"></i></a><span class="more-dots"></span></div>
-            </article></div>
-            <?php endfor; ?>
-            <div class="col-md-12 text-center"><a href="#" class="btn btn-lg btn-default">All articles <i class="fa fa-chevron-right" aria-hidden="true"></i></a></div>
+            <?= \frontend\widgets\Articles\LastArticles::widget() ?>
         </div>
         <div class="row list-products-home">
             <div class="list-products-slider-wrap">

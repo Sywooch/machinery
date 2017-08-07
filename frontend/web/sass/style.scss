@@ -1,12 +1,15 @@
 
 @import 'vars';
-@import 'bootstrap-rewrite';
-@import 'jui-rewrite';
 @import 'mixins';
+@import 'jui-rewrite';
+@import 'bootstrap-rewrite';
 @import 'reset';
 @import '../images/sprite';
 @import 'general';
-
+@import "icon";
+@import 'styler';
 @import 'header';
+@import "sidebar";
 @import 'main';
+@import "profile";
 @import 'footer';
