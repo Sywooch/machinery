@@ -10,7 +10,7 @@ return [
     'id' => 'app-frontend',
     'homeUrl' => '/',
     'timeZone' => 'Europe/Minsk',
-    'language' => 'en-EN',
+    'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
