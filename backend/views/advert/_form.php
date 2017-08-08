@@ -2,23 +2,30 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Advert */
 /* @var $form yii\widgets\ActiveForm */
+print_r($languages);
 ?>
 
 <div class="advert-form">
 
     <?php $form = ActiveForm::begin(); ?>
+    <?= $form->field($model, 'lang')->dropDownList(ArrayHelper::map($languages, 'url', 'name')) ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-6">
+        <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'currency')->textInput() ?>
+    </div>
 
-    <?= $form->field($model, 'currency')->textInput() ?>
 
     <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
 

@@ -46,9 +46,9 @@ class Advert extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'website', 'price', 'manufacture', 'phone', 'model'], 'required'],
-            [['body', 'bucket_capacity', 'tire_condition', 'serial_number'], 'string'],
+            [['body', 'bucket_capacity', 'tire_condition', 'serial_number', 'lang'], 'string'],
             [['price'], 'number'],
-            [['currency', 'year', 'condition', 'operating_hours', 'mileage'], 'integer'],
+            [['currency', 'year', 'condition', 'operating_hours', 'mileage', 'parent'], 'integer'],
             [['created', 'updated', 'published'], 'safe'],
             [['status', 'maderated'], 'boolean'],
             [['title', 'website', 'manufacture', 'phone', 'model'], 'string', 'max' => 255],
@@ -82,6 +82,7 @@ class Advert extends \yii\db\ActiveRecord
             'published' => Yii::t('app', 'Published'),
             'status' => Yii::t('app', 'Status'),
             'maderated' => Yii::t('app', 'Maderated'),
+            'lang' => Yii::t('app', 'Language'),
         ];
     }
 

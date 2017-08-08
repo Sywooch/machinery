@@ -73,6 +73,7 @@ class AdvertSearch extends Advert
             'published' => $this->published,
             'status' => $this->status,
             'maderated' => $this->maderated,
+            'lang' => $this->lang,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
@@ -83,7 +84,8 @@ class AdvertSearch extends Advert
             ->andFilterWhere(['like', 'model', $this->model])
             ->andFilterWhere(['like', 'bucket_capacity', $this->bucket_capacity])
             ->andFilterWhere(['like', 'tire_condition', $this->tire_condition])
-            ->andFilterWhere(['like', 'serial_number', $this->serial_number]);
+            ->andFilterWhere(['like', 'serial_number', $this->serial_number])
+            ->andFilterWhere(['like', 'lang', $this->lang]);
 
         return $dataProvider;
     }

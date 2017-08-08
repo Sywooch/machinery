@@ -17,7 +17,7 @@ class m170807_124554_create_advert_table extends Migration
             'title' => $this->string(255)->notNull(),
             'body' => $this->text(),
             'price'=> $this->decimal(6,2),
-            'currency' => $this->integer(2),
+            'currency' => $this->integer(),
             'website' => $this->string(255)->notNull(),
             'manufacture' => $this->string(255),
             'phone' => $this->string(255),
@@ -34,6 +34,8 @@ class m170807_124554_create_advert_table extends Migration
             'published' => $this->dateTime(),
             'status' => $this->boolean(),
             'maderated' => $this->boolean(),
+            'lang' => $this->string(5),
+            'parent' => $this->integer(11),
         ]);
     }
 
