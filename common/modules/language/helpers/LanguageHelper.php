@@ -29,7 +29,7 @@ class LanguageHelper
                 ]);
 
             $return[] =
-                '<form class="translate">'
+                '<form class="translate" action="/language/message/update">'
                 .   Html::activeHiddenInput($translate, 'id')
                 .   Html::activeHiddenInput($translate, 'language')
                 .   '<div class="translate-fields row">'
