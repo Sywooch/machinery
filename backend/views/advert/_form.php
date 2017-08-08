@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model common\models\Advert */
 /* @var $form yii\widgets\ActiveForm */
-print_r($languages);
+
 ?>
 
 <div class="advert-form">

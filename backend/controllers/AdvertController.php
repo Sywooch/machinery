@@ -2,18 +2,33 @@
 
 namespace backend\controllers;
 
+use common\modules\language\models\Language;
 use Yii;
 use common\models\Advert;
 use common\models\AdvertSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\modules\language\models\LanguageRepository;
+use yii\base\Module;
 
 /**
  * AdvertController implements the CRUD actions for Advert model.
  */
 class AdvertController extends Controller
 {
+    /**
+     * @var LanguageRepository
+     */
+    public $languageRepository;
+
+
+    public function __construct($id, Module $module, LanguageRepository $languageRepository, array $config = [])
+    {
+        $this->languageRepository = $languageRepository;
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * @inheritdoc
      */
@@ -65,11 +80,13 @@ class AdvertController extends Controller
     {
         $model = new Advert();
 
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'languages' => $this->languageRepository->loadAllActive()
             ]);
         }
     }
