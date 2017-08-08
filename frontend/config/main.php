@@ -33,7 +33,8 @@ return [
                 'app*' => [
                     'class' => 'common\modules\language\DbMessageSource',
                     //'basePath' => '@app/messages',
-                    'sourceLanguage' => 'en-US'
+                   // 'forceInsert' => true,
+                    'sourceLanguage' => 'en-EN'
                 ],
             ],
         ],
