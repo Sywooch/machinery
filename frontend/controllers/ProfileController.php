@@ -69,18 +69,16 @@ class ProfileController extends ProfileControllerBase
         return '';
     }
 
+    /**
+     * User favorite page
+     *
+     * @return string
+     */
     public function actionFavorite()
     {
         $id = \Yii::$app->user->getId();
         $profile = $this->finder->findProfileById($id);
         return $this->render('/user/profile/favorite', ['profile' => $profile,]);
-    }
-
-    public function actionPublished()
-    {
-        $id = \Yii::$app->user->getId();
-        $profile = $this->finder->findProfileById($id);
-        return $this->render('/user/profile/published', ['profile' => $profile,]);
     }
 
 }

@@ -31,7 +31,7 @@ IEAsset::register($this);
 
 <?= $this->render('_header') ?>
 
-<?php if($this->params['breadcrumbs']): ?>
+<?php if(isset($this->params['breadcrumbs'])): ?>
 
     <div class="head-panel">
         <div class="container">

@@ -16,7 +16,6 @@ class Profile extends ProfileBase
         $rules[] = [['phone'], 'string', 'max' => 100];
         $rules[] = [['last_name'], 'string', 'max' => 255];
         $rules[] = [['social'], 'each', 'rule' => ['string']];
-        $rules[] = [['phone'], 'string', 'max' => 100];
         $rules['timeZoneValidation'] = ['timezone', 'safe'];
         return $rules;
     }
