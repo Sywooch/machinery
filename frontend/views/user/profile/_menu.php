@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use dektrium\user\widgets\UserMenu;
 use yii\widgets\Menu;
 
 /**
@@ -21,8 +20,9 @@ $user = Yii::$app->user->identity;
                 ['label' => '<i class="fa fa-cog" aria-hidden="true"></i> ' . Yii::t('user', 'View profile'), 'url' => ['/user/profile']],
                 ['label' => '<i class="fa fa-user" aria-hidden="true"></i> ' . Yii::t('user', 'My Account'), 'url' => ['/user/settings/account']],
                 ['label' => Yii::t('user', 'Profile'), 'url' => ['/user/settings/profile']],
-                ['label' => '<i class="fa fa-list" aria-hidden="true"></i> ' . Yii::t('app', 'My Listings'), 'url' => ['/profile/published']],
+                ['label' => '<i class="fa fa-list" aria-hidden="true"></i> ' . Yii::t('app', 'My Listings'), 'url' => ['/advert/listing']],
                 ['label' => '<i class="fa fa-heart" aria-hidden="true"></i> ' . Yii::t('app', 'My favorite'), 'url' => ['/profile/favorite']],
+                ['label' => '<i class="fa fa-heart" aria-hidden="true"></i> ' . Yii::t('app', 'Premium advertising'), 'url' => ['/ads/index']],
             ],
             'encodeLabels' => false,
         ]); ?>

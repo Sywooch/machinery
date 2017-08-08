@@ -22,13 +22,7 @@ $this->title = 'Интернет-магазин №1';
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-lg-4">
-                <div class="block-banners">
-                    <div class="banner"><a href="#"> <img src="/images/b2-2.png" alt=""></a></div>
-                    <div class="banner"><a href="#"> <img src="/images/b3.png" alt=""></a></div>
-                    <div class="banner"><a href="#"> <img src="/images/b4.png" alt=""></a></div>
-                    <div class="banner"><a href="#"> <img src="/images/b5.png" alt=""></a></div>
-                    <div class="banner"><a href="#"> <img src="/images/b6.png" alt=""></a></div>
-                </div>
+                <?= \frontend\widgets\AdsBanners\AdsBannersWidget::widget(['region'=>'right-sidebar'])?>
             </div>
             <div class="col-md-8 col-lg-8">
                 <div class="list-categories flexbox just-around flex-wrap">

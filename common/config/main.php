@@ -1,6 +1,6 @@
 <?php
 return [
-    
+
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
@@ -10,8 +10,6 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'common\modules\store\components\StoreUrlRule'],
-                 ['class' => 'common\modules\store\components\ProductUrlRule'],
                 '<action:(login|logout)>' => 'user/security/<action>',
             ],
         ],
@@ -50,15 +48,8 @@ return [
                 ],
             ]
         ],
-     //   'language' => [
-      //      'class' => 'common\modules\language\LanguageModule',
-     //   ],
-        'store' => [
-            'class' => 'common\modules\store\Module',
-            'defaultPageSize' => 21,
-            'maxItemsToCompare' => 100,
-            'maxItemsToWish' => 100,
-            'buyButtonText' => 'В корзину',
+        'language' => [
+            'class' => 'common\modules\language\LanguageModule',
         ],
-    ], 
+    ],
 ];
