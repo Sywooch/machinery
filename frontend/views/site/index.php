@@ -1,5 +1,5 @@
 <?php
-use common\widgets\Filter\FilterWidget;
+use frontend\widgets\Filter\FilterWidget;
 $this->title = 'Интернет-магазин №1';
 
 ?>

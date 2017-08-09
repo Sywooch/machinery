@@ -2,8 +2,9 @@
 
 namespace common\modules\taxonomy\models;
 
-use yii\db\ActiveRecord;
 use common\helpers\URLify;
+use yii\db\ActiveRecord;
+
 
 class TaxonomyItems extends ActiveRecord
 {
@@ -70,8 +71,8 @@ class TaxonomyItems extends ActiveRecord
     public function beforeSave($insert)
     {
         parent::beforeSave($insert);
-        $this->pid = $this->pid ?? 0;
-        $this->transliteration = $this->transliteration ?? URLify::url($this->name);
+        $this->pid = $this->pid ? $this->pid : 0;
+        $this->transliteration = $this->transliteration ? $this->transliteration : URLify::url($this->name);
         $this->data = [
             'translations' => $this->_translations
         ];

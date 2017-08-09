@@ -24,29 +24,34 @@ class TaxonomyIndexRepository
 
     /**
      * @param Model $entity
-     * @throws \yii\base\InvalidConfigException
+     * @param string $attribute
+     * @param array $terms
      */
-    public function link(Model $entity)
+    public function link(Model $entity, string $attribute, array $terms = [])
     {
 
-        foreach ($this->_terms as $attribute => $terms) {
-
-            TaxonomyIndex::deleteAll([
+        $this->clear($entity, $attribute);
+        foreach ($terms as $term) {
+            \Yii::createObject([
+                'class' => TaxonomyIndex::class,
+                'term_id' => $term->id,
                 'entity_id' => $entity->id,
-                'model' => StringHelper::basename(get_class($entity)),
-                'field' => $attribute
-            ]);
-
-            foreach ($terms as $term) {
-                \Yii::createObject([
-                    'class' => TaxonomyIndex::class,
-                    'term_id' => $term->id,
-                    'entity_id' => $entity->id,
-                    'field' => $attribute,
-                    'model' => StringHelper::basename(get_class($entity))
-                ])->save();
-            }
-            $this->_terms[$attribute] = [];
+                'field' => $attribute,
+                'model' => StringHelper::basename(get_class($entity))
+            ])->save();
         }
+    }
+
+    /**
+     * @param Model $entity
+     * @param string $attribute
+     */
+    public function clear(Model $entity, string $attribute)
+    {
+        TaxonomyIndex::deleteAll([
+            'entity_id' => $entity->id,
+            'model' => StringHelper::basename(get_class($entity)),
+            'field' => $attribute
+        ]);
     }
 }
