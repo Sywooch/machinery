@@ -2,14 +2,15 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\TarifPackages */
 
-$this->title = Yii::t('app', 'Create Tarif Packages');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tarif Packages'), 'url' => ['index']];
+/* @var $this yii\web\View */
+/* @var $model common\models\Currency */
+
+$this->title = Yii::t('app', 'Create Currency');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Currencies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tarif-packages-create">
+<div class="currency-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -3,6 +3,11 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use common\modules\file\widgets\FileInput\FileInputWidget;
+
+use common\modules\file\Asset as FileAsset;
+
+FileAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Advert */
@@ -12,7 +17,9 @@ use yii\helpers\ArrayHelper;
 
 <div class="advert-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+    ]); ?>
     <?= $form->field($model, 'lang')->dropDownList(ArrayHelper::map($languages, 'url', 'name')) ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
@@ -58,6 +65,10 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'status')->checkbox() ?>
 
     <?= $form->field($model, 'maderated')->checkbox() ?>
+
+
+    <?= $form->field($model, 'photos', ['template' => '{input}{error}'])
+        ->widget(FileInputWidget::class, ['showRemove' => true]); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

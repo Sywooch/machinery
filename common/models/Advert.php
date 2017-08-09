@@ -34,6 +34,18 @@ class Advert extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \common\modules\file\components\FileBehavior::class,
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return 'advert';
@@ -52,6 +64,8 @@ class Advert extends \yii\db\ActiveRecord
             [['created', 'updated', 'published'], 'safe'],
             [['status', 'maderated'], 'boolean'],
             [['title', 'website', 'manufacture', 'phone', 'model'], 'string', 'max' => 255],
+            [['photos'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png', 'maxFiles' => 2],
+
         ];
     }
 
