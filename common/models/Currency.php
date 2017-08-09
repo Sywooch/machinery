@@ -16,6 +16,7 @@ use Yii;
  */
 class Currency extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
     /**
      * @inheritdoc
      */

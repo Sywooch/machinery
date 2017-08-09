@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\modules\file\widgets\FileInput\FileInputWidget;
+use common\models\Currency;
 
 use common\modules\file\Asset as FileAsset;
 
@@ -20,51 +21,79 @@ FileAsset::register($this);
     <?php $form = ActiveForm::begin([
         'options' => ['enctype' => 'multipart/form-data'],
     ]); ?>
-    <?= $form->field($model, 'lang')->dropDownList(ArrayHelper::map($languages, 'url', 'name')) ?>
-
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
+    <div class="col-md-6">
+        <?= $form->field($model, 'lang')->dropDownList(ArrayHelper::map($languages, 'url', 'name')) ?>
+    </div>
+    <div class="col-md-6">
+        <?php foreach ($languages as $lang): ?>
+            <a href="#"><?= $lang->name ?></a>
+        <?php endforeach; ?>
+    </div>
+    <div class="col-md-12">
+        <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    </div>
+    <div class="col-md-12">
+        <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
+    </div>
 
     <div class="col-md-6">
         <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
     </div>
     <div class="col-md-6">
-        <?= $form->field($model, 'currency')->textInput() ?>
+        <?= $form->field($model, 'currency')
+            ->dropDownList(ArrayHelper::map(
+                    Currency::find()->where(['active'=>Currency::STATUS_ACTIVE])->all(), 'id', 'name'),
+                [ 'prompt'=>'- Select currency -']) ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'category')
+            ->dropDownList(\yii\helpers\ArrayHelper::map(
+                $categories,'id','name'),
+                [ 'prompt'=>'- Select category -']) ?></div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'manufacture')
+            ->dropDownList(\yii\helpers\ArrayHelper::map(
+                $manufacturer,'id','name'),
+                [ 'prompt'=>'- Select manufacture -']) ?>
     </div>
 
+    <div class="col-md-6">
+        <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+    </div>
 
-    <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-6">
+        <?= $form->field($model, 'year')->textInput() ?>
+    </div>
 
-    <?= $form->field($model, 'manufacture')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-6">
+        <?= $form->field($model, 'condition')->textInput() ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'model')->textInput(['maxlength' => true]) ?>
+    </div>
 
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-6"><?= $form->field($model, 'operating_hours')->textInput() ?></div>
 
-    <?= $form->field($model, 'model')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-6"><?= $form->field($model, 'mileage')->textInput() ?></div>
 
-    <?= $form->field($model, 'year')->textInput() ?>
+    <div class="col-md-12"><?= $form->field($model, 'bucket_capacity')->textarea(['rows' => 6]) ?></div>
 
-    <?= $form->field($model, 'condition')->textInput() ?>
+    <div class="col-md-12"><?= $form->field($model, 'tire_condition')->textarea(['rows' => 6]) ?></div>
 
-    <?= $form->field($model, 'operating_hours')->textInput() ?>
+    <div class="col-md-12"><?= $form->field($model, 'serial_number')->textarea(['rows' => 6]) ?></div>
 
-    <?= $form->field($model, 'mileage')->textInput() ?>
+    <div class="col-md-6"><?= $form->field($model, 'created')->textInput(['maxlength' => true]) ?></div>
 
-    <?= $form->field($model, 'bucket_capacity')->textarea(['rows' => 6]) ?>
+    <div class="col-md-6"><?= $form->field($model, 'updated')->textInput(['maxlength' => true]) ?></div>
 
-    <?= $form->field($model, 'tire_condition')->textarea(['rows' => 6]) ?>
+    <div class="col-md-6"><?= $form->field($model, 'published')->textInput(['maxlength' => true]) ?></div>
 
-    <?= $form->field($model, 'serial_number')->textarea(['rows' => 6]) ?>
+    <div class="col-md-6"><?= $form->field($model, 'status')->checkbox() ?></div>
 
-    <?= $form->field($model, 'created')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'updated')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'published')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->checkbox() ?>
-
-    <?= $form->field($model, 'maderated')->checkbox() ?>
+    <div class="col-md-6"><?= $form->field($model, 'maderated')->checkbox() ?></div>
 
 
     <?= $form->field($model, 'photos', ['template' => '{input}{error}'])

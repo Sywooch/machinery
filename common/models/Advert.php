@@ -31,6 +31,7 @@ use Yii;
  */
 class Advert extends \yii\db\ActiveRecord
 {
+    public $category;
     /**
      * @inheritdoc
      */
@@ -60,7 +61,7 @@ class Advert extends \yii\db\ActiveRecord
             [['title', 'website', 'price', 'manufacture', 'phone', 'model'], 'required'],
             [['body', 'bucket_capacity', 'tire_condition', 'serial_number', 'lang'], 'string'],
             [['price'], 'number'],
-            [['currency', 'year', 'condition', 'operating_hours', 'mileage', 'parent'], 'integer'],
+            [['currency', 'year', 'condition', 'operating_hours', 'mileage', 'parent', 'category'], 'integer'],
             [['created', 'updated', 'published'], 'safe'],
             [['status', 'maderated'], 'boolean'],
             [['title', 'website', 'manufacture', 'phone', 'model'], 'string', 'max' => 255],
@@ -97,6 +98,7 @@ class Advert extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'maderated' => Yii::t('app', 'Maderated'),
             'lang' => Yii::t('app', 'Language'),
+            'category' => Yii::t('app', 'Category'),
         ];
     }
 

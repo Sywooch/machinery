@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\modules\language\models\LanguageRepository;
 use yii\base\Module;
+use common\modules\taxonomy\models\TaxonomyItemsRepository;
 
 /**
  * AdvertController implements the CRUD actions for Advert model.
@@ -21,11 +22,13 @@ class AdvertController extends Controller
      * @var LanguageRepository
      */
     public $languageRepository;
+    public $itemsRepository;
 
 
-    public function __construct($id, Module $module, LanguageRepository $languageRepository, array $config = [])
+    public function __construct($id, Module $module, LanguageRepository $languageRepository, TaxonomyItemsRepository $itemsRepository,  array $config = [])
     {
         $this->languageRepository = $languageRepository;
+        $this->itemsRepository    = $itemsRepository;
         parent::__construct($id, $module, $config);
     }
 
@@ -82,11 +85,13 @@ class AdvertController extends Controller
 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'languages' => $this->languageRepository->loadAllActive()
+                'languages' => $this->languageRepository->loadAllActive(),
+                'categories' => $this->itemsRepository->getVocabularyTerms(2),
+                'manufacturer' => $this->itemsRepository->getVocabularyTerms(3),
             ]);
         }
     }
@@ -102,10 +107,13 @@ class AdvertController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'languages' => $this->languageRepository->loadAllActive(),
+                'categories' => $this->itemsRepository->getVocabularyTerms(2),
+                'manufacturer' => $this->itemsRepository->getVocabularyTerms(3),
             ]);
         }
     }
