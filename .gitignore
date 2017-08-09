@@ -1,6 +1,7 @@
 /vendor
 /files
 backend/web/.htaccess
+backend/runtime/*
 *.sql
 .idea/
 .idea/*
