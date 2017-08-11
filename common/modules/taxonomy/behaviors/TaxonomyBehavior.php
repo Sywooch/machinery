@@ -67,7 +67,9 @@ class TaxonomyBehavior extends Behavior
     {
         if (isset($this->_termFields[$name])) {
             if (!isset($this->$name)) {
-                $this->$name = $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable(TaxonomyIndex::tableName(), ['entity_id' => 'id']);
+                $this->$name = $this->owner->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])->viaTable(TaxonomyIndex::tableName(), ['entity_id' => 'id'], function ($query) use ($name) {
+                    $query->filterWhere(['field' => $name, 'model' => StringHelper::basename(get_class($this->owner))]);
+                });
             }
             return true;
         }
