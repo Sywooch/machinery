@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\modules\taxonomy\models\TaxonomyItemsRepository;
 use Yii;
 use backend\models\Pages;
 use backend\models\PagesSearch;
@@ -99,6 +100,8 @@ class PagesController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'terms1' => (new TaxonomyItemsRepository())->getVocabularyTerms(1),
+                'terms2' => (new TaxonomyItemsRepository())->getVocabularyTerms(4)
             ]);
         }
     }

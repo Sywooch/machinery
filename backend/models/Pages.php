@@ -5,10 +5,7 @@ namespace backend\models;
 use common\helpers\ModelHelper;
 use common\helpers\URLify;
 use common\models\Alias;
-use common\modules\taxonomy\models\TaxonomyIndex;
-use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\validators\TaxonomyAttributeValidator;
-use yii\helpers\StringHelper;
 
 /**
  * This is the model class for table "pages".
@@ -36,7 +33,7 @@ class Pages extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['body'], 'string'],
             [['title'], 'string', 'max' => 255],
-            [['test'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
+            [['test', 'test2'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
         ];
     }
 
@@ -66,7 +63,7 @@ class Pages extends \yii\db\ActiveRecord
             ]
         ];
     }
-    
+
     public function urlPattern($model, Alias $alias)
     {
         $alias->url = 'pages/view';

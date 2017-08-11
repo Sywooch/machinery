@@ -15,7 +15,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'test')->dropDownList([6319 => 'dwewer', 6318 => 'ewrwerw1sss'],[ 'prompt'=>'- Select category -']) ?>
+    <?= $form->field($model, 'test')->dropDownList(\yii\helpers\ArrayHelper::map($terms1,'id','name'),[ 'prompt'=>'- Select -']) ?>
+    <?= $form->field($model, 'test2')->dropDownList(\yii\helpers\ArrayHelper::map($terms2,'id','name'),[ 'prompt'=>'- Select -', 'multiple' => 'multiple']) ?>
 
     <?= $form->field($model, 'body')->widget(Widget::className(), [
         'settings' => [
