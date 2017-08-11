@@ -81,6 +81,8 @@ class PagesController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'terms1' => (new TaxonomyItemsRepository())->getVocabularyTerms(1),
+                'terms2' => (new TaxonomyItemsRepository())->getVocabularyTerms(4)
             ]);
         }
     }
