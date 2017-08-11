@@ -49,7 +49,10 @@ FileAsset::register($this);
         <?= $form->field($model, 'category')
             ->dropDownList(\yii\helpers\ArrayHelper::map(
                 $categories,'id','name'),
-                [ 'prompt'=>'- Select category -']) ?></div>
+                [ 'prompt'=>'- Select category -', 'multiple' => 'multiple']) ?></div>
+    <div class="col-md-6"><?= $form->field($model, 'test')
+        ->dropDownList(\yii\helpers\ArrayHelper::map($categories,'id','name'),
+            [ 'prompt'=>'- Select category -']) ?></div>
     <div class="col-md-6">
         <?= $form->field($model, 'manufacture')
             ->dropDownList(\yii\helpers\ArrayHelper::map(
@@ -94,7 +97,6 @@ FileAsset::register($this);
     <div class="col-md-6"><?= $form->field($model, 'status')->checkbox() ?></div>
 
     <div class="col-md-6"><?= $form->field($model, 'maderated')->checkbox() ?></div>
-
 
     <?= $form->field($model, 'photos', ['template' => '{input}{error}'])
         ->widget(FileInputWidget::class, ['showRemove' => true]); ?>
