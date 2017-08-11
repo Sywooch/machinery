@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\modules\file\widgets\FileInput\FileInputWidget;
 use common\models\Currency;
+use kartik\select2\Select2;
+use common\modules\taxonomy\helpers\TaxonomyHelper;
 
 use common\modules\file\Asset as FileAsset;
 
@@ -13,9 +15,7 @@ FileAsset::register($this);
 /* @var $this yii\web\View */
 /* @var $model common\models\Advert */
 /* @var $form yii\widgets\ActiveForm */
-
 ?>
-
 <div class="advert-form">
 
     <?php $form = ActiveForm::begin([
@@ -45,14 +45,23 @@ FileAsset::register($this);
                     Currency::find()->where(['active'=>Currency::STATUS_ACTIVE])->all(), 'id', 'name'),
                 [ 'prompt'=>'- Select currency -']) ?>
     </div>
+
     <div class="col-md-6">
         <?= $form->field($model, 'category')
-            ->dropDownList(\yii\helpers\ArrayHelper::map(
-                $categories,'id','name'),
-                [ 'prompt'=>'- Select category -', 'multiple' => 'multiple']) ?></div>
-    <div class="col-md-6"><?= $form->field($model, 'test')
-        ->dropDownList(\yii\helpers\ArrayHelper::map($categories,'id','name'),
-            [ 'prompt'=>'- Select category -']) ?></div>
+            ->widget(Select2::classname(), [
+            'data' => TaxonomyHelper::terms3Level($categories),
+            'options' => ['placeholder' => Yii::t('app', '- Select category -'), 'size'=>2],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'multiple' => true,
+                'maximumInputLength' => 15,
+                'tags' => true,
+                'maximumSelectionLength' => 2,
+            ],
+            'showToggleAll' => false,
+        ]); ?>
+    </div>
+
     <div class="col-md-6">
         <?= $form->field($model, 'manufacture')
             ->dropDownList(\yii\helpers\ArrayHelper::map(

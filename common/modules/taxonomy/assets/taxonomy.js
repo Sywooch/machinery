@@ -22,7 +22,7 @@ taxonomy.nesTable = function(){
     that.button.attr('disabled', 'disabled');
     that.button.click(function(){ 
             var data = that.conteiner.nestable('serialize');
-        $.post('/taxonomy/items/order', {vid: that.vid, pid: that.pid, data: data}, function () {
+        $.post('/admin/taxonomy/items/order', {vid: that.vid, pid: that.pid, data: data}, function () {
                 that.button.attr('disabled', 'disabled'); 
             });
             return false; 

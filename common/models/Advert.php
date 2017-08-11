@@ -33,8 +33,8 @@ use Yii;
  */
 class Advert extends \yii\db\ActiveRecord
 {
-    public $category;
-    public $cats_tmp = [];
+//    public $category;
+//    public $cats_tmp = [];
     /**
      * @inheritdoc
      */
@@ -72,7 +72,7 @@ class Advert extends \yii\db\ActiveRecord
             [['status', 'maderated'], 'boolean'],
             [['title', 'website', 'manufacture', 'phone', 'model'], 'string', 'max' => 255],
             [['photos'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png', 'maxFiles' => 2],
-            [['test'], TaxonomyAttributeValidator::class, 'type' => 'integer']
+            [['category'], TaxonomyAttributeValidator::class, 'type' => 'integer']
         ];
     }
 
