@@ -117,6 +117,3 @@ FileAsset::register($this);
     <?php ActiveForm::end(); ?>
 
 </div>
-
-
-
