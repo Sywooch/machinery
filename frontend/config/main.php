@@ -57,7 +57,8 @@ return [
             'rules' => [
                 ['class' => 'frontend\components\AliasRule'],
                 'user/<userId:\d+>/wish' => 'store/wish',
-                'user/<userId:\d+>/wish/remove/<id:\d+>' => 'store/wish/remove'
+                'user/<userId:\d+>/wish/remove/<id:\d+>' => 'store/wish/remove',
+                '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
             ],
         ],
         'view' => [

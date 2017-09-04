@@ -8,6 +8,8 @@ use common\models\Currency;
 use kartik\select2\Select2;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 
+use yii\jui\DatePicker;
+
 use common\modules\file\Asset as FileAsset;
 
 FileAsset::register($this);
@@ -97,11 +99,29 @@ FileAsset::register($this);
 
     <div class="col-md-12"><?= $form->field($model, 'serial_number')->textarea(['rows' => 6]) ?></div>
 
-    <div class="col-md-6"><?= $form->field($model, 'created')->textInput(['maxlength' => true]) ?></div>
+    <div class="col-md-6">
+        <? //= $form->field($model, 'created')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'created')->widget(\yii\jui\DatePicker::classname(), [
+            //'language' => 'ru',
+            'dateFormat' => 'dd-MM-yyyy',
+        ]) ?>
+    </div>
 
-    <div class="col-md-6"><?= $form->field($model, 'updated')->textInput(['maxlength' => true]) ?></div>
+    <div class="col-md-6">
+        <? //= $form->field($model, 'updated')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'updated')->widget(\yii\jui\DatePicker::classname(), [
+            //'language' => 'ru',
+            'dateFormat' => 'dd-MM-yyyy',
+        ]) ?>
+    </div>
 
-    <div class="col-md-6"><?= $form->field($model, 'published')->textInput(['maxlength' => true]) ?></div>
+    <div class="col-md-6">
+        <? //= $form->field($model, 'published')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'published')->widget(\yii\jui\DatePicker::classname(), [
+            //'language' => 'ru',
+            'dateFormat' => 'dd-MM-yyyy',
+        ]) ?>
+    </div>
 
     <div class="col-md-6"><?= $form->field($model, 'status')->checkbox() ?></div>
 
@@ -110,10 +130,17 @@ FileAsset::register($this);
     <?= $form->field($model, 'photos', ['template' => '{input}{error}'])
         ->widget(FileInputWidget::class, ['showRemove' => true]); ?>
 
+    <?= $form->field($model, 'meta_description')->textarea(['col']) ?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+    <?php /*echo $this->registerJs('
+        $(function(){
+            $(\'#advert-created\').datepicker();
+        })
+    ') */ ?>
+
 
 </div>

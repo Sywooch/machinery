@@ -48,13 +48,13 @@ use yii\helpers\Html;
                 <div class="footer-buttons-wrapper">
                     <a data-toggle="modal" data-target="#myModalFeedback" class="ask-b footer-button" href="#">ask any
                         questions</a>
-                    <a class="advert-b footer-button" href="#">add advent</a>
+                    <a class="advert-b footer-button" href="<?= \yii\helpers\Url::to(['advert/create']) ?>"><?= Yii::t('app', 'add advent') ?></a>
                 </div>
-                <div class=" main-footer-language">
+                <div class="dropup main-footer-language">
                     <ul class="menu-lang">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <img src="/images/langs/lang-de.png" alt="">CHANGE language <span class="caret"></span></a>
+                                <img src="/images/langs/lang-de.png" alt=""><?= Yii::t('app', 'CHANGE language') ?> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#"><img src="/images/langs/lang-de.png" alt=""> DE</a></li>
                                 <li><a href="#"><img src="/images/langs/lang-ru.png" alt=""> RU</a></li>

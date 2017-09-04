@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 
-$this->title = $model->title;
+$this->title = 'Redcat Rampage berrgsrg в широком пишется все название';
 $this->params['breadcrumbs'][] = [
     'label'=> Yii::t('app', 'Catalog'),
     'url' => 'catalog'
@@ -15,7 +15,7 @@ $this->beginBlock('title_panel');
 echo Yii::t('app', 'Preview advert');
 $this->endBlock();
 ?>
-<!--<pre>--><?php //print_r($model) ?><!--</pre>-->
+
 <div class="container main-container">
     <div class="row">
         <div class="col-md-3 sidebar sidebar-inner">
@@ -27,25 +27,17 @@ $this->endBlock();
         </div>
         <div class="col-md-9">
             <div class="advert-container">
-                <?php if(Yii::$app->user->id == $model->user_id || Yii::$app->user->can('administrator')): ?>
                 <div class="buttons-line">
                     <p class="advert-status status-not-publish text-danger">This listing is awaiting payment and is NOT live.</p>
-                    <a href="<?= \yii\helpers\Url::to(['advert/delete/', 'id'=>$model->id]) ?>" data-confirm="<?= Yii::t('app', 'Delete?') ?>" class="btn btn-danger"><?= Yii::t('app','Delete') ?></a>
-                    <a href="<?= \yii\helpers\Url::to(['advert/update/', 'id'=>$model->id]) ?>" class="btn btn-primary"><?= Yii::t('app','Edit') ?></a>
-                    <?php if(Yii::$app->user->id == $model->user_id): ?>
+                    <a href="#" class="btn btn-danger"><?= Yii::t('app','Delete') ?></a>
+                    <a href="#" class="btn btn-primary"><?= Yii::t('app','Edit') ?></a>
                     <a href="#" class="btn btn-warning"><?= Yii::t('app','Make payment') ?></a>
-                    <?php endif; ?>
                 </div>
-                <?php endif; ?>
                 <div class="view-offer">
-                    <h2 class="title-advert text-uppercase"><?= $model->title ?></h2>
-                    <?php if($model->phone): ?>
-                    <div class="contact-advert-row"><i class="glyphicon glyphicon-phone"></i> <?= $model->phone ?></div>
-                    <?php endif; ?>
+                    <h2 class="title-advert text-uppercase">Redcat Rampage berrgsrg в широком пишется все название</h2>
+                    <div class="contact-advert-row"><i class="glyphicon glyphicon-phone"></i> 123-456-789;  123-456-789;</div>
                     <div class="advert-links-row">
-                        <?php if($model->website): ?>
-                        <a href="<?= $model->website ?>" target="_blank" class="btn btn-primary"><i class="ic-earth"></i><?= Yii::t('app', 'Visit website') ?></a>
-                        <?php endif; ?>
+                        <a href="#" class="btn btn-primary"><i class="ic-earth"></i><?= Yii::t('app', 'Visit website') ?></a>
                         <a href="#" class="btn btn-primary add-favorite"><i class="fa fa-heart" aria-hidden="true"></i> <?= Yii::t('app', 'Add favorites') ?></a>
                         <a href="#" class="btn btn-primary"><i class="fa fa-envelope" aria-hidden="true"></i> <?= Yii::t('app', 'Contact Author') ?></a>
                     </div>
@@ -96,63 +88,28 @@ $this->endBlock();
                             <div class="title-block h2 text-uppercase hidden-md hidden-lg"><?= Yii::t('app', 'specifications') ?>:</div>
                             <div class="data-content">
                                 <table class="table table-striped specification-tbl">
-                                    <?php if($model->manufacture): ?>
                                     <tr>
                                         <th><?= Yii::t('app', 'Manufacturer') ?></th>
-                                        <td><?= $model->manufacture ?></td>
+                                        <td>Caterpillar</td>
                                     </tr>
-                                    <?php endif; ?>
-                                    <?php if($model->model): ?>
                                     <tr>
                                         <th><?= Yii::t('app', 'Model') ?></th>
-                                        <td><?= $model->model ?></td>
+                                        <td>432E</td>
                                     </tr>
-                                    <?php endif; ?>
-                                    <?php if($model->year): ?>
                                     <tr>
                                         <th><?= Yii::t('app', 'Year of manufacture') ?></th>
-                                        <td><?= $model->year ?></td>
+                                        <td>2008</td>
                                     </tr>
-                                    <?php endif; ?>
-                                    <?php if($model->operating_hours): ?>
-                                        <tr>
-                                            <th><?= Yii::t('app', 'Operating Hours') ?></th>
-                                            <td><?= $model->operating_hours ?></td>
-                                        </tr>
-                                    <?php endif; ?>
-                                    <?php if($model->mileage): ?>
-                                        <tr>
-                                            <th><?= Yii::t('app', 'Mileage') ?></th>
-                                            <td><?= $model->mileage ?></td>
-                                        </tr>
-                                    <?php endif; ?>
-                                    <?php if($model->bucket_capacity): ?>
-                                        <tr>
-                                            <th><?= Yii::t('app', 'Bucket Capacity') ?></th>
-                                            <td><?= $model->bucket_capacity ?></td>
-                                        </tr>
-                                    <?php endif; ?>
-                                    <?php if($model->tire_condition): ?>
-                                        <tr>
-                                            <th><?= Yii::t('app', 'Tire Condition') ?></th>
-                                            <td><?= $model->tire_condition ?></td>
-                                        </tr>
-                                    <?php endif; ?>
-                                    <?php if($model->serial_number): ?>
-                                        <tr>
-                                            <th><?= Yii::t('app', 'Serial Number') ?></th>
-                                            <td><?= $model->serial_number ?></td>
-                                        </tr>
-                                    <?php endif; ?>
                                     <tr>
                                         <th><?= Yii::t('app', 'Condition') ?></th>
-                                        <td><?= $model->condition ?></td>
+                                        <td>Used</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                         <div class="description-container col-md-12">
-                            <?= $model->body ?>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium sit quam reprehenderit debitis, labore itaque voluptas, quidem deserunt asperiores possimus!</p>
+                            <p>Exercitationem autem eaque, et voluptates facilis eveniet, voluptate harum debitis dolorem, sint similique molestias hic quos in? Eaque, aliquam architecto.</p>
                         </div> <!-- .description-container -->
                     </div> <!-- .container-links -->
 

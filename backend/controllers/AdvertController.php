@@ -90,8 +90,8 @@ class AdvertController extends Controller
             return $this->render('create', [
                 'model' => $model,
                 'languages' => $this->languageRepository->loadAllActive(),
-                'categories' => $this->itemsRepository->getVocabularyTerms(2),
-                'manufacturer' => $this->itemsRepository->getVocabularyTerms(3),
+                'categories' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_CATEGORIES),
+                'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
             ]);
         }
     }

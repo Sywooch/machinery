@@ -31,6 +31,9 @@ class User extends \dektrium\user\models\User{
             'model' => StringHelper::basename(self::class)
         ]);
     }
+    public function getRolesByUser($userId){
+
+    }
     
 }
 
