@@ -5,6 +5,7 @@ use yii\helpers\ArrayHelper;
 use common\modules\file\widgets\FileInput\FileInputWidget;
 use common\models\Currency;
 use kartik\select2\Select2;
+use vova07\imperavi\Widget;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 ?>
 <?php $form = ActiveForm::begin([
@@ -25,10 +26,32 @@ use common\modules\taxonomy\helpers\TaxonomyHelper;
                     <div class="panel-body">
                         <div class="form-row">
                             <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-                            <?= $form->field($model, 'lang')->dropDownList(ArrayHelper::map($languages, 'url', 'name')) ?>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <?= $form->field($model, 'lang')->dropDownList(ArrayHelper::map($languages, 'url', 'name')) ?>
+                                </div>
+                                <div class="col-md-6">
+                                    <label><?= Yii::t('app', 'Translates') ?></label>
+                                    <?php if(!$model->isNewRecord): ?>
+                                        <a href="#" class="btn btn-primary btn-lang">En</a>
+                                        <a href="#" class="btn btn-primary btn-lang">De</a>
+                                        <a href="#" class="btn btn-primary btn-lang">Uk</a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-row">
-                            <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
+                            <? //= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
+                            <?= $form->field($model, 'body')->widget(Widget::className(), [
+                                'settings' => [
+                                    'lang' => 'ru',
+                                    'minHeight' => 200,
+                                    'plugins' => [
+                                        'clips',
+                                        'fullscreen'
+                                    ]
+                                ]
+                            ]) ?>
                             <div class="_hint-form">Minimum of 200 characters. 200 characters remaining.</div>
                         </div>
                         <div class="form-row">
@@ -55,7 +78,7 @@ use common\modules\taxonomy\helpers\TaxonomyHelper;
                             </div>
 
 <!--                            <div class="col-md-6">-->
-<!--<!--                                -->--><?////= $form->field($model, 'manufacture')
+<!--<!--                                --><?////= $form->field($model, 'manufacture')
 ////                                    ->dropDownList(\yii\helpers\ArrayHelper::map(
 ////                                        $manufacturer,'id','name'),
 ////                                        [ 'prompt'=>'- Select manufacture -']) ?>

@@ -8,12 +8,31 @@ use common\models\TarifPackagesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\modules\language\models\LanguageRepository;
+use yii\base\Module;
+use common\models\OoptionsRepository;
 
 /**
  * PackagesController implements the CRUD actions for TarifPackages model.
  */
 class PackagesController extends Controller
 {
+    /**
+     * @var LanguageRepository
+     */
+    public $languageRepository;
+    /**
+     * @var optionsRepository
+     */
+    public $optionsRepository;
+
+    public function __construct($id, Module $module, LanguageRepository $languageRepository, OoptionsRepository $optionsRepository, array $config = [])
+    {
+        $this->languageRepository = $languageRepository;
+        $this->optionsRepository  = $optionsRepository;
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * @inheritdoc
      */
@@ -98,6 +117,7 @@ class PackagesController extends Controller
             $model->options = ($model->options) ? unserialize($model->options) : [];
             return $this->render('update', [
                 'model' => $model,
+                'options' => $this->optionsRepository->getOptionsActive(),
             ]);
         }
     }

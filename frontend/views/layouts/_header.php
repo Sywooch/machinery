@@ -72,7 +72,7 @@ use yii\helpers\Html;
         <div class="row header-section flexbox just-between">
             <div class="col-md-4 header-logo-col"><a href="/" class="logo"><img src="/images/logo.png" alt=""></a></div>
             <div class="col-md-3 header-button-col">
-                <a href="#" class="btn btn-warning link-top-add-adv"><?= Yii::t('app', 'Add advert') ?> *</a>
+                <a href="<?= \yii\helpers\Url::to(['advert/create']) ?>" class="btn btn-warning link-top-add-adv"><?= Yii::t('app', 'Add advert') ?> *</a>
                 <p><?= Yii::t('app', '* Two months of free and free ads') ?></p>
             </div>
             <div class="col-md-3 header-banner-col">

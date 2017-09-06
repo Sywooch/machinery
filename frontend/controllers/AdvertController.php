@@ -96,6 +96,7 @@ class AdvertController extends Controller
         }
     }
 
+
     public function actionView($id)
     {
         if(!$model = Advert::find()->where(['id'=>$id])->one())
