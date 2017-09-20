@@ -15,8 +15,7 @@ $this->params['breadcrumbs'][] = 'Industrial machinery';
     <div class="row">
         <div class="col-md-3 sidebar sidebar-inner">
 
-            <?= \frontend\widgets\Packages\PackagesWidget::widget() ?>
-
+            <?= \frontend\widgets\Packages\PackagesWidget::widget(['advert'=>$model]) ?>
 
         </div>
         <div class="col-md-9">

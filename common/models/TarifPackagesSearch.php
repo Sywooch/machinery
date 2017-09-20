@@ -19,7 +19,7 @@ class TarifPackagesSearch extends TarifPackages
     {
         return [
             [['id', 'term'], 'integer'],
-            [['name', 'description', 'options'], 'safe'],
+            [['name', 'description'], 'safe'],
             [['price'], 'number'],
         ];
     }
@@ -67,8 +67,7 @@ class TarifPackagesSearch extends TarifPackages
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'options', $this->options]);
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

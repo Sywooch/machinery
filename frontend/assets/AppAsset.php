@@ -32,6 +32,7 @@ class AppAsset extends AssetBundle
         'js/jquery.hoverIntent.js',
         'js/photoswipe/photoswipe.min.js',
         'js/photoswipe/photoswipe-ui-default.min.js',
+        'js/functions.js',
         'js/scripts.js'
     ];
     public $depends = [

@@ -49,6 +49,7 @@ use yii\helpers\Html;
                                 <li><?= Html::a('<i class="fa fa-user" aria-hidden="true"></i> ' . Yii::t('user', 'My Account'), ['/user/settings/account']) ?></li>
                                 <li><?= Html::a('<i class="fa fa-list" aria-hidden="true"></i> ' . Yii::t('app', 'My Listings'), ['/profile/published']) ?></li>
                                 <li><?= Html::a('<i class="fa fa-heart" aria-hidden="true"></i> ' . Yii::t('app', 'My favorite'), ['/profile/favorite']) ?></li>
+                                <li><?= Html::a('<i class="fa fa-sign-out" aria-hidden="true"></i> ' . Yii::t('app', 'Logout'), ['/user/logout'], ['data-method' => 'post']) ?></li>
                             </ul>
                         </li>
                     <?php endif; ?>
@@ -72,7 +73,7 @@ use yii\helpers\Html;
         <div class="row header-section flexbox just-between">
             <div class="col-md-4 header-logo-col"><a href="/" class="logo"><img src="/images/logo.png" alt=""></a></div>
             <div class="col-md-3 header-button-col">
-                <a href="<?= \yii\helpers\Url::to(['advert/create']) ?>" class="btn btn-warning link-top-add-adv"><?= Yii::t('app', 'Add advert') ?> *</a>
+                <a href="<?= \yii\helpers\Url::to(['/advert/create']) ?>" class="btn btn-warning link-top-add-adv"><?= Yii::t('app', 'Add advert') ?> *</a>
                 <p><?= Yii::t('app', '* Two months of free and free ads') ?></p>
             </div>
             <div class="col-md-3 header-banner-col">

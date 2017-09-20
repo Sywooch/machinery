@@ -3,6 +3,8 @@
 
 namespace frontend\controllers;
 
+use common\models\OrderPackage;
+use common\models\OrderPackageRepository;
 use Yii;
 use common\helpers\ModelHelper;
 use common\models\Advert;
@@ -44,10 +46,10 @@ class AdvertController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['listing'],
+                'only' => ['listing', 'create', 'update'],
                 'rules' => [
                     [
-                        'actions' => ['listing'],
+                        'actions' => ['listing', 'create', 'update'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -60,8 +62,18 @@ class AdvertController extends Controller
     {
         $model = new Advert();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+        //
+
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->save()){
+                // Находим активный (оплаченный) пакет, если он есть
+                $order_pac = new OrderPackageRepository();
+                $order_active = $order_pac->getOrderNotpayByUser();
+                // Если нет оплаченого активного пакета, то находим зарегистрированный заказ
+
+                return $this->redirect(['update', 'id' => $model->id]);
+            }
+
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -81,7 +93,7 @@ class AdvertController extends Controller
      */
     public function actionUpdate($id)
     {
-        if(!$model = Advert::find()->where(['id'=>$id])->one())
+        if(!$model = Advert::find()->where(['id'=>$id])->with('options')->one())
             throw new NotFoundHttpException('The requested page does not exist.');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

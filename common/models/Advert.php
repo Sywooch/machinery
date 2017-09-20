@@ -121,6 +121,13 @@ class Advert extends \yii\db\ActiveRecord
         return new AdvertQuery(get_called_class());
     }
 
+    public function getOptions(){
+        return $this->hasMany(TarifOptions::className(), ['id'=>'option_id'])
+            ->viaTable('{{%advert_option}}', ['advert_id'=>'id'])
+            ->indexBy('id')
+            ->orderBy(['weight'=>'asc']);
+    }
+
     public function getCategories(){
         return $this->hasMany(TaxonomyItems::className(), ['id'=>'term_id'])
             ->where(['vid'=>2])

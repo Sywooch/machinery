@@ -23,7 +23,7 @@ class m170818_154528_create_advert_package_table extends Migration
         );
 
         $this->addForeignKey(
-            'FK_ap_package', 'advert_package', 'package_id', 'tarif_packages', 'id', 'SET NULL', 'CASCADE'
+            'FK_ap_package', 'advert_package', 'package_id', 'order_package', 'id', 'SET NULL', 'CASCADE'
         );
     }
 

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\PackageOption;
 use Yii;
 use common\models\TarifPackages;
 use common\models\TarifPackagesSearch;
@@ -39,6 +40,16 @@ class PackagesController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'update', 'view', 'create'],
+                        'roles' => ['admin'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -83,10 +94,6 @@ class PackagesController extends Controller
     public function actionCreate()
     {
         $model = new TarifPackages();
-        if($model->load(Yii::$app->request->post())){
-            $model->options = serialize($_POST['TarifPackages']['options']);
-
-        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('index');
@@ -106,21 +113,19 @@ class PackagesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if($model->load(Yii::$app->request->post())){
-            $model->options = serialize($_POST['TarifPackages']['options']);
-
-        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+
             return $this->redirect('index');
         } else {
-            $model->options = ($model->options) ? unserialize($model->options) : [];
             return $this->render('update', [
                 'model' => $model,
-                'options' => $this->optionsRepository->getOptionsActive(),
+//                'options' => $this->optionsRepository->getOptionsActive(),
             ]);
         }
     }
+
 
     /**
      * Deletes an existing TarifPackages model.
@@ -144,7 +149,7 @@ class PackagesController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = TarifPackages::findOne($id)) !== null) {
+        if (($model = TarifPackages::find()->where(['id' => $id])->with('optionsPack')->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

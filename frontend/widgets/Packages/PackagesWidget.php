@@ -5,14 +5,21 @@
 
 namespace frontend\widgets\Packages;
 
+use common\models\OrderPackage;
 use Yii;
 use yii\bootstrap\Widget;
 use common\models\TarifPackages;
 use common\models\OoptionsRepository;
+use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 
 class PackagesWidget extends Widget
 {
+    /**
+     * @var advert
+     */
+    public $advert;
 
     /**
      * @var optionsRepository
@@ -27,11 +34,27 @@ class PackagesWidget extends Widget
 
     public function run()
     {
-        $model = TarifPackages::find()->where(['status'=>1])->orderBy(['weight'=>'asc'])->all();
+        // Доступные пакеты
+        $model = TarifPackages::find()->where(['status'=>1])
+            ->with('optionsPack')
+            ->indexBy('id')
+            ->orderBy(['weight'=>'asc'])->all();
+
+        // Пакеты, которые юзер оплатил или заказал
+
+        $package = OrderPackage::find()
+            ->where(['user_id' => Yii::$app->user->id])
+            ->andWhere(['>', 'deadline', new Expression("NOW()")])
+//            ->andWhere(['status'=> Yii::$app->params['order_statuses']['active']])
+            ->andWhere(['not',['package_id'=>null]])
+            ->asArray()
+            ->one();
 
         return $this->render('packages', [
             'model' => $model,
+            'advert' => $this->advert,
             'options' => $this->optionsRepository->getOptionsActive(),
+            'package' => $package,
         ]);
     }
 }

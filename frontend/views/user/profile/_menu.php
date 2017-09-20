@@ -19,10 +19,11 @@ $user = Yii::$app->user->identity;
             'items' => [
                 ['label' => '<i class="fa fa-cog" aria-hidden="true"></i> ' . Yii::t('user', 'View profile'), 'url' => ['/user/profile']],
                 ['label' => '<i class="fa fa-user" aria-hidden="true"></i> ' . Yii::t('user', 'My Account'), 'url' => ['/user/settings/account']],
-                ['label' => Yii::t('user', 'Profile'), 'url' => ['/user/settings/profile']],
+                ['label' => '<i class="fa fa-user-o" aria-hidden="true"></i> ' . Yii::t('user', 'Profile'), 'url' => ['/user/settings/profile']],
                 ['label' => '<i class="fa fa-list" aria-hidden="true"></i> ' . Yii::t('app', 'My Listings'), 'url' => ['/advert/listing']],
                 ['label' => '<i class="fa fa-heart" aria-hidden="true"></i> ' . Yii::t('app', 'My favorite'), 'url' => ['/profile/favorite']],
                 ['label' => '<i class="fa fa-heart" aria-hidden="true"></i> ' . Yii::t('app', 'Premium advertising'), 'url' => ['/ads/index']],
+                ['label' => '<i class="fa fa-cogs" aria-hidden="true"></i> ' . Yii::t('app', 'Tariff plan'), 'url' => ['/profile/tarif']],
             ],
             'encodeLabels' => false,
         ]); ?>

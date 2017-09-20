@@ -7,10 +7,15 @@ use common\models\Currency;
 use kartik\select2\Select2;
 use vova07\imperavi\Widget;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
+
+
 ?>
 <?php $form = ActiveForm::begin([
     'options' => ['enctype' => 'multipart/form-data'],
-]); ?>
+]);
+//dd(Yii::$app->user->identity->packageActive);
+?>
+<?php //echo "<pre>", print_r(Yii::$app->user->identity, 1), "</pre>"; ?>
     <div class="form-inner">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
@@ -31,8 +36,8 @@ use common\modules\taxonomy\helpers\TaxonomyHelper;
                                     <?= $form->field($model, 'lang')->dropDownList(ArrayHelper::map($languages, 'url', 'name')) ?>
                                 </div>
                                 <div class="col-md-6">
-                                    <label><?= Yii::t('app', 'Translates') ?></label>
                                     <?php if(!$model->isNewRecord): ?>
+                                        <label><?= Yii::t('app', 'Translates') ?></label>
                                         <a href="#" class="btn btn-primary btn-lang">En</a>
                                         <a href="#" class="btn btn-primary btn-lang">De</a>
                                         <a href="#" class="btn btn-primary btn-lang">Uk</a>

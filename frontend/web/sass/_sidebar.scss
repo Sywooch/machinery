@@ -1,6 +1,7 @@
 
 .sidebar {
   position: relative;
+  z-index: 99;
 
   .h2 {
     font-size: 14px;
@@ -341,6 +342,9 @@
           }
         }
       }
+      &.in_pack {
+        box-shadow: 0 0 2px 3px green;
+      }
     }
     .label {
       display: inline-block;
@@ -389,6 +393,9 @@
         cursor: pointer;
       }
     }
+  }
+  .hidden-button-options {
+    padding-bottom: 12px;
   }
   .package-drop {
     display: none;

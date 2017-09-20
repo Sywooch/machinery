@@ -1,8 +1,19 @@
 <?php
 /**
- * @var model
+ * @var model         Все пакеты
+ * @var advert        Объявление если на редактировании
+ * @var options       Все опции
+ * @var package       Активный (заказанный, но может быть не оплаченный) заказ пакета
+ *
  */
+
+use yii\helpers\ArrayHelper;
+use yii\web\View;
+
+echo $advert->id;
+
 ?>
+
 <div class="block-sidebar block-sidebar-packages block-sidebar-bg block-bg-texture">
     <div class="btn-filter-open-wrap">
         <a href="#" type="button" class="open-filter btn-open-filter btn">
@@ -14,19 +25,26 @@
             <div class="list-packages">
                 <?php if ($model): foreach ($model as $item): ?>
                     <div class="package-item flexbox just-between">
-                        <input type="radio" id="pack-<?= $item->id ?>" name="package" value="<?= $item->id ?>">
-                        <label for="pack-1" class=" flexbox just-between dropdown">
+                        <input type="radio"
+                               id="pack-<?= $item->id ?>"
+                               name="package"
+                               class="package_radio <?= ($item->id == $package['package_id']) ? 'in_order_active' : '' ?>"
+                               autocomplete="off"
+                               value="<?= $item->id ?>"
+                               <?= ($item->id == $package['package_id']) ? 'checked' : '' ?>
+                               data-cost="<?= $item->price ?>"
+                        >
+                        <label for="pack-<?= $item->id ?>" class="flexbox just-between dropdown">
                             <span class="_price flexbox"><span class="align-auto"><?= number_format($item->price, 0) ?>
                                     <span class="currency-package">$</span></span></span>
                             <span class="_title-block">
-                <span class="_title"><?= $item->name; ?></span>
+                                <span class="_title"><?= $item->name; ?></span>
                                 <?php if ($item->sub_caption): ?>
                                     <span class="_subtitle"><?= $item->sub_caption ?></span>
                                 <?php endif; ?>
-            </span>
+                            </span>
                         </label>
-                        <?php $pack_opt = unserialize($item->options);
-                        //print_r(unserialize($item->options)) ?>
+                        <?php $item->customOptions = $item->arrayOptions($item->optionsPack); ?>
                         <div class="info-block btn-hover-hint">
                             <div class="info-btn-bg">
                                 <div class="info-btn"><i class="fa fa-info" aria-hidden="true"></i></div>
@@ -40,7 +58,7 @@
                                     </div>
                                     <ul class="list-options-package">
                                         <?php foreach ($options as $opt): ?>
-                                            <li class="<?= in_array($opt->id, $pack_opt) ? 'active' : 'disabled' ?>"><i
+                                            <li class="<?= in_array($opt->id, $item->customOptions) ? 'active' : 'disabled' ?>"><i
                                                         class="fa fa-check-circle"
                                                         aria-hidden="true"></i><span><?= $opt->name ?></span>
                                             </li>
@@ -51,7 +69,6 @@
                         </div>
                     </div> <!-- .package-item -->
                 <?php endforeach; endif; ?>
-
             </div>
         </form>
     </div>
@@ -67,29 +84,37 @@
     <div class="block-content">
         <div class="_text"><?= Yii::t('app', 'Enhance your listing with any of the additional features below;') ?></div>
         <div class="list-enhancements">
-            <?php foreach($options as $option): ?>
-            <div class="item-enhancement">
-                <div class="inner-item-enhancement flexbox">
-                    <input type="checkbox" name="enhancement[]" id="enhancement-<?= $option->id ?>" value="<?= $option->id ?>">
-                    <label class="label" for="enhancement-1">
-                        <span class="_price"><span class="currency-option">$</span> <?= number_format($option->price, 0) ?></span>
-                        <span class="span _name"><?= $option->name ?></span>
-                    </label>
-                    <div class="info-block btn-hover-hint">
-                        <div class="info-btn-bg ">
-                            <div class="info-btn"><i class="fa fa-info" aria-hidden="true"></i></div>
-                        </div>
-                        <div class="package-description-block package-drop">
-                            <div class="info-inner">
-                                <div class="h2"><?= $option->name ?></div>
-                                <p><?= $option->description ?></p>
-
+            <?php foreach ($options as $option): ?>
+                <div class="item-enhancement">
+                    <div class="inner-item-enhancement flexbox">
+                        <input type="checkbox" name="enhancement[]" class="enhancement-checkbox"
+                               id="enhancement-<?= $option->id ?>" value="<?= $option->id ?>"
+                               data-cost="<?= number_format($option->price, 0) ?>" autocomplete="off"
+                               data-inpack="<?= Yii::t('app', 'In package') ?>"
+                        >
+                        <label class="label" for="enhancement-<?= $option->id ?>">
+                            <span class="_price"><span class="currency-option"><span
+                                            class="currency"> $</span></span> <?= number_format($option->price, 0) ?></span>
+                            <span class="span _name"><?= $option->name ?></span>
+                        </label>
+                        <div class="info-block btn-hover-hint">
+                            <div class="info-btn-bg ">
+                                <div class="info-btn"><i class="fa fa-info" aria-hidden="true"></i></div>
+                            </div>
+                            <div class="package-description-block package-drop">
+                                <div class="info-inner">
+                                    <div class="h2"><?= $option->name ?></div>
+                                    <p><?= $option->description ?></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             <?php endforeach; ?>
+        </div>
+        <div class="hidden-button-options text-center">
+            <button id="option-advert-update" class="btn btn-warning"><span id="cost-options-advert">0</span><span
+                        class="currency">$</span> <?= Yii::t('app', 'Update') ?></button>
         </div>
     </div>
 </div>
@@ -101,3 +126,11 @@
                     class="fa fa-chevron-right" aria-hidden="true"></i></a>
     </div>
 </div>
+
+    <?php
+// все полученные пакеты
+$this->registerJs(
+    "var packs = " . json_encode($model) . ";
+    //console.log(packs); ",
+        View::POS_END
+) ?>
