@@ -10,6 +10,7 @@ namespace common\models;
 
 use common\models\OrderPackage;
 use common\models\UserPackage;
+use yii\helpers\ArrayHelper;
 
 class UserRepositories extends \common\models\User
 {
@@ -26,7 +27,7 @@ class UserRepositories extends \common\models\User
         $order = new OrderPackage();
         $order->user_id = $user_id;
         $order->package_id = $pack_id;
-        $order->options = $package->options;
+        $order->options = json_encode(ArrayHelper::map($package->optionsPack, 'id', 'id'));
         $order->cost = $package->price;
         $order->status = $status;
         $order->create_at = time();
@@ -62,14 +63,19 @@ class UserRepositories extends \common\models\User
      */
     public static function saveActiveOrder($user_id, TarifPackages $pack, OrderPackage $order)
     {
-        $user_pac = new UserPackage();
-        $user_pac->user_id = $user_id;
-        $user_pac->deadline = time() + $pack->term * 24 * 3600;
-        $user_pac->date_at = time();
-        $user_pac->order_id = $order->id;
-        $user_pac->package_id = $pack->id;
-        $user_pac->save();
-        return $user_pac->id;
+//        $_order = $this->load(OrderPackage)
+//        $user_pac = new UserPackage();
+//        $user_pac->user_id = $user_id;
+//        $user_pac->deadline = time() + $pack->term * 24 * 3600;
+//        $user_pac->date_at = time();
+//        $user_pac->order_id = $order->id;
+//        $user_pac->package_id = $pack->id;
+//        $user_pac->save();
+//        return $user_pac->id;
+        $order->deadline = time() + $pack->term * 24 * 3600;
+        $order->status   = 1;
+        $order->save();
+
     }
 
 

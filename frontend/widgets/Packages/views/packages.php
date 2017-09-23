@@ -118,19 +118,20 @@ echo $advert->id;
         </div>
     </div>
 </div>
-<div class="block-sidebar block-total-pay block-bg-color block-sidebar-bg">
-    <div class="h2 title-block grey-ttl text-uppercase"><?= Yii::t('app', 'Total payment') ?></div>
-    <div class="block-content text-center">
-        <div class="_text text-uppercase"><b>$20</b> for a <b id="current-termin-package">30</b> day listing;</div>
-        <a href="#" class="btn btn-warning btn-pay"><?= Yii::t('app', 'Pay') ?> <i
-                    class="fa fa-chevron-right" aria-hidden="true"></i></a>
-    </div>
-</div>
+<!--<div class="block-sidebar block-total-pay block-bg-color block-sidebar-bg">-->
+<!--    <div class="h2 title-block grey-ttl text-uppercase">--><?//= Yii::t('app', 'Total payment') ?><!--</div>-->
+<!--    <div class="block-content text-center">-->
+<!--        <div class="_text text-uppercase"><b>$20</b> for a <b id="current-termin-package">30</b> day listing;</div>-->
+<!--        <a href="#" class="btn btn-warning btn-pay">--><?//= Yii::t('app', 'Pay') ?><!-- <i-->
+<!--                    class="fa fa-chevron-right" aria-hidden="true"></i></a>-->
+<!--    </div>-->
+<!--</div>-->
 
-    <?php
+    <?php 
 // все полученные пакеты
 $this->registerJs(
     "var packs = " . json_encode($model) . ";
+    var confirmPackage = " . Yii::t('app', 'confirm_package') . ";
     //console.log(packs); ",
         View::POS_END
 ) ?>
