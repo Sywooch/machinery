@@ -33,6 +33,7 @@ echo $advert->id;
                                value="<?= $item->id ?>"
                                <?= ($item->id == $package['package_id']) ? 'checked' : '' ?>
                                data-cost="<?= $item->price ?>"
+                               disabled="disabled"
                         >
                         <label for="pack-<?= $item->id ?>" class="flexbox just-between dropdown">
                             <span class="_price flexbox"><span class="align-auto"><?= number_format($item->price, 0) ?>
@@ -126,8 +127,8 @@ echo $advert->id;
 <!--                    class="fa fa-chevron-right" aria-hidden="true"></i></a>-->
 <!--    </div>-->
 <!--</div>-->
-
-    <?php 
+<?php dd($advert->options) ?>
+    <?php
 // все полученные пакеты
 $this->registerJs(
     "var packs = " . json_encode($model) . ";

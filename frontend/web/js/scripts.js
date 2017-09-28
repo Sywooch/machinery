@@ -100,7 +100,7 @@ $( document ).ready(function() {
         var data = d.join('&');
         console.log(data);
         costOrder();
-        $.get('',data, function(d){}, 'json');
+        $.post('/order/options',data, function(d){}, 'json');
 
     });
 

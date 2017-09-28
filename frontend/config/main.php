@@ -59,6 +59,7 @@ return [
                 'user/<userId:\d+>/wish' => 'store/wish',
                 'user/<userId:\d+>/wish/remove/<id:\d+>' => 'store/wish/remove',
                 '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
+//                'advert/options/<opt: \w+>' => 'advert/options',
             ],
         ],
         'view' => [

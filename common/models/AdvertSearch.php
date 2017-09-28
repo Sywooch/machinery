@@ -41,9 +41,12 @@ class AdvertSearch extends Advert
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $user_id=0)
     {
         $query = Advert::find();
+
+        if($user_id)
+            $query->where(['user_id'=>$user_id]);
 
         // add conditions that should always apply here
 

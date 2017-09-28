@@ -47,7 +47,7 @@ use yii\helpers\Html;
                             <ul class="dropdown-menu">
                                 <li><?= Html::a('<i class="fa fa-cog" aria-hidden="true"></i> ' . Yii::t('user', 'View profile'), ['/user/profile']) ?></li>
                                 <li><?= Html::a('<i class="fa fa-user" aria-hidden="true"></i> ' . Yii::t('user', 'My Account'), ['/user/settings/account']) ?></li>
-                                <li><?= Html::a('<i class="fa fa-list" aria-hidden="true"></i> ' . Yii::t('app', 'My Listings'), ['/profile/published']) ?></li>
+                                <li><?= Html::a('<i class="fa fa-list" aria-hidden="true"></i> ' . Yii::t('app', 'My Listings'), ['/advert/listing']) ?></li>
                                 <li><?= Html::a('<i class="fa fa-heart" aria-hidden="true"></i> ' . Yii::t('app', 'My favorite'), ['/profile/favorite']) ?></li>
                                 <li><?= Html::a('<i class="fa fa-sign-out" aria-hidden="true"></i> ' . Yii::t('app', 'Logout'), ['/user/logout'], ['data-method' => 'post']) ?></li>
                             </ul>

@@ -8,6 +8,8 @@ use common\models\OrderPackageRepository;
 use Yii;
 use common\helpers\ModelHelper;
 use common\models\Advert;
+use common\models\AdvertSearch;
+
 use yii\web\NotFoundHttpException;
 use common\modules\language\models\LanguageRepository;
 use yii\base\Module;
@@ -131,6 +133,12 @@ class AdvertController extends Controller
         return $this->render('view_verstka');
     }
 
+    public function actionOptions(){
+        if(Yii::$app->request->isAjax){
+            dd(Yii::$app->request->post('opt'));
+        }
+
+    }
 
     /**
      * User advertising page
@@ -142,7 +150,14 @@ class AdvertController extends Controller
         $this->layout = 'account';
         $id = \Yii::$app->user->getId();
         $profile = $this->_profileFinder->findProfileById($id);
-        return $this->render('listing', ['profile' => $profile,]);
+        $searchModel = new AdvertSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, Yii::$app->user->id);
+
+        return $this->render('listing', [
+            'profile' => $profile,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            ]);
     }
 
 }
