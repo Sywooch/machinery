@@ -74,7 +74,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $categories = TaxonomyItems::find()
+            ->where(['vid' => 2])
+            ->andWhere(['pid'=>0])
+            ->orderBy(['weight' => SORT_ASC])
+            ->all();
+        return $this->render('index', ['categories' => $categories]);
     }
 }
 

@@ -25,7 +25,17 @@ $this->title = 'Интернет-магазин №1';
                 <?= \frontend\widgets\AdsBanners\AdsBannersWidget::widget(['region'=>'right-sidebar'])?>
             </div>
             <div class="col-md-8 col-lg-8">
+                <?php if($categories): ?>
+                    <?php dd($categories) ?>
                 <div class="list-categories flexbox just-around flex-wrap">
+                    <?php foreach ($categories as $key => $category): ?>
+                        <div class="item-cat">
+                            <a href="#"><span class="_count">2150</span><span class="_img">
+                        <img src="/images/cat1.png" alt="">
+                        <img src="/images/cat1-hov.png" alt="">
+                        </span><span class="_title"><?= $category->name ?></span></a>
+                        </div>
+                    <?php endforeach; ?>
                     <div class="item-cat">
                         <a href="#"><span class="_count">2150</span><span class="_img">
                         <img src="/images/cat1.png" alt="">
@@ -127,6 +137,7 @@ equipment</span></a>
                         <span class="_title"><span class="_title-inner">Others</span></span></a>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
         <div class="row row-list-news">

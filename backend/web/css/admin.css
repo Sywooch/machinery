@@ -97,7 +97,7 @@ a.desc:after {
 
 .no-padding{ padding: 0px;}
 .no-margin{ margin: 0px;}
-.wrap{ background-color: #34495e; padding: 0px; }
+/*.wrap{ background-color: #34495e; padding: 0px; }*/
 .container-fluid{background-color: #ecf0f1; padding: 40px;}
 .main-panel{ padding: 0px 20px 30px 20px; border:1px solid #dee1e2; overflow: hidden;  }
 .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
@@ -109,11 +109,14 @@ a.desc:after {
 .box-header,.box-header a{ font-size: 13px;  color:#95a5a6; text-transform: uppercase;}
 .grid-view .summary{ display: none; }
 
+.sidebar .widget-menu-block {
+    background: transparent;
+}
 /**
 * widget-user-block
 */
 
-.widget-user-block{ background-color: #2ecc71; padding: 16px 0px; height: 90px; }
+/*.widget-user-block{ background-color: #2ecc71; padding: 16px 0px; height: 90px; }*/
 .widget-user-block div{ padding-left: 20px; }
 .widget-user-block div a{ color: #fff; text-decoration: none; font-size: 12px; font-family: sans-serif; text-transform: uppercase;}
 .widget-user-block div a img{ margin-right: 10px;}
