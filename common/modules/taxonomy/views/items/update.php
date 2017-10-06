@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $model common\modules\taxonomy\models\TaxonomyItems */
 
 $this->title = 'Update Taxonomy Items: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Taxonomy Items', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => 'Taxonomy Items', 'url' => ['/taxonomy/items?TaxonomyItemsSearch[vid]='.$model->vid]];
+//$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="taxonomy-items-update">

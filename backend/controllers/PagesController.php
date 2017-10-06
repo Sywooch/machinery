@@ -9,12 +9,25 @@ use backend\models\PagesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\modules\language\models\LanguageRepository;
+use yii\base\Module;
 
 /**
  * PagesController implements the CRUD actions for Pages model.
  */
 class PagesController extends Controller
 {
+    /**
+     * @var LanguageRepository
+     */
+    public $languageRepository;
+
+
+    public function __construct($id, Module $module, LanguageRepository $languageRepository,  array $config = [])
+    {
+        $this->languageRepository = $languageRepository;
+        parent::__construct($id, $module, $config);
+    }
     /**
      * @inheritdoc
      */
@@ -72,17 +85,24 @@ class PagesController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($parent=null, $lang=null)
     {
+
         $model = new Pages();
+        $translates = Pages::find()->where(['parent'=>$parent])->all();
+        if($parent) $model->parent = $parent;
+        if($lang) $model->lang = $lang;
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'terms1' => (new TaxonomyItemsRepository())->getVocabularyTerms(1),
-                'terms2' => (new TaxonomyItemsRepository())->getVocabularyTerms(4)
+                'languages' => $this->languageRepository->loadAllActive(),
+                'translates' => $translates,
+//                'terms1' => (new TaxonomyItemsRepository())->getVocabularyTerms(1),
+//                'terms2' => (new TaxonomyItemsRepository())->getVocabularyTerms(4)
             ]);
         }
     }
@@ -97,13 +117,17 @@ class PagesController extends Controller
     {
         $model = $this->findModel($id);
 
+        $translates = Pages::find()->where(['parent'=>$model->parent])->andWhere(['not', ['id'=>$id]])->all();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'terms1' => (new TaxonomyItemsRepository())->getVocabularyTerms(1),
-                'terms2' => (new TaxonomyItemsRepository())->getVocabularyTerms(4)
+                'languages' => $this->languageRepository->loadAllActive(),
+                'translates'=> $translates,
+//                'terms1' => (new TaxonomyItemsRepository())->getVocabularyTerms(1),
+//                'terms2' => (new TaxonomyItemsRepository())->getVocabularyTerms(4)
             ]);
         }
     }

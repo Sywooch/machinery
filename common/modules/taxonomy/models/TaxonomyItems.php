@@ -3,6 +3,7 @@
 namespace common\modules\taxonomy\models;
 
 use common\helpers\URLify;
+use common\models\Advert;
 use yii\db\ActiveRecord;
 
 
@@ -116,6 +117,10 @@ class TaxonomyItems extends ActiveRecord
     public function getTranslations(): array
     {
         return $this->data['translations'] ?? [];
+    }
+
+    public function getAdverts(){
+        return $this->hasMany(Advert::className(), ['id'=>'entity_id'])->viaTable('{{%taxonomy_index}}', ['term_id'=>'id']);
     }
 
 }

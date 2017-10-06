@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\helpers\ModelHelper;
+use common\models\Advert;
 /**
  * Site controller
  */
@@ -77,9 +78,14 @@ class SiteController extends Controller
         $categories = TaxonomyItems::find()
             ->where(['vid' => 2])
             ->andWhere(['pid'=>0])
+            ->with(['adverts'])
             ->orderBy(['weight' => SORT_ASC])
             ->all();
-        return $this->render('index', ['categories' => $categories]);
+        $last_adverts = Advert::find()->where(['status'=>1])->limit(10)->all();
+        return $this->render('index', [
+            'categories' => $categories,
+            'last_adverts' => $last_adverts,
+        ]);
     }
 }
 

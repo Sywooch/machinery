@@ -25,7 +25,7 @@ Asset::register($this);
             </a>
         </li>
         <li <?= Yii::$app->controller->id == 'advert' ? 'class="active"' : '' ?>>
-            <a href="<?= Url::to(['/pages/index']) ?>">
+            <a href="<?= Url::to(['/advert/index']) ?>">
                 <i class="fa fa-file-text-o"></i> <span>Список объявлений</span>
             </a>
         </li>
