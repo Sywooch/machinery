@@ -127,12 +127,12 @@ echo $advert->id;
 <!--                    class="fa fa-chevron-right" aria-hidden="true"></i></a>-->
 <!--    </div>-->
 <!--</div>-->
-<?php dd($advert->options) ?>
+<?php //dd($advert->options) ?>
     <?php
 // все полученные пакеты
 $this->registerJs(
     "var packs = " . json_encode($model) . ";
-    var confirmPackage = " . Yii::t('app', 'confirm_package') . ";
+    var confirmPackage = '". Yii::t('app', 'confirm_package') . "';
     //console.log(packs); ",
         View::POS_END
 ) ?>
