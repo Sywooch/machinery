@@ -23,7 +23,8 @@ $translatesKeys  = ArrayHelper::map($translates, 'lang', 'id');
                 [
                     'options' => [
                         'template' => '{label}{input}',
-                    ]])->dropDownList(ArrayHelper::map($languages, 'url', 'name')) ?>
+                        'data-placeholder'=>'Language',
+                    ]])->dropDownList(ArrayHelper::map($languages, 'url', 'name'), ['prompt'=>'Language']) ?>
         </div>
         <div class="col-md-6">
             <?php if ($model->lang): ?>
@@ -32,11 +33,11 @@ $translatesKeys  = ArrayHelper::map($translates, 'lang', 'id');
                     <?php foreach ($languages as $lang): ?>
                         <?php if ($model->lang !== $lang->url): ?>
                             <?php if (!in_array($lang->url, $translatesArray)): ?>
-                                <a href="<?= \yii\helpers\Url::to(['pages/create', 'parent' => $model->id, 'lang' => $lang->url]) ?>"
-                                   class="btn btn-primary"><?= $lang->name ?></a>
+                                <a href="<?= \yii\helpers\Url::to(['pages/create', 'parent' => $model->parent, 'lang' => $lang->url]) ?>"
+                                   class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> &nbsp; <?= $lang->name ?></a>
                             <?php else: ?>
                                 <a href="<?= \yii\helpers\Url::to(['pages/update', 'id' => $translatesKeys[$lang->url]]) ?>"
-                                   class="btn btn-primary"><?= $lang->name ?></a>
+                                   class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp; <?= $lang->name ?></a>
                             <?php endif; ?>
                         <?php endif; ?>
                     <?php endforeach; ?>
