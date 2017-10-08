@@ -5,6 +5,7 @@ namespace frontend\controllers;
 
 use common\models\OrderPackage;
 use common\models\OrderPackageRepository;
+use common\services\AdvertService;
 use Yii;
 use common\helpers\ModelHelper;
 use common\models\Advert;
@@ -26,17 +27,19 @@ class AdvertController extends Controller
      */
     public $languageRepository;
     public $itemsRepository;
+    private $_advertService;
 
     /**
      * @var Finder
      */
     private $_profileFinder;
 
-    public function __construct($id, Module $module, LanguageRepository $languageRepository, TaxonomyItemsRepository $itemsRepository, Finder $finder, array $config = [])
+    public function __construct($id, Module $module, LanguageRepository $languageRepository, TaxonomyItemsRepository $itemsRepository, Finder $finder, AdvertService $advertService, array $config = [])
     {
         $this->languageRepository = $languageRepository;
         $this->itemsRepository    = $itemsRepository;
         $this->_profileFinder = $finder;
+        $this->_advertService = $advertService;
         parent::__construct($id, $module, $config);
     }
 
@@ -64,15 +67,8 @@ class AdvertController extends Controller
     {
         $model = new Advert();
 
-        //
-
-        if ($model->load(Yii::$app->request->post())) {
-            if($model->save()){
-                // Находим активный (оплаченный) пакет, если он есть
-                $order_pac = new OrderPackageRepository();
-                $order_active = $order_pac->getOrderNotpayByUser();
-                // Если нет оплаченого активного пакета, то находим зарегистрированный заказ
-
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if($this->_advertService->save($model)){
                 return $this->redirect(['update', 'id' => $model->id]);
             }
 

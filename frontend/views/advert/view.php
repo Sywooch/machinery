@@ -32,7 +32,7 @@ $this->endBlock();
                     <p class="advert-status status-not-publish text-danger">This listing is awaiting payment and is NOT live.</p>
                     <a href="<?= \yii\helpers\Url::to(['advert/delete/', 'id'=>$model->id]) ?>" data-confirm="<?= Yii::t('app', 'Delete?') ?>" class="btn btn-danger"><?= Yii::t('app','Delete') ?></a>
                     <a href="<?= \yii\helpers\Url::to(['advert/update/', 'id'=>$model->id]) ?>" class="btn btn-primary"><?= Yii::t('app','Edit') ?></a>
-                    <?php if(Yii::$app->user->id == $model->user_id): ?>
+                    <?php if(Yii::$app->user->id == $model->user_id && $model->order_options): ?>
                     <a href="#" class="btn btn-warning"><?= Yii::t('app','Make payment') ?></a>
                     <?php endif; ?>
                 </div>

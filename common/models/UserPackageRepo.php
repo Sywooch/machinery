@@ -1,34 +1,29 @@
 <?php
 
 namespace common\models;
-use common\models\UserPackage;
-/**
- * This is the ActiveQuery class for [[UserPackage]].
- *
- * @see UserPackage
- */
-class UserPackageRepo extends UserPackage
+
+use yii\db\Expression;
+
+
+class UserPackageRepo
 {
     /**
-     * @param null $user_id
-     * @return array|\common\models\UserPackage|null действующий пакет для юзера
+     * @param User $user
+     * @return mixed
      */
-    public function activePackage($user_id=null)
+    public function getUserActivePackage(User $user)
     {
-        $user_id = $user_id ? $user_id : \Yii::$app->user->id;
-        return parent::find()->andWhere(['user_id'=>$user_id])->andWhere(['>', 'deadline', time()])->one();
+        return UserPackage::find()->andWhere(['user_id' => $user->id])->andWhere(['>', 'deadline', new Expression('NOW()')])->one();
     }
 
     /**
-     * @param null $user_id
-     * @return array|UserPackage[] действующие пакеты для юзера
+     * @param User $user
+     * @return mixed
      */
-    public function activePackages($user_id=null)
+    public function getUserActivePackages(User $user)
     {
-        $user_id = $user_id ? $user_id : \Yii::$app->user->id;
-        return parent::find()->andWhere(['user_id'=>$user_id])->andWhere(['>', 'deadline', time()])->all();
+        return UserPackage::find()->andWhere(['user_id' => $user->id])->andWhere(['>', 'deadline', new Expression('NOW()')])->all();
     }
-
 
 
 }

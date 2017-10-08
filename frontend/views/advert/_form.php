@@ -13,9 +13,9 @@ use common\modules\taxonomy\helpers\TaxonomyHelper;
 <?php $form = ActiveForm::begin([
     'options' => ['enctype' => 'multipart/form-data'],
 ]);
-//dd(Yii::$app->user->identity->packageActive);
+
 ?>
-<?php //echo "<pre>", print_r(Yii::$app->user->identity, 1), "</pre>"; ?>
+<?= $form->field($model, 'order_options')->textInput(['maxlength' => true]) ?>
     <div class="form-inner">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
@@ -46,7 +46,7 @@ use common\modules\taxonomy\helpers\TaxonomyHelper;
                             </div>
                         </div>
                         <div class="form-row">
-                            <? //= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
+                            <?php //= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
                             <?= $form->field($model, 'body')->widget(Widget::className(), [
                                 'settings' => [
                                     'lang' => 'ru',
@@ -83,7 +83,7 @@ use common\modules\taxonomy\helpers\TaxonomyHelper;
                             </div>
 
 <!--                            <div class="col-md-6">-->
-<!--<!--                                --><?////= $form->field($model, 'manufacture')
+<!--<!--                                --><?php ////= $form->field($model, 'manufacture')
 ////                                    ->dropDownList(\yii\helpers\ArrayHelper::map(
 ////                                        $manufacturer,'id','name'),
 ////                                        [ 'prompt'=>'- Select manufacture -']) ?>

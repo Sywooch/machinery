@@ -1,57 +1,63 @@
-$( document ).ready(function() {
-	try{
-		$('input:radio, input:checkbox').styler();
-	}catch(e){}
-	try{
-		setTimeout(function(){$('select').styler();},1);
-	}catch(e){}
-	try{
-		$('.slider-block').slick({
-			fade: true,
-			autoplay: true,
-			dots: true,
-			arrows: false
-		});
-	} catch(e){}
-	try {
-		$('.list-products-slider').slick({
-			dots: false,
-			arrows: true,
-			slidesToShow: 5,
-			appendArrows: $('.list-products-slider-arrows')
-		})
-	} catch(e){}
+$(document).ready(function () {
+    try {
+        $('input:radio, input:checkbox').styler();
+    } catch (e) {
+    }
+    try {
+        setTimeout(function () {
+            $('select').styler();
+        }, 1);
+    } catch (e) {
+    }
+    try {
+        $('.slider-block').slick({
+            fade: true,
+            autoplay: true,
+            dots: true,
+            arrows: false
+        });
+    } catch (e) {
+    }
+    try {
+        $('.list-products-slider').slick({
+            dots: false,
+            arrows: true,
+            slidesToShow: 5,
+            appendArrows: $('.list-products-slider-arrows')
+        })
+    } catch (e) {
+    }
 
-	$('body').on('click', '.btn-open-filter', function (e) {
-		e.preventDefault();
-		$('.filter-drop-container').slideDown(200);
+    $('body').on('click', '.btn-open-filter', function (e) {
+        e.preventDefault();
+        $('.filter-drop-container').slideDown(200);
     });
-	$('body').on('click', '.close-drop', function (e) {
+    $('body').on('click', '.close-drop', function (e) {
         e.preventDefault();
         $('.filter-drop-container').slideUp(200);
     });
-	$('body').on('click', '.btn-view', function(e){
-		e.preventDefault();
-		var _self = $(this);
-		var _view = _self.data('view');
-		$('.list-offers').removeClass('_list').removeClass('_grid').addClass(_view);
-		$('.btn-view').removeClass('active');
-		_self.addClass('active');
-		$.cookie('view', _view);
-	});
-	$('.btn-hover-hint').hoverIntent({
-		over: function () {
-			console.log(this);
-			$(this).parent().addClass('open');
-			$(this).find('.package-drop').fadeIn(300);
+    $('body').on('click', '.btn-view', function (e) {
+        e.preventDefault();
+        var _self = $(this);
+        var _view = _self.data('view');
+        $('.list-offers').removeClass('_list').removeClass('_grid').addClass(_view);
+        $('.btn-view').removeClass('active');
+        _self.addClass('active');
+        $.cookie('view', _view);
+    });
+    $('.btn-hover-hint').hoverIntent({
+        over: function () {
+            console.log(this);
+            $(this).parent().addClass('open');
+            $(this).find('.package-drop').fadeIn(300);
         },
-		out: function(){
+        out: function () {
             console.log(this);
             $(this).parent().removeClass('open');
             $(this).find('.package-drop').fadeOut(300);
-		},
-		timeout: 300
-	});
+        },
+        timeout: 300
+    });
 
     $('body').append(galleryPopup);
 
@@ -70,19 +76,21 @@ $( document ).ready(function() {
             centerPadding: '0px',
             appendArrows: '.small-images',
             focusOnSelect: true
-        }).on('afterChange', function(event, slick, currentSlide){
-            $('#slide-number').text(currentSlide+1);
+        }).on('afterChange', function (event, slick, currentSlide) {
+            $('#slide-number').text(currentSlide + 1);
         })
-    } catch(e){}
-    try{
-		initPhotoSwipeFromDOM('.gallery-swipe');
-    } catch(e){}
+    } catch (e) {
+    }
+    try {
+        initPhotoSwipeFromDOM('.gallery-swipe');
+    } catch (e) {
+    }
 
     /**
      * Заказ пакетов и опций объявления
      */
 
-    $('body').on('change', 'input.package_radio', function(e){
+    $('body').on('change', 'input.package_radio', function (e) {
         e.preventDefault();
         checkboxOptions();
         costOrder();
@@ -91,30 +99,27 @@ $( document ).ready(function() {
     /**
      * при изменении пакта или опций отправляем новый заказ
      */
-    $('body').on('change', 'input.enhancement-checkbox, input.package_radio', function(e){
+    $('body').on('change', 'input.enhancement-checkbox, input.package_radio', function (e) {
         e.preventDefault();
-        var d = [];
-        $('input.enhancement-checkbox:checked').not('.in_pack').each(function(idx, el){
-            d.push('opt[]='+$(el).val());
+        var data = [];
+        $('input.enhancement-checkbox:checked').not('.in_pack').each(function (idx, el) {
+            data.push($(el).val());
         });
-        var data = d.join('&');
-        console.log(data);
+        $('#advert-order_options').val(JSON.stringify(data))
         costOrder();
-        $.post('/order/options',data, function(d){}, 'json');
-
     });
 
     /**
      * Переопределяет опции
      */
-    var checkboxOptions = (function checkboxOptions(){
-        $('input.enhancement-checkbox').each(function(idx, el){
+    var checkboxOptions = (function checkboxOptions() {
+        $('input.enhancement-checkbox').each(function (idx, el) {
             var checkedPack = $('input.package_radio:checked');
-            if(!checkedPack.length) return;
+            if (!checkedPack.length) return;
             var pack_id = checkedPack.val();
             var id = $(el).val();
             var pack = packs[pack_id].customOptions;
-            if(in_array(id, pack)){
+            if (in_array(id, pack)) {
                 $(el).prop({"checked": true, "disabled": true})
                     .addClass('in_pack')
                     .attr('title', $(el).data('inpack'))
@@ -132,12 +137,12 @@ $( document ).ready(function() {
     /**
      * Пересчитывает сумму заказа
      */
-    var costOrder = (function costOrder(){
+    var costOrder = (function costOrder() {
         var cost = 0;
         // var costBox = $('#cost-options-advert');
         var cost_pack = +$('input.package_radio:checked').not('.in_order_active').data('cost') || 0;
         // var cost_options = 0;
-        $('input.enhancement-checkbox:checked').not('.in_pack').each(function(idx, el){
+        $('input.enhancement-checkbox:checked').not('.in_pack').each(function (idx, el) {
             var _cost = +$(el).data('cost');
             cost += _cost;
         });
