@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\modules\taxonomy\models\TaxonomyItems */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Taxonomy Items', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Taxonomy Items', 'url' => ['/taxonomy/items?TaxonomyItemsSearch[vid]='.$model->vid]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="taxonomy-items-view">

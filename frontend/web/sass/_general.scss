@@ -13,7 +13,9 @@ a {
     clear: both;
     visibility: hidden;
 }
-
+area {
+	outline: none !important;
+}
 .flexbox {
     display: block;
     @include flexbox();

@@ -30,7 +30,7 @@ AppAsset::register($this);
     if (isset(Yii::$app->controller->action->actionMethod))
         $bodyClass .= ' ' . Yii::$app->controller->action->actionMethod;
 ?>
-<body class="<?= $bodyClass; ?>">
+<body class="<?= $bodyClass; ?>  hold-transition skin-blue fixed sidebar-mini">
 
         <?php $this->beginBody() ?>
         <div class="wrap">
@@ -42,28 +42,45 @@ AppAsset::register($this);
                 </div>
 
             <?php else: ?>
-                <div class="row no-margin">
+            <header class="main-header">
+                <!-- Logo -->
+                <a href="<?= yii\helpers\Url::to(['/']); ?>" class="logo">
+                    <span class="logo-lg"><b>Admin</b>Panel</span>
+                </a>
+                <?= $this->render('top-menu') ?>
+            </header>
+            <aside class="main-sidebar">
+                <?= $this->render('sidebar') ?>
+            </aside>
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>
+                        Dashboard
+                        <small>Control panel</small>
+                    </h1>
+                    <?php if (isset($this->params['breadcrumbs'])): ?>
+                        <?=
+                        Breadcrumbs::widget([
+                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            'tag' => 'ol',
+                            'encodeLabels' => false,
+                            'options' => ['id' => 'breadcrumb', 'class' => 'breadcrumb'],
+                            'homeLink' => ['label' => '<li><i class="fa fa-dashboard" aria-hidden="true"></i> Home</li>', 'url' => ['/']],
+                            'itemTemplate' => '<li>{link}</li>',
+                            'activeItemTemplate' => '<li class="active">{link}</li>'
+                        ])
+                        ?>
+                    <?php endif; ?>
 
-                    <div class="col-md-2 col-lg-2 no-padding">
-                         <?= UserBlock::widget(); ?>
-                         <?=MainMenu::widget();?>
-                    </div>
+                </section>
+                <!-- Main content -->
+                <section class="content">
+                    <?= TopMenu::widget(); ?><?= $content ?>
+                </section>
+            </div>
 
-                    <div class="col-md-10 col-lg-10 no-padding">
-                        <div class="widget-top-informers">
-                            <div class="pull-left">
-                                <?php
-                                // echo Html::a('<span class="glyphicon glyphicon-edit pull-left"></span>',['/']);
-                                ?>
-                            </div>
-                        </div>
-                        
-
-                        <div class="container-fluid ">
-                            <div class="panel main-panel"><?=TopMenu::widget();?><?= $content ?></div>
-                        </div>
-                    </div>
-                </div>
+        </div>
             <?php endif; ?>
 
         </div>

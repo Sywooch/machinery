@@ -48,7 +48,8 @@ gulp.task('sprite', function () {
     var spriteData = gulp.src('frontend/web/images/sprite-icons/*.png').pipe(spritesmith({
         imgName: 'sprite.png',
         cssName: '_sprite.scss',
-        imgPath: '../images/sprite.png'
+        imgPath: '../images/sprite.png',
+        padding: 2
     }));
     return spriteData.pipe(gulp.dest('frontend/web/images/'));
 });

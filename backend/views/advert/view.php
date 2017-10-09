@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'website',
             'manufacture',
             'phone',
-            'model',
+//            'model',
             'year',
             'condition',
             'operating_hours',

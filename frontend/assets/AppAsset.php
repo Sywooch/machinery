@@ -22,7 +22,8 @@ class AppAsset extends AssetBundle
         'js/slick/slick.css',
         'js/photoswipe/photoswipe.css',
         'js/photoswipe/default-skin/default-skin.css',
-        'css/style.css'
+        'css/style.css',
+        'css/dev.css',
     ];
     public $js = [
         'js/slick/slick.min.js',
@@ -32,7 +33,9 @@ class AppAsset extends AssetBundle
         'js/jquery.hoverIntent.js',
         'js/photoswipe/photoswipe.min.js',
         'js/photoswipe/photoswipe-ui-default.min.js',
-        'js/scripts.js'
+        'js/functions.js',
+        'js/scripts.js',
+        'js/dev.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

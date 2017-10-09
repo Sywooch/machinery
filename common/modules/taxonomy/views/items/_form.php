@@ -41,6 +41,7 @@ FileAsset::register($this);
 
     <?= $form->field($model, 'icon', ['template' => '{input}{error}'])->widget(FileInputWidget::class, ['showRemove' => true]); ?>
 
+    <?= $form->field($model, 'icon_name')->textInput() ?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

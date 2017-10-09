@@ -48,6 +48,12 @@
     transform: translate(-50%, -50%);
 }
 
+@mixin sprite_data($icon){
+    @include sprite-height($icon);
+    @include sprite-width($icon);
+    @include sprite-position($icon);
+}
+
 //@mixin odd(){
 //  &:nth-child(odd) {
 //    @content

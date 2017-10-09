@@ -44,7 +44,7 @@ return [
                 'local' => [
                     'class' => 'common\modules\file\filestorage\storages\StorageLocal',
                     'basePath' => '@app/../files',
-                    'baseUrl' => '@web/files'
+                    'baseUrl' => '/files'
                 ],
             ]
         ],

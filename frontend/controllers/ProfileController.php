@@ -8,6 +8,9 @@ use common\models\User;
 use dektrium\user\controllers\ProfileController as ProfileControllerBase;
 use common\modules\file\Uploader;
 use yii\helpers\Json;
+use common\models\OrderPackage;
+use common\models\TarifOptions;
+
 
 
 class ProfileController extends ProfileControllerBase
@@ -33,6 +36,7 @@ class ProfileController extends ProfileControllerBase
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['photo-upload'], 'roles' => ['@']];
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['favorite'], 'roles' => ['@']];
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['published'], 'roles' => ['@']];
+        $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['tarif'], 'roles' => ['@']];
 
         return $behaviors;
     }
@@ -79,6 +83,21 @@ class ProfileController extends ProfileControllerBase
         $id = \Yii::$app->user->getId();
         $profile = $this->finder->findProfileById($id);
         return $this->render('/user/profile/favorite', ['profile' => $profile,]);
+    }
+
+    public function actionTarif(){
+        $id = \Yii::$app->user->getId();
+        $profile = $this->finder->findProfileById($id);
+        $model = OrderPackage::find()->where(['user_id' => $id])->with('package')->all();
+        foreach($model as $item){
+//            dd(unserialize($item->options));
+//            $item->options = unserialize($model->options);
+            $item->options = TarifOptions::find()->where(['in', 'id', unserialize($item->options)])->all();
+        }
+
+//        dd($model, 1);
+
+        return $this->render('/user/profile/tarif', ['profile' => $profile, 'model'=>$model]);
     }
 
 }

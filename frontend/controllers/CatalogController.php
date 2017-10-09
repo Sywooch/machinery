@@ -18,4 +18,7 @@ class CatalogController extends Controller
     public function actionIndex(){
         return $this->render('index');
     }
+    public function actionSearch(){
+        return $this->render('index');
+    }
 }

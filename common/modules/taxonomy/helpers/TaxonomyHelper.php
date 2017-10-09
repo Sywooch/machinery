@@ -275,4 +275,27 @@ class TaxonomyHelper
         return json_encode(ArrayHelper::map($terms, 'id', 'name'));
     }
 
+    public static function terms3Level($termins= []){
+        $tree = [];
+        foreach (self::tree($termins) as $_c){
+            $tree[$_c->id] = $_c->name;
+            if($_c['childrens']){
+                foreach ($_c['childrens'] as $child){
+                    $tree[$child->id] = " - " . $child->name;
+                    if($child['childrens']){
+                        foreach ($child['childrens'] as $child2){
+                            $tree[$child2->id] = " - - " . $child2->name;
+                            if($child2['childrens']){
+                                foreach ($child2['childrens'] as $child3){
+                                    $tree[$child3->id] = " - - - " . $child3->name;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $tree;
+    }
+
 }

@@ -11,10 +11,12 @@
 		.jq-selectbox__trigger {
 			position: absolute;
 			top: 50%;
-			right: 5px;
+			right: 15px;
 			transform: translate(0, -50%);
 			.jq-selectbox__trigger-arrow {
 				font-family: FontAwesome;
+				height: 10px;
+				line-height: 6px;
 				&:before {
 					content: "\f0dd";
 				}

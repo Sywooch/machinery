@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use common\modules\taxonomy\models;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\taxonomy\models\TaxonomyVocabularySearch */
@@ -32,12 +33,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{list} {hierarchy} {update} {delete}',
                 'buttons' => [
                     'list' => function ($url, $model) {
-                        return Html::a('<i class="glyphicon glyphicon-list-alt"></i>', '/taxonomy/items?TaxonomyItemsSearch[vid]=' . $model->id, [
+                        return Html::a('<i class="glyphicon glyphicon-list-alt"></i>', 'items?TaxonomyItemsSearch[vid]=' . $model->id, [
                                 'title' => Yii::t('yii', 'List'),
                         ]);
                     },
                     'hierarchy' =>  function ($url, $model) {
-                        return Html::a('<i class="glyphicon glyphicon-align-right"></i>', '/taxonomy/items/hierarchy/?TaxonomyItemsHierarchy[vid]=' . $model->id, [
+                        return Html::a('<i class="glyphicon glyphicon-align-right"></i>', 'items/hierarchy/?TaxonomyItemsHierarchy[vid]=' . $model->id, [
                             'title' => Yii::t('yii', 'Hierarchy'),
                         ]);
                     },      

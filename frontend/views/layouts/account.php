@@ -8,7 +8,7 @@ use common\widgets\Alert;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap\Modal;
 
-use common\widgets\Filter\FilterWidget;
+use frontend\widgets\Filter\FilterWidget;
 
 AppAsset::register($this);
 IEAsset::register($this);
