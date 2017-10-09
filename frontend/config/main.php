@@ -11,6 +11,7 @@ return [
     'homeUrl' => '/',
     'timeZone' => 'Europe/Minsk',
     'language' => 'en-EN',
+//    'language' => 'en',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -55,7 +56,7 @@ return [
         ],
         'urlManager' => [
             'rules' => [
-                ['class' => 'frontend\components\AliasRule'],
+//                ['class' => 'frontend\components\AliasRule'],
                 'user/<userId:\d+>/wish' => 'store/wish',
                 'user/<userId:\d+>/wish/remove/<id:\d+>' => 'store/wish/remove',
                 '<controller>/<action>/<id:\d+>' => '<controller>/<action>',

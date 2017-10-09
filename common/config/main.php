@@ -7,6 +7,9 @@ return [
             'class' => 'yii\caching\DummyCache', //yii\caching\DummyCache //yii\caching\FileCache   //yii\redis\Cache
         ],
         'urlManager' => [
+            'class' => 'codemix\localeurls\UrlManager',
+            'languages' => ['en'=>'en-EN', 'fr'=>'fr-FR', 'de'=>'de-DE', 'es-*', 'uk'=>'uk-UA', 'ru'=>'ru-RU'],
+
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [

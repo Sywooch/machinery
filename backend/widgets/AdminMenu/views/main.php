@@ -50,6 +50,11 @@ Asset::register($this);
                 <i class="fa fa-area-chart"></i> <span>Banners</span>
             </a>
         </li>
+        <li <?= Yii::$app->controller->id == 'default' ? 'class="active"' : '' ?> data-ctrl="<?= Yii::$app->controller->id ?>">
+            <a href="<?= Url::to(['/language/default/index']) ?>">
+                <i class="fa fa-sign-language"></i> <span>Языки</span>
+            </a>
+        </li>
         <li <?= Yii::$app->controller->id == 'source-message' ? 'class="active"' : '' ?> data-ctrl="<?= Yii::$app->controller->id ?>">
             <a href="<?= Url::to(['/language/source-message/index']) ?>">
                 <i class="fa fa-sign-language"></i> <span>Переводы</span>

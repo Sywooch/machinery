@@ -3,6 +3,7 @@
 
 namespace frontend\controllers;
 
+use common\models\AdvertVariant;
 use common\models\OrderPackage;
 use common\models\OrderPackageRepository;
 use common\services\AdvertService;
@@ -37,7 +38,7 @@ class AdvertController extends Controller
     public function __construct($id, Module $module, LanguageRepository $languageRepository, TaxonomyItemsRepository $itemsRepository, Finder $finder, AdvertService $advertService, array $config = [])
     {
         $this->languageRepository = $languageRepository;
-        $this->itemsRepository    = $itemsRepository;
+        $this->itemsRepository = $itemsRepository;
         $this->_profileFinder = $finder;
         $this->_advertService = $advertService;
         parent::__construct($id, $module, $config);
@@ -63,18 +64,27 @@ class AdvertController extends Controller
         ];
     }
 
-    public function actionCreate()
+    public function actionCreate($parent = null, $lang = null)
     {
-        $model = new Advert();
-
+        $lang = $lang ? $lang : Yii::$app->language;
+        $model = Advert::findOne($parent) ?? new Advert();
+        $translate = new AdvertVariant();
+        $translates = $this->getTranslates($parent);
+        if (!$translate->lang) $translate->lang = $lang;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if($this->_advertService->save($model)){
-                return $this->redirect(['update', 'id' => $model->id]);
+            if ($this->_advertService->save($model)) {
+                if ($translate->load(Yii::$app->request->post()) && $translate->save())
+                {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
 
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'translate' => $translate,
+                'translates' => $translates,
                 'languages' => $this->languageRepository->loadAllActive(),
                 'categories' => $this->itemsRepository->getVocabularyTerms($model::VCL_CATEGORIES),
 //                'manufacturer' => $this->itemsRepository->getVocabularyTerms($model::VCL_MANUFACTURES),
@@ -89,16 +99,26 @@ class AdvertController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $lang = null)
     {
-        if(!$model = Advert::find()->where(['id'=>$id])->with('options')->one())
+        $lang = $lang ? $lang : Yii::$app->language;
+//        echo $lang;
+        if (!$model = Advert::find()->where(['id' => $id])->with(['options', 'variant'])->one())
             throw new NotFoundHttpException('The requested page does not exist.');
-
+        $translates = $this->getTranslates($id);
+//        dd($translates, 1);
+        $translate = $translates[$lang] ?? new AdvertVariant();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            if ($translate->load(Yii::$app->request->post()) && $translate->save())
+            {
+                Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'translate' => $translate,
+                'translates' => $translates,
                 'languages' => $this->languageRepository->loadAllActive(),
                 'categories' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_CATEGORIES),
 //                'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
@@ -109,18 +129,18 @@ class AdvertController extends Controller
 
     public function actionView($id)
     {
-        if(!$model = Advert::find()->where(['id'=>$id])->one())
+        if (!$model = Advert::find()->where(['id' => $id])->one())
             throw new NotFoundHttpException('The requested page does not exist.');
         // Обновляем счетчик просмотров
         $session = Yii::$app->session;
         $viewed = ($session->has('viewed')) ? $session->get('viewed') : [];
-        if(!in_array($id, $viewed)){
+        if (!in_array($id, $viewed)) {
             $viewed[] = $id;
             $model->updateCounters(['viewed' => 1]);
         }
         $session->set('viewed', $viewed);
         return $this->render('view', [
-            'model'=>$model,
+            'model' => $model,
         ]);
     }
 
@@ -129,8 +149,9 @@ class AdvertController extends Controller
         return $this->render('view_verstka');
     }
 
-    public function actionOptions(){
-        if(Yii::$app->request->isAjax){
+    public function actionOptions()
+    {
+        if (Yii::$app->request->isAjax) {
             dd(Yii::$app->request->post('opt'));
         }
 
@@ -153,7 +174,19 @@ class AdvertController extends Controller
             'profile' => $profile,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            ]);
+        ]);
+    }
+
+    /**
+     * @param null $parent
+     * @return array|AdvertVariant[]
+     */
+    public function getTranslates($parent = null)
+    {
+        return AdvertVariant::find()
+            ->where(['advert_id' => $parent])
+            ->indexBy('lang')
+            ->all();
     }
 
 }

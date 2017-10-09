@@ -118,6 +118,11 @@ class Advert extends \yii\db\ActiveRecord
 //            ->column('tid')
             ->asArray();
     }
+    public function getVariant(){
+        return $this->hasMany(AdvertVariant::className(), ['advert_id'=>'id'])
+            ->indexBy('lang');
+    }
+
 
     public function beforeSave($insert)
     {

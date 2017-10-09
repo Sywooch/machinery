@@ -12,7 +12,8 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.11.2",
@@ -32,13 +33,16 @@
         "vova07/yii2-imperavi-widget": "*",
         "kartik-v/yii2-slider": "dev-master",
         "yii2mod/yii2-bx-slider": "*",
-        "yiisoft/yii2-redis": "^2.0"
+        "yiisoft/yii2-redis": "^2.0",
+        "2amigos/yii2-ckeditor-widget": "~1.0@dev"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",
-        "yiisoft/yii2-faker": "*"
+        "yiisoft/yii2-faker": "*",
+        "codemix/yii2-localeurls": "*",
+        "iutbay/yii2-kcfinder" : "dev-master"
     },
     "config": {
         "process-timeout": 1800

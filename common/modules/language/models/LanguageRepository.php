@@ -20,6 +20,6 @@ class LanguageRepository
      * @return array|yii\db\ActiveRecord[]
      */
     public function loadAllActive(){
-        return Language::find()->where(['status'=>self::STATUS_ACTIVE])->all();
+        return Language::find()->where(['status'=>self::STATUS_ACTIVE])->indexBy('local')->all();
     }
 }

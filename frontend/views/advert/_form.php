@@ -7,14 +7,21 @@ use common\models\Currency;
 use kartik\select2\Select2;
 use vova07\imperavi\Widget;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
+use backend\widgets\CKEditorAdmin;
 
-
+$translatesArray = ArrayHelper::map($translates, 'id', 'lang');
+$translatesKeys  = ArrayHelper::map($translates, 'lang', 'id');
 ?>
 <?php $form = ActiveForm::begin([
     'options' => ['enctype' => 'multipart/form-data'],
 ]);
+dd($translatesArray);
+dd($translatesKeys);
 
 ?>
+<?php //dd($model) ?>
+<?= Yii::$app->language ?><br>
+<?//= Yii::t('app', 'Cancel2') ?>
 <?= $form->field($model, 'order_options')->textInput(['maxlength' => true]) ?>
     <div class="form-inner">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -30,40 +37,69 @@ use common\modules\taxonomy\helpers\TaxonomyHelper;
                 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body">
                         <div class="form-row">
-                            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+                            <?= $form->field($translate, 'title')->textInput(['maxlength' => true]) ?>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <?= $form->field($model, 'lang')->dropDownList(ArrayHelper::map($languages, 'url', 'name')) ?>
+                                    <?php if(!$translate->lang): ?>
+                                    <?= $form->field($translate, 'lang')
+                                        ->dropDownList(
+                                                ArrayHelper::map($languages, 'local', 'name'))
+                                    ?>
+    <?php else: ?>
+                                        <?= $form->field($translate, 'lang')
+                                            ->dropDownList(
+                                                ArrayHelper::map($languages, 'local', 'name'), ['disabled'=>true])
+                                        ?>
+    <?php endif; ?>
                                 </div>
                                 <div class="col-md-6">
-                                    <?php if(!$model->isNewRecord): ?>
+                                    <?php if($model->lang): ?>
                                         <label><?= Yii::t('app', 'Translates') ?></label>
-                                        <a href="#" class="btn btn-primary btn-lang">En</a>
-                                        <a href="#" class="btn btn-primary btn-lang">De</a>
-                                        <a href="#" class="btn btn-primary btn-lang">Uk</a>
+                                        <?php foreach ($languages as $lang): ?>
+                                            <?php if ($translate->lang !== $lang->local): ?>
+                                                <?php if (!in_array($lang->local, $translatesArray)): ?>
+                                                    <a href="<?= \yii\helpers\Url::to(['advert/create', 'parent' => $model->id, 'language'=>$lang->url]) ?>"
+                                                       class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> &nbsp; <?= $lang->name ?></a>
+                                                <?php else: ?>
+                                                    <a href="<?= \yii\helpers\Url::to(['advert/update', 'id' => $model->id, 'language'=>$lang->url]) ?>"
+                                                       class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp; <?= $lang->name ?></a>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+<!--                                        <a href="#" class="btn btn-primary btn-lang">En</a>-->
+<!--                                        <a href="#" class="btn btn-primary btn-lang">De</a>-->
+<!--                                        <a href="#" class="btn btn-primary btn-lang">Uk</a>-->
                                     <?php endif; ?>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <?php //= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
-                            <?= $form->field($model, 'body')->widget(Widget::className(), [
-                                'settings' => [
-                                    'lang' => 'ru',
-                                    'minHeight' => 200,
-                                    'plugins' => [
-                                        'clips',
-                                        'fullscreen'
-                                    ]
-                                ]
-                            ]) ?>
-                            <div class="_hint-form">Minimum of 200 characters. 200 characters remaining.</div>
+<!--                            --><?//= $form->field($translate, 'body')->widget(Widget::className(), [
+//                                'settings' => [
+//                                    'lang' => substr(Yii::$app->language, 0, 2),
+//                                    'minHeight' => 200,
+//                                    'plugins' => [
+//                                        'clips',
+//                                        'fullscreen'
+//                                    ]
+//                                ]
+//                            ]) ?>
+                            <?= $form->field($translate, 'body')
+                                ->widget(
+                                    CKEditorAdmin::className(), [
+                                    'options' => ['rows' => 6],
+                                    'preset' => 'standart', // 'full', standart
+
+                                ]) ?>
+                            <div class="_hint-form"><?= Yii::t('app', 'Minimum of 200 characters. 200 characters remaining.') ?></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group"><label for="">Keywords::</label>
-                                <input type="text" name="" id="" class="form-control">
-                            </div>
-                            <div class="_hint-form">Separate each keyword with a comma.</div>
+                            <?= $form->field($translate, 'meta_description')->textInput(['maxlength' => true]) ?>
+<!--                            <div class="form-group"><label for="">Keywords::</label>-->
+<!--                                <input type="text" name="" id="" class="form-control">-->
+<!--                            </div>-->
+<!--                            <div class="_hint-form">Separate each keyword with a comma.</div>-->
                         </div>
                         <div class="form-row">
                             <div class="col-md-6">
@@ -154,3 +190,4 @@ use common\modules\taxonomy\helpers\TaxonomyHelper;
         </div>
     </div>
 <?php ActiveForm::end(); ?>
+<?php //dd($model); ?>
