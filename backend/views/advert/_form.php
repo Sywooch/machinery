@@ -19,7 +19,6 @@ FileAsset::register($this);
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <div class="advert-form">
-
     <?php $form = ActiveForm::begin([
         'options' => ['enctype' => 'multipart/form-data'],
     ]); ?>

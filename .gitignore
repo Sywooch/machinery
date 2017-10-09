@@ -1,14 +1,14 @@
-/vendor
+﻿/vendor
 /files
 backend/web/.htaccess
-backend/runtime/*
+backend/runtime/
 *.sql
 .idea/
 .idea/*
 *.idea
 
 DATA/
-frontend/runtime/*
+frontend/runtime/
 frontend/web/assets/*
 node_modules/*
 
@@ -18,4 +18,7 @@ frontend/web/sass/bootstrap
 gulpfile - копия (2).js
 gulpfile - копия.js
 
-/backend/runtime
+backend/runtime/**/
+frontend/runtime/**/
+/backend/runtime2
+/frontend/runtime2
