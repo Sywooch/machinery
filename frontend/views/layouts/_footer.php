@@ -13,7 +13,7 @@ use yii\helpers\Html;
                     <ul id="menu-footer" class="list-inline pull-left">
                         <li><a href="#">For sellers</a></li>
                         <li><a href="#">about us</a></li>
-                        <li><a href="#">How it works?</a></li>
+                        <li><a href="<?= \yii\helpers\Url::to(['pages/view', 'id'=>5]) ?>">How it works?</a></li>
                         <li><a href="#">FAQ</a></li>
                     </ul>
                 </div>

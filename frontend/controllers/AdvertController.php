@@ -73,8 +73,10 @@ class AdvertController extends Controller
         if (!$translate->lang) $translate->lang = $lang;
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($this->_advertService->save($model)) {
-                if ($translate->load(Yii::$app->request->post()) && $translate->save())
+                if ($translate->load(Yii::$app->request->post()))
                 {
+                    $translate->advert_id = $model->id;
+                    $translate->save();
                     Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -87,7 +89,7 @@ class AdvertController extends Controller
                 'translates' => $translates,
                 'languages' => $this->languageRepository->loadAllActive(),
                 'categories' => $this->itemsRepository->getVocabularyTerms($model::VCL_CATEGORIES),
-//                'manufacturer' => $this->itemsRepository->getVocabularyTerms($model::VCL_MANUFACTURES),
+                'manufacturer' => $this->itemsRepository->getVocabularyTerms($model::VCL_MANUFACTURES),
             ]);
         }
 //        return $this->render('create', ['languages' => $this->languageRepository->loadAllActive()]);
@@ -109,8 +111,10 @@ class AdvertController extends Controller
 //        dd($translates, 1);
         $translate = $translates[$lang] ?? new AdvertVariant();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($translate->load(Yii::$app->request->post()) && $translate->save())
+            if ($translate->load(Yii::$app->request->post()))
             {
+                $translate->advert_id = $model->id;
+                $translate->save();
                 Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -121,7 +125,7 @@ class AdvertController extends Controller
                 'translates' => $translates,
                 'languages' => $this->languageRepository->loadAllActive(),
                 'categories' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_CATEGORIES),
-//                'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
+                'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
             ]);
         }
     }

@@ -20,10 +20,7 @@ $this->endBlock();
     <div class="row">
         <div class="col-md-3 sidebar sidebar-inner">
             <?php echo $this->render('/parts/left-sidebar') ?>
-            <div class="block-ads">
-                <div class="item-ads"><a href="#"> <img src="/images/b2.png" alt=""></a></div>
-                <div class="item-ads"><a href="#"> <img src="/images/b4.png" alt=""></a></div>
-            </div>
+
         </div>
         <div class="col-md-9">
             <div class="advert-container">

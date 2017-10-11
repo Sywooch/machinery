@@ -17,7 +17,7 @@ use dektrium\user\Finder;
 use backend\models\Pages;
 
 
-class PageController extends Controller
+class PagesController extends Controller
 {
     /**
      * @var LanguageRepository

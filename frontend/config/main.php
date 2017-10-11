@@ -56,10 +56,11 @@ return [
         ],
         'urlManager' => [
             'rules' => [
-//                ['class' => 'frontend\components\AliasRule'],
+                ['class' => 'frontend\components\AliasRule'],
                 'user/<userId:\d+>/wish' => 'store/wish',
                 'user/<userId:\d+>/wish/remove/<id:\d+>' => 'store/wish/remove',
-                '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
+                'object/<id:\d+>' => 'advert/view',
+//                '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
 //                'advert/options/<opt: \w+>' => 'advert/options',
             ],
         ],

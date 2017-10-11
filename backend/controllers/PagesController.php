@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Alias;
 use common\modules\taxonomy\models\TaxonomyItemsRepository;
 use Yii;
 use backend\models\Pages;
@@ -23,11 +24,12 @@ class PagesController extends Controller
     public $languageRepository;
 
 
-    public function __construct($id, Module $module, LanguageRepository $languageRepository,  array $config = [])
+    public function __construct($id, Module $module, LanguageRepository $languageRepository, array $config = [])
     {
         $this->languageRepository = $languageRepository;
         parent::__construct($id, $module, $config);
     }
+
     /**
      * @inheritdoc
      */
@@ -85,26 +87,37 @@ class PagesController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($parent=null, $lang=null)
+    public function actionCreate($parent = null, $lang = null)
     {
 
         $model = new Pages();
-        $translates = Pages::find()->where(['parent'=>$parent])->all();
-        if($parent) $model->parent = $parent;
-        if($lang) $model->lang = $lang;
+        $translates = Pages::find()->where(['parent' => $parent])->all();
+        if ($parent) $model->parent = $parent;
+        if ($lang) $model->lang = $lang;
 
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'languages' => $this->languageRepository->loadAllActive(),
-                'translates' => $translates,
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                $a = Alias::find()->where(['entity_id' => $id, 'model' => 'Pages'])->one();
+                if (!count($a)) {
+                    $a = new Alias();
+                    $a->url = 'pages/view?id=' . $model->id;
+                    $a->model = 'Pages';
+                    $a->entity_id = $model->id;
+                }
+                $a->alias = $_POST['Pages']['alias']['alias'];
+                $a->save();
+                Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+        return $this->render('create', [
+            'model' => $model,
+            'languages' => $this->languageRepository->loadAllActive(),
+            'translates' => $translates,
 //                'terms1' => (new TaxonomyItemsRepository())->getVocabularyTerms(1),
 //                'terms2' => (new TaxonomyItemsRepository())->getVocabularyTerms(4)
-            ]);
-        }
+        ]);
+
     }
 
     /**
@@ -115,21 +128,33 @@ class PagesController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = Pages::find()->where(['id' => $id])->with('alias')->one();
 
-        $translates = Pages::find()->where(['parent'=>$model->parent])->andWhere(['not', ['id'=>$id]])->all();
+        $translates = Pages::find()->with('alias')->where(['parent' => $model->parent])->andWhere(['not', ['id' => $id]])->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'languages' => $this->languageRepository->loadAllActive(),
-                'translates'=> $translates,
+        if ($post = Yii::$app->request->post() && $model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                $a = Alias::find()->where(['entity_id' => $id, 'model' => 'Pages'])->one();
+                if (!count($a)) {
+                    $a = new Alias();
+                    $a->url = 'pages/view?id=' . $model->id;
+                    $a->model = 'Pages';
+                    $a->entity_id = $model->id;
+                }
+                $a->alias = $_POST['Pages']['alias']['alias'];
+                $a->save();
+                Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
+                return $this->redirect(['update', 'id' => $model->id]);
+            }
+
+        }
+        return $this->render('update', [
+            'model' => $model,
+            'languages' => $this->languageRepository->loadAllActive(),
+            'translates' => $translates,
 //                'terms1' => (new TaxonomyItemsRepository())->getVocabularyTerms(1),
 //                'terms2' => (new TaxonomyItemsRepository())->getVocabularyTerms(4)
-            ]);
-        }
+        ]);
     }
 
     /**

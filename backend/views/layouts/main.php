@@ -76,7 +76,9 @@ AppAsset::register($this);
                 </section>
                 <!-- Main content -->
                 <section class="content">
-                    <?= TopMenu::widget(); ?><?= $content ?>
+                    <?= TopMenu::widget(); ?>
+                    <?= Alert::widget() ?>
+                    <?= $content ?>
                 </section>
             </div>
 

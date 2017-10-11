@@ -54,11 +54,11 @@ class Advert extends \yii\db\ActiveRecord
             [['body', 'bucket_capacity', 'tire_condition', 'serial_number', 'lang', 'meta_description'], 'string'],
             [['price'], 'number'],
             [['currency', 'year', 'condition', 'operating_hours', 'mileage', 'parent'], 'integer'],
-            [['created', 'updated', 'published','order_options'], 'safe'],
+            [['created', 'updated', 'published','order_options', 'manufacture'], 'safe'],
             [['status', 'maderated'], 'boolean'],
-            [['title', 'website', 'manufacture', 'phone', 'model'], 'string', 'max' => 255],
+            [['title', 'website', 'phone', 'model', 'meta_description'], 'string', 'max' => 255],
             [['photos'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png', 'maxFiles' => 2],
-            [['category'], TaxonomyAttributeValidator::class, 'type' => 'integer']
+            [['category'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
         ];
     }
 

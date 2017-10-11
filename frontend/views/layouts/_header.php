@@ -20,10 +20,10 @@ use yii\helpers\Html;
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="<?= \yii\helpers\Url::to(['page/view', 'id'=>3]) ?>">For sellers </a></li>
-                    <li><a href="<?= \yii\helpers\Url::to(['page/view', 'id'=>1]) ?>">about us</a></li>
-                    <li><a href="<?= \yii\helpers\Url::to(['page/view', 'id'=>2]) ?>">How it works?</a></li>
-                    <li><a href="<?= \yii\helpers\Url::to(['page/view', 'id'=>4]) ?>">FAQ</a></li>
+                    <li><?= \common\helpers\PageLink::a(3) ?></li>
+                    <li><?= \common\helpers\PageLink::a(1) ?></li>
+                    <li><?= \common\helpers\PageLink::a(2) ?></li>
+                    <li><?= \common\helpers\PageLink::a(4) ?></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">

@@ -63,12 +63,14 @@ class CKEditorAdmin extends \dosamigos\ckeditor\CKEditor {
 
         $_SESSION['KCFINDER'] = [
             'disabled' => false,
-            'uploadURL' => '/upload',
-            'uploadDir' => Yii::getAlias('@frontend/web/upload')
+            'uploadURL' => '/files/upload',
+//            'uploadURL' => Yii::getAlias('@frontend/web/upload'),
+            'uploadDir' => Yii::getAlias('@root/files/upload'),
         ];
 
         $register = KCFinderAsset::register($this->view);
         $kcfinderUrl = $register->baseUrl;
+//        $kcfinderUrl = '/admin/';
 
         $browseOptions = [
             'filebrowserBrowseUrl' => $kcfinderUrl . '/browse.php?opener=ckeditor&type=files',
