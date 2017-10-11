@@ -12,16 +12,16 @@ class PageLink
     public static function a($id, $lang=null)
     {
         $lang = $lang ?? \Yii::$app->language;
-        if(!$model = Pages::find()->where(['parent'=>$id])->with('alias')->asArray()->all()) return false;
+        if(!$model = Pages::find()->where(['parent'=>$id])->all()) return false;
         $pagesLang = ArrayHelper::index($model, 'lang', null);
         $pagesId = ArrayHelper::index($model, 'id', null);
         $page = $pagesLang[$lang] ?? $pagesId[$id];
         $requestUrl = \Yii::$app->request->url;
-        $url = Url::to(['pages/view', 'id'=>$page['id']]);
+        $url = Url::to(['pages/view', 'id'=>$page->id]);
         $params = [];
         if($url == $requestUrl)
             $params['class'] = 'active';
-        return Html::a($page['title'], $url, $params);
+        return Html::a($page->title, $url, $params);
         dd($pagesId);
     }
 
