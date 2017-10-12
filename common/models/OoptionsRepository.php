@@ -11,7 +11,7 @@ namespace common\models;
 use common\models\TarifOptions;
 
 
-class OoptionsRepository extends TarifOptions
+class OoptionsRepository
 {
 
     public function getOptionsActive(){

@@ -11,10 +11,10 @@ use yii\helpers\Html;
                 </a>
                 <div class="main-footer-menu">
                     <ul id="menu-footer" class="list-inline pull-left">
-                        <li><a href="#">For sellers</a></li>
-                        <li><a href="#">about us</a></li>
-                        <li><a href="<?= \yii\helpers\Url::to(['pages/view', 'id'=>5]) ?>">How it works?</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><?= \frontend\widgets\PageLink\PageLinkWidget::widget(['id'=>3]) ?></li>
+                        <li><?= \frontend\widgets\PageLink\PageLinkWidget::widget(['id'=>1]) ?></li>
+                        <li><?= \frontend\widgets\PageLink\PageLinkWidget::widget(['id'=>2]) ?></li>
+                        <li><?= \frontend\widgets\PageLink\PageLinkWidget::widget(['id'=>4]) ?></li>
                     </ul>
                 </div>
             </div>

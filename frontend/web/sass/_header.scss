@@ -54,6 +54,17 @@
   }
 
 }
+.currency-switcher {
+  height: 40px;
+  &:hover, &.opened {
+    .jq-selectbox__select {
+      background: $yellow;
+    }
+  }
+  .jq-selectbox__dropdown {
+    color: #000;
+  }
+}
 
 .header-logo-col {
   margin-top: 20px;

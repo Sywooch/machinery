@@ -4,9 +4,10 @@
  */
 
 namespace common\models;
+use common\models\OrderPackage;
 
 
-class OrderPackageRepository extends OrderPackage
+class OrderPackageRepository
 {
 
     /**
@@ -15,7 +16,7 @@ class OrderPackageRepository extends OrderPackage
      */
     public function getOrderActiveByUser($user_id=null){
         $user_id = $user_id ? $user_id : \Yii::$app->user->id;
-        return $this::find()->where(['user_id'=>$user_id, 'status' => 1])->one();
+        return OrderPackage::find()->where(['user_id'=>$user_id, 'status' => 1])->one();
     }
 
     /**
@@ -24,7 +25,7 @@ class OrderPackageRepository extends OrderPackage
      */
     public function getOrdersActiveByUser($user_id=null){
         $user_id = $user_id ? $user_id : \Yii::$app->user->id;
-        return $this::find()->where(['user_id'=>$user_id, 'status' => 1])->all();
+        return OrderPackage::find()->where(['user_id'=>$user_id, 'status' => 1])->all();
     }
 
     /**
@@ -33,7 +34,7 @@ class OrderPackageRepository extends OrderPackage
      */
     public function getOrderNotpayByUser($user_id=null){
         $user_id = $user_id ? $user_id : \Yii::$app->user->id;
-        return $this::find()->where(['user_id'=>$user_id, 'status' => 0])->one();
+        return OrderPackage::find()->where(['user_id'=>$user_id, 'status' => 0])->one();
     }
 
     /**
@@ -42,7 +43,7 @@ class OrderPackageRepository extends OrderPackage
      */
     public function getOrdersNotpayByUser($user_id=null){
         $user_id = $user_id ? $user_id : \Yii::$app->user->id;
-        return $this::find()->where(['user_id'=>$user_id, 'status'=>0])->all();
+        return OrderPackage::find()->where(['user_id'=>$user_id, 'status'=>0])->all();
     }
 
 }

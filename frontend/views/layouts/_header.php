@@ -20,21 +20,13 @@ use yii\helpers\Html;
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><?= \common\helpers\PageLink::a(3) ?></li>
-                    <li><?= \common\helpers\PageLink::a(1) ?></li>
-                    <li><?= \common\helpers\PageLink::a(2) ?></li>
-                    <li><?= \common\helpers\PageLink::a(4) ?></li>
+                    <li><?= \frontend\widgets\PageLink\PageLinkWidget::widget(['id'=>3]) ?></li>
+                    <li><?= \frontend\widgets\PageLink\PageLinkWidget::widget(['id'=>1]) ?></li>
+                    <li><?= \frontend\widgets\PageLink\PageLinkWidget::widget(['id'=>2]) ?></li>
+                    <li><?= \frontend\widgets\PageLink\PageLinkWidget::widget(['id'=>4]) ?></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">EUR <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">USD</a></li>
-                            <li><a href="#">UAH</a></li>
-                            <li><a href="#">RUB</a></li>
-                        </ul>
-                    </li>
+                    <?= \frontend\widgets\CurrencySwitch\CurrencySwitchWidget::widget() ?>
                     <?php if (Yii::$app->user->isGuest): ?>
 
                         <li><?= Html::a('<i class="fa fa-key" aria-hidden="true"></i> ' . Yii::t('user', 'LOGIN'), ['/user/login'], ['class' => 'link-login']) ?></li>
