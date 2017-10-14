@@ -124,12 +124,13 @@ class PaymentManager
 
     /**
      * @param Invoice $invoice
+     * @param null $transaction
      * @return bool
      * @throws InvoiceCompleteFailException
      * @throws \Exception
      * @throws \Throwable
      */
-    public function completeInvoice(Invoice $invoice)
+    public function completeInvoice(Invoice $invoice, $transaction = null)
     {
         if ($invoice->status === Invoice::STATUS_COMPLETE) {
             throw new InvoiceCompleteFailException('Invoice already completed.');
@@ -153,6 +154,7 @@ class PaymentManager
                     $logStatus = $this->transactionService->log($invoice->account, $invoice->amount, [
                         'message' => 'Complete invoice action',
                         'user' => Yii::$app->user->isGuest ? null : Yii::$app->user->identity->getAttributes(),
+                        'transaction' => $transaction,
                         'ip' => Yii::$app->request->getUserIP(),
                         'invoice' => $invoice->attributes()
                     ]);

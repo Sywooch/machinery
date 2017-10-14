@@ -10,11 +10,14 @@ use common\modules\payment\PaymentManager;
 use common\modules\payment\services\AccountService;
 use common\modules\payment\services\InvoiceService;
 use common\services\AdvertService;
+use frontend\components\PayPalDirectComponent;
+use frontend\models\Order;
 use Yii;
 use frontend\models\Callback;
 use frontend\models\CallbackSearch;
 use yii\base\Module;
 use yii\helpers\ArrayHelper;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,12 +54,12 @@ class PaymentController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['pay'],
+                        'actions' => ['pay','create-invoice'],
                         'roles' => ['@'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['result'],
+                        'actions' => ['result','success'],
 
                     ],
                 ],
@@ -70,56 +73,69 @@ class PaymentController extends Controller
         ];
     }
 
-    public function actionResult()
-    {
 
-        //TODO: Get and check merchant response
-
-        $invoiceId = 104;
-
-        $invoice = $this->_invoiceService->getInvoiceById($invoiceId);
-
-        if (!$invoice) {
-            throw new NotFoundHttpException('Invalid invoice '.$invoiceId.'.');
-        }
-
-        try {
-            $this->_paymentManager->completeInvoice($invoice);
-        } catch (\Exception $e) {
-            throw new NotFoundHttpException('Invalid invoice '.$invoiceId.'.');
-        }
-
-
-        switch (ArrayHelper::getValue($invoice, 'data.type')) {
-            case 'options':
-                $advert = Advert::findOne($invoice->data['entity_id']);
-
-                if (!$advert) {
-                    throw new NotFoundHttpException('Advert for invoice '.$invoiceId.' not found.');
-                }
-
-                $this->_advertService->updateOptions($advert);
-                break;
-        }
-
-        exit('ADDDDD');
+    public function actionSuccess(){
+        return $this->render('success');
     }
 
     /**
      * @param int $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
      */
-    public function actionPay(int $id)
-    {
-
+    public function actionCreateInvoice(int $id){
 
         $invoice = $this->createOptionsInvoice($id);
 
-        //TODO: DO Payment
-
-        exit('MMMM');
+        return $this->redirect(['/payment/pay?uuid='.$invoice->uuid])->send();
     }
+
+    /**
+     * @param string $uuid
+     * @return string
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     */
+    public function actionPay(string $uuid)
+    {
+
+        $order = new Order();
+
+        $invoice = $this->_invoiceService->getInvoiceByUuid($uuid);
+
+        if (!$invoice) {
+            throw new NotFoundHttpException('Invalid invoice '.$uuid.'.');
+        }
+
+
+        if ($order->load(Yii::$app->request->post()) && $order->validate()) {
+
+            try {
+                $PayPalDirect = new PayPalDirectComponent();
+                $transaction = $PayPalDirect->doDirectPay($order);
+                if(!$transaction){
+                    Yii::$app->session->setFlash('error', $PayPalDirect->getErrors());
+                }else{
+                    $this->_paymentManager->completeInvoice($invoice, $transaction);
+                    switch (ArrayHelper::getValue($invoice, 'data.type')) {
+                        case 'options':
+                            $advert = Advert::findOne($invoice->data['entity_id']);
+                            if (!$advert) {
+                                Yii::$app->session->setFlash('Payment success but advert for invoice '.$uuid.' not found.');
+                            }else{
+                                $this->_advertService->updateOptions($advert);
+                                return $this->redirect(['/payment/success'])->send();
+                            }
+                            break;
+                    }
+                }
+            } catch (\Exception $e) {
+                throw new BadRequestHttpException('Something wrong.');
+            }
+        }
+
+        return $this->render('form', ['order' => $order]);
+    }
+
+
 
     /**
      * @param int $id
@@ -131,8 +147,16 @@ class PaymentController extends Controller
 
         $advert = Advert::findOne($id);
 
-        if (!$advert || !$advert->order_options) {
+        if (!$advert) {
             throw new NotFoundHttpException('Advert not found.');
+        }
+
+        if (!$advert->order_options) {
+            throw new NotFoundHttpException('Advert have no preorder options.');
+        }
+
+        if ($advert->user_id != Yii::$app->user->id) {
+            throw new NotFoundHttpException('You are not the owner of advert.');
         }
 
         $amount = (int)TarifOptions::find()->where(['in', 'id', $advert->getAdvertOrderOptions()])->sum('price');

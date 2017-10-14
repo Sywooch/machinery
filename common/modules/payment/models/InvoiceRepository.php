@@ -11,10 +11,18 @@ class InvoiceRepository
 {
 
     /**
-     * @param int $id
+     * @param string $uuid
      * @return static
      */
-    public function getInvoceById(int $id){
+    public function getInvoiceByUuid(string $uuid){
+        return Invoice::findOne(['uuid' => $uuid]);
+    }
+
+    /**
+     * @param string $id
+     * @return static
+     */
+    public function getInvoiceById(string $id){
         return Invoice::findOne($id);
     }
 
