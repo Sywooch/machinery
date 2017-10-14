@@ -44,16 +44,15 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <?php Pjax::end(); ?></div>
+<?= $this->registerJs("
 
-<script>
-    window.onload = function(){
-        var urlDefaultChange = '<?= \yii\helpers\Url::to(['currency/default']) ?>';
-        console.log($('input:radio'));
+    $(function(){
+        var urlDefaultChange = '". \yii\helpers\Url::to(['currency/default']) ."';
+
         $('.radio_default_cur').on('change', function(e){
             var input = this;
             $.get(urlDefaultChange, {id: input.value}, function(d){
 
             }, 'json');
         });
-    };
-</script>
+    })") ?>
