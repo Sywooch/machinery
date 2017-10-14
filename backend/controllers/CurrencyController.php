@@ -8,6 +8,8 @@ use common\models\CurrencySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\CurrencyRepository;
+use yii\filters\AccessControl;
 
 /**
  * CurrencyController implements the CRUD actions for Currency model.
@@ -20,6 +22,16 @@ class CurrencyController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'default'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -93,6 +105,16 @@ class CurrencyController extends Controller
         }
     }
 
+    public function actionDefault($id){
+        $out = [];
+        if(!Yii::$app->request->isAjax) return false;
+        if(CurrencyRepository::changeDefault($id)){
+            $out['status'] = 'success';
+        } else {
+            $out['status'] = 'error';
+        }
+        return $this->asJson($out);
+    }
     /**
      * Deletes an existing Currency model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

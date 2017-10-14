@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function ($model) {
                     $checked = $model->default ? 'checked' : '';
-                    return "<input type=\"radio\" name=\"default_cur\" class='radio_default_cur' $checked >";
+                    return "<input type=\"radio\" name=\"default_cur\" value='".$model->id."' class='radio_default_cur' $checked >";
                 }
             ],
             // 'active:boolean',
@@ -44,3 +44,16 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <?php Pjax::end(); ?></div>
+
+<script>
+    window.onload = function(){
+        var urlDefaultChange = '<?= \yii\helpers\Url::to(['currency/default']) ?>';
+        console.log($('input:radio'));
+        $('.radio_default_cur').on('change', function(e){
+            var input = this;
+            $.get(urlDefaultChange, {id: input.value}, function(d){
+
+            }, 'json');
+        });
+    };
+</script>
