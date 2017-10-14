@@ -82,10 +82,10 @@ class Order extends Model
 
     public function init()
     {
-        $this->creditcard = '5168742022384451';
-        $this->month = 9;
-        $this->year = 2018;
-        $this->ccv = '037';
+        $this->creditcard = '5168742722184151';
+        $this->month = 5;
+        $this->year = 2019;
+        $this->ccv = '111';
         $this->name = 'Alexander';
         $this->lastname = 'Naumets';
         $this->phone = '+380636308315';
