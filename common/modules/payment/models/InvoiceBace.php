@@ -35,7 +35,7 @@ class InvoiceBace extends \yii\db\ActiveRecord
             [['account_id', 'status'], 'integer'],
             [['amount'], 'double'],
             [['account_id', 'amount'], 'required'],
-            [['message'], 'string', 'max' => 255],
+            [['message','uuid'], 'string', 'max' => 255],
         ];
     }
 

@@ -43,15 +43,15 @@ class InvoiceService
             ])
         ]);
         $invoice->save();
-        return $invoice;
+        return $this->invoiceRepository->getInvoiceById($invoice->id);
     }
 
     /**
-     * @param int $id
+     * @param string $uuid
      * @return static
      */
-    public function getInvoiceById(int $id){
-        return $this->invoiceRepository->getInvoceById($id);
+    public function getInvoiceByUuid(string $uuid){
+        return $this->invoiceRepository->getInvoiceByUuid($uuid);
     }
 
     /**

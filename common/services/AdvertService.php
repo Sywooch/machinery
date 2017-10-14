@@ -8,7 +8,7 @@ use common\models\AdvertOption;
 use common\models\AdvertOptionRepository;
 use common\models\TarifPackagesRepository;
 use common\models\UserPackageRepo;
-use common\service\exeptions\UserHasNotPackageException;
+use common\exeptions\UserHasNotPackageException;
 use Yii;
 use yii\helpers\ArrayHelper;
 
