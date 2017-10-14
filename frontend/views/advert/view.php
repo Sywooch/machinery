@@ -15,6 +15,7 @@ $this->beginBlock('title_panel');
 echo Yii::t('app', 'Preview advert');
 $this->endBlock();
 ?>
+
 <!--<pre>--><?php //print_r($model) ?><!--</pre>-->
 <div class="container main-container">
     <div class="row">
@@ -150,6 +151,12 @@ $this->endBlock();
                         </div>
                         <div class="description-container col-md-12">
                             <?= $model->body ?>
+
+
+
+                            <?= \common\modules\comments\widgets\CommentsWidget::widget(['entity' => $model]); ?>
+
+
                         </div> <!-- .description-container -->
                     </div> <!-- .container-links -->
 

@@ -26,6 +26,10 @@ return [
         ],
     ],
     'modules' => [
+        'comments' => [
+            'class' => 'common\modules\comments\Module',
+            'maxThread' => 2
+        ],
         'user' => [
             'class' => 'dektrium\user\Module',
             'enableUnconfirmedLogin' => true,
