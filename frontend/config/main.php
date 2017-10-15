@@ -37,6 +37,12 @@ return [
                     'forceInsert' => true,
                     'sourceLanguage' => 'en-EN'
                 ],
+                'sweelix' => [
+                    'class' => 'common\modules\language\DbMessageSource',
+                    //'basePath' => '@app/messages',
+                    'forceInsert' => true,
+                    'sourceLanguage' => 'en-EN'
+                ]
             ],
         ],
         'log' => [

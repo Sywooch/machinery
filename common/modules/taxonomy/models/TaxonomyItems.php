@@ -119,8 +119,4 @@ class TaxonomyItems extends ActiveRecord
         return $this->data['translations'] ?? [];
     }
 
-    public function getAdverts(){
-        return $this->hasMany(Advert::className(), ['id'=>'entity_id'])->viaTable('{{%taxonomy_index}}', ['term_id'=>'id']);
-    }
-
 }

@@ -98,7 +98,7 @@ $translatesKeys = ArrayHelper::map($translates, 'lang', 'id');
                                     'options' => [
                                         'rows' => 6,
                                     ],
-                                    'enableKCFinder'=>false,
+//                                    'enableKCFinder'=>false,
                                     'preset' => 'custom', // 'full', standart, 'basic'
                                     'clientOptions' => [
                                         'toolbarGroups' =>
@@ -220,6 +220,7 @@ $translatesKeys = ArrayHelper::map($translates, 'lang', 'id');
                                         class="ic-add-image"></i><span><?= Yii::t('app', 'Add images') ?></span></div>
                         </div>
                         <p class="text-uppercase"><?= Yii::t('app', 'You can select up to 30 media files.') ?></p>
+
                     </div>
                 </div>
             </div>

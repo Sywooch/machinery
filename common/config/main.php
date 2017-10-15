@@ -24,6 +24,7 @@ return [
             'decimalSeparator' => '.',
             'currencyCode' => 'UAH'
         ],
+
     ],
     'modules' => [
         'comments' => [
