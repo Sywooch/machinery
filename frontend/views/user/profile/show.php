@@ -1,156 +1,54 @@
 <?php
 
 use yii\helpers\Html;
-use common\modules\file\helpers\StyleHelper;
-use yii\helpers\ArrayHelper;
-use kartik\editable\Editable;
-use kartik\file\FileInput;
-use common\modules\file\helpers\FileHelper;
-use yii\widgets\Breadcrumbs;
-use yii\bootstrap\Modal;
-use yii\widgets\ActiveForm;
-use common\modules\store\CartAsset;
-
-CartAsset::register($this);
 
 $this->title = empty($profile->name) ? Html::encode($profile->user->username) : Html::encode($profile->name);
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?= Breadcrumbs::widget([
-    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-]) ?>
-<h1>Профиль</h1>
-<?= $this->render('_tabs',['id' => $profile->user_id, 'action' => 'profile']);?>
-<div class="row">
-    <div class="col-lg-12  ">
-        <div class="profile-img">
-        <?php if(($file = ArrayHelper::getValue($profile->user->avatar, '0'))):?>
-            <?=Html::img('/'.StyleHelper::getPreviewUrl($file, '145x175'),['class' => 'img-responsive']);?>
-        <?php else:?>
-            <?=Html::img('/files/nophoto_145x175.jpg',['class' => 'img-responsive']);?>
-        <?php endif;?>
-            
-        <?php if(Yii::$app->user->id == $profile->user_id):?>
-           
-            
-            <?php
-            Modal::begin([
-              
-                'toggleButton' => ['label' => 'Загрузить фотографию','class' => 'btn btn-green btn-custom'],
-            ]);
-            ?>
-            <?php $form = ActiveForm::begin([
-                        'options' => ['enctype' => 'multipart/form-data'],
-            ]); ?>
-            <?= $form->field($profile->user, 'avatar[]', ['template' => '{input}{error}'])->widget(FileInput::classname(),FileHelper::FileInputConfig($profile->user, 'avatar', [
-                'style' => new StyleHelper('145x175')
-            ])); ?>
-            <?php ActiveForm::end(); ?>
-            <?php Modal::end();?>
-           
-            
-        <?php endif;?>    
+<div class="container">
+    <div class="row">
+        <div class="col-md-3   sidebar sidebar-account">
+            <?= $this->render('_photo', ['profile' => $profile]) ?>
+            <?= $this->render('_menu') ?>
         </div>
-        <div class="profile-info">
-            <div class="form-group required">
-                <label>ФИО</label>
-                <?php if(Yii::$app->user->id == $profile->user_id):?>
-                <?= Editable::widget([
-                        'model'=> $profile,
-                        'attribute' => 'name',
-                        'asPopover' => true,
-                        'size' => 'md',
-                        'displayValue' => $profile->name
+        <div class="col-md-9">
+            <div class="account-container">
+                <?= $this->render('_head') ?>
 
-                    ]);
-                ?>
-                <?php else: ?>
-                <?=$profile->name;?>
-                <?php endif; ?>
-            </div>
-            
-            <div class="form-group required">
-                <label>E-mail</label>
-                <?php if(Yii::$app->user->id == $profile->user_id):?>
-                <?= Editable::widget([
-                        'model'=> $profile->user,
-                        'attribute' => 'email',
-                        'asPopover' => true,
-                        'size'=>'md',
-                        'displayValue' => $profile->user->email
+                <div class="cf">
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading _header">Recently viewed</div>
+                            <div class="_list panel-body">
+                                <ul>
+                                    <li><a href="#">Далеко-далеко за.</a></li>
+                                    <li><a href="#">Алфавит, великий.</a></li>
+                                    <li><a href="#">Снова, осталось.</a></li>
+                                    <li><a href="#">Образ, назад!</a></li>
+                                    <li><a href="#">Свое, свою.</a></li>
+                                    <li><a href="#">Все, имени!</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading _header">My favorite listing</div>
+                            <div class="_list panel-body">
+                                <ul>
+                                    <li><a href="#">Далеко-далеко за.</a></li>
+                                    <li><a href="#">Запятых, предложения.</a></li>
+                                    <li><a href="#">Пунктуация, вопрос.</a></li>
+                                    <li><a href="#">Продолжил, речью.</a></li>
+                                    <li><a href="#">Мир, страну!</a></li>
+                                    <li><a href="#">Всемогущая, единственное!</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                    ]);
-                ?>
-                <?php else: ?>
-                <?=$profile->user->email;?>
-                <?php endif; ?>
             </div>
-            
-            <div class="form-group">
-                <label>Телефон</label>
-                <?php if(Yii::$app->user->id == $profile->user_id):?>
-                <?= Editable::widget([
-                        'model'=> $profile,
-                        'attribute' => 'phone',
-                        'asPopover' => true,
-                        'size'=>'md',
-                        'inputType' => Editable::INPUT_WIDGET,
-                        'widgetClass' => 'yii\widgets\MaskedInput',
-                        'options' => [
-                            'mask' => '+38 (099)-999-99-99',
-                        ],
-                        'displayValue' => $profile->phone
-
-                    ]);
-                ?>
-                <?php else: ?>
-                <?=$profile->phone;?>
-                <?php endif; ?>
-            </div>
-
-            <div class="form-group">
-                <label>Дата рождения</label>
-                <?php if(Yii::$app->user->id == $profile->user_id):?>
-                <?= Editable::widget([
-                        'name' => 'Profile[birth]',
-                        'value' => $profile->birth->format('d.m.Y'),
-                        'asPopover' => true,
-                        'size'=>'md',
-                        'inputType' => Editable::INPUT_WIDGET,
-                        'widgetClass' => 'yii\widgets\MaskedInput',
-                        'options' => [
-                             'mask' => '99.99.9999'
-                        ],
-                    ]);
-                ?>
-                <?php else: ?>
-                <?=$profile->birth->format('d.m.Y')?>
-                <?php endif; ?>
-            </div>
-            
-            <div class="form-group">
-                <label>Аккаунт создан</label>
-                <?=date('d.m.Y',$profile->user->created_at);?>
-            </div>
-            
         </div>
-    </div>   
-</div>
-
-<h2>Мои заказы</h2>
-<div class="my-orders ">
-<?php foreach($orders as $order):?>
-<div class="row header">
-    <div class="col-lg-2">
-       №<?=$order->id?>
     </div>
-    <div class="col-lg-6">
-       <?=Yii::$app->formatter->asDate($order->created, 'd MMMM yyyy');?>
-    </div>
-    <div class="col-lg-4">
-        <?=Html::a('Печатная версия',['/orders/default/print', 'id' => $order->id],['target' => '_blank','class' => 'pull-right'])?>
-    </div>
-</div>
-<?=$this->render('../../../../common/modules/store/views/cart/_items',['order' => $order]);?>
-<?php endforeach;?>
 </div>

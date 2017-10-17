@@ -15,12 +15,12 @@ class Asset extends AssetBundle
     public $baseUrl = '/common/modules/file/widgets/FileInput/assets';
 
     public $css = [
-        'fileinput/css/fileinput.css',
+        '../../src/fileinput/css/fileinput.css',
         'file.input.widget.css'
     ];
     public $js = [
-        'fileinput/js/fileinput.js',
-        'fileinput/themes/explorer/theme.js',
+        '../../src/fileinput/js/fileinput.js',
+        '../../src/fileinput/themes/explorer/theme.js',
         'file.input.widget.js'
     ];
 

@@ -4,10 +4,14 @@ namespace common\modules\file\helpers;
 
 use common\helpers\URLify;
 use yii;
+use yii\db\ActiveRecord;
 use yii\helpers\StringHelper;
 use yii\helpers\FileHelper as BaseFileHelper;
 use common\modules\file\filestorage\InstanceInterface;
 use Intervention\Image\ImageManager;
+use yii\helpers\ArrayHelper;
+use common\modules\file\filestorage\Instance;
+use yii\helpers\Url;
 
 class FileHelper
 {
@@ -20,48 +24,105 @@ class FileHelper
 
 
     /**
-     * @param $class
-     * @return string
-     * @throws \yii\base\Exception
+     * @param $model
+     * @param $attribute
+     * @return bool
      */
-    public static function createDirectory($class)
+    public static function isMultiple($model, $attribute)
     {
-
-        $path = self::getPath($class);
-
-        if (!is_dir($path)) {
-            BaseFileHelper::createDirectory($path, self::DIRECTORY_PERMISSION);
+        $field = FileHelper::getFileFields($model)[$attribute];
+        if (isset($field['maxFiles']) && $field['maxFiles'] == 1) {
+            return false;
         }
-        return $path;
+        return true;
     }
 
     /**
-     * @param $token
-     * @param string $field
-     * @return string
-     * @throws \yii\base\Exception
+     * @param $model
+     * @param $attribute
+     * @return null|int
      */
-    public static function createTempDirectory($token, $field = '') : string
+    public static function maxFiles($model, $attribute)
     {
-        $path = self::getTempDirectory() . '/' . md5($token . $field);
-        BaseFileHelper::createDirectory($path, self::DIRECTORY_PERMISSION);
-        return $path;
+        $field = FileHelper::getFileFields($model)[$attribute];
+        return $field['maxFiles'] ?? null;
     }
 
     /**
-     * @return string
+     * @param $model
+     * @param $attribute
+     * @return array
      */
-    public static function getTempDirectory() : string
+    public static function preview($model, $attribute)
     {
+        $instance = $model->{$attribute};
 
-        return Yii::$app->basePath . '/../' . self::DIRECTORY_FILES . '/tmp';
+        if (!is_array($instance)) {
+            if ($instance) {
+                $instance = [$instance];
+            } else {
+                $instance = [];
+            }
+        }
+
+        $instance = array_filter($instance);
+
+        if (empty($instance) || !(current($instance) instanceof ActiveRecord)) {
+            return [];
+        }
+
+        return ArrayHelper::getColumn($instance, function ($item) {
+            return $item->path . '/' . $item->name;
+        });
+    }
+
+    /**
+     * @param $model
+     * @param $attribute
+     * @param bool $showRemove
+     * @return array
+     */
+    public static function config($model, $attribute, $showRemove = false)
+    {
+        $instance = $model->{$attribute};
+
+        if (!is_array($instance)) {
+            if ($instance) {
+                $instance = [$instance];
+            } else {
+                $instance = [];
+            }
+        }
+
+        $instance = array_filter($instance);
+
+        if (empty($instance) || !(current($instance) instanceof ActiveRecord)) {
+            return [];
+        }
+
+        return ArrayHelper::toArray($instance, [
+            Instance::class => [
+                'key' => function ($item) {
+                    return $item->id;
+                },
+                'caption' => function ($item) {
+                    return $item->name;
+                },
+                'size' => function ($item) {
+                    return $item->size;
+                },
+                'url' => function ($item) use ($showRemove) {
+                    return $showRemove ? Url::to(['/file/manage/delete', 'id' => $item->id, 'token' => self::getToken($item)]) : '';
+                }
+            ]
+        ]);
     }
 
     /**
      * @param InstanceInterface $file
      * @return string
      */
-    public static function getToken(InstanceInterface $file) : string
+    public static function getToken(InstanceInterface $file): string
     {
         return md5(Yii::$app->request->cookieValidationKey . Yii::$app->request->getUserIP() . $file->size . $file->id);
     }
@@ -70,7 +131,7 @@ class FileHelper
      * @param $class
      * @return string
      */
-    public static function getPath($class) : string
+    public static function getPath($class): string
     {
         return Yii::$app->basePath . '/../' . self::getUrl($class);
     }
@@ -79,7 +140,7 @@ class FileHelper
      * @param $class
      * @return string
      */
-    public static function getUrl($class) : string
+    public static function getUrl($class): string
     {
         return self::DIRECTORY_FILES . '/' . strtolower(StringHelper::basename($class));
     }
@@ -88,7 +149,7 @@ class FileHelper
      * @param $name
      * @return string
      */
-    public static function text2url($name) : string
+    public static function text2url($name): string
     {
 
         $url = [
@@ -102,7 +163,7 @@ class FileHelper
      * @param $model
      * @return array
      */
-    public static function getFileFields($model) : array
+    public static function getFileFields($model): array
     {
         $fields = [];
         $rules = $model->rules();
@@ -141,13 +202,13 @@ class FileHelper
         if (!is_dir($stylePath)) {
             BaseFileHelper::createDirectory($stylePath, self::DIRECTORY_PERMISSION);
         }
-         $imageManager = new ImageManager();
-         $image = $imageManager->make($originPath . '/' . $file->name)->resize($style->width, $style->height, function ($constraint) {
-             $constraint->aspectRatio();
-         });
+        $imageManager = new ImageManager();
+        $image = $imageManager->make($originPath . '/' . $file->name)->resize($style->width, $style->height, function ($constraint) {
+            $constraint->aspectRatio();
+        });
 
-     //   $image = $imageManager->make($originPath . '/' . $file->name)->fit($style->width, $style->height);
-       // $image = $imageManager->make($originPath . '/' . $file->name)->resize($style->width, $style->height);
+        //   $image = $imageManager->make($originPath . '/' . $file->name)->fit($style->width, $style->height);
+        // $image = $imageManager->make($originPath . '/' . $file->name)->resize($style->width, $style->height);
         if ($image->save($stylePath . '/' . $file->name, $style->quality)) {
             return $stylePath . '/' . $file->name;
         }

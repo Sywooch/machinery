@@ -1,0 +1,108 @@
+// footer
+.site-footer {
+	background: url(../img/bg-footer.jpg) center 0;
+	color: #fff;
+	.col-footer-logo {
+		padding-top: 40px;
+	}
+	.main-footer-menu {
+		margin-top: 25px;
+		li {
+			float: left;
+			width: 50%;
+			margin-bottom: 16px;
+			a {
+				text-transform: uppercase;
+				font-size: 13px;
+				text-decoration: none;
+				&:hover {
+					color: $yellow;
+				}
+			}
+		}
+	}
+	.social-menu {
+		margin-top: 42px;
+		li {
+			margin: 5px;
+			a {
+				padding: 5px;
+				color: #fff;
+					background: transparent !important;
+				&:hover {
+					color: $yellow;
+				}
+			}
+		}
+	}
+	a, a:hover {
+		color: #fff;
+	}
+}
+.newsletter-footer-form-wrapper {
+	position: relative;
+	max-width: 255px;
+	width: 255px;
+	background: #252e33;
+	color: #fff;
+	padding: 32px 20px 20px;
+	margin-bottom: 60px;
+	&:before {
+		content: '';
+		display: block;
+		height: 10px;
+		background: url(../img/bg-footer-nl.png) no-repeat center 0px;
+		left: 0;
+		top: -10px;
+		position: absolute;
+		right: 0;
+	}
+	.newsletter-title {
+		font-size: 20px;
+		font-weight: 700;
+		margin-bottom: 20px;
+		text-transform: uppercase;
+		text-align: center;
+	}
+	input[type=text] {
+		background: #4f5a61;
+		color: #fff;
+		font-size: 13px;
+		height: 34px;
+		border-radius: 0;
+		border: 0;
+	}
+	button {
+		height: 34px;
+		width: 100%;
+		border: 2px solid $yellow;
+		color: $yellow;
+		cursor: pointer;
+		outline: none;
+		background: transparent;
+	}
+}
+.footer-buttons {
+	padding-top: 40px;
+	.footer-button {
+		display: inline-block;
+		width: 220px;
+		height: 40px;
+		text-transform: uppercase;
+		text-decoration: none;
+		text-align: center;
+		font-size: 15px;
+		font-weight: 700;
+		line-height: 40px;
+		margin-bottom: 15px;
+		&.ask-b {
+			color: $yellow;
+			border: 2px solid $yellow;
+			line-height: 36px;
+		}
+		&.advert-b {
+			background: $yellow;
+			color: #fff;
+		}
+	}
+}

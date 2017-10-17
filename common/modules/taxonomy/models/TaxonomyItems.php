@@ -1,8 +1,11 @@
 <?php
+
 namespace common\modules\taxonomy\models;
 
-use yii\db\ActiveRecord;
 use common\helpers\URLify;
+use common\models\Advert;
+use yii\db\ActiveRecord;
+
 
 class TaxonomyItems extends ActiveRecord
 {
@@ -10,14 +13,14 @@ class TaxonomyItems extends ActiveRecord
     const TABLE_TAXONOMY_ITEMS = 'taxonomy_items';
 
     /**
-     * @var
+     * @var array
      */
-    private $_parent;
+    public $childrens = [];
 
     /**
      * @var array
      */
-    public $childrens = [];
+    private $_translations = [];
 
     /**
      * @inheritdoc
@@ -33,11 +36,25 @@ class TaxonomyItems extends ActiveRecord
     public function rules()
     {
         return [
+            [['translations', 'icon_name'], 'safe'],
             [['vid', 'name'], 'required'],
             [['vid', 'pid', 'weight'], 'integer'],
-            [['name', 'transliteration'], 'string', 'max' => 50],
+            [['name', 'transliteration', 'icon_name'], 'string', 'max' => 50],
             [['vid', 'name'], 'unique', 'targetAttribute' => ['vid', 'name'], 'message' => 'The combination of Vid and Name has already been taken.'],
             [['name', 'vid'], 'unique', 'targetAttribute' => ['name', 'vid'], 'message' => 'The combination of Vid and Name has already been taken.'],
+            [['icon'], 'file', 'extensions' => 'png, jpg', 'maxFiles' => 1],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \common\modules\file\components\FileBehavior::class,
+            ]
         ];
     }
 
@@ -55,12 +72,11 @@ class TaxonomyItems extends ActiveRecord
     public function beforeSave($insert)
     {
         parent::beforeSave($insert);
-        if (!$this->pid) {
-            $this->pid = 0;
-        }
-        if (!$this->transliteration) {
-            $this->transliteration = URLify::url($this->name);
-        }
+        $this->pid = $this->pid ? $this->pid : 0;
+        $this->transliteration = $this->transliteration ? $this->transliteration : URLify::url($this->name);
+        $this->data = [
+            'translations' => $this->_translations
+        ];
         return true;
     }
 
@@ -75,6 +91,7 @@ class TaxonomyItems extends ActiveRecord
             'pid' => 'Pid',
             'name' => 'Name',
             'weight' => 'Weight',
+            'icon_name' => 'Icon CSS class',
         ];
     }
 
@@ -84,6 +101,26 @@ class TaxonomyItems extends ActiveRecord
     public function getVocabulary()
     {
         return $this->hasOne(TaxonomyVocabulary::className(), ['id' => 'vid']);
+    }
+
+    /**
+     * @param array $translations
+     */
+    public function setTranslations($translations)
+    {
+        $this->_translations = $translations;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTranslations(): array
+    {
+        return $this->data['translations'] ?? [];
+    }
+
+    public function getAdverts(){
+        return $this->hasMany(Advert::className(), ['id'=>'entity_id'])->viaTable('{{%taxonomy_index}}', ['term_id'=>'id']);
     }
 
 }

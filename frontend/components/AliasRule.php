@@ -18,6 +18,18 @@ class AliasRule extends UrlRule {
      * @inheritdoc
      */
     public function createUrl($manager, $route, $params) {
+        ksort($params);
+        $query = http_build_query($params);
+        if ($query)
+            $route .= "?" . $query;
+
+        $data = Yii::$app->db->createCommand('SELECT * FROM {{alias}} WHERE url =:url ', [
+            ':url' => $route,
+        ])->queryOne();
+
+        if ($data) {
+            return $data['alias'];
+        }
         return false;
     }
     
@@ -36,8 +48,7 @@ class AliasRule extends UrlRule {
         $alias = Alias::find()->where(['alias' => Yii::$app->request->pathInfo])->one();
         if(!$alias){
             return false;
-        } 
-
+        }
         $url = parse_url ( $alias->url);
         parse_str ( $url['query'], $query );
         return [$url['path'], $query];

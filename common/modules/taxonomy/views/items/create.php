@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model common\modules\taxonomy\models\TaxonomyItems */
 
 $this->title = 'Create Taxonomy Items';
-$this->params['breadcrumbs'][] = ['label' => 'Taxonomy Items', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Taxonomy Items', 'url' => ['/taxonomy/items?TaxonomyItemsSearch[vid]='.$model->vid]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="taxonomy-items-create">
@@ -16,7 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'parentTerm' => $parentTerm
+        'parentTerm' => $parentTerm,
+        'languages' => $languages
     ]) ?>
 
 </div>

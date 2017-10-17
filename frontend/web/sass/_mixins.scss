@@ -1,0 +1,61 @@
+@mixin flexbox() {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+@mixin flex($values) {
+    -webkit-box-flex: $values;
+    -moz-box-flex: $values;
+    -webkit-flex: $values;
+    -ms-flex: $values;
+    flex: $values;
+}
+
+@mixin order($val) {
+    -webkit-box-ordinal-group: $val;
+    -moz-box-ordinal-group: $val;
+    -ms-flex-order: $val;
+    -webkit-order: $val;
+    order: $val;
+}
+
+@mixin wrap($val) {
+    -webkit-flex-wrap: $val;
+    -moz-box-flex-wrap: $val;
+    -ms-flex-wrap: $val;
+    flex-wrap: $val;
+}
+@mixin just_btw(){
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+@mixin just-around(){
+    -ms-flex-pack: distribute;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+}
+
+@mixin center_both(){
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin sprite_data($icon){
+    @include sprite-height($icon);
+    @include sprite-width($icon);
+    @include sprite-position($icon);
+}
+
+//@mixin odd(){
+//  &:nth-child(odd) {
+//    @content
+//  }
+//}

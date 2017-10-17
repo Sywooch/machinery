@@ -1,0 +1,200 @@
+.soc-ic {
+  display: inline-block;
+  &:before {
+    content: '';
+    display: inline-block;
+  }
+}
+.ic-fb {
+  &:before {
+    @include sprite($ic-fb);
+  }
+}
+.ic-tw {
+  &:before {
+    @include sprite($ic-tw);
+  }
+}
+.ic-in {
+  &:before {
+    @include sprite($ic-in);
+  }
+}
+.ic-skype {
+  &:before {
+    @include sprite($ic-skype);
+  }
+}
+
+.img-cat {
+  &:before, &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url(../images/sprite.png);
+    background-repeat: no-repeat;
+    transition: opacify .3s;
+    z-index: 1;
+  }
+  &:after {
+    z-index: 2;
+    opacity: 0;
+  }
+  .cat-link:hover & {
+    &:before {
+      opacity: 0;
+    }
+    &:after {
+      opacity: 1;
+    }
+  }
+}
+.img-cat-industrial-machinery {
+  &:before {
+    height: $cat1-height;
+    width: $cat1-width;
+    background-position: $cat1-offset-x $cat1-offset-y;
+  }
+  &:after {
+    height: $cat1-hov-height;
+    width: $cat1-hov-width;
+    background-position: $cat1-hov-offset-x $cat1-hov-offset-y;
+  }
+}
+.img-cat-cranes {
+  &:before {
+    height: $cat2-height;
+    width: $cat2-width;
+    @include sprite-position($cat2);
+  }
+  &:after {
+    height: $cat2-hov-height;
+    width: $cat2-hov-width;
+    @include sprite-position($cat2-hov);
+  }
+}
+.img-cat-forestry-machinery {
+  &:before {
+    @include sprite_data($cat3);
+  }
+  &:after {
+    @include sprite_data($cat3-hov);
+  }
+}
+.img-cat-Attachments {
+  &:before {
+    @include sprite_data($cat4);
+  }
+  &:after {
+    @include sprite_data($cat4-hov);
+  }
+}
+.img-cat-forklifts {
+  &:before {
+    @include sprite_data($cat5);
+  }
+  &:after {
+    @include sprite_data($cat5-hov);
+  }
+}
+.img-cat-agricultural-machinery {
+  &:before {
+    @include sprite_data($cat6);
+  }
+  &:after {
+    @include sprite_data($cat6-hov);
+  }
+}
+.img-cat-recycling-processing-plants {
+  &:before {
+    @include sprite_data($cat7);
+  }
+  &:after {
+    @include sprite_data($cat7-hov);
+  }
+}
+.img-cat-trailers-semitrailers {
+  &:before {
+    @include sprite_data($cat8);
+  }
+  &:after {
+    @include sprite_data($cat8-hov);
+  }
+}
+.img-cat-containers {
+  &:before {
+    @include sprite_data($cat9);
+  }
+  &:after {
+    @include sprite_data($cat9-hov);
+  }
+}
+.img-cat-spare-parts {
+  &:before {
+    @include sprite_data($cat10);
+  }
+  &:after {
+    @include sprite_data($cat10-hov);
+  }
+}
+.img-cat-engines {
+  &:before {
+    @include sprite_data($cat11);
+  }
+  &:after {
+    @include sprite_data($cat11-hov);
+  }
+}
+.img-cat-utility-vehicles {
+  &:before {
+    @include sprite_data($cat12);
+  }
+  &:after {
+    @include sprite_data($cat12-hov);
+  }
+}
+.img-cat-municipal-vehicles {
+  &:before {
+    @include sprite_data($cat13);
+  }
+  &:after {
+    @include sprite_data($cat13-hov);
+  }
+}
+.img-cat-work-platforms {
+  &:before {
+    @include sprite_data($cat14);
+  }
+  &:after {
+    @include sprite_data($cat14-hov);
+  }
+}
+.img-cat-construction-machinery {
+  &:before {
+    @include sprite_data($cat15);
+  }
+  &:after {
+    @include sprite_data($cat15-hov);
+  }
+}
+.img-cat-construction-equipment {
+  &:before {
+    @include sprite_data($cat16);
+  }
+  &:after {
+    @include sprite_data($cat16-hov);
+  }
+}
+.img-cat-others {
+  &:before {
+    @include sprite_data($cat-other);
+  }
+  &:after {
+    @include sprite_data($cat-other-hov);
+  }
+}
+
+

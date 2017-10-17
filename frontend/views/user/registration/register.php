@@ -2,51 +2,70 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\MaskedInput;
-use kartik\date\DatePicker;
+use yii\captcha\Captcha;
 
-
-$this->title = Yii::t('user', 'Sign up');
+$this->title = Yii::t('user', 'Registration');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<h2>Регистрация нового пользователя</h2>
+
+<?php
+$this->beginBlock('title_panel');
+echo 'Register <span class="white">New account</span>';
+$this->endBlock();
+?>
+
 <div class="user-page register-page">
-   
-                <?php $form = ActiveForm::begin([
-                    'id'                     => 'registration-form',
-                    'enableAjaxValidation'   => true,
-                    'enableClientValidation' => false,
-                ]); ?>
+    <div class="container">
 
-                <?= $form->field($model, 'name') ?>
-    
+        <?php $form = ActiveForm::begin([
+            'id' => 'registration-form',
+            'enableAjaxValidation' => false,
+            'enableClientValidation' => true,
+            'validateOnBlur' => false,
+            'validateOnType' => false,
+            'validateOnChange' => false,
+        ]); ?>
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'username'); ?>
                 <?= $form->field($model, 'email') ?>
-
+            </div>
+            <div class="col-md-6">
                 <?php if ($module->enableGeneratingPassword == false): ?>
                     <?= $form->field($model, 'password')->passwordInput() ?>
+                    <?= $form->field($model, 'password_repeat')->passwordInput() ?>
                 <?php endif ?>
-    
-                <hr>
-                <?= $form->field($model, 'birth')->widget(\yii\widgets\MaskedInput::className(), [
-                    'mask' => '99.99.9999',
-                ])->widget(DatePicker::classname(), [
-                    'type' => DatePicker::TYPE_INPUT,
-                    'pluginOptions' => [
-                        'autoclose'=>true
-                    ]
-                ]); ?>
-                
-                <?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::className(), [
-                    'mask' => '+38 (099)-999-99-99',
-                ])->hint('Формат: +38 (0XX) XXX-XX-XX'); ?> 
-                
-                <?= Html::submitButton(Yii::t('user', 'Sign up'), ['class' => 'btn btn-default btn-block']) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'captcha')->widget(Captcha::className(), [
+                    'captchaAction' => ['/site/captcha'],
+                    'options' => [
+                        'class' => 'form-control',
+                    ],
+                ])->label(
+                    Yii::t('user', 'What is the sum of:')
+                ); ?>
+            </div>
+            <div class="col-md-6">
+                <div class="links">
+                    <?php if ($module->enablePasswordRecovery): ?>
+                        <p class="">
+                            <?= Html::a(Yii::t('user', 'Forgot your password?'), ['/user/recovery/request']) ?>
+                        </p>
+                    <?php endif ?>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <?= Html::submitButton(Yii::t('user', 'Register'), ['class' => 'btn btn-warning btn-submit']) ?>
+            </div>
+        </div>
 
-                <?php ActiveForm::end(); ?>
-    <div class="links">
-        <p class="text-center auth-link">
-            <?= Html::a(Yii::t('user', 'Already registered? Sign in!'), ['/user/security/login']) ?>
-        </p>
+        <?php ActiveForm::end(); ?>
+
+
     </div>
-
 </div>

@@ -1,13 +1,14 @@
 <?php
+
 namespace common\models;
 
+use yii;
 use dektrium\user\models\LoginForm as LoginFormBase;
-
 
 class LoginForm extends LoginFormBase
 {
     public $captcha;
-    
+
     /**
      * @inheritdoc
      */
@@ -25,7 +26,7 @@ class LoginForm extends LoginFormBase
     public function attributeLabels()
     {
         $labels = parent::attributeLabels();
-        $labels['captcha'] = 'Код';
+        $labels['login'] =  Yii::t('user', 'Username');
         return $labels;
     }
 }

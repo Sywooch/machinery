@@ -1,18 +1,14 @@
 <?php
 namespace frontend\controllers;
 
-use Yii;
+use common\modules\taxonomy\helpers\TaxonomyHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
+use frontend\components\MathCaptchaAction;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\modules\product\models\ProductRepository;
-use frontend\modules\catalog\helpers\CatalogHelper;
 use common\helpers\ModelHelper;
-use backend\models\AdsSlider;
-use backend\models\AdsActions;
-use backend\models\Review;
-
+use common\models\Advert;
 /**
  * Site controller
  */
@@ -59,10 +55,15 @@ class SiteController extends Controller
                 'class' => 'common\actions\ErrorAction',
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-             
-                'maxLength' => 5,
-                'minLength' => 4,
+                'class' => MathCaptchaAction::class,
+               // 'fixedVerifyCode' => YII_ENV_DEV ? '42' : null,
+                'fontFile' => '@frontend/web/fonts/DroidSans.ttf',
+                'backColor' => 0xe7e7e7,
+                'foreColor' => 0x59656c,
+                'minLength' => 0,
+                'maxLength' => 100,
+                'width' => 150,
+                'height' => 40
             ],
         ];
     }
@@ -74,8 +75,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $categories = TaxonomyItems::find()
+            ->where(['vid' => 2])
+            ->andWhere(['pid'=>0])
+            ->with(['adverts'])
+            ->orderBy(['weight' => SORT_ASC])
+            ->all();
+        $last_adverts = Advert::find()->where(['status'=>1])->limit(10)->all();
+        return $this->render('index', [
+            'categories' => $categories,
+            'last_adverts' => $last_adverts,
+        ]);
     }
-
 }
 

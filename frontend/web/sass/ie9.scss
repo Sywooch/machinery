@@ -1,0 +1,29 @@
+html {
+  height: auto;
+}
+body {
+  height: auto;
+
+}
+.account-container {
+  //display: table;
+  //width: 100%;
+}
+.account-menu-tab {
+  //display: table-row;
+  //width: 100%;
+  &:after, &:before {
+    display: none !important;
+  }
+  .item-menu {
+    display: table-cell;
+    border-right: 3px solid #e4e4e4;
+    &._has-title {
+      //width: auto;
+    }
+    &._has-link {
+      margin-right: 0px;
+      padding-right: 3px;
+    }
+  }
+}

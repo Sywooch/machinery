@@ -43,6 +43,19 @@ class TaxonomyItemsRepository
             ->all();
     }
 
+    /**
+     * @param int $vocabularyId
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function getVocabularyTopTerms(int $vocabularyId)
+    {
+        return TaxonomyItems::find()
+            ->where(['vid' => $vocabularyId])
+            ->andWhere(['pid'=>0])
+            ->orderBy(['weight' => SORT_ASC])
+            ->all();
+    }
+
 
     /**
      * @param string $name
