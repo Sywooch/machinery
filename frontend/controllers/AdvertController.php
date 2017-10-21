@@ -71,6 +71,7 @@ class AdvertController extends Controller
         $translate = new AdvertVariant();
         $translates = $this->getTranslates($parent);
         if (!$translate->lang) $translate->lang = $lang;
+        $model->title = 'zzzzzzz';
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($this->_advertService->save($model)) {
                 if ($translate->load(Yii::$app->request->post()))
@@ -83,6 +84,7 @@ class AdvertController extends Controller
             }
 
         } else {
+            print_r($model->getErrors());
             return $this->render('create', [
                 'model' => $model,
                 'translate' => $translate,

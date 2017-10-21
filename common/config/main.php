@@ -27,6 +27,17 @@ return [
 
     ],
     'modules' => [
+        'search' => [
+            'class' => 'common\modules\search\Module',
+            'driver' => 'common\modules\search\drivers\PSG\PsgSearch',
+            'models' => [
+                \common\models\Advert::class => [
+                    'indexItems' => 500,
+                    'indexFields' => ['title', 'body'],
+                    'with' => ['files', 'terms', 'alias'],
+                ]
+            ]
+        ],
         'comments' => [
             'class' => 'common\modules\comments\Module',
             'maxThread' => 2
