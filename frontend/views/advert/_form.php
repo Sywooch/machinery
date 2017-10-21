@@ -82,23 +82,14 @@ $translatesKeys = ArrayHelper::map($translates, 'lang', 'id');
                         </div>
                         <div class="form-row">
                             <?php //= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
-                            <!--                            --><? //= $form->field($translate, 'body')->widget(Widget::className(), [
-                            //                                'settings' => [
-                            //                                    'lang' => substr(Yii::$app->language, 0, 2),
-                            //                                    'minHeight' => 200,
-                            //                                    'plugins' => [
-                            //                                        'clips',
-                            //                                        'fullscreen'
-                            //                                    ]
-                            //                                ]
-                            //                            ]) ?>
+
                             <?= $form->field($translate, 'body')
                                 ->widget(
                                     CKEditor::className(), [
                                     'options' => [
                                         'rows' => 6,
                                     ],
-                                    'enableKCFinder'=>false,
+                                //    'enableKCFinder'=>false,
                                     'preset' => 'custom', // 'full', standart, 'basic'
                                     'clientOptions' => [
                                         'toolbarGroups' =>

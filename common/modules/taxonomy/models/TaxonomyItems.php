@@ -104,6 +104,14 @@ class TaxonomyItems extends ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(self::class, ['id' => 'pid']);
+    }
+
+    /**
      * @param array $translations
      */
     public function setTranslations($translations)

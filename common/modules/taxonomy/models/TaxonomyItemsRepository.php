@@ -71,15 +71,29 @@ class TaxonomyItemsRepository
     }
 
     /**
-     * @param string $name
-     * @param int|null $vocabularyId
-     * @return null|\yii\db\ActiveRecord
-     */
+ * @param string $name
+ * @param int|null $vocabularyId
+ * @return null|\yii\db\ActiveRecord
+ */
     public function getByTransliteration(string $name, int $vocabularyId = null)
     {
         return TaxonomyItems::find()
             ->where(['transliteration' => $name])
             ->andFilterWhere(['vid' => $vocabularyId])
             ->one();
+    }
+
+
+    /**
+     * @param array $transliterations
+     * @param int|null $vocabularyId
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function getByTransliterations(array $transliterations, int $vocabularyId = null)
+    {
+        return TaxonomyItems::find()
+            ->where(['transliteration' => $transliterations])
+            ->andFilterWhere(['vid' => $vocabularyId])
+            ->all();
     }
 }

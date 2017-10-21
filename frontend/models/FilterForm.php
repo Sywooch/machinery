@@ -21,6 +21,8 @@ class FilterForm extends Model
     public $year;
     public $price;
 
+    public $search;
+
     /**
      * @inheritdoc
      */
@@ -29,7 +31,7 @@ class FilterForm extends Model
         return [
             [['area', 'category', 'manufacturer', 'country', 'year'], 'integer'],
             ['price', 'safe'],
-            [['model', 'id'], 'string']
+            [['model', 'id','search'], 'string']
         ];
     }
 
