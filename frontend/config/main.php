@@ -62,6 +62,8 @@ return [
         ],
         'urlManager' => [
             'rules' => [
+                'catalog/<slug:[\w_-]+>' => 'catalog/index',
+//                'catalog/<FilterForm:.*>' => 'catalog/index',
                 ['class' => 'frontend\components\AliasRule'],
                 'user/<userId:\d+>/wish' => 'store/wish',
                 'user/<userId:\d+>/wish/remove/<id:\d+>' => 'store/wish/remove',

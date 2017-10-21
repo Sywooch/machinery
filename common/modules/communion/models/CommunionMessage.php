@@ -1,28 +1,28 @@
 <?php
 
-namespace common\models;
+namespace common\modules\communion\models;
 
 use Yii;
 
 /**
- * This is the model class for table "communion".
+ * This is the model class for table "communion_message".
  *
  * @property integer $id
- * @property string $subject
+ * @property integer $communion_id
  * @property boolean $status
  * @property string $create_at
- * @property string $closed_at
+ * @property string $ready
  * @property integer $user_id
- * @property integer $user_to
+ * @property string $body
  */
-class Communion extends \yii\db\ActiveRecord
+class CommunionMessage extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'communion';
+        return 'communion_message';
     }
 
     /**
@@ -31,11 +31,10 @@ class Communion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['subject'], 'required'],
+            [['communion_id', 'user_id'], 'integer'],
             [['status'], 'boolean'],
-            [['create_at', 'closed_at'], 'safe'],
-            [['user_id', 'user_to'], 'integer'],
-            [['subject'], 'string', 'max' => 255],
+            [['create_at', 'ready'], 'safe'],
+            [['body'], 'string'],
         ];
     }
 
@@ -46,21 +45,21 @@ class Communion extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'subject' => Yii::t('app', 'Subject'),
+            'communion_id' => Yii::t('app', 'Communion ID'),
             'status' => Yii::t('app', 'Status'),
             'create_at' => Yii::t('app', 'Create At'),
-            'closed_at' => Yii::t('app', 'Closed At'),
+            'ready' => Yii::t('app', 'Ready'),
             'user_id' => Yii::t('app', 'User ID'),
-            'user_to' => Yii::t('app', 'User To'),
+            'body' => Yii::t('app', 'Body'),
         ];
     }
 
     /**
      * @inheritdoc
-     * @return CommunionQuery the active query used by this AR class.
+     * @return CommunionMessageQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new CommunionQuery(get_called_class());
+        return new CommunionMessageQuery(get_called_class());
     }
 }

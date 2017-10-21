@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 $form = ActiveForm::begin([
     'id' => 'filter-from',
     'method' => 'get',
-    'action' => '/catalog',
+    'action' => '/catalog/index',
     'options' => ['class' => 'filter-form-inner'],
 ]);
 ?>

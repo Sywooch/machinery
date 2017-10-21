@@ -24,7 +24,7 @@ $this->endBlock();
 
         </div>
         <div class="col-md-9">
-            <div class="advert-container">
+            <div class="obj-container">
                 <?php if(Yii::$app->user->id == $model->user_id || Yii::$app->user->can('administrator')): ?>
                 <div class="buttons-line">
                     <p class="advert-status status-not-publish text-danger">This listing is awaiting payment and is NOT live.</p>
@@ -45,7 +45,13 @@ $this->endBlock();
                         <a href="<?= $model->website ?>" target="_blank" class="btn btn-primary"><i class="ic-earth"></i><?= Yii::t('app', 'Visit website') ?></a>
                         <?php endif; ?>
                         <a href="#" class="btn btn-primary add-favorite"><i class="fa fa-heart" aria-hidden="true"></i> <?= Yii::t('app', 'Add favorites') ?></a>
-                        <a href="#" class="btn btn-primary"><i class="fa fa-envelope" aria-hidden="true"></i> <?= Yii::t('app', 'Contact Author') ?></a>
+                        <?php if($model->user_id != Yii::$app->user->id): ?>
+                        <a href="#" class="btn btn-primary" data-toggle="modal"
+                           data-target="#communityModal">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <?= Yii::t('app', 'Contact Author') ?>
+                        </a>
+                        <?php endif; ?>
                     </div>
                     <div class="advert-images-row">
                         <div class="big-images">

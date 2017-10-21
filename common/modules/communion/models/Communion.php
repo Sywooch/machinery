@@ -1,28 +1,28 @@
 <?php
 
-namespace common\models;
+namespace common\modules\communion\models;
 
 use Yii;
 
 /**
- * This is the model class for table "notice".
+ * This is the model class for table "communion".
  *
  * @property integer $id
  * @property string $subject
- * @property string $body
  * @property boolean $status
  * @property string $create_at
- * @property string $ready
+ * @property string $closed_at
  * @property integer $user_id
+ * @property integer $user_to
  */
-class Notice extends \yii\db\ActiveRecord
+class Communion extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'notice';
+        return 'communion';
     }
 
     /**
@@ -32,10 +32,9 @@ class Notice extends \yii\db\ActiveRecord
     {
         return [
             [['subject'], 'required'],
-            [['body'], 'string'],
             [['status'], 'boolean'],
-            [['create_at', 'ready'], 'safe'],
-            [['user_id'], 'integer'],
+            [['create_at', 'closed_at'], 'safe'],
+            [['user_id', 'user_to'], 'integer'],
             [['subject'], 'string', 'max' => 255],
         ];
     }
@@ -48,20 +47,20 @@ class Notice extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'subject' => Yii::t('app', 'Subject'),
-            'body' => Yii::t('app', 'Body'),
             'status' => Yii::t('app', 'Status'),
             'create_at' => Yii::t('app', 'Create At'),
-            'ready' => Yii::t('app', 'Ready'),
+            'closed_at' => Yii::t('app', 'Closed At'),
             'user_id' => Yii::t('app', 'User ID'),
+            'user_to' => Yii::t('app', 'User To'),
         ];
     }
 
     /**
      * @inheritdoc
-     * @return NoticeQuery the active query used by this AR class.
+     * @return CommunionQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new NoticeQuery(get_called_class());
+        return new CommunionQuery(get_called_class());
     }
 }

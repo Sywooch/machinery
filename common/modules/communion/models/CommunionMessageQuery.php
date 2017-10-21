@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace common\modules\communion\models;
 
 /**
  * This is the ActiveQuery class for [[CommunionMessage]].

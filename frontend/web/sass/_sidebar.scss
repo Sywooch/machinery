@@ -1,7 +1,7 @@
 
 .sidebar {
   position: relative;
-  z-index: 99;
+  z-index: 101;
 
   .h2 {
     font-size: 14px;
@@ -53,17 +53,20 @@
           span {
             vertical-align: middle;
           }
-          .ic-cat-machinery:before {
+          .ic-cat-machinery:before,
+          .ic-cat-construction-machinery:before {
             @include sprite-height($ic-cat-machinery);
             @include sprite-width($ic-cat-machinery);
             @include sprite-position($ic-cat-machinery);
           }
-          .ic-cat-equipment:before {
+          .ic-cat-equipment:before,
+          .ic-cat-construction-equipment:before {
             @include sprite-height($ic-cat-equipment);
             @include sprite-width($ic-cat-equipment);
             @include sprite-position($ic-cat-equipment);
           }
-          .ic-cat-industrial:before {
+          .ic-cat-industrial:before,
+          .ic-cat-industrial-machinery:before {
             @include sprite-height($ic-cat-industrial);
             @include sprite-width($ic-cat-industrial);
             @include sprite-position($ic-cat-industrial);
@@ -73,12 +76,14 @@
             @include sprite-width($ic-cat-cranes);
             @include sprite-position($ic-cat-cranes);
           }
-          .ic-cat-forestry:before {
+          .ic-cat-forestry:before,
+          .ic-cat-forestry-machinery:before {
             @include sprite-height($ic-cat-forestry);
             @include sprite-width($ic-cat-forestry);
             @include sprite-position($ic-cat-forestry);
           }
-          .ic-cat-attachments:before {
+          .ic-cat-attachments:before,
+          .ic-cat-Attachments:before {
             @include sprite-height($ic-cat-attachments);
             @include sprite-width($ic-cat-attachments);
             @include sprite-position($ic-cat-attachments);
@@ -88,17 +93,20 @@
             @include sprite-width($ic-cat-forklifts);
             @include sprite-position($ic-cat-forklifts);
           }
-          .ic-cat-agricultural:before {
+          .ic-cat-agricultural:before,
+          .ic-cat-agricultural-machinery:before {
             @include sprite-height($ic-cat-agricultural);
             @include sprite-width($ic-cat-agricultural);
             @include sprite-position($ic-cat-agricultural);
           }
-          .ic-cat-recyclings:before {
+          .ic-cat-recyclings:before,
+          .ic-cat-recycling-processing-plants:before {
             @include sprite-height($ic-cat-recyclings);
             @include sprite-width($ic-cat-recyclings);
             @include sprite-position($ic-cat-recyclings);
           }
-          .ic-cat-trailers:before {
+          .ic-cat-trailers:before,
+          .ic-cat-trailers-semitrailers:before {
             @include sprite-height($ic-cat-trailers);
             @include sprite-width($ic-cat-trailers);
             @include sprite-position($ic-cat-trailers);
@@ -108,7 +116,8 @@
             @include sprite-width($ic-cat-containers);
             @include sprite-position($ic-cat-containers);
           }
-          .ic-cat-spare:before {
+          .ic-cat-spare:before,
+          .ic-cat-spare-parts:before {
             @include sprite-height($ic-cat-spare);
             @include sprite-width($ic-cat-spare);
             @include sprite-position($ic-cat-spare);
@@ -118,17 +127,20 @@
             @include sprite-width($ic-cat-engines);
             @include sprite-position($ic-cat-engines);
           }
-          .ic-cat-utility:before {
+          .ic-cat-utility:before,
+          .ic-cat-utility-vehicles:before {
             @include sprite-height($ic-cat-utility);
             @include sprite-width($ic-cat-utility);
             @include sprite-position($ic-cat-utility);
           }
-          .ic-cat-municipal:before {
+          .ic-cat-municipal:before,
+          .ic-cat-municipal-vehicles:before {
             @include sprite-height($ic-cat-municipal);
             @include sprite-width($ic-cat-municipal);
             @include sprite-position($ic-cat-municipal);
           }
-          .ic-cat-work:before {
+          .ic-cat-work:before,
+          .ic-cat-work-platforms:before {
             @include sprite-height($ic-cat-work);
             @include sprite-width($ic-cat-work);
             @include sprite-position($ic-cat-work);

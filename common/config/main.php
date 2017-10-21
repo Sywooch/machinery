@@ -31,6 +31,12 @@ return [
             'class' => 'common\modules\comments\Module',
             'maxThread' => 2
         ],
+        'communion' => [
+            'class' => 'common\modules\communion\Module',
+        ],
+        'notice' => [
+            'class' => 'common\modules\notice\Module',
+        ],
         'user' => [
             'class' => 'dektrium\user\Module',
             'enableUnconfirmedLogin' => true,

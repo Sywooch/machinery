@@ -1,13 +1,13 @@
 <?php
 
-namespace common\models;
+namespace common\modules\notice\models;
 
 /**
- * This is the ActiveQuery class for [[Communion]].
+ * This is the ActiveQuery class for [[Notice]].
  *
- * @see Communion
+ * @see Notice
  */
-class CommunionQuery extends \yii\db\ActiveQuery
+class NoticeQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class CommunionQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Communion[]|array
+     * @return Notice[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class CommunionQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Communion|array|null
+     * @return Notice|array|null
      */
     public function one($db = null)
     {

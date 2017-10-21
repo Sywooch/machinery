@@ -48,7 +48,9 @@ return [
         'view' => [
             'theme' => [
                 'pathMap' => [
-                    '@dektrium/user/views' => '@backend/views/user'
+                    '@dektrium/user/views' => '@backend/views/user',
+                    '@common/modules/taxonomy/views' => '@backend/views/taxonomy',
+                    '@common/modules/language/views' => '@backend/views/language',
                 ],
             ],
         ],

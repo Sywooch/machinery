@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    $('body').on('click', '.has-stop-prepagation', function(e){
+        e.stopPropagation();
+    })
     try {
         $('input:radio, input:checkbox').styler();
     } catch (e) {

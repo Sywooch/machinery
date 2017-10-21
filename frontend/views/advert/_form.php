@@ -21,7 +21,6 @@ $translatesKeys = ArrayHelper::map($translates, 'lang', 'id');
 
 ?>
 <?php //dd($model) ?>
-<?= Yii::$app->language ?><br>
 <? //= Yii::t('app', 'Cancel2') ?>
 <?= $form->field($model, 'order_options')->textInput(['maxlength' => true]) ?>
     <div class="form-inner">

@@ -11,12 +11,14 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\helpers\ModelHelper;
+use common\models\Advert;
 
 
 class CatalogController extends Controller
 {
-    public function actionIndex(){
-        return $this->render('index');
+    public function actionIndex($slug=''){
+        $model = Advert::find()->all();
+        return $this->render('index', ['model'=>$model]);
     }
     public function actionSearch(){
         return $this->render('index');

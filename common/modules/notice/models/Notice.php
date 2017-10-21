@@ -1,28 +1,28 @@
 <?php
 
-namespace common\models;
+namespace common\modules\notice\models;
 
 use Yii;
 
 /**
- * This is the model class for table "communion_message".
+ * This is the model class for table "notice".
  *
  * @property integer $id
- * @property integer $communion_id
+ * @property string $subject
+ * @property string $body
  * @property boolean $status
  * @property string $create_at
  * @property string $ready
  * @property integer $user_id
- * @property string $body
  */
-class CommunionMessage extends \yii\db\ActiveRecord
+class Notice extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'communion_message';
+        return 'notice';
     }
 
     /**
@@ -31,10 +31,12 @@ class CommunionMessage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['communion_id', 'user_id'], 'integer'],
+            [['subject'], 'required'],
+            [['body'], 'string'],
             [['status'], 'boolean'],
             [['create_at', 'ready'], 'safe'],
-            [['body'], 'string'],
+            [['user_id'], 'integer'],
+            [['subject'], 'string', 'max' => 255],
         ];
     }
 
@@ -45,21 +47,21 @@ class CommunionMessage extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'communion_id' => Yii::t('app', 'Communion ID'),
+            'subject' => Yii::t('app', 'Subject'),
+            'body' => Yii::t('app', 'Body'),
             'status' => Yii::t('app', 'Status'),
             'create_at' => Yii::t('app', 'Create At'),
             'ready' => Yii::t('app', 'Ready'),
             'user_id' => Yii::t('app', 'User ID'),
-            'body' => Yii::t('app', 'Body'),
         ];
     }
 
     /**
      * @inheritdoc
-     * @return CommunionMessageQuery the active query used by this AR class.
+     * @return NoticeQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new CommunionMessageQuery(get_called_class());
+        return new NoticeQuery(get_called_class());
     }
 }
