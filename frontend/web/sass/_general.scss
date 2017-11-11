@@ -98,3 +98,72 @@ area {
         }
     }
 }
+.pager-nav {
+    ul.ul-pager {
+        float: right;
+        li {
+            margin: 0 3px;
+            display: inline-block;
+            float: left;
+            a, span {
+                font-size: 16px;
+                font-weight: bold;
+                color: #fff;
+                background: #2c363c;
+                border: none;
+                border-radius: 0;
+                float: none;
+                display: block;
+                margin: 0;
+                height: 40px;
+                width: 40px;
+                padding: 0;
+                text-align: center;
+                line-height: 40px;
+                &:hover {
+                    background: $yellow;
+                    color: #fff;
+                }
+            }
+            &.active {
+                a, span {
+                    color: $yellow;
+                    &:hover {
+                        color: #fff;
+                    }
+                }
+            }
+            &.prev {
+                a, span {
+                    overflow: hidden;
+                    text-indent: -900px;
+                    position: relative;
+                    &:before {
+                        content: '';
+                        @include sprite($arr-left);
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+
+                }
+            }
+            &.next {
+                a, span {
+                    overflow: hidden;
+                    text-indent: -900px;
+                    position: relative;
+                    &:before {
+                        content: '';
+                        @include sprite($arr-right);
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+            }
+        }
+    }
+}

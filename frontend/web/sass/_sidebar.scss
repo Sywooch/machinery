@@ -269,7 +269,9 @@
         height: 70px;
         margin-bottom: 10px;
         background: #5b5b5b;
-
+        .jq-radio {
+          display: none !important;
+        }
         ._price {
           width: 73px;
           text-align: center;
@@ -403,6 +405,9 @@
         text-align: center;
         line-height: 21px;
         cursor: pointer;
+        .fa-info {
+          margin-top: 2px;
+        }
       }
     }
   }

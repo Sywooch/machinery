@@ -59,9 +59,7 @@ class AdvertRepository
      */
     public function searchByFilter(ActiveQuery $query, Sort $sort){
 
-
         $query->orderBy($sort ? $sort->orders : null);
-
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -71,6 +69,20 @@ class AdvertRepository
         ]);
 
         return $dataProvider;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMinPrice(){
+        return Advert::find()->where(['status'=>1])->min('price');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMaxPrice(){
+        return Advert::find()->where(['status'=>1])->max('price');
     }
 
 }

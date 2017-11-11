@@ -67,6 +67,7 @@ return [
                 ['class' => 'frontend\components\AliasRule'],
                 ['class' => 'frontend\components\CatalogRule'],
                 'object/<id:\d+>' => 'advert/view',
+                'ajax/<action>/<id:\d+>' => 'ajax/<action>',
 //                '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
 //                'advert/options/<opt: \w+>' => 'advert/options',
             ],

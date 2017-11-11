@@ -48,7 +48,7 @@ $this->endBlock();
                 //                echo $cookies->getValue('view', 'mmm');
                 ?>
                 <div class="subcats-block">
-                    <ul class="subcat-list flexbox flex-wrap just-between">
+                    <ul class="subcat-list flexbox flex-wrap ">
 
                         <?php foreach ($categories as $category): ?>
                             <?php if ($category->pid && $category->vid == 2): ?>
@@ -69,10 +69,11 @@ $this->endBlock();
 
 
                     </div> <!-- .list-favorite-adv -->
-                    <nav>
+                    <nav class="pager-nav cf">
 
                         <?= LinkPager::widget([
                             'pagination' => $dataProvider->pagination,
+                            'options' => ['class' => 'pagination ul-pager'],
                         ]); ?>
 
                     </nav>

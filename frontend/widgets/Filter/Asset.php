@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\realty\widgets\Filter;
+namespace frontend\widgets\Filter;
 
 use yii\web\AssetBundle;
 use yii\web\JqueryAsset;
@@ -12,7 +12,7 @@ class Asset extends AssetBundle
      */
     // public $sourcePath = '@common/modules/realty/widgets/Filter/assets';
    // public $basePath = '@webroot';
-    public $baseUrl = '/common/widgets/Filter/assets';
+    public $baseUrl = '/frontend/widgets/Filter/assets';
 
     public $css = [
     ];

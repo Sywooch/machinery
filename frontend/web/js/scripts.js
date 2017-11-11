@@ -8,7 +8,9 @@ $(document).ready(function () {
     }
     try {
         setTimeout(function () {
-            $('select').styler();
+            $('select').styler({
+                selectVisibleOptions: 8
+            });
         }, 1);
     } catch (e) {
     }
@@ -17,7 +19,8 @@ $(document).ready(function () {
             fade: true,
             autoplay: true,
             dots: true,
-            arrows: false
+            arrows: false,
+            appendDots: '.dots-filter-slider'
         });
     } catch (e) {
     }
@@ -153,6 +156,31 @@ $(document).ready(function () {
         $('#cost-options-advert').text(cost);
         return costOrder;
     }());
+    /**
+     * Каскадные селекты в фильтре
+     */
+    $('body').on('change','select.select-cascade', function(e){
+        e.preventDefault();
+        var url = $(this).data('url');
+        var target = $(''+$(this).data('target'));
+        var data = {
+            id: this.value
+            // _csrf: yii.getCsrfToken()
+        };
+        $.get(url, data, function(d){
+            $(target).html('').trigger('refresh');
+            // if(d.length){
+                for(item in d){
+                    console.log(d[item]);
+                    $(target).append(d[item]);
+                }
+            // }
+            $(target).trigger('refresh');
+        }, 'json');
+
+    });
+
+
 
 }); // end ready
 

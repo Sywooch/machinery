@@ -1,4 +1,5 @@
-var FilterForm = {
+
+/*var FilterForm = {
 
     init: function () {
         this.initOrders();
@@ -65,8 +66,20 @@ var FilterForm = {
         });
     }
 }
+*/
 
 $(document).ready(function () {
-    FilterForm.init();
+    // FilterForm.init();
+    console.log('filter');
+    $('body').on('change','#obj-category', function(e){
+        e.preventDefault();
+        var url = '/ajax/categories';
+        var data = {id: this.value};
+        $.get(url, data, function(d){
+            console.log(d);
+            return false;
+        }, 'json');
+        return false;
+    });
 });
 

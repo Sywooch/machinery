@@ -591,7 +591,14 @@
 		}
 	}
 }
-
+.field-advert-condition {
+	#advert-condition {
+		label {
+			display: inline-block;
+			margin-right: 15px;
+		}
+	}
+}
 .image-upload-block {
 	figure {
 		float: left;

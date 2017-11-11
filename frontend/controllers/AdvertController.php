@@ -70,21 +70,39 @@ class AdvertController extends Controller
         $model = Advert::findOne($parent) ?? new Advert();
         $translate = new AdvertVariant();
         $translates = $this->getTranslates($parent);
+
         if (!$translate->lang) $translate->lang = $lang;
         $model->title = 'zzzzzzz';
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($this->_advertService->save($model)) {
-                if ($translate->load(Yii::$app->request->post()))
-                {
-                    $translate->advert_id = $model->id;
-                    $translate->save();
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
-                    return $this->redirect(['view', 'id' => $model->id]);
+                if($post_trs = Yii::$app->request->post('translate')){
+                    foreach ($post_trs as $l => $data){
+                        if($data['title'] || $data['body']){
+                            $trs_ins = isset($translates[$l]) ? AdvertVariant::findOne($translates[$l]['id']) : new AdvertVariant();
+
+                            $trs_ins->title = $data['title'];
+                            $trs_ins->body = $data['body'];
+                            $trs_ins->lang = $l;
+                            $trs_ins->advert_id = $model->id;
+                            $trs_ins->meta_description = $data['meta_description'];
+                            if(!$trs_ins->save()){
+                                echo $trs_ins->getErrors();
+                            }
+
+                        }
+                    }
                 }
+                Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
+                return $this->redirect(['view', 'id' => $model->id]);
+//                if ($translate->load(Yii::$app->request->post()))
+//                {
+//                    $translate->advert_id = $model->id;
+//                    $translate->save();
+//                }
             }
 
         } else {
-            print_r($model->getErrors());
+//            print_r($model->getErrors());
             return $this->render('create', [
                 'model' => $model,
                 'translate' => $translate,
@@ -92,6 +110,7 @@ class AdvertController extends Controller
                 'languages' => $this->languageRepository->loadAllActive(),
                 'categories' => $this->itemsRepository->getVocabularyTerms($model::VCL_CATEGORIES),
                 'manufacturer' => $this->itemsRepository->getVocabularyTerms($model::VCL_MANUFACTURES),
+                'colors' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_COLOR),
             ]);
         }
 //        return $this->render('create', ['languages' => $this->languageRepository->loadAllActive()]);
@@ -110,16 +129,30 @@ class AdvertController extends Controller
         if (!$model = Advert::find()->where(['id' => $id])->with(['options', 'variant'])->one())
             throw new NotFoundHttpException('The requested page does not exist.');
         $translates = $this->getTranslates($id);
-//        dd($translates, 1);
+
+
         $translate = $translates[$lang] ?? new AdvertVariant();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($translate->load(Yii::$app->request->post()))
-            {
-                $translate->advert_id = $model->id;
-                $translate->save();
-                Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
-                return $this->redirect(['view', 'id' => $model->id]);
+            // Сохранение переводов
+            if($post_trs = Yii::$app->request->post('translate')){
+                foreach ($post_trs as $l => $data){
+                    if($data['title'] || $data['body']){
+                        $trs_ins = isset($translates[$l]) ? AdvertVariant::findOne($translates[$l]['id']) : new AdvertVariant();
+
+                        $trs_ins->title = $data['title'];
+                        $trs_ins->body = $data['body'];
+                        $trs_ins->lang = $l;
+                        $trs_ins->advert_id = $id;
+                        $trs_ins->meta_description = $data['meta_description'];
+                        if(!$trs_ins->save()){
+                            echo $trs_ins->getErrors();
+                        }
+                    }
+                }
             }
+            Yii::$app->session->setFlash('success', Yii::t('app', 'The object was successfully saved.'));
+            return $this->redirect(['view', 'id' => $model->id]);
+
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -128,6 +161,7 @@ class AdvertController extends Controller
                 'languages' => $this->languageRepository->loadAllActive(),
                 'categories' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_CATEGORIES),
                 'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
+                'colors' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_COLOR),
             ]);
         }
     }

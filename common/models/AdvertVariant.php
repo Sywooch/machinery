@@ -41,7 +41,7 @@ class AdvertVariant extends \yii\db\ActiveRecord
             [['condition', 'operating_hours', 'mileage', 'advert_id'], 'integer'],
             [['status', 'maderated'], 'boolean'],
             [['title', 'meta_description'], 'string', 'max' => 255],
-            [['lang'], 'string', 'max' => 5],
+            [['lang'], 'string', 'max' => 6],
         ];
     }
 
