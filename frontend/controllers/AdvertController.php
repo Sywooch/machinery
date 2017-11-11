@@ -3,6 +3,7 @@
 
 namespace frontend\controllers;
 
+use boundstate\plupload\PluploadAction;
 use common\models\AdvertVariant;
 use common\models\OrderPackage;
 use common\models\OrderPackageRepository;
@@ -42,6 +43,17 @@ class AdvertController extends Controller
         $this->_profileFinder = $finder;
         $this->_advertService = $advertService;
         parent::__construct($id, $module, $config);
+    }
+
+    public function actions() {
+        return [
+            'upload' => [
+                'class' => PluploadAction::className(),
+                'onComplete' => function ($filename, $params) {
+                    // Do something with file
+                }
+            ],
+        ];
     }
 
     /**

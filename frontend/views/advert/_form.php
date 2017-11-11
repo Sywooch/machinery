@@ -13,12 +13,13 @@ use dosamigos\ckeditor\CKEditor;
 
 \yii\jui\JuiAsset::register($this);
 \dosamigos\ckeditor\CKEditorWidgetAsset::register($this);
+//\boundstate\plupload\PluploadAsset::register($this);
 
 $translatesArray = ArrayHelper::map($translates, 'id', 'lang');
 $translatesKeys = ArrayHelper::map($translates, 'lang', 'id');
 ?>
 <?php $form = ActiveForm::begin([
-    'options' => ['enctype' => 'multipart/form-data'],
+    'options' => ['enctype' => 'multipart/form-data', 'id' => 'obj-form'],
 ]);
 //dd($translatesArray);
 //dd($translatesKeys);
@@ -284,17 +285,25 @@ $years['-1970'] = Yii::t('app', 'Before 1970');
                      aria-labelledby="headingThree">
                     <div class="panel-body">
                         <div class="image-upload-block cf">
-                            <?php for ($i = 0; $i < 5; $i++): ?>
-                                <figure class="img-offer" style="background-image: url(/images/img-2.png)">
-                                    <!-- <img src="/images/img-2.png" alt="">-->
-                                    <a href="#" class="btn-remove-img">
-                                        <i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
-                                </figure>
-                            <?php endfor; ?>
+                            <div class="sortable-photos">
+                                <?php for ($i = 0; $i < 5; $i++): ?>
+                                    <div class="item-photo pull-left">
+                                        <figure class="img-offer" style="background-image: url(/images/img-2.png)">
+                                            <!-- <img src="/images/img-2.png" alt="">-->
+                                            <a href="#" class="btn-remove-img">
+                                                <i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+                                        </figure>
+                                    </div>
+                                <?php endfor; ?>
+                            </div>
+
                             <div class="image-upload-btn flexbox">
                                 <i class="ic-add-image"></i>
                                 <span><?= Yii::t('app', 'Add images') ?></span>
                             </div>
+                        </div>
+                        <div id="uploader">
+                            <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
                         </div>
                         <p class="text-uppercase"><?= Yii::t('app', 'You can select up to 30 media files.') ?></p>
 
@@ -302,7 +311,7 @@ $years['-1970'] = Yii::t('app', 'Before 1970');
                 </div>
             </div>
         </div>
-        <?php // $form->field($translate, 'advert_id')->hiddenInput(['value'=>$model->id])->label(false); ?>
+
         <div class="form-actions text-right">
             <button type="submit" class="btn btn-warning"><?= Yii::t('app', 'Save listing') ?></button>
             <button type="reset" class="btn btn-default"><?= Yii::t('app', 'Cancel') ?></button>
@@ -310,9 +319,22 @@ $years['-1970'] = Yii::t('app', 'Before 1970');
     </div>
 <?php ActiveForm::end(); ?>
 <?php //dd($model); ?>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+<?php $this->registerCssFile('/files/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css', ['position' => \yii\web\View::POS_HEAD, 'depends' => ['yii\web\YiiAsset']]); ?>
+<!--<link rel="stylesheet" href="/files/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css" type="text/css" />-->
 
+<?= $this->registerJsFile('/files/plupload/js/plupload.full.min.js', ['position' => \yii\web\View::POS_END, 'depends' => ['frontend\assets\AppAsset']]) ?>
+<?= $this->registerJsFile('/files/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js', ['position' => \yii\web\View::POS_END, 'depends' => ['frontend\assets\AppAsset']]) ?>
+<?= $this->registerJsFile('/files/plupload/js/i18n/ru.js', ['position' => \yii\web\View::POS_END, 'depends' => ['frontend\assets\AppAsset']]) ?>
+<!-- production -->
+<!--<script type="text/javascript" src="/files/plupload/js/plupload.full.min.js"></script>-->
+<!--<script type="text/javascript" src="/files/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js"></script>-->
+<!--<script type="text/javascript" src="/files/plupload/js/i18n/ru.js"></script>-->
 <script>
     window.onload = function() {
+
+        $('.sortable-photos').sortable();
         var tabs = $("#tabs").tabs();
         tabs.find(".ui-tabs-nav").sortable({
             axis: "x",
@@ -331,6 +353,82 @@ $years['-1970'] = Yii::t('app', 'Before 1970');
                     {"name": "colors"}],
                 "uiColor": "#FAFAFA"
             });
+        });
+
+        $("#uploader").plupload({
+            // General settings
+            runtimes : 'html5,flash,silverlight,html4',
+            url : '/files/upload.php',
+
+            // User can upload no more then 20 files in one go (sets multiple_queues to false)
+            max_file_count: 20,
+
+            chunk_size: '1mb',
+
+            // Resize images on clientside if we can
+//             resize : {
+//             	width : 1000,
+//             	height : 1000,
+//             	quality : 90,
+//             	crop: false // crop to exact dimensions
+//             },
+
+            filters : {
+                // Maximum file size
+                max_file_size : '1mb',
+                // Specify what files to browse for
+                mime_types: [
+                    {title : "Image files", extensions : "jpg,gif,png"},
+                    {title : "Zip files", extensions : "zip"}
+                ]
+            },
+
+            // Rename files by clicking on their titles
+            rename: true,
+
+            unique_names: true,
+            // Sort files
+            sortable: true,
+
+            // Enable ability to drag'n'drop files onto the widget (currently only HTML5 supports that)
+            dragdrop: true,
+
+
+            // autostart: true,
+
+            // Views to activate
+            views: {
+                list: true,
+                thumbs: true, // Show thumbs
+                active: 'thumbs'
+            },
+            file_data_name: "files",
+            // Flash settings
+            flash_swf_url : '/files/plupload//js/Moxie.swf',
+
+            // Silverlight settings
+            silverlight_xap_url : '/files/plupload//js/Moxie.xap'
+        });
+
+
+        // Handle the case when form was submitted before uploading has finished
+        $('#obj-form').submit(function(e) {
+            // Files in queue upload them first
+            if ($('#uploader').plupload('getFiles').length > 0) {
+                // console.log($('#uploader').plupload('getFiles'));
+                // return false;
+                // When all files are uploaded submit form
+                $('#uploader').on('complete', function(uploader, files) {
+                    console.log(files);
+                    // return false;
+                    $('#obj-form')[0].submit();
+                });
+
+                $('#uploader').plupload('start');
+            } else {
+                alert("You must have at least one file in the queue.");
+            }
+            return false; // Keep the form from submitting
         });
     }
 </script>

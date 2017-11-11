@@ -35,7 +35,8 @@
         "yii2mod/yii2-bx-slider": "*",
         "yiisoft/yii2-redis": "^2.0",
         "2amigos/yii2-ckeditor-widget": "~1.0@dev",
-        "paypal/merchant-sdk-php":"3.8.*"
+        "paypal/merchant-sdk-php":"3.8.*",
+        "boundstate/yii2-plupload": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

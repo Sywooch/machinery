@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbb8e3f0c056612e2181ac2a689a8a74",
+    "content-hash": "251ee2f006b287e80e405e43f506f3a1",
     "packages": [
         {
             "name": "2amigos/yii2-ckeditor-widget",
@@ -64,6 +64,46 @@
                 "yii2"
             ],
             "time": "2015-04-30T12:22:25+00:00"
+        },
+        {
+            "name": "boundstate/yii2-plupload",
+            "version": "v0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/boundstate/yii2-plupload.git",
+                "reference": "95540ae32d592fdc2bcb91b6cf35c3bda5d82b55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/boundstate/yii2-plupload/zipball/95540ae32d592fdc2bcb91b6cf35c3bda5d82b55",
+                "reference": "95540ae32d592fdc2bcb91b6cf35c3bda5d82b55",
+                "shasum": ""
+            },
+            "require": {
+                "moxiecode/plupload": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "boundstate\\plupload\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bound State Software",
+                    "email": "info@boundstatesoftware.com"
+                }
+            ],
+            "description": "The plupload extension for the Yii framework",
+            "keywords": [
+                "plupload",
+                "yii2"
+            ],
+            "time": "2015-08-11T21:32:36+00:00"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -216,16 +256,16 @@
         },
         {
             "name": "bower-asset/jquery.inputmask",
-            "version": "3.3.9",
+            "version": "3.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobinHerbots/Inputmask.git",
-                "reference": "1fadb54be8a94e879fd1e9693b5222fb36aea04f"
+                "reference": "14873e5775964275d13621cbe2b52e4448af3707"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/1fadb54be8a94e879fd1e9693b5222fb36aea04f",
-                "reference": "1fadb54be8a94e879fd1e9693b5222fb36aea04f",
+                "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/14873e5775964275d13621cbe2b52e4448af3707",
+                "reference": "14873e5775964275d13621cbe2b52e4448af3707",
                 "shasum": ""
             },
             "require": {
@@ -272,7 +312,7 @@
                 "mask",
                 "plugins"
             ],
-            "time": "2017-10-10T12:47:01+00:00"
+            "time": "2017-10-16T09:33:03+00:00"
         },
         {
             "name": "bower-asset/punycode",
@@ -909,16 +949,16 @@
         },
         {
             "name": "kartik-v/bootstrap-star-rating",
-            "version": "v4.0.2",
+            "version": "4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-star-rating.git",
-                "reference": "599c10e2456bc2215da7c6337d6b1c65892bff72"
+                "reference": "19120d91a4495abd181c7d4cbb69da73537093af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-star-rating/zipball/599c10e2456bc2215da7c6337d6b1c65892bff72",
-                "reference": "599c10e2456bc2215da7c6337d6b1c65892bff72",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-star-rating/zipball/19120d91a4495abd181c7d4cbb69da73537093af",
+                "reference": "19120d91a4495abd181c7d4cbb69da73537093af",
                 "shasum": ""
             },
             "type": "library",
@@ -949,7 +989,7 @@
                 "star",
                 "svg"
             ],
-            "time": "2017-08-27T08:23:59+00:00"
+            "time": "2017-11-03T07:22:19+00:00"
         },
         {
             "name": "kartik-v/yii2-editable",
@@ -1363,6 +1403,42 @@
             "time": "2017-08-07T18:12:36+00:00"
         },
         {
+            "name": "moxiecode/plupload",
+            "version": "v3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moxiecode/plupload.git",
+                "reference": "e0c37961c5e4018a6c7fcb7c39fb0367cd0ac7e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moxiecode/plupload/zipball/e0c37961c5e4018a6c7fcb7c39fb0367cd0ac7e5",
+                "reference": "e0c37961c5e4018a6c7fcb7c39fb0367cd0ac7e5",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "(GPL-2.0 or OEM)"
+            ],
+            "authors": [
+                {
+                    "name": "Davit Barbakadze",
+                    "email": "david@moxiecode.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Plupload is a JavaScript API for dealing with file uploads it supports features like multiple file selection, file type filtering, request chunking, client side image scaling and it uses different runtimes to achieve this such as HTML 5, Silverlight and Flash.",
+            "homepage": "http://plupload.com",
+            "keywords": [
+                "file upload",
+                "legacy browser support",
+                "multi-runtime",
+                "plupload"
+            ],
+            "time": "2017-10-03T06:25:37+00:00"
+        },
+        {
             "name": "paypal/merchant-sdk-php",
             "version": "v3.8.107",
             "source": {
@@ -1563,16 +1639,16 @@
         },
         {
             "name": "tigrov/yii2-pgsql",
-            "version": "1.1.7",
+            "version": "1.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Tigrov/yii2-pgsql.git",
-                "reference": "8d0e89bc7d6f1c93f7e854febe163fb4944d17f1"
+                "reference": "1f9db06160b3f5861c7d82510bc50c71f5c8fbe8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Tigrov/yii2-pgsql/zipball/8d0e89bc7d6f1c93f7e854febe163fb4944d17f1",
-                "reference": "8d0e89bc7d6f1c93f7e854febe163fb4944d17f1",
+                "url": "https://api.github.com/repos/Tigrov/yii2-pgsql/zipball/1f9db06160b3f5861c7d82510bc50c71f5c8fbe8",
+                "reference": "1f9db06160b3f5861c7d82510bc50c71f5c8fbe8",
                 "shasum": ""
             },
             "require": {
@@ -1607,7 +1683,7 @@
                 "timestamp",
                 "yii2"
             ],
-            "time": "2017-09-22T21:16:44+00:00"
+            "time": "2017-10-08T22:30:57+00:00"
         },
         {
             "name": "vova07/yii2-imperavi-widget",
