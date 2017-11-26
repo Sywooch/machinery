@@ -2,6 +2,7 @@
 
 namespace common\modules\communion\models;
 
+use common\models\User;
 use Yii;
 
 /**
@@ -17,6 +18,8 @@ use Yii;
  */
 class Communion extends \yii\db\ActiveRecord
 {
+    const ST_OPEN = 1;
+    const ST_CLOSE = 2;
     /**
      * @inheritdoc
      */
@@ -62,5 +65,18 @@ class Communion extends \yii\db\ActiveRecord
     public static function find()
     {
         return new CommunionQuery(get_called_class());
+    }
+
+    public function getMessages(){
+        return $this->hasMany(CommunionMessage::className(), ['communion_id' => 'id']);
+    }
+    public function getUser(){
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getNewMessages(){
+        return $this->hasMany(CommunionMessage::className(), ['communion_id' => 'id'])
+            ->where(['status'=>CommunionMessage::ST_NEW])
+            ->andWhere(['or', 'user_id<>'.Yii::$app->user->id, 'user_id is NULL']);
     }
 }

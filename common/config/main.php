@@ -73,6 +73,9 @@ return [
                 ],
             ]
         ],
+        'image' => [
+            'class' => 'common\modules\image\Module',
+        ],
         'language' => [
             'class' => 'common\modules\language\LanguageModule',
         ],

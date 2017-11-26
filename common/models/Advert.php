@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\modules\comments\models\Comments;
 use common\modules\taxonomy\helpers\TaxonomyHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\validators\TaxonomyAttributeValidator;
@@ -16,6 +17,8 @@ class Advert extends \yii\db\ActiveRecord
     const VCL_CATEGORIES = 2;
     const VCL_MANUFACTURES = 3;
     const VCL_COLOR = 5;
+
+    public $translate;
 
     /**
      * @inheritdoc
@@ -199,6 +202,36 @@ class Advert extends \yii\db\ActiveRecord
     public function getAdvertOrderOptions()
     {
         return json_decode($this->order_options);
+    }
+
+    public function getViewed(){
+        return $this->hasMany(Viewed::className(), ['advert_id' => 'id'])->asArray();
+    }
+    public function viewedUpdate($id){
+        $andWhere = !Yii::$app->user->isGuest ? ['user_id'=>Yii::$app->user->id] : ['user_ip' => Yii::$app->request->userIP];
+        if(!$viewed = Viewed::find()->where(['advert_id'=>$id])->andWhere($andWhere)->one()) {
+            $viewed = new Viewed();
+            $viewed->advert_id = $id;
+            $viewed->user_id = Yii::$app->user->id;
+            $viewed->user_ip = Yii::$app->request->userIP;
+        }
+        $viewed->create_at = time();
+        $viewed->save();
+    }
+
+    public function isAuthor($model){
+        return $model->user_id == Yii::$app->user->id;
+    }
+
+    public function getOption($model, $option_id){
+        if($options = json_decode($model->order_options)){
+            if(in_array($option_id, $options)) return true;
+        }
+        return false;
+    }
+
+    public function getComments(){
+        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['model'=>'Advert']);
     }
 
 }

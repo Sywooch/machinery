@@ -600,6 +600,12 @@
 	}
 }
 .image-upload-block {
+	.uploader-container-buttons {
+		float: left;
+	}
+	.item-photo {
+		cursor: move;
+	}
 	figure {
 		float: left;
 		margin: 0 10px 10px 0;
@@ -610,6 +616,26 @@
 		background-color: #d4d4d4;
 		background-position: center;
 		background-repeat: no-repeat;
+		text-align: center;
+		> img {
+			height: auto;
+			width: auto;
+			max-height: 100%;
+			max-width: 100%;
+			margin: auto;
+		}
+		.file-name {
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			left: 0;
+			background: rgba(255,255,255,.3);
+			text-align: center;
+			padding: 2px 4px;
+			b {
+				display: block;
+			}
+		}
 		.btn-remove-img {
 			position: absolute;
 			top: 5px;

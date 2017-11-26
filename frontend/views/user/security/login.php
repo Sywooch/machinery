@@ -36,14 +36,14 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field(
                 $model,
                 'login',
-                ['inputOptions' => ['autofocus' => 'autofocus', 'class' => 'form-control', 'tabindex' => '1']]
+                ['inputOptions' => ['autofocus' => 'autofocus', 'class' => 'form-control']]
             ); ?>
 
             <?= $form
                 ->field(
                     $model,
                     'password',
-                    ['inputOptions' => ['class' => 'form-control', 'tabindex' => '2']]
+                    ['inputOptions' => ['class' => 'form-control',]]
                 )
                 ->passwordInput() ?>
 
@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= Html::submitButton(
                 Yii::t('user', 'Login'),
-                ['class' => 'btn btn-warning btn-submit', 'tabindex' => '3']
+                ['class' => 'btn btn-warning btn-submit',]
             ) ?>
 
             <?php ActiveForm::end(); ?>

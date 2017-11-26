@@ -3,12 +3,12 @@
 use yii\helpers\Html;
 
 
-$this->title = $model->title;
+$this->title = $model->translate->title;
 $this->params['breadcrumbs'][] = [
     'label'=> Yii::t('app', 'Catalog'),
     'url' => 'catalog'
 ];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Preview advert');
+$this->params['breadcrumbs'][] = $model->translate->title;
 ?>
 <?php
 $this->beginBlock('title_panel');
@@ -25,18 +25,18 @@ $this->endBlock();
         </div>
         <div class="col-md-9">
             <div class="obj-container">
-                <?php if(Yii::$app->user->id == $model->user_id || Yii::$app->user->can('administrator')): ?>
+                <?php if($model->isAuthor($model) || Yii::$app->user->can('administrator')): ?>
                 <div class="buttons-line">
                     <p class="advert-status status-not-publish text-danger">This listing is awaiting payment and is NOT live.</p>
                     <a href="<?= \yii\helpers\Url::to(['advert/delete/', 'id'=>$model->id]) ?>" data-confirm="<?= Yii::t('app', 'Delete?') ?>" class="btn btn-danger"><?= Yii::t('app','Delete') ?></a>
                     <a href="<?= \yii\helpers\Url::to(['advert/update/', 'id'=>$model->id]) ?>" class="btn btn-primary"><?= Yii::t('app','Edit') ?></a>
-                    <?php if(Yii::$app->user->id == $model->user_id && $model->order_options): ?>
+                    <?php if($model->isAuthor($model) && $model->order_options): ?>
                     <a href="#" class="btn btn-warning"><?= Yii::t('app','Make payment') ?></a>
                     <?php endif; ?>
                 </div>
                 <?php endif; ?>
                 <div class="view-offer">
-                    <h2 class="title-advert text-uppercase"><?= $model->title ?></h2>
+                    <h2 class="title-advert text-uppercase"><?= $model->translate->title ?></h2>
                     <?php if($model->phone): ?>
                     <div class="contact-advert-row"><i class="glyphicon glyphicon-phone"></i> <?= $model->phone ?></div>
                     <?php endif; ?>
@@ -88,10 +88,13 @@ $this->endBlock();
                                 <header class="head-toolbox h2 text-uppercase"><?= Yii::t('app', 'TOOLBOX') ?></header>
                                 <div class="toolbox-content">
                                     <ul class="data-toolbox">
-                                        <li><span><i class="fa fa-eye" aria-hidden="true"></i> 5 Views</span></li>
-                                        <li><span><i class="fa fa-comments-o" aria-hidden="true"></i> 0 Comments</span></li>
-                                        <li><a href="#"><i class="fa fa-print" aria-hidden="true"></i>Print this page</a></li>
-                                        <li><a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i>Add Favorites</a></li>
+                                        <?php //dd($model->order_options);
+                                        if($model->getOption($model, 4)): ?>
+                                        <li><span><i class="fa fa-eye" aria-hidden="true"></i> <?= count($model->viewed) ?> <?= Yii::t('app', 'Views') ?></span></li>
+                                        <?php endif; ?>
+                                        <li><span><i class="fa fa-comments-o" aria-hidden="true"></i> <?= count($model->comments) ?> <?= Yii::t('app', 'Comments') ?></span></li>
+                                        <li><a href="<?= \yii\helpers\Url::to(['advert/print', 'id'=>$model->id]) ?>"><i class="fa fa-print" aria-hidden="true"></i><?= Yii::t('app', 'Print this page') ?></a></li>
+                                        <li><a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i><?= Yii::t('app', 'Add Favorites') ?></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -156,7 +159,7 @@ $this->endBlock();
                             </div>
                         </div>
                         <div class="description-container col-md-12">
-                            <?= $model->body ?>
+                            <?= $model->translate->body ?>
 
 
 
@@ -175,4 +178,5 @@ $this->endBlock();
         <?= \frontend\widgets\Articles\LastArticles::widget() ?>
     </div>
 </div>
-
+<?php //dd($model) ?>
+<?= \common\modules\communion\widgets\CommunionFormWidget::widget(['subject'=>$model->translate->title, 'user_to' => $model->user_id]) ?>

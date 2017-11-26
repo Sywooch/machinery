@@ -1,3 +1,8 @@
+
+
+.ic-close {
+  @include sprite($ic-close);
+}
 .soc-ic {
   display: inline-block;
   &:before {

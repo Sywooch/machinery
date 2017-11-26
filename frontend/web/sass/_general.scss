@@ -5,6 +5,9 @@ body {
 
 a {
     color: $greyblack;
+    &:hover {
+        color: $yellow;
+    }
 }
 
 .cf:after {

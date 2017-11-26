@@ -19,7 +19,6 @@ class LanguageSwitcher extends \yii\base\Widget
 
     public function run()
     {
-//        dd($this->languageRepository);
         return $this->render('switcher', [
             'model' => $this->languageRepository->loadAllActive(),
         ]);
