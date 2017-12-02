@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use common\modules\file\helpers\StyleHelper;
 
 
 $this->title = $model->translate->title;
@@ -53,29 +54,30 @@ $this->endBlock();
                         </a>
                         <?php endif; ?>
                     </div>
-                    <div class="advert-images-row">
+<!--                    --><?php //dd($model->photos) ?>
+                    <div class="object-images-row">
                         <div class="big-images">
                             <div class="big-images-slider gallery-swipe" itemscope itemtype="http://schema.org/ImageGallery">
-                            <?php for($i=0; $i<7; $i++): ?>
+                            <?php foreach($model->photos as $photo): ?>
                                 <figure class="_item-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
-                                    <a href="/images/img-big-advert.png" data-size="1600x900" itemprop="contentUrl">
-                                        <img src="/images/img-big-advert.png" alt="" itemprop="thumbnail">
-                                        <i class="blur-bg" style="background-image: url(/images/img-big-advert.png)"></i>
+                                    <a href="<?= $photo->path . '/' . $photo->name ?>" data-size="<?= $photo->width ?>x<?= $photo->height ?>" itemprop="contentUrl">
+                                        <img src="<?= StyleHelper::getPreviewUrl($photo, '1600x900') ?>" alt="" itemprop="thumbnail" height="410">
+                                        <i class="blur-bg" style="background-image: url(<?= StyleHelper::getPreviewUrl($photo, '1600x900') ?>)"></i>
                                     </a>
                                 </figure>
-                                <?php endfor; ?>
+                                <?php endforeach; ?>
                             </div>
                         </div> <!-- .big-images -->
                         <div class="small-images">
                             <div class="slider-nav">
-                            <?php for($i=0; $i<7; $i++): ?>
+                                <?php foreach($model->photos as $photo): ?>
                                 <div class="slide-item">
                                 <figure class="nav-inner-img">
-                                <img src="/images/img-big-advert.png" alt="" itemprop="thumbnail">
-                                <i class="blur-bg" style="background-image: url(/images/img-big-advert.png)"></i></figure></div>
-                            <?php endfor; ?>
+                                <img src="<?= StyleHelper::getPreviewUrl($photo, '230x100') ?>" alt="" itemprop="thumbnail">
+                                <i class="blur-bg" style="background-image: url(<?= StyleHelper::getPreviewUrl($photo, '230x100') ?>)"></i></figure></div>
+                            <?php endforeach; ?>
                             </div>
-                            <div class="count-string"><span id="slide-number">1</span> из 14 фото</div>
+                            <div class="count-string"><span id="slide-number">1</span> из <?= count($model->photos) ?> фото</div>
                         </div> <!-- .small-images -->
                     </div> <!-- .advert-images-row -->
                     <div class="container-links row">

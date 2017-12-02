@@ -61,5 +61,17 @@ class CatalogHelper
         return $out;
     }
 
+    public static function childrensTree($terms, $id){
+        $out = [];
+        if($terms){
+            foreach ($terms as $term){
+                if($term['id'] != $id){
+                    $out[] = $term;
+                }
+            }
+        }
+        return $out;
+    }
+
 
 }

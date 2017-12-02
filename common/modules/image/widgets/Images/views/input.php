@@ -140,6 +140,8 @@ try{
                             +\'</figure>\'
                             +\'<input type="hidden" class="img__name" id="img_name_\'+file.id+\'" name="images[\'+file.id+\'][name]">\'
                             +\'<input type="hidden" class="img__delta" id="delta_\'+file.id+\'" name="images[\'+file.id+\'][delta]">\'
+                            +\'<input type="hidden" class="img__width" id="width_\'+file.id+\'" name="images[\'+file.id+\'][width]">\'
+                            +\'<input type="hidden" class="img__height" id="height_\'+file.id+\'" name="images[\'+file.id+\'][height]">\'
                             +\'</div>\';
                         $(\'#weidth_\'+file.id+\'\').val($(\'.item-photo\').length);
                     });
@@ -152,6 +154,8 @@ console.log(response);
                     $(\'img#img_\'+file.id).attr(\'src\', location.origin+\'/\'+uploadDir+\'/\'+file.target_name);
                     $(\'#img_name_\'+file.id+\'\').val(file.target_name);
                     $("#img_delete_"+file.id).attr("data-img", response.result.id).attr("data-name", response.filename);
+                    $(\'#width_\'+file.id+\'\').val(response.result.width);
+                    $(\'#height_\'+file.id+\'\').val(response.result.height);
                     
                 },
                 UploadComplete: function(up, files) {

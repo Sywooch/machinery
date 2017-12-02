@@ -10,6 +10,7 @@ use common\modules\file\helpers\FileHelper;
 use yii\web\NotFoundHttpException;
 use common\modules\file\filestorage\Instance;
 use common\modules\image\models\File;
+use Intervention\Image\ImageManager;
 
 /**
  * Default controller for the `image` module
@@ -54,11 +55,6 @@ class ManagerController extends Controller
 
     public function actionUpload()
     {
-//        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-//        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-//        header("Cache-Control: no-store, no-cache, must-revalidate");
-//        header("Cache-Control: post-check=0, pre-check=0", false);
-//        header("Pragma: no-cache");
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if ($post = Yii::$app->request->post()) {
 
@@ -145,12 +141,18 @@ class ManagerController extends Controller
 //            dd($_REQUEST);
 //            echo mime_content_type($filePath);
 //            dd(stat($filePath),1);
-            $fileStat = stat($filePath);
+//            $fileStat = stat($filePath);
             $out = [
                 "jsonrpc" => "2.0",
                 "result" => ["filename"=>  $fileName , "id" => 0],
                 "filename" => $fileName
             ];
+            $imageManager = new ImageManager();
+            $image = $imageManager->make($filePath)->resize(1600, 900, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            $image->save($filePath);
             if($post['model_action'] == 'edit'){
                 $model_file = new File();
                 $model_file->entity_id = $post['model_id'];
@@ -159,11 +161,15 @@ class ManagerController extends Controller
                 $model_file->name = $fileName;
                 $model_file->path = '/' . $post['upload_dir'];
                 $model_file->storage = 'StorageLocal';
-                $model_file->size = $fileStat['size'];
+                $model_file->size = $image->filesize();
                 $model_file->mimetype = mime_content_type($filePath);
+                $model_file->width = $image->width();
+                $model_file->height = $image->height();
                 $model_file->save();
                 $out['result']['id'] = $model_file->id;
             }
+            $out['result']['width'] = $image->width();
+            $out['result']['height'] = $image->height();
             return $out;
 
         }

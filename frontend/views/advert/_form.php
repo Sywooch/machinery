@@ -156,13 +156,33 @@ $years['-1970'] = Yii::t('app', 'Before 1970');
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="panel-body">
-
+<?php dd($model->area) ?>
                         <div class="form-row">
                             <div class="row">
+
+                                <div class="col-md-6">
+                                    <?= $form->field($model, 'area')->dropDownList(
+                                            \yii\helpers\ArrayHelper::map($areas, 'id', 'name'), ['prompt' => 'Selrct']) ?>
+<!--                                    --><?php // echo $form->field($model, 'area')
+//                                        ->widget(Select2::classname(), [
+//                                            'data' => \yii\helpers\ArrayHelper::map(
+//                                                $areas, 'id', 'name'),
+//                                            'options' => ['placeholder' => Yii::t('app', '- Select Area -'), 'size' => 2],
+//                                            'pluginOptions' => [
+//                                                'allowClear' => true,
+//                                                'multiple' => true,
+//                                                'maximumInputLength' => 15,
+//                                                'tags' => true,
+//                                                'maximumSelectionLength' => 2,
+//                                            ],
+//                                            'showToggleAll' => false,
+//                                        ]); ?>
+                                </div>
                                 <div class="col-md-6">
                                     <?= $form->field($model, 'category')
                                         ->widget(Select2::classname(), [
-                                            'data' => TaxonomyHelper::terms3Level($categories),
+//                                            'data' => TaxonomyHelper::terms3Level($categories),
+                                            'data' => \yii\helpers\ArrayHelper::map($categories, 'id', 'title'),
                                             'options' => ['placeholder' => Yii::t('app', '- Select category -'), 'size' => 2],
                                             'pluginOptions' => [
                                                 'allowClear' => true,
