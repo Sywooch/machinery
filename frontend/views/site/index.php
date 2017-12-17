@@ -37,7 +37,7 @@ $this->title = 'Machinery park';
                 <div class="list-categories flexbox just-around flex-wrap">
                     <?php foreach ($categories as $key => $category): ?>
                         <div class="item-cat cat-<?= $category->icon_name ?>" data-cat="<?= $category->icon_name ?>">
-                            <a href="<?= Url::to(['/catalog', 'category'=> $category->transliteration]) ?>" class="cat-link">
+                            <a href="<?= Url::to(['/catalog/index', 'slug'=> $category->transliteration]) ?>" class="cat-link">
                                 <span class="_count">2150</span>
                                 <span class="_img img-cat img-cat-<?= $category->icon_name ?>">
                                     <img src="/images/cat1.png" alt="">

@@ -1,24 +1,84 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: slava
- * Date: 18.07.2017
- * Time: 11:15
- */
 
 namespace frontend\controllers;
+
+use common\models\AdvertRepository;
+use common\modules\taxonomy\models\TaxonomyItemsRepository;
+use frontend\models\FilterForm;
+use yii\data\Sort;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use common\helpers\ModelHelper;
 
+use common\modules\search\Module as SearchModule;
+use yii;
 
 class CatalogController extends Controller
 {
-    public function actionIndex(){
-        return $this->render('index');
+
+    /**
+     * @var AdvertRepository
+     */
+    private $_advertRepository;
+
+    /**
+     * @var TaxonomyItemsRepository
+     */
+    private $_taxonomyItemsRepository;
+
+    /**
+     * @var SearchModule
+     */
+    private $_search;
+
+    /**
+     * CatalogController constructor.
+     * @param string $id
+     * @param \yii\base\Module $module
+     * @param AdvertRepository $advertRepository
+     * @param array $config
+     */
+    public function __construct($id, $module, AdvertRepository $advertRepository, TaxonomyItemsRepository $taxonomyItemsRepository, array $config = [])
+    {
+        $this->_advertRepository = $advertRepository;
+        $this->_taxonomyItemsRepository = $taxonomyItemsRepository;
+        $this->_search = Yii::$app->getModule('search');
+
+        parent::__construct($id, $module, $config);
+
     }
-    public function actionSearch(){
-        return $this->render('index');
+
+    /**
+     * @return string
+     */
+    public function actionIndex()
+    {
+        $filter = new FilterForm();
+        $filter->load(\Yii::$app->request->get());
+
+        $sort = new Sort([
+            'attributes' => [
+                'age',
+                'title' => [
+                    'asc' => ['title' => SORT_ASC],
+                    'desc' => ['title' => SORT_ASC],
+                    'label' => 'Title',
+                ],
+                'date' => [
+                    'asc' => ['updated' => SORT_ASC],
+                    'desc' => ['updated' => SORT_ASC],
+                    'label' => 'Date',
+                ],
+            ],
+        ]);
+
+        $categoryCounts = $this->_advertRepository->getSubCategories($this->_advertRepository->searchQueryByFilter($filter));
+        
+        return $this->render('index', [
+            'dataProvider' => $this->_advertRepository->searchByFilter($this->_advertRepository->searchQueryByFilter($filter), $sort),
+            'categories' => $categoryCounts ? $this->_taxonomyItemsRepository->getByIds(array_keys($categoryCounts)) : [],
+            'categoryCounts' => $categoryCounts,
+            'sort' => $sort,
+        ]);
     }
+
 }

@@ -137,7 +137,7 @@
 
 /***** Filter inner ******************/
 .btn-open-filter {
-	display: block;
+	display: flex;
 	//width: 100%;
 	height: 50px;
 	position: relative;
@@ -146,15 +146,25 @@
 	// top: 0;
 	background: transparent;
 	cursor: pointer;
+	color: $yellow;
+	text-align: center;
 	z-index: 2;
+	&:hover {
+		color: inherit;
+	}
+	span {
+		margin: auto;
+	}
 	.ic-arr-orange-button {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
+		//position: absolute;
+		//left: 50%;
+		//top: 50%;
+		//transform: translate(-50%, -50%);
+		margin-right: 6px;
 		&:before {
 			content: '';
-			display: block;
+			display: inline-block;
+			vertical-align: middle;
 			@include sprite($arr-orange-bottom);
 			margin: 0 auto;
 		}
@@ -546,7 +556,7 @@
 
 /******  page add advert *************/
 
-.advert-container {
+.obj-container {
 	padding: 30px 20px;
 	position: relative;
 	z-index: 9;
@@ -581,8 +591,21 @@
 		}
 	}
 }
-
+.field-advert-condition {
+	#advert-condition {
+		label {
+			display: inline-block;
+			margin-right: 15px;
+		}
+	}
+}
 .image-upload-block {
+	.uploader-container-buttons {
+		float: left;
+	}
+	.item-photo {
+		cursor: move;
+	}
 	figure {
 		float: left;
 		margin: 0 10px 10px 0;
@@ -593,6 +616,26 @@
 		background-color: #d4d4d4;
 		background-position: center;
 		background-repeat: no-repeat;
+		text-align: center;
+		> img {
+			height: auto;
+			width: auto;
+			max-height: 100%;
+			max-width: 100%;
+			margin: auto;
+		}
+		.file-name {
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			left: 0;
+			background: rgba(255,255,255,.3);
+			text-align: center;
+			padding: 2px 4px;
+			b {
+				display: block;
+			}
+		}
 		.btn-remove-img {
 			position: absolute;
 			top: 5px;
@@ -690,7 +733,7 @@
 /**
 * advert page
  */
- .advert-container {
+ .obj-container {
  	.advert-status {
 		font-size: 15px;
 		text-transform: uppercase;
@@ -730,12 +773,14 @@
 	@include sprite($ic-earth);
 	vertical-align: middle;
 }
-.advert-images-row {
+.object-images-row {
 	.big-images {
+		//max-height: 410px;
 		._item-slide {
 			position: relative;
 			overflow: hidden;
 			display: flex;
+			//height: 100%;
 			a {
 				display: flex;
 				height: 100%;
@@ -744,6 +789,8 @@
 			img {
 				margin: auto;
 				position: relative;
+				max-width:100%;
+				max-height: 100%;
 				z-index: 2;
 			}
 			
@@ -972,4 +1019,9 @@
 
 		}
 	}
+}
+/** page-payment */
+
+.page-payment {
+	padding-bottom: 50px;
 }

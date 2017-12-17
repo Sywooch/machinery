@@ -1,11 +1,16 @@
 $(document).ready(function () {
+    $('body').on('click', '.has-stop-prepagation', function(e){
+        e.stopPropagation();
+    })
     try {
         $('input:radio, input:checkbox').styler();
     } catch (e) {
     }
     try {
         setTimeout(function () {
-            $('select').styler();
+            $('select').styler({
+                selectVisibleOptions: 8
+            });
         }, 1);
     } catch (e) {
     }
@@ -14,7 +19,8 @@ $(document).ready(function () {
             fade: true,
             autoplay: true,
             dots: true,
-            arrows: false
+            arrows: false,
+            appendDots: '.dots-filter-slider'
         });
     } catch (e) {
     }
@@ -61,29 +67,37 @@ $(document).ready(function () {
 
     $('body').append(galleryPopup);
 
+
     try {
         $('.big-images-slider').slick({
-            dots: false,
+            slidesToShow: 1,
+            slidesToScroll: 1,
             arrows: false,
-            asNavFor: '.slider-nav',
-            fade: true
+            fade: true,
+            asNavFor: '.slider-nav'
+        }).on('afterChange', function (event, slick, currentSlide) {
+            console.log( currentSlide);
+            // $('.slider-nav').slick('slickGoTo', currentSlide, true);
+            $('.slider-nav').find('[data-slick-index='+currentSlide+']').trigger('click');
+            $('#slide-number').text(currentSlide + 1);
         });
         $('.slider-nav').slick({
-            dots: false,
-            asNavFor: '.big-images-slider',
             slidesToShow: 5,
-            centerMode: true,
-            centerPadding: '0px',
-            appendArrows: '.small-images',
-            focusOnSelect: true
-        }).on('afterChange', function (event, slick, currentSlide) {
-            $('#slide-number').text(currentSlide + 1);
-        })
+            slidesToScroll: 1,
+            asNavFor: '.big-images-slider',
+            dots: false,
+            centerMode: false,
+            focusOnSelect: true,
+            // initialSlide: 2,
+            appendArrows: '.small-images'
+        });
+
     } catch (e) {
     }
     try {
         initPhotoSwipeFromDOM('.gallery-swipe');
     } catch (e) {
+        console.log(e);
     }
 
     /**
@@ -150,6 +164,31 @@ $(document).ready(function () {
         $('#cost-options-advert').text(cost);
         return costOrder;
     }());
+    /**
+     * Каскадные селекты в фильтре
+     */
+    $('body').on('change','select.select-cascade', function(e){
+        e.preventDefault();
+        var url = $(this).data('url');
+        var target = $(''+$(this).data('target'));
+        var data = {
+            id: this.value
+            // _csrf: yii.getCsrfToken()
+        };
+        $.get(url, data, function(d){
+            $(target).html('').trigger('refresh');
+            // if(d.length){
+                for(item in d){
+                    console.log(d[item]);
+                    $(target).append(d[item]);
+                }
+            // }
+            $(target).trigger('refresh');
+        }, 'json');
+
+    });
+
+
 
 }); // end ready
 

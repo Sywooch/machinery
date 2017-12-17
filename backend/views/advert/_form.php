@@ -43,31 +43,31 @@ FileAsset::register($this);
     <div class="col-md-6">
         <?= $form->field($model, 'currency')
             ->dropDownList(ArrayHelper::map(
-                    Currency::find()->where(['active'=>Currency::STATUS_ACTIVE])->all(), 'id', 'name'),
-                [ 'prompt'=>'- Select currency -']) ?>
+                Currency::find()->where(['active' => Currency::STATUS_ACTIVE])->all(), 'id', 'name'),
+                ['prompt' => '- Select currency -']) ?>
     </div>
 
     <div class="col-md-6">
         <?= $form->field($model, 'category')
             ->widget(Select2::classname(), [
-            'data' => TaxonomyHelper::terms3Level($categories),
-            'options' => ['placeholder' => Yii::t('app', '- Select category -'), 'size'=>2],
-            'pluginOptions' => [
-                'allowClear' => true,
-                'multiple' => true,
-                'maximumInputLength' => 15,
-                'tags' => true,
-                'maximumSelectionLength' => 2,
-            ],
-            'showToggleAll' => false,
-        ]); ?>
+                'data' => TaxonomyHelper::terms3Level($categories),
+                'options' => ['placeholder' => Yii::t('app', '- Select category -'), 'size' => 2],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'multiple' => true,
+                    'maximumInputLength' => 15,
+                    'tags' => true,
+                    'maximumSelectionLength' => 2,
+                ],
+                'showToggleAll' => false,
+            ]); ?>
     </div>
 
     <div class="col-md-6">
         <?= $form->field($model, 'manufacture')
             ->dropDownList(\yii\helpers\ArrayHelper::map(
-                $manufacturer,'id','name'),
-                [ 'prompt'=>'- Select manufacture -']) ?>
+                $manufacturer, 'id', 'name'),
+                ['prompt' => '- Select manufacture -']) ?>
     </div>
 
     <div class="col-md-6">
@@ -128,7 +128,9 @@ FileAsset::register($this);
 
     <?= $form->field($model, 'photos', ['template' => '{input}{error}'])
         ->widget(FileInputWidget::class, ['showRemove' => true]); ?>
-
+    <div class="files">
+        <input type="file" name="img[]" class="img-input" id="">
+    </div>
     <?= $form->field($model, 'meta_description')->textarea(['col']) ?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

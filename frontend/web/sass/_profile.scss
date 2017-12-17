@@ -28,3 +28,45 @@
 .action-profile {
   padding-left: 75px;
 }
+.list-messages {
+  .date {
+    color: #999;
+  }
+}
+.communion-item {
+  margin: 15px;
+  border: 1px solid rgb(228, 228, 228);
+  padding: 10px 40px 10px 15px;
+  border-radius: 6px;
+  position: relative;
+  .h3 {
+    font-size: 18px;
+  }
+  .buttons {
+    position: absolute;
+    bottom: 12px;
+    right: 15px;
+    text-align: right;
+    a {
+      display: block;
+      vertical-align: middle;
+      margin: 3px;
+      font-size: 14px;
+    }
+  }
+}
+.mess-item {
+  margin: 6px 0;
+  border-radius: 6px;
+  padding: 15px;
+  max-width: 75%;
+  clear: both;
+  &.mess-his {
+    float: left;
+    background: #e0f2fa;
+  }
+  &.mess-my {
+    float: right;
+    background: #96f2bf;
+  }
+}

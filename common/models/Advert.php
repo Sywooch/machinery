@@ -2,17 +2,23 @@
 
 namespace common\models;
 
+use common\modules\comments\models\Comments;
+use common\modules\taxonomy\helpers\TaxonomyHelper;
 use common\modules\taxonomy\models\TaxonomyItems;
 use common\modules\taxonomy\validators\TaxonomyAttributeValidator;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use common\modules\file\Finder;
 
 class Advert extends \yii\db\ActiveRecord
 {
 
     const VCL_CATEGORIES = 2;
     const VCL_MANUFACTURES = 3;
+    const VCL_COLOR = 5;
+
+    public $translate;
 
     /**
      * @inheritdoc
@@ -29,8 +35,8 @@ class Advert extends \yii\db\ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'updated','published'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated','published'],
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'updated', 'published'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated', 'published'],
                 ]
             ]
         ];
@@ -50,15 +56,17 @@ class Advert extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'website', 'price', 'manufacture', 'phone', 'model', 'category'], 'required'],
-            [['body', 'bucket_capacity', 'tire_condition', 'serial_number', 'lang', 'meta_description'], 'string'],
-            [['price'], 'number'],
-            [['currency', 'year', 'condition', 'operating_hours', 'mileage', 'parent'], 'integer'],
-            [['created', 'updated', 'published','order_options', 'manufacture'], 'safe'],
+            [['manufacture', 'area', 'category'], 'required'],
+            [['body', 'bucket_capacity', 'tire_condition', 'serial_number', 'lang', 'model', 'meta_description'], 'string'],
+            [['price', 'power', 'weight', 'pressure','capacity','generatorOutput','voltage','tankVolume','length','width','height' ], 'number'],
+            [['currency', 'year', 'condition', 'operating_hours', 'mileage', 'parent', 'status_user'], 'integer'],
+            [['created', 'updated', 'published', 'order_options', 'manufacture'], 'safe'],
             [['status', 'maderated'], 'boolean'],
-            [['title', 'website', 'phone', 'model', 'meta_description'], 'string', 'max' => 255],
-            [['photos'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png', 'maxFiles' => 2],
-            [['category'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
+            [['title', 'website', 'phone', 'model', 'meta_description', 'reference_number'], 'string', 'max' => 255],
+            [['photos'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png', 'maxFiles' => 20],
+            [['category', 'manufacture', 'color'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
+            [['area'], TaxonomyAttributeValidator::class],
+            [['status_user'], 'default', 'value' => 1],
         ];
     }
 
@@ -91,6 +99,18 @@ class Advert extends \yii\db\ActiveRecord
             'maderated' => Yii::t('app', 'Maderated'),
             'lang' => Yii::t('app', 'Language'),
             'category' => Yii::t('app', 'Category'),
+            'reference_number' => Yii::t('app', 'Reference number'),
+            'power' => Yii::t('app', 'Power (HP)'),
+            'weight' => Yii::t('app', 'Weight (kg)'),
+            'pressure' => Yii::t('app', 'Pressure (bar)'),
+            'capacity' => Yii::t('app', 'Capacity per hour (m³)'),
+            'generatorOutput' => Yii::t('app', 'Generator output (kVA)'),
+            'voltage' => Yii::t('app', 'Voltage'),
+            'tankVolume' => Yii::t('app', 'Tank volume (l)'),
+            'length' => Yii::t('app', 'Length (cm)'),
+            'width' => Yii::t('app', 'Width (cm)'),
+            'height' => Yii::t('app', 'Height (cm)'),
+            'status_user' => Yii::t('app', 'Ad status'),
         ];
     }
 
@@ -103,45 +123,115 @@ class Advert extends \yii\db\ActiveRecord
         return new AdvertQuery(get_called_class());
     }
 
-    public function getOptions(){
-        return $this->hasMany(TarifOptions::className(), ['id'=>'option_id'])
-            ->viaTable('{{%advert_option}}', ['advert_id'=>'id'])
-            ->indexBy('id')
-            ->orderBy(['weight'=>'asc']);
+    /**
+     *
+     * @return [] File
+     */
+    public function getFiles()
+    {
+        return Finder::getInstances($this);
     }
 
-    public function getCategories(){
-        return $this->hasMany(TaxonomyItems::className(), ['id'=>'term_id'])
-            ->where(['vid'=>2])
+    public function getOptions()
+    {
+        return $this->hasMany(TarifOptions::className(), ['id' => 'option_id'])
+            ->viaTable('{{%advert_option}}', ['advert_id' => 'id'])
+            ->indexBy('id')
+            ->orderBy(['weight' => 'asc']);
+    }
+
+    public function getCategories()
+    {
+        return $this->hasMany(TaxonomyItems::className(), ['id' => 'term_id'])
+            ->where(['vid' => self::VCL_CATEGORIES])
             ->viaTable('{{%taxonomy_index}}', ['entity_id' => 'id'])
             ->indexBy('id')
 //            ->column('tid')
             ->asArray();
     }
-    public function getVariant(){
-        return $this->hasMany(AdvertVariant::className(), ['advert_id'=>'id'])
-            ->indexBy('lang');
+
+    public function getManufactures()
+    {
+        return $this->hasOne(TaxonomyItems::className(), ['id' => 'term_id'])
+            ->where(['vid' => self::VCL_MANUFACTURES])
+            ->viaTable('{{%taxonomy_index}}', ['entity_id' => 'id'])
+            ->indexBy('id')
+//            ->column('tid')
+            ->asArray();
     }
 
 
+    public function getAreas()
+    {
+        return $this->hasOne(TaxonomyItems::className(), ['id' => 'term_id'])
+            ->where(['vid' => self::VCL_CATEGORIES])
+            ->viaTable('{{%taxonomy_index}}', ['entity_id' => 'id'])
+            ->indexBy('id')
+//            ->column('tid')
+            ->asArray();
+    }
+
+    public function getColor()
+    {
+        return $this->hasOne(TaxonomyItems::className(), ['id' => 'term_id'])
+            ->where(['vid' => self::VCL_CATEGORIES])
+            ->viaTable('{{%taxonomy_index}}', ['entity_id' => 'id']);
+    }
+
+    public function getVariant()
+    {
+        return $this->hasMany(AdvertVariant::className(), ['advert_id' => 'id'])
+            ->indexBy('lang');
+    }
+
+    public function beforeValidate()
+    {
+//        if(isset($this->manufacture)){
+//            if(is_string($this->manufacture[0])){
+//                if($term = TaxonomyItems::find()->where(['name'=>$this->manufacture[0]])->one()){
+//                    $this->manufacture[0] = $term->id;
+//                } else {
+//                    $term = new TaxonomyItems();
+//                    $term->vid = self::VCL_MANUFACTURES;
+//                    $term->pid = 0;
+//                    $term->name = $this->manufacture[0];
+//                    if($term->save()){
+//                        $this->manufacture[0] = $term->id;
+//                    }
+//                }
+//            }
+//        }
+
+        return parent::beforeValidate(); // TODO: Change the autogenerated stub
+    }
+
     public function beforeSave($insert)
     {
+        $categories = [];
+        if($this->isNewRecord){
+            $this->user_id = Yii::$app->user->id;
+        }
+        foreach ($this->owner->category as $term) {
+            $data = TaxonomyHelper::getParents($term);
+            foreach ($data as $item){
+                $categories[$item->id] = $item;
+            }
+        }
+        $this->owner->category = $categories;
+
         return parent::beforeSave($insert); // TODO: Change the autogenerated stub
     }
 
     public function afterSave($insert, $changedAttributes)
     {
+
+        if(!$insert){
+//            die('edit');
+        } else {
+//            die('new');
+        }
         parent::afterSave($insert, $changedAttributes); // TODO: Change the autogenerated stub
 
-//        $cat_key = array_keys($this->categories);
-//        $remove_ch_ids = array_diff($cat_key, $this->category);
-//        $add_ch_ids = array_diff($this->category, $cat_key);
-//
-//        echo "<pre> Уже есть - ",print_r($cat_key, 1), "</pre>";
-//        echo "<pre> Пришли в форме - ",print_r($this->category, 1), "</pre>";
-//        echo "<pre> Пришли новые - ",print_r($add_ch_ids, 1), "</pre>";
-//        echo "<pre> Надо удалить - ",print_r($remove_ch_ids, 1), "</pre>";
-//        die();
     }
 
 
@@ -150,7 +240,37 @@ class Advert extends \yii\db\ActiveRecord
      */
     public function getAdvertOrderOptions()
     {
-        return  json_decode($this->order_options) ;
+        return json_decode($this->order_options);
+    }
+
+    public function getViewed(){
+        return $this->hasMany(Viewed::className(), ['advert_id' => 'id'])->asArray();
+    }
+    public function viewedUpdate($id){
+        $andWhere = !Yii::$app->user->isGuest ? ['user_id'=>Yii::$app->user->id] : ['user_ip' => Yii::$app->request->userIP];
+        if(!$viewed = Viewed::find()->where(['advert_id'=>$id])->andWhere($andWhere)->one()) {
+            $viewed = new Viewed();
+            $viewed->advert_id = $id;
+            $viewed->user_id = Yii::$app->user->id;
+            $viewed->user_ip = Yii::$app->request->userIP;
+        }
+        $viewed->create_at = time();
+        $viewed->save();
+    }
+
+    public function isAuthor($model){
+        return $model->user_id == Yii::$app->user->id;
+    }
+
+    public function getOption($model, $option_id){
+        if($options = json_decode($model->order_options)){
+            if(in_array($option_id, $options)) return true;
+        }
+        return false;
+    }
+
+    public function getComments(){
+        return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['model'=>'Advert']);
     }
 
 }

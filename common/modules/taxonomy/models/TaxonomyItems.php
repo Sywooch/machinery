@@ -104,6 +104,14 @@ class TaxonomyItems extends ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(self::class, ['id' => 'pid']);
+    }
+
+    /**
      * @param array $translations
      */
     public function setTranslations($translations)
@@ -117,10 +125,6 @@ class TaxonomyItems extends ActiveRecord
     public function getTranslations(): array
     {
         return $this->data['translations'] ?? [];
-    }
-
-    public function getAdverts(){
-        return $this->hasMany(Advert::className(), ['id'=>'entity_id'])->viaTable('{{%taxonomy_index}}', ['term_id'=>'id']);
     }
 
 }

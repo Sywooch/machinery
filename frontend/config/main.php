@@ -37,6 +37,12 @@ return [
                     'forceInsert' => true,
                     'sourceLanguage' => 'en-EN'
                 ],
+                'sweelix' => [
+                    'class' => 'common\modules\language\DbMessageSource',
+                    //'basePath' => '@app/messages',
+                    'forceInsert' => true,
+                    'sourceLanguage' => 'en-EN'
+                ]
             ],
         ],
         'log' => [
@@ -56,10 +62,12 @@ return [
         ],
         'urlManager' => [
             'rules' => [
+                'catalog/<slug:[\w_-]+>' => 'catalog/index',
+//                'catalog/<FilterForm:.*>' => 'catalog/index',
                 ['class' => 'frontend\components\AliasRule'],
-                'user/<userId:\d+>/wish' => 'store/wish',
-                'user/<userId:\d+>/wish/remove/<id:\d+>' => 'store/wish/remove',
+                ['class' => 'frontend\components\CatalogRule'],
                 'object/<id:\d+>' => 'advert/view',
+                'ajax/<action>/<id:\d+>' => 'ajax/<action>',
 //                '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
 //                'advert/options/<opt: \w+>' => 'advert/options',
             ],

@@ -20,6 +20,9 @@ class FilterForm extends Model
     public $model;
     public $year;
     public $price;
+    public $subcategory;
+
+    public $search;
 
     /**
      * @inheritdoc
@@ -27,9 +30,9 @@ class FilterForm extends Model
     public function rules()
     {
         return [
-            [['area', 'category', 'manufacturer', 'country', 'year'], 'integer'],
+            [['area', 'category', 'manufacturer', 'country', 'year', 'subcategory'], 'integer'],
             ['price', 'safe'],
-            [['model', 'id'], 'string']
+            [['model', 'id','search'], 'string']
         ];
     }
 

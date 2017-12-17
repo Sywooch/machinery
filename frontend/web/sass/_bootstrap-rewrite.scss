@@ -109,3 +109,15 @@ label {
 		}
 	}
 }
+.modal-dialog {
+	width: 450px;
+	max-width: 100%;
+	.close {
+		span {
+
+		}
+	}
+}
+.modal-content {
+	border-radius: 0;
+}

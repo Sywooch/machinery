@@ -46,17 +46,11 @@ use yii\helpers\Html;
                         </li>
                     <?php endif; ?>
                     <li class="dropdown langs-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false"><img
-                                    src="/images/langs/lang-de.png" alt="">CHANGE language <span
-                                    class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#"><img src="/images/langs/lang-de.png" alt=""> DE</a></li>
-                            <li><a href="#"><img src="/images/langs/lang-ru.png" alt=""> RU</a></li>
-                            <li><a href="#"><img src="/images/langs/lang-en.png" alt=""> EN</a></li>
-                        </ul>
+                        <?= \frontend\widgets\Language\LanguageSwitcher::widget() ?>
                     </li>
-                    <li role="presentation"><a href="#"><span class="badge">3</span></a></li
+                    <li role="presentation"  class="dropdown notice-menu">
+                        <?= \common\modules\notice\widgets\NoticeWidget::widget() ?>
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

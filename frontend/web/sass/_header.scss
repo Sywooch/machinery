@@ -29,7 +29,7 @@
           }
         }
         &.langs-menu {
-           a {
+          a {
             padding-top: 10px;
             padding-bottom: 3px;
             line-height: 21px;
@@ -41,7 +41,7 @@
             }
           }
           .dropdown-menu {
-            > li{
+            > li {
               > a {
                 padding: 10px;
 
@@ -54,6 +54,7 @@
   }
 
 }
+
 .currency-switcher {
   height: 40px;
   &:hover, &.opened {
@@ -129,14 +130,36 @@
     left: 50%;
     top: 0px;
     transform: translate(-50%, 0);
+
+  }
+  .dots-filter-slider {
     .slick-dots {
-      position: absolute;
-      width: 50%;
-      right: 0;
-      bottom: 90px;
+      //position: absolute;
+      //width: 50%;
+      //right: 0;
+      //bottom: 90px;
+      display: block;
       text-align: center;
       li {
         display: inline-block;
+        margin: 0 2px;
+        button {
+          padding: 0;
+          height: 8px;
+          width: 8px;
+          display: block;
+          background: #717888;
+          text-indent: -900px;
+          border: none;
+          box-shadow: none;
+          outline:none;
+          overflow: hidden;
+        }
+        &.slick-active, &:hover {
+          button {
+            background: $yellow;
+          }
+        }
       }
     }
   }
@@ -195,7 +218,7 @@
 
 .filter-drop-wrap {
   position: relative;
-  z-index: 99;
+  z-index: 999;
   .filter-drop-container {
     display: none;
     position: absolute;
@@ -206,4 +229,54 @@
     width: 100%;
     background: #f3f3f3 url("../images/basic-shadow.png") no-repeat center top;
   }
+}
+
+#price-slider.ui-widget-content {
+  background: #a7a7a7;
+  margin-top: 40px;
+  border: none;
+  .ui-slider-range {
+    background: $yellow;
+    border: none;
+  }
+  .ui-slider-handle {
+    background: #e9e9e9;
+    border-radius: 50%;
+    position: relative;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    position: absolute;
+    box-shadow: 0 18px 3px 1px rgba(255, 255, 255, 0.12);
+    outline: none;
+    .handler-inner {
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      position: absolute;
+      left: 50%;
+      top: -32px;
+      transform: translate(-50%, 0);
+      padding: 0 15px;
+      color: #999;
+      font-size: 11px;
+      @include grad(#fcfcfc, #e9e9e9);
+      outline: none;
+      &:after {
+        content: '';
+        display: block;
+        border-top: 5px solid #e9e9e9;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+      }
+    }
+  }
+}
+
+.over-price {
+  display: none;
 }

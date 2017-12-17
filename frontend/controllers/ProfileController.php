@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\modules\communion\models\CommunionMessage;
+use common\modules\language\models\Message;
 use dektrium\user\Finder;
 use yii;
 use common\models\User;
@@ -10,6 +12,7 @@ use common\modules\file\Uploader;
 use yii\helpers\Json;
 use common\models\OrderPackage;
 use common\models\TarifOptions;
+use common\modules\communion\models\Communion;
 
 
 
@@ -37,6 +40,8 @@ class ProfileController extends ProfileControllerBase
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['favorite'], 'roles' => ['@']];
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['published'], 'roles' => ['@']];
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['tarif'], 'roles' => ['@']];
+
+        $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['im', 'communion'], 'roles' => ['@']];
 
         return $behaviors;
     }
@@ -100,4 +105,25 @@ class ProfileController extends ProfileControllerBase
         return $this->render('/user/profile/tarif', ['profile' => $profile, 'model'=>$model]);
     }
 
+    public function actionCommunion(){
+        $model = Communion::find()
+            ->with(['messages', 'user', 'newMessages'])
+            ->where(['user_id'=>Yii::$app->user->id])
+            ->orWhere(['user_to'=>Yii::$app->user->id])
+            ->orderBy('create_at DESC')
+            ->all();
+
+        return $this->render('/user/profile/communion', [
+            'model'=>$model,
+        ]);
+    }
+    public function actionIm($id){
+        $model = Communion::find()->where(['id'=>$id])->with(['messages', 'messages.user'])->one();
+//        dd($model);
+        $message = new CommunionMessage();
+        return $this->render('/user/profile/messages', [
+            'model'=>$model,
+            'message' => $message,
+        ]);
+    }
 }

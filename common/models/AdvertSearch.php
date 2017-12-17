@@ -19,7 +19,7 @@ class AdvertSearch extends Advert
     {
         return [
             [['id', 'currency', 'year', 'condition', 'operating_hours', 'mileage'], 'integer'],
-            [['title', 'body', 'website', 'manufacture', 'phone', 'model', 'bucket_capacity', 'tire_condition:', 'serial_number', 'created', 'updated', 'published'], 'safe'],
+            [['title', 'body', 'website', 'phone', 'model', 'bucket_capacity', 'tire_condition:', 'serial_number', 'created', 'updated', 'published'], 'safe'],
             [['price'], 'number'],
             [['status', 'maderated'], 'boolean'],
         ];
@@ -82,7 +82,6 @@ class AdvertSearch extends Advert
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'body', $this->body])
             ->andFilterWhere(['like', 'website', $this->website])
-            ->andFilterWhere(['like', 'manufacture', $this->manufacture])
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'model', $this->model])
             ->andFilterWhere(['like', 'bucket_capacity', $this->bucket_capacity])

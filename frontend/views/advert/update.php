@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = 'Industrial machinery';
 <div class="container main-container">
     <div class="row">
         <div class="col-md-3 sidebar sidebar-inner">
-            <?= \frontend\widgets\Packages\PackagesWidget::widget(['advert'=>$model]) ?>
+            <?= \frontend\widgets\Packages\PackagesWidget::widget(['advert' => $model]) ?>
         </div>
         <div class="col-md-9">
             <div class="advert-container">
@@ -24,9 +24,11 @@ $this->params['breadcrumbs'][] = 'Industrial machinery';
                         'translate' => $translate,
                         'translates' => $translates,
                         'languages' => $languages,
+                        'areas' => $areas,
                         'categories' => $categories,
                         'manufacturer' => $manufacturer,
-                            ]) ?>
+                        'colors' => $colors,
+                    ]) ?>
                 </div>
             </div>
         </div>

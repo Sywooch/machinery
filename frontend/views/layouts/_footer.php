@@ -43,7 +43,6 @@ use yii\helpers\Html;
                 </div>
             </div>
 
-
             <div class="col-md-3 footer-buttons">
                 <div class="footer-buttons-wrapper">
                     <a data-toggle="modal" data-target="#myModalFeedback" class="ask-b footer-button" href="#">ask any
@@ -53,24 +52,12 @@ use yii\helpers\Html;
                 <div class="dropup main-footer-language">
                     <ul class="menu-lang">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <img src="/images/langs/lang-de.png" alt=""><?= Yii::t('app', 'CHANGE language') ?> <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#"><img src="/images/langs/lang-de.png" alt=""> DE</a></li>
-                                <li><a href="#"><img src="/images/langs/lang-ru.png" alt=""> RU</a></li>
-                                <li><a href="#"><img src="/images/langs/lang-en.png" alt=""> EN</a></li>
-                            </ul>
+                            <?= \frontend\widgets\Language\LanguageSwitcher::widget() ?>
                         </li>
                     </ul>
-
                 </div>
             </div>
-
-
         </div>
-
-
     </div>
-
 
 </footer>

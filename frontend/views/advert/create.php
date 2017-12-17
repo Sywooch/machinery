@@ -26,8 +26,10 @@ $this->params['breadcrumbs'][] = 'Industrial machinery';
                         'translate' => $translate,
                         'translates' => $translates,
                         'languages' => $languages,
+                        'areas' => $areas,
                         'categories' => $categories,
                         'manufacturer' => $manufacturer,
+                        'colors' => $colors,
                     ]) ?>
                 </div>
             </div>

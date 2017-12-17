@@ -24,11 +24,29 @@ return [
             'decimalSeparator' => '.',
             'currencyCode' => 'UAH'
         ],
+
     ],
     'modules' => [
+        'search' => [
+            'class' => 'common\modules\search\Module',
+            'driver' => 'common\modules\search\drivers\PSG\PsgSearch',
+            'models' => [
+                \common\models\Advert::class => [
+                    'indexItems' => 500,
+                    'indexFields' => ['title', 'body'],
+                    'with' => ['files', 'terms', 'alias'],
+                ]
+            ]
+        ],
         'comments' => [
             'class' => 'common\modules\comments\Module',
             'maxThread' => 2
+        ],
+        'communion' => [
+            'class' => 'common\modules\communion\Module',
+        ],
+        'notice' => [
+            'class' => 'common\modules\notice\Module',
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
@@ -54,6 +72,9 @@ return [
                     'baseUrl' => '/files'
                 ],
             ]
+        ],
+        'image' => [
+            'class' => 'common\modules\image\Module',
         ],
         'language' => [
             'class' => 'common\modules\language\LanguageModule',

@@ -84,16 +84,20 @@ class AdvertController extends Controller
         $model = new Advert();
 
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
-        } else {
+        if ($model->load(Yii::$app->request->post())) {
+//            dd($model, 1);
+            if($model->save())
+                return $this->redirect(['update', 'id' => $model->id]);
+        }
+
             return $this->render('create', [
                 'model' => $model,
                 'languages' => $this->languageRepository->loadAllActive(),
                 'categories' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_CATEGORIES),
                 'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
+                'colors' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_COLOR),
             ]);
-        }
+
     }
 
     /**
@@ -112,8 +116,9 @@ class AdvertController extends Controller
             return $this->render('update', [
                 'model' => $model,
                 'languages' => $this->languageRepository->loadAllActive(),
-                'categories' => $this->itemsRepository->getVocabularyTerms(2),
-                'manufacturer' => $this->itemsRepository->getVocabularyTerms(3),
+                'categories' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_CATEGORIES),
+                'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
+                'colors' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_COLOR),
             ]);
         }
     }
