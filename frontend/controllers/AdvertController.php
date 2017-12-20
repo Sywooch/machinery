@@ -134,8 +134,8 @@ class AdvertController extends Controller
         if (!$model = Advert::find()->where(['id' => $id])->with(['options', 'variant'])->one())
             throw new NotFoundHttpException('The requested page does not exist.');
         $translates = $this->getTranslates($id);
-        if (Yii::$app->request->post())
-            dd(Yii::$app->request->post(), 1);
+//        if (Yii::$app->request->post())
+//            dd(Yii::$app->request->post(), 1);
         $translate = $translates[$lang] ?? new AdvertVariant();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             // Сохранение переводов
@@ -159,16 +159,16 @@ class AdvertController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
 
         } else {
-            return $this->render('update', [
-                'model' => $model,
-                'translate' => $translate,
-                'translates' => $translates,
-                'languages' => $this->languageRepository->loadAllActive(),
-                'categories' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_CATEGORIES),
-                'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
-                'colors' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_COLOR),
-            ]);
         }
+        return $this->render('update', [
+            'model' => $model,
+            'translate' => $translate,
+            'translates' => $translates,
+            'languages' => $this->languageRepository->loadAllActive(),
+            'categories' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_CATEGORIES),
+            'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
+            'colors' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_COLOR),
+        ]);
     }
 
 

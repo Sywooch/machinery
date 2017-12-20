@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 
+use common\modules\file\helpers\StyleHelper;
 
 $this->title = $model->translate->title;
 $this->params['breadcrumbs'][] = [
@@ -53,31 +54,31 @@ $this->endBlock();
                         </a>
                         <?php endif; ?>
                     </div>
-                    <div class="advert-images-row">
+                    <div class="object-images-row">
                         <div class="big-images">
                             <div class="big-images-slider gallery-swipe" itemscope itemtype="http://schema.org/ImageGallery">
-                            <?php for($i=0; $i<7; $i++): ?>
-                                <figure class="_item-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
-                                    <a href="/images/img-big-advert.png" data-size="1600x900" itemprop="contentUrl">
-                                        <img src="/images/img-big-advert.png" alt="" itemprop="thumbnail">
-                                        <i class="blur-bg" style="background-image: url(/images/img-big-advert.png)"></i>
-                                    </a>
-                                </figure>
-                                <?php endfor; ?>
+                                <?php foreach($model->photos as $photo): ?>
+                                    <figure class="_item-slide" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+                                        <a href="<?= $photo->path . '/' . $photo->name ?>" data-size="<?= $photo->width ?>x<?= $photo->height ?>" itemprop="contentUrl">
+                                            <img src="<?= StyleHelper::getPreviewUrl($photo, '1600x900') ?>" alt="" itemprop="thumbnail" height="410">
+                                            <i class="blur-bg" style="background-image: url(<?= StyleHelper::getPreviewUrl($photo, '1600x900') ?>)"></i>
+                                        </a>
+                                    </figure>
+                                <?php endforeach; ?>
                             </div>
                         </div> <!-- .big-images -->
                         <div class="small-images">
                             <div class="slider-nav">
-                            <?php for($i=0; $i<7; $i++): ?>
-                                <div class="slide-item">
-                                <figure class="nav-inner-img">
-                                <img src="/images/img-big-advert.png" alt="" itemprop="thumbnail">
-                                <i class="blur-bg" style="background-image: url(/images/img-big-advert.png)"></i></figure></div>
-                            <?php endfor; ?>
+                                <?php foreach($model->photos as $photo): ?>
+                                    <div class="slide-item">
+                                        <figure class="nav-inner-img">
+                                            <img src="<?= StyleHelper::getPreviewUrl($photo, '230x100') ?>" alt="" itemprop="thumbnail">
+                                            <i class="blur-bg" style="background-image: url(<?= StyleHelper::getPreviewUrl($photo, '230x100') ?>)"></i></figure></div>
+                                <?php endforeach; ?>
                             </div>
-                            <div class="count-string"><span id="slide-number">1</span> из 14 фото</div>
+                            <div class="count-string"><span id="slide-number">1</span> из <?= count($model->photos) ?> фото</div>
                         </div> <!-- .small-images -->
-                    </div> <!-- .advert-images-row -->
+                    </div> <!-- .object-images-row -->
                     <div class="container-links row">
                         <div class="link-part text-uppercase col-md-4"><a href="#" class="active nav-parts-adv"><?= Yii::t('app', 'Description') ?></a></div>
                         <div class="link-part text-uppercase col-md-4"><a href="#" class="nav-parts-adv"><?= Yii::t('app', 'Comments') ?></a></div>
@@ -106,9 +107,13 @@ $this->endBlock();
                                     <?php if($model->manufacture): ?>
                                     <tr>
                                         <th><?= Yii::t('app', 'Manufacturer') ?></th>
-                                        <td><?= $model->manufacture ?></td>
+                                        <td><?= $model->manufacture->name ?></td>
                                     </tr>
                                     <?php endif; ?>
+                                    <tr>
+                                        <th><?= Yii::t('app', 'Condition') ?></th>
+                                        <td><?= $model->condition ? Yii::t('app', 'New') : Yii::t('app', 'Used') ?></td>
+                                    </tr>
                                     <?php if($model->model): ?>
                                     <tr>
                                         <th><?= Yii::t('app', 'Model') ?></th>
@@ -151,16 +156,78 @@ $this->endBlock();
                                             <td><?= $model->serial_number ?></td>
                                         </tr>
                                     <?php endif; ?>
-                                    <tr>
-                                        <th><?= Yii::t('app', 'Condition') ?></th>
-                                        <td><?= $model->condition ?></td>
-                                    </tr>
+                                    <?php if($model->power): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('power') ?></th>
+                                            <td><?= $model->power ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->pressure): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('pressure') ?></th>
+                                            <td><?= $model->pressure ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->weight): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('weight') ?></th>
+                                            <td><?= $model->weight ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->capacity): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('capacity') ?></th>
+                                            <td><?= $model->capacity ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->generatorOutput): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('generatorOutput') ?></th>
+                                            <td><?= $model->generatorOutput ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->voltage): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('voltage') ?></th>
+                                            <td><?= $model->voltage ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->tankVolume): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('tankVolume') ?></th>
+                                            <td><?= $model->tankVolume ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->color): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('color') ?></th>
+                                            <td><?= $model->color->name ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->length): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('length') ?></th>
+                                            <td><?= $model->length ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->width): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('width') ?></th>
+                                            <td><?= $model->width ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                    <?php if($model->height): ?>
+                                        <tr>
+                                            <th><?= $model->getAttributeLabel('height') ?></th>
+                                            <td><?= $model->height ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+
                                 </table>
                             </div>
                         </div>
                         <div class="description-container col-md-12">
                             <?= $model->translate->body ?>
-
 
 
                             <?= \common\modules\comments\widgets\CommentsWidget::widget(['entity' => $model]); ?>
