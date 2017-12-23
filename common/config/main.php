@@ -8,8 +8,9 @@ return [
         ],
         'urlManager' => [
             'class' => 'codemix\localeurls\UrlManager',
-            'languages' => [''=>'en-EN', 'fr'=>'fr-FR', 'de'=>'de-DE', 'es-*', 'uk'=>'uk-UA', 'ru'=>'ru-RU'],
-
+            'languages' => ['en'=>'en-EN', 'fr'=>'fr-FR', 'de'=>'de-DE', 'es-*', 'uk'=>'uk-UA', 'ru'=>'ru-RU'],
+            'enableLanguagePersistence' => false,
+            'enableLanguageDetection' => false,
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [

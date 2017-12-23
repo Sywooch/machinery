@@ -17,6 +17,7 @@ class Advert extends \yii\db\ActiveRecord
     const VCL_CATEGORIES = 2;
     const VCL_MANUFACTURES = 3;
     const VCL_COLOR = 5;
+    const VCL_COUNTRY = 4;
 
     public $translate;
 
@@ -65,6 +66,7 @@ class Advert extends \yii\db\ActiveRecord
             [['title', 'website', 'phone', 'model', 'meta_description', 'reference_number'], 'string', 'max' => 255],
             [['photos'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png', 'maxFiles' => 15],
             [['category'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
+            [['country'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
             [['manufacture'], TaxonomyAttributeValidator::class, 'type' => 'string', 'pattern' => '/^[\w\s,\-]+$/u'],
 //            [['manufacture'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
             [['color'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
@@ -113,6 +115,7 @@ class Advert extends \yii\db\ActiveRecord
             'width' => Yii::t('app', 'Width (cm)'),
             'height' => Yii::t('app', 'Height (cm)'),
             'status_user' => Yii::t('app', 'Ad status'),
+            'country' => Yii::t('app', 'Country'),
         ];
     }
 
@@ -156,6 +159,12 @@ class Advert extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TaxonomyItems::className(), ['id' => 'term_id'])
             ->where(['vid' => self::VCL_COLOR])
+            ->viaTable('{{%taxonomy_index}}', ['entity_id' => 'id']);
+    }
+    public function getCountry()
+    {
+        return $this->hasOne(TaxonomyItems::className(), ['id' => 'term_id'])
+            ->where(['vid' => self::VCL_COUNTRY])
             ->viaTable('{{%taxonomy_index}}', ['entity_id' => 'id']);
     }
 

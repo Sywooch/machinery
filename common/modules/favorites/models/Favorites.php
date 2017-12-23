@@ -2,6 +2,7 @@
 
 namespace common\modules\favorites\models;
 
+use common\models\Advert;
 use yii;
 
 /**
@@ -53,6 +54,10 @@ class Favorites extends \yii\db\ActiveRecord
     public function getCategories()
     {
         return $this->hasMany(FavoritesCategory::class, ['favorite_id' => 'id']);
+    }
+
+    public function getAdvert(){
+        return $this->hasOne(Advert::class, ['id' => 'entity_id'])->where(['model'=>'Advert']);
     }
     
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\controllers;
 
 use Yii;
@@ -6,6 +7,10 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
+use common\models\Advert;
+use common\modules\comments\models\Comments;
+use common\modules\communion\models\CommunionMessage;
+use common\modules\communion\models\Communion;
 
 /**
  * Site controller
@@ -52,7 +57,7 @@ class SiteController extends Controller
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-             
+
                 'maxLength' => 7,
                 'minLength' => 4,
             ],
@@ -61,7 +66,16 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $adverts = Advert::find()->where(['maderated' => null])->all();
+        $messages = CommunionMessage::find()
+            ->joinWith('comunion')
+            ->where(['status' => CommunionMessage::ST_NEW])
+            ->where(['communion.type' => Communion::TYPE_SUPPORT])
+            ->all();
+        return $this->render('index', [
+            'adverts' => $adverts,
+            'messages' => $messages,
+        ]);
     }
 
     public function actionLogin()

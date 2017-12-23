@@ -66,6 +66,7 @@ return [
 //                'catalog/<FilterForm:.*>' => 'catalog/index',
                 ['class' => 'frontend\components\AliasRule'],
                 ['class' => 'frontend\components\CatalogRule'],
+                '' => 'site/index',
                 'object/<id:\d+>' => 'advert/view',
                 'catalog' => 'catalog/index',
                 'ajax/<action>/<id:\d+>' => 'ajax/<action>',

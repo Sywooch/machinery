@@ -48,7 +48,7 @@ class Favorite
         return new ActiveDataProvider([
             'query' => $this->_repository->find($params),
             'pagination' => [
-                'pageSize' => 20, 
+                'pageSize' => 20,
             ],
         ]);
     }

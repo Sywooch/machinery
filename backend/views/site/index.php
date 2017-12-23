@@ -6,46 +6,74 @@ $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <?php //dd($messages) ?>
+            <div class="col-lg-6">
+                <div class="box">
+                    <div class="box-body">
+                        <h2>New Messages</h2>
+                        <table class="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ID</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if ($messages): foreach ($messages as $k => $message): ?>
+                                <tr>
+                                    <td><?= $k + 1 ?></td>
+                                    <td><?= $message->id ?></td>
+                                    <td><?= $message->comunion->subject ?></td>
+                                    <td><?= \yii\helpers\StringHelper::truncate($message->body, 50) ?></td>
+                                    <td><?= Yii::$app->formatter->asDatetime($message->create_at, 'short') ?></td>
+                                    <td>
+                                        <a href="<?= \yii\helpers\Url::to(['/communions/view', 'id' => $message->comunion->id]) ?>"
+                                           class="btn btn-xs btn-success"><span
+                                                    class="glyphicon glyphicon-eye-open"></span></a>
+                                        <a href="<?= \yii\helpers\Url::to(['/message/delete', 'id' => $message->id]) ?>"
+                                           data-pjax="0" data-confirm="Are you sure you want to delete this item?"
+                                           data-method="post" class="btn  btn-xs btn-danger delete-message"><span
+                                                    class="glyphicon glyphicon-trash"></span></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; endif; ?>
+                            </tbody>
+                        </table>
+                        <p><a class="btn btn-default" href="<?= \yii\helpers\Url::to(['communions/support']) ?>">All support messages &raquo;</a>
+                        </p>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            <div class="col-lg-6">
+                <div class="box">
+                    <div class="box-body">
+                        <h2>New Adverts</h2>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="box">
+                    <div class="box-body">
+                        <h2>New Users</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="box">
+                    <div class="box-body">
+                        <h2>New Comments</h2>
+                    </div>
+                </div>
             </div>
         </div>
 

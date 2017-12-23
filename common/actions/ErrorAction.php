@@ -15,6 +15,7 @@ use yii\web\NotFoundHttpException;
 use common\modules\file\filestorage\Instance;
 use common\modules\file\helpers\FileHelper;
 use common\modules\file\helpers\StyleHelper;
+use yii\web\HttpException;
 
 /**
  * ErrorAction displays application errors using a specified view.

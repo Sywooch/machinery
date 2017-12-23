@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\modules\communion\models\CommunionMessage;
+use common\modules\favorites\models\Favorites;
 use common\modules\language\models\Message;
 use dektrium\user\Finder;
 use yii;
@@ -104,7 +105,8 @@ class ProfileController extends ProfileControllerBase
     {
         $id = \Yii::$app->user->getId();
         $profile = $this->finder->findProfileById($id);
-        return $this->render('/user/profile/favorite', ['profile' => $profile,]);
+        $model = Favorites::find()->where(['user_id'=>$id])->with('advert')->all();
+        return $this->render('/user/profile/favorite', ['profile' => $profile,'model'=>$model]);
     }
 
     public function actionTarif(){
@@ -125,6 +127,8 @@ class ProfileController extends ProfileControllerBase
     }
 
     public function actionCommunion(){
+        $id = \Yii::$app->user->getId();
+        $profile = $this->finder->findProfileById($id);
         $model = Communion::find()
             ->with(['messages', 'user', 'newMessages'])
             ->where(['user_id'=>Yii::$app->user->id])
@@ -133,6 +137,7 @@ class ProfileController extends ProfileControllerBase
             ->all();
 
         return $this->render('/user/profile/communion', [
+            'profile' => $profile,
             'model'=>$model,
         ]);
     }

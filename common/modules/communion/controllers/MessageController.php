@@ -11,6 +11,20 @@ class MessageController extends Controller
 {
 
     /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+    /**
      *
      */
     public function actionIndex()
@@ -53,6 +67,28 @@ class MessageController extends Controller
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
             return $resp;
+        }
+    }
+
+    public function actionDelete($id){
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the CommunionMessage model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return CommunionMessage the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = CommunionMessage::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 

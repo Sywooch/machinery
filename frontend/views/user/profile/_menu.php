@@ -24,7 +24,7 @@ $user = Yii::$app->user->identity;
                 ['label' => '<i class="fa fa-list" aria-hidden="true"></i> ' . Yii::t('app', 'My Listings'), 'url' => ['/advert/listing']],
                 ['label' => '<i class="fa fa-heart" aria-hidden="true"></i> ' . Yii::t('app', 'My favorite'), 'url' => ['/profile/favorite']],
                 ['label' => '<i class="fa fa-heart" aria-hidden="true"></i> ' . Yii::t('app', 'Premium advertising'), 'url' => ['/ads/index']],
-                ['label' => '<i class="fa fa-envelope" aria-hidden="true"></i> ' . Yii::t('app', 'My correspondence') . '  <span class="badge"> ' . count(CommunionMessage::findNewMessage()) .' </span>', 'url'=>['profile/communion']],
+                ['label' => '<i class="fa fa-envelope" aria-hidden="true"></i> ' . Yii::t('app', 'My correspondence') . '  <span class="badge"> ' . count(CommunionMessage::findNewMessage()) .' </span>', 'url'=>['/profile/communion']],
                 ['label' => '<i class="fa fa-cogs" aria-hidden="true"></i> ' . Yii::t('app', 'Tariff plan'), 'url' => ['/profile/tarif']],
             ],
             'encodeLabels' => false,

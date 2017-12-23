@@ -20,6 +20,9 @@ class Communion extends \yii\db\ActiveRecord
 {
     const ST_OPEN = 1;
     const ST_CLOSE = 2;
+
+    const TYPE_SUPPORT = 1;
+    const TYPE_USER = 2;
     /**
      * @inheritdoc
      */

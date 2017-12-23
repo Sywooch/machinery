@@ -20,9 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $this->render('_head') ?>
 
                 <div class="list-offers _list flexbox cf">
-                    <?php for($i=0; $i<3; $i++): ?>
-                    <?php echo $this->render('/parts/item-offer'); ?>
-                    <?php endfor; ?>
+                    <?php foreach($model as $entity): ?>
+                    <?php echo $this->render('/parts/item-offer', ['entity' => $entity->advert]); ?>
+                    <?php endforeach; ?>
 
                 </div> <!-- .list-favorite-adv -->
 
