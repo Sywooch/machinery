@@ -42,9 +42,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td><?= Yii::$app->formatter->asRelativeTime($item->deadline) ?></td>
                             <td><?= Yii::$app->formatter->asBoolean($item->status) ?></td>
                             <td>
-                                <?php foreach ($item->options as $opt): ?>
-                                    <div><?= $opt->name ?></div>
-                                <?php endforeach; ?>
+                                <?php if($item->options):
+                                    echo json_encode($item->options); ?>
+<!--                                --><?php //foreach ($item->options as $opt): ?>
+<!--                                    <div>--><?//= $opt->name ?><!--</div>-->
+<!--                                --><?php //endforeach; ?>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -52,7 +52,7 @@ IEAsset::register($this);
     <div class="filter-drop-wrap">
         <div class="filter-drop-container">
             <div class="container">
-                <button class="btn-close close-drop">x</button>
+                <button class="btn-close close-drop">&times;</button>
                 <?= FilterWidget::widget(); ?>
             </div>
         </div>

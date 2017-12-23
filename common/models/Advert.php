@@ -56,7 +56,7 @@ class Advert extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'manufacture', 'model', 'category'], 'required'],
+            [['manufacture', 'category'], 'required'],
             [['body', 'bucket_capacity', 'tire_condition', 'serial_number', 'lang', 'meta_description'], 'string'],
             [['price', 'power', 'weight', 'pressure','capacity','generatorOutput','voltage','tankVolume','length','width','height' ], 'number'],
             [['currency', 'year', 'condition', 'operating_hours', 'mileage', 'parent', 'status_user'], 'integer'],
@@ -233,7 +233,7 @@ class Advert extends \yii\db\ActiveRecord
         return $this->hasMany(Viewed::className(), ['advert_id' => 'id'])->asArray();
     }
     public function viewedUpdate($id){
-        $andWhere = !Yii::$app->user->isGuest ? ['user_id'=>Yii::$app->user->id] : ['user_ip' => Yii::$app->request->userIP];
+        $andWhere = !Yii::$app->user->isGuest ? ['user_id'=>Yii::$app->user->id] : ['user_ip' => Yii::$app->request->userIP, 'user_id'=>null];
         if(!$viewed = Viewed::find()->where(['advert_id'=>$id])->andWhere($andWhere)->one()) {
             $viewed = new Viewed();
             $viewed->advert_id = $id;
@@ -257,6 +257,32 @@ class Advert extends \yii\db\ActiveRecord
 
     public function getComments(){
         return $this->hasMany(Comments::className(), ['entity_id' => 'id'])->where(['model'=>'Advert']);
+    }
+
+    public function getTranslateTitle($model){
+        if(!$model->variant) return "Advert #".$model->id;
+//        echo $model->variant;
+        if($model->variant[Yii::$app->language]){
+            return $model->variant[Yii::$app->language]->title;
+        }
+
+        return "Advert #".$model->id;
+    }
+    public function getTranslateBody($model){
+        if(!$model->variant) return false;
+        if($model->variant[Yii::$app->language]){
+            return $model->variant[Yii::$app->language]->body;
+        }
+
+        return false;
+    }
+    public function getTranslateMeta($model){
+        if(!$model->variant) return false;
+        if($model->variant[Yii::$app->language]){
+            return $model->variant[Yii::$app->language]->meta_description;
+        }
+
+        return false;
     }
 
 }

@@ -734,7 +734,7 @@
 * advert page
  */
  .obj-container {
- 	.advert-status {
+ 	.object-status {
 		font-size: 15px;
 		text-transform: uppercase;
 		margin-bottom: 12px;
@@ -745,7 +745,7 @@
  }
 .view-offer {
 	
-	.advert-links-row {
+	.object-links-row {
 		text-transform: uppercase;
 		margin-bottom: 25px;
 		.btn {
@@ -756,14 +756,14 @@
 			}
 		}
 	}
-	.title-advert {
+	.title-object {
 		font-size: 30px;
 		font-weight: 700;
 		line-height: 1.2;
 		color: #2c363c;
 		margin: 40px 0 40px;
 	}
-	.contact-advert-row {
+	.contact-object-row {
 		font-size: 16px;
 		margin-bottom: 38px;
 	}
@@ -773,12 +773,14 @@
 	@include sprite($ic-earth);
 	vertical-align: middle;
 }
-.advert-images-row {
+.object-images-row {
 	.big-images {
+		//max-height: 410px;
 		._item-slide {
 			position: relative;
 			overflow: hidden;
 			display: flex;
+			//height: 100%;
 			a {
 				display: flex;
 				height: 100%;
@@ -787,6 +789,8 @@
 			img {
 				margin: auto;
 				position: relative;
+				max-width:100%;
+				max-height: 100%;
 				z-index: 2;
 			}
 			

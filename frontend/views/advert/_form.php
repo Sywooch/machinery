@@ -93,15 +93,15 @@ $years['-1970'] = Yii::t('app', 'Before 1970');
                             </ul>
                             <?php foreach ($languages as $key => $item): ?>
                                 <div id="tabs-<?= $item->url ?>">
-                                    <div class="form-group field-advertvariant-title required">
+                                    <div class="form-group field-object-variant-title required">
                                         <label class="control-label" for=""><?= Yii::t('app', 'Title', [], $item->local) ?></label>
                                         <input type="text" name="translate[<?= $item->local ?>][title]" value="<?= $translates[$item->local]['title'] ?>" class="form-control">
                                     </div>
-                                    <div class="form-group field-advertvariant-body">
+                                    <div class="form-group field-object-variant-body">
                                         <label class="control-label" for=""><?= Yii::t('app', 'Description', [], $item->local) ?></label>
                                         <textarea name="translate[<?= $item->local ?>][body]" id="translate-body-<?= $item->local ?>" class="editor" cols="30" rows="10" class="form-control"><?= $translates[$item->local]['body'] ?></textarea>
                                     </div>
-                                    <div class="form-group field-advertvariant-meta">
+                                    <div class="form-group field-object-variant-meta">
                                         <label class="control-label" for=""><?= Yii::t('app', 'Meta Description', [], $item->local) ?></label>
                                         <textarea name="translate[<?= $item->local ?>][meta_description]" id="translate-meta-descr-<?= $item->local ?>" cols="30" rows="3" class="form-control"><?= $translates[$item->local]['meta_description'] ?></textarea>
                                     </div>

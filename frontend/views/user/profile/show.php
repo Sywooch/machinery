@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use \yii\helpers\Url;
 
 $this->title = empty($profile->name) ? Html::encode($profile->user->username) : Html::encode($profile->name);
 $this->params['breadcrumbs'][] = $this->title;
@@ -18,22 +19,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="cf">
                     <div class="col-md-6">
                         <div class="panel panel-primary">
-                            <div class="panel-heading _header">Recently viewed</div>
+                            <div class="panel-heading _header"><?= Yii::t('app', 'Recently viewed') ?></div>
                             <div class="_list panel-body">
                                 <ul>
-                                    <li><a href="#">Далеко-далеко за.</a></li>
-                                    <li><a href="#">Алфавит, великий.</a></li>
-                                    <li><a href="#">Снова, осталось.</a></li>
-                                    <li><a href="#">Образ, назад!</a></li>
-                                    <li><a href="#">Свое, свою.</a></li>
-                                    <li><a href="#">Все, имени!</a></li>
+                                    <?php if($viewed): ?>
+                                        <?php foreach($viewed as $item): ?>
+                                    <li>
+                                        <a href="<?= Url::to(['advert/view', 'id'=>$item->advert->id]) ?>"><?php echo $item->advert->getTranslateTitle($item->advert) ?></a>
+                                        <span class="date"> | <?php echo Yii::$app->formatter->asDatetime($item->create_at, 'short') ?></span>
+                                    </li>
+                                            <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="panel panel-primary">
-                            <div class="panel-heading _header">My favorite listing</div>
+                            <div class="panel-heading _header"><?= Yii::t('app', 'My favorite listing') ?></div>
                             <div class="_list panel-body">
                                 <ul>
                                     <li><a href="#">Далеко-далеко за.</a></li>

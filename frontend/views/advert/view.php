@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 
 use common\modules\file\helpers\StyleHelper;
+use \common\modules\favorites\widgets\Favorite\FavoriteButtonWidget;
 
 $this->title = $model->translate->title;
 $this->params['breadcrumbs'][] = [
     'label'=> Yii::t('app', 'Catalog'),
-    'url' => 'catalog'
+    'url' => \yii\helpers\Url::to(['catalog/index'])
 ];
 $this->params['breadcrumbs'][] = $model->translate->title;
 ?>
@@ -28,7 +29,9 @@ $this->endBlock();
             <div class="obj-container">
                 <?php if($model->isAuthor($model) || Yii::$app->user->can('administrator')): ?>
                 <div class="buttons-line">
-                    <p class="advert-status status-not-publish text-danger">This listing is awaiting payment and is NOT live.</p>
+                    <?php if($model->isAuthor($model) && $model->order_options): ?>
+                    <p class="object-status status-not-publish text-danger">This listing is awaiting payment and is NOT live.</p>
+                    <?php endif; ?>
                     <a href="<?= \yii\helpers\Url::to(['advert/delete/', 'id'=>$model->id]) ?>" data-confirm="<?= Yii::t('app', 'Delete?') ?>" class="btn btn-danger"><?= Yii::t('app','Delete') ?></a>
                     <a href="<?= \yii\helpers\Url::to(['advert/update/', 'id'=>$model->id]) ?>" class="btn btn-primary"><?= Yii::t('app','Edit') ?></a>
                     <?php if($model->isAuthor($model) && $model->order_options): ?>
@@ -37,15 +40,16 @@ $this->endBlock();
                 </div>
                 <?php endif; ?>
                 <div class="view-offer">
-                    <h2 class="title-advert text-uppercase"><?= $model->translate->title ?></h2>
+                    <h2 class="title-object text-uppercase"><?= $model->translate->title ?></h2>
                     <?php if($model->phone): ?>
-                    <div class="contact-advert-row"><i class="glyphicon glyphicon-phone"></i> <?= $model->phone ?></div>
+                    <div class="contact-object-row"><i class="glyphicon glyphicon-phone"></i> <?= $model->phone ?></div>
                     <?php endif; ?>
-                    <div class="advert-links-row">
+                    <div class="object-links-row">
                         <?php if($model->website): ?>
                         <a href="<?= $model->website ?>" target="_blank" class="btn btn-primary"><i class="ic-earth"></i><?= Yii::t('app', 'Visit website') ?></a>
                         <?php endif; ?>
-                        <a href="#" class="btn btn-primary add-favorite"><i class="fa fa-heart" aria-hidden="true"></i> <?= Yii::t('app', 'Add favorites') ?></a>
+                        <?php echo FavoriteButtonWidget::widget(['model'=>$model, 'classBtn' => 'btn btn-primary', 'classIcon'=>'fa fa-heart']) ?>
+<!--                        <a href="#" class="btn btn-primary add-favorite"><i class="fa fa-heart" aria-hidden="true"></i> --><?//= Yii::t('app', 'Add favorites') ?><!--</a>-->
                         <?php if($model->user_id != Yii::$app->user->id): ?>
                         <a href="#" class="btn btn-primary" data-toggle="modal"
                            data-target="#communityModal">
@@ -95,7 +99,9 @@ $this->endBlock();
                                         <?php endif; ?>
                                         <li><span><i class="fa fa-comments-o" aria-hidden="true"></i> <?= count($model->comments) ?> <?= Yii::t('app', 'Comments') ?></span></li>
                                         <li><a href="<?= \yii\helpers\Url::to(['advert/print', 'id'=>$model->id]) ?>"><i class="fa fa-print" aria-hidden="true"></i><?= Yii::t('app', 'Print this page') ?></a></li>
-                                        <li><a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i><?= Yii::t('app', 'Add Favorites') ?></a></li>
+                                        <li>
+                                            <?php echo FavoriteButtonWidget::widget(['model'=>$model, 'classBtn' => '', 'classIcon'=>'fa fa-heart']) ?>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

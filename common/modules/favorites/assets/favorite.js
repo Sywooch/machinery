@@ -70,3 +70,35 @@ var Favorite = {
 };
 
 Favorite.init();
+
+$(document).ready(function(){
+    $('body').on('click', '.btn-favorite', function(e){
+        e.preventDefault();
+        var a = $(this);
+        var text = a.text();
+        var href = a.attr('href');
+        var dataHref = a.data('href');
+        var dataText = a.data('text');
+        var model = a.data('model');
+        var id = a.data('id');
+        var btn = $('a[data-model='+model+'][data-id='+id+']');
+        // console.log(a.data);
+        $.post(href, {entityId: id, entity: model}, function(d){
+            if(a.data('action') == 'add'){
+                btn.data('action', 'remove');
+                btn.removeClass('add-favorite').addClass('remove-favorite');
+            } else {
+                btn.data('action', 'add');
+                btn.removeClass('remove-favorite').addClass('add-favorite');
+            }
+            btn.attr('href', dataHref)
+                .data('href', href)
+                .data('text', text)
+                .find('span')
+                .text(dataText);
+        }, 'json');
+
+
+
+    })
+});

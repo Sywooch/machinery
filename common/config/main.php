@@ -8,7 +8,7 @@ return [
         ],
         'urlManager' => [
             'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['en'=>'en-EN', 'fr'=>'fr-FR', 'de'=>'de-DE', 'es-*', 'uk'=>'uk-UA', 'ru'=>'ru-RU'],
+            'languages' => [''=>'en-EN', 'fr'=>'fr-FR', 'de'=>'de-DE', 'es-*', 'uk'=>'uk-UA', 'ru'=>'ru-RU'],
 
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -47,6 +47,9 @@ return [
         ],
         'notice' => [
             'class' => 'common\modules\notice\Module',
+        ],
+        'favorites' => [
+            'class' => 'common\modules\favorites\Module',
         ],
         'user' => [
             'class' => 'dektrium\user\Module',

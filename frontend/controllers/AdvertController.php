@@ -77,7 +77,7 @@ class AdvertController extends Controller
         $translates = $this->getTranslates($parent);
 
         if (!$translate->lang) $translate->lang = $lang;
-        $model->title = 'zzzzzzz';
+//        $model->title = 'zzzzzzz';
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($this->_advertService->save($model)) {
                 if ($post_trs = Yii::$app->request->post('translate')) {

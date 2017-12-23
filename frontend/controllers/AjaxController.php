@@ -50,9 +50,10 @@ class AjaxController extends Controller
 
     }
 
-    public function actionCategories($id)
+    public function actionCategories($id=null)
     {
         if(\Yii::$app->request->isAjax){
+            if(!$id) return Json::encode(['0'=>'']);
             $filter = new FilterForm();
             $filter->load(\Yii::$app->request->get());
 
@@ -61,6 +62,7 @@ class AjaxController extends Controller
             $out = [];
             $_cats = TaxonomyHelper::tree($categories, $id);
             $cats = CatalogHelper::tree2flat($_cats);
+
 
             unset($cats[$id]);
             foreach ($cats as $category) {

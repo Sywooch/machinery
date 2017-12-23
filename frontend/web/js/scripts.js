@@ -36,7 +36,9 @@ $(document).ready(function () {
 
     $('body').on('click', '.btn-open-filter', function (e) {
         e.preventDefault();
-        $('.filter-drop-container').slideDown(200);
+        $('.filter-drop-container').slideDown(200, function(){
+            $(this).find('select').trigger('refresh');
+        });
     });
     $('body').on('click', '.close-drop', function (e) {
         e.preventDefault();
@@ -67,29 +69,37 @@ $(document).ready(function () {
 
     $('body').append(galleryPopup);
 
+
     try {
         $('.big-images-slider').slick({
-            dots: false,
+            slidesToShow: 1,
+            slidesToScroll: 1,
             arrows: false,
-            asNavFor: '.slider-nav',
-            fade: true
+            fade: true,
+            asNavFor: '.slider-nav'
+        }).on('afterChange', function (event, slick, currentSlide) {
+            console.log( currentSlide);
+            // $('.slider-nav').slick('slickGoTo', currentSlide, true);
+            $('.slider-nav').find('[data-slick-index='+currentSlide+']').trigger('click');
+            $('#slide-number').text(currentSlide + 1);
         });
         $('.slider-nav').slick({
-            dots: false,
-            asNavFor: '.big-images-slider',
             slidesToShow: 5,
-            centerMode: true,
-            centerPadding: '0px',
-            appendArrows: '.small-images',
-            focusOnSelect: true
-        }).on('afterChange', function (event, slick, currentSlide) {
-            $('#slide-number').text(currentSlide + 1);
-        })
+            slidesToScroll: 1,
+            asNavFor: '.big-images-slider',
+            dots: false,
+            centerMode: false,
+            focusOnSelect: true,
+            // initialSlide: 2,
+            appendArrows: '.small-images'
+        });
+
     } catch (e) {
     }
     try {
         initPhotoSwipeFromDOM('.gallery-swipe');
     } catch (e) {
+        console.log(e);
     }
 
     /**

@@ -57,4 +57,9 @@ class Viewed extends \yii\db\ActiveRecord
     {
         return new ViewedQuery(get_called_class());
     }
+
+    public function getAdvert()
+    {
+        return $this->hasOne(Advert::className(), ['id' => 'advert_id']);
+    }
 }

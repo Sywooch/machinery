@@ -36,6 +36,8 @@ class DefaultController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'touch' => ['POST'],
+                    'remove' => ['POST'],
+                    'add' => ['POST'],
                     'touch-category' => ['POST']
                 ],
             ],
@@ -91,5 +93,58 @@ class DefaultController extends Controller
         ];
     }
 
+    public function actionAdd(){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (!Yii::$app->user->id) {
+            return ['status' => 'error', 'type' => 'auth'];
+        }
+        if($post = Yii::$app->request->post()){
+            $entityId = Yii::$app->request->post('entityId');
+            $entity = Yii::$app->request->post('entity');
+
+            $id = $this->_favorite->touch($entityId, $entity);
+
+            if ($id) {
+                return [
+                    'status' => 'success',
+                    'type' => $id === true ? 'remove' : 'add',
+                    'id' => $id,
+                    'entityId' => $entityId,
+                    'count' => $this->_favorite->getRepository()->count(Yii::$app->user->id)
+                ];
+            }
+            return [
+                'status' => 'success',
+                'type' => $id === true ? 'remove' : 'add',
+                'id' => 0,
+                'entityId' => $entityId,
+                'count' => $this->_favorite->getRepository()->count(Yii::$app->user->id)
+            ];
+        }
+    }
+    public function actionRemove(){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (!Yii::$app->user->id) {
+            return ['status' => 'error', 'type' => 'auth'];
+        }
+        if($post = Yii::$app->request->post()){
+            $entityId = Yii::$app->request->post('entityId');
+            $entity = Yii::$app->request->post('entity');
+
+            $id = $this->_favorite->touch($entityId, $entity);
+
+            if ($id) {
+                return [
+                    'status' => 'success',
+                    'type' => $id === true ? 'remove' : 'add',
+                    'id' => $id,
+                    'entityId' => $entityId,
+                    'count' => $this->_favorite->getRepository()->count(Yii::$app->user->id)
+                ];
+            }
+        }
+    }
 
 }

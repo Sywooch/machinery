@@ -13,6 +13,7 @@ use yii\helpers\Json;
 use common\models\OrderPackage;
 use common\models\TarifOptions;
 use common\modules\communion\models\Communion;
+use common\models\Viewed;
 
 
 
@@ -37,7 +38,7 @@ class ProfileController extends ProfileControllerBase
     {
         $behaviors = parent::behaviors();
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['photo-upload'], 'roles' => ['@']];
-        $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['favorite'], 'roles' => ['@']];
+        $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['favorite', 'view'], 'roles' => ['@']];
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['published'], 'roles' => ['@']];
         $behaviors['access']['rules'][] = ['allow' => true, 'actions' => ['tarif'], 'roles' => ['@']];
 
@@ -78,6 +79,22 @@ class ProfileController extends ProfileControllerBase
         return '';
     }
 
+    public function actionView()
+    {
+        $id = \Yii::$app->user->getId();
+        $profile = $this->finder->findProfile(['user_id' => $id])->one();
+
+        if ($profile === null) {
+            throw new NotFoundHttpException();
+        }
+        $viewed = Viewed::find()->where(['user_id'=>Yii::$app->user->id])->with(['advert'])->all();
+
+        return $this->render('/user/profile/show', [
+            'profile' => $profile,
+            'viewed' => $viewed,
+        ]);
+    }
+
     /**
      * User favorite page
      *
@@ -93,11 +110,13 @@ class ProfileController extends ProfileControllerBase
     public function actionTarif(){
         $id = \Yii::$app->user->getId();
         $profile = $this->finder->findProfileById($id);
-        $model = OrderPackage::find()->where(['user_id' => $id])->with('package')->all();
-        foreach($model as $item){
-//            dd(unserialize($item->options));
-//            $item->options = unserialize($model->options);
-            $item->options = TarifOptions::find()->where(['in', 'id', unserialize($item->options)])->all();
+        if($model = OrderPackage::find()->where(['user_id' => $id])->with('package')->all()){
+            foreach ($model as $item) {
+//                dd($item->options);
+//                dd(json_encode($item->options));
+    //            $item->options = unserialize($model->options);
+                //$item->options = TarifOptions::find()->where(['in', 'id', unserialize($item->options)])->all();
+            }
         }
 
 //        dd($model, 1);

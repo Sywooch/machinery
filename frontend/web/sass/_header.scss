@@ -220,6 +220,7 @@
   position: relative;
   z-index: 999;
   .filter-drop-container {
+    padding: 20px;
     display: none;
     position: absolute;
     left: 0;
@@ -228,6 +229,19 @@
     min-width: 100%;
     width: 100%;
     background: #f3f3f3 url("../images/basic-shadow.png") no-repeat center top;
+    .btn-close {
+      cursor: pointer;
+      border: none;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      font-size: 22px;
+      background: none;
+      box-shadow: none;
+      outline: none;
+      color: $yellow;
+
+    }
   }
 }
 
