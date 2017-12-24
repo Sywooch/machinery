@@ -30,7 +30,7 @@ $this->title = 'My Yii Application';
                                 <tr>
                                     <td><?= $k + 1 ?></td>
                                     <td><?= $message->id ?></td>
-                                    <td><?= $message->comunion->subject ?></td>
+                                    <td><strong><?= $message->comunion->subject ?></strong></td>
                                     <td><?= \yii\helpers\StringHelper::truncate($message->body, 50) ?></td>
                                     <td><?= Yii::$app->formatter->asDatetime($message->create_at, 'short') ?></td>
                                     <td>

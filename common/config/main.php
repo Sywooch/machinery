@@ -46,6 +46,9 @@ return [
         'communion' => [
             'class' => 'common\modules\communion\Module',
         ],
+        'subscribe' => [
+            'class' => 'common\modules\subscribe\Module',
+        ],
         'notice' => [
             'class' => 'common\modules\notice\Module',
         ],

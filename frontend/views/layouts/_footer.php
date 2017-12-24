@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-
+use yii\bootstrap\Modal;
 ?>
 <footer id="footer" class="site-footer">
     <div class="container">
@@ -30,16 +30,8 @@ use yii\helpers\Html;
             </div>
             <div class="col-md-3 newsletter-footer-form">
                 <div class="newsletter-footer-form-wrapper">
-                	<h3 class="newsletter-title">Newsletter</h3>
-                    <div class="newsletter-form">
-                        <form class="">
-                            <div class="form-group required">
-								<input type="text" id="" class="form-control" name="" tabindex="1" placeholder="Enter your mail" aria-required="true">
-								<div class="help-block"></div>
-							</div>
-							<div class="form-group"><button type="submit">Subscribe</button></div>
-                        </form>
-                    </div>
+                    <?= \common\modules\subscribe\widgets\Subscribe\SubscribeFormWidget::widget() ?>
+
                 </div>
             </div>
 
@@ -61,3 +53,10 @@ use yii\helpers\Html;
     </div>
 
 </footer>
+<?php Modal::begin([
+    'id' => 'status-modal',
+    'header' => '<div class="text-header-modal">Header modal</div>',
+    'bodyOptions' => ['class' => 'modal-body']
+]); ?>
+    <div class="text-status"></div>
+<?php Modal::end(); ?>
