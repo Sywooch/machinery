@@ -12,7 +12,6 @@ class TaxonomyIndexRepository
      * @var array TaxonomyItems
      */
     private $_terms = [];
-
     /**
      * @param string $attribute
      * @param TaxonomyItems $term

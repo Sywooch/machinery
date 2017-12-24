@@ -3,15 +3,11 @@
 namespace frontend\controllers;
 
 use common\models\AdvertRepository;
-use common\modules\taxonomy\helpers\TaxonomyHelper;
 use common\modules\taxonomy\models\TaxonomyItemsRepository;
 use frontend\models\FilterForm;
 use yii\data\Sort;
 use yii\web\Controller;
 use common\helpers\ModelHelper;
-use yii\helpers\Json;
-use frontend\helpers\CatalogHelper;
-
 use common\modules\search\Module as SearchModule;
 use yii;
 
@@ -34,10 +30,11 @@ class AjaxController extends Controller
     private $_search;
 
     /**
-     * CatalogController constructor.
+     * AjaxController constructor.
      * @param string $id
-     * @param \yii\base\Module $module
+     * @param yii\base\Module $module
      * @param AdvertRepository $advertRepository
+     * @param TaxonomyItemsRepository $taxonomyItemsRepository
      * @param array $config
      */
     public function __construct($id, $module, AdvertRepository $advertRepository, TaxonomyItemsRepository $taxonomyItemsRepository, array $config = [])
@@ -50,29 +47,11 @@ class AjaxController extends Controller
 
     }
 
-    public function actionCategories($id)
+    public function actions()
     {
-        if(\Yii::$app->request->isAjax){
-            $filter = new FilterForm();
-            $filter->load(\Yii::$app->request->get());
-
-            $categoryCounts = $this->_advertRepository->getSubCategories($this->_advertRepository->searchQueryByFilter($filter));
-            $categories = $categoryCounts ? $this->_taxonomyItemsRepository->getByIds(array_keys($categoryCounts)) : [];
-            $out = [];
-            $_cats = TaxonomyHelper::tree($categories, $id);
-            $cats = CatalogHelper::tree2flat($_cats);
-
-            unset($cats[$id]);
-            foreach ($cats as $category) {
-                if ($category['pid'] && $category['vid'] == 2) {
-                    $out[$category['id']] = "<option value='" . $category['id'] . "' class='level-".$category['level']."' data-translit='" . $category['transliteration'] . "'>" .
-                        $category['title'] . " (" . $categoryCounts[$category['id']]['c'] . ")</option>";
-                }
-            }
-            return Json::encode($out);
-        }
-
-
+        return [
+            'categories' => 'frontend\widgets\Filter\actions\FilterAction',
+        ];
     }
 
     /**

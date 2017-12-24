@@ -1,7 +1,8 @@
-/vendor
+﻿/vendor
 /files
 backend/web/.htaccess
 backend/runtime/
+backend/web/assets/*
 *.sql
 .idea/
 .idea/*
@@ -11,11 +12,6 @@ DATA/
 frontend/runtime/
 frontend/web/assets/*
 node_modules/*
-
 frontend/web/sass/bootstrap
-
 .phpintel/*
-gulpfile - копия (2).js
-gulpfile - копия.js
-
 backend/web/assets/

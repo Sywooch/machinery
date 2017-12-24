@@ -30,13 +30,13 @@ $form = ActiveForm::begin([
             <?= Html::activeDropDownList(
                 $model,
                 'category',
-                ArrayHelper::map($categories['category']??[], 'id', 'name'),
+                ArrayHelper::map($itemsRepository->getVocabularyTopTerms(2), 'id', 'name'),
                 [
-//                    'id' => 'obj-category',
+                    'id' => 'obj-category',
                     'name' => 'category',
                     'class' => 'filter-item form-control select-cascade select-category',
-//                    'data-url' => \yii\helpers\Url::to(['ajax/categories']),
-//                    'data-target' => '#obj-subcategory',
+                    'data-url' => \yii\helpers\Url::to(['ajax/categories']),
+                    'data-target' => '#obj-subcategory',
 //                    'data-type' => 'DropDownListFilter',
 //            'options' => $options
                     'prompt' => 'All',
@@ -49,13 +49,13 @@ $form = ActiveForm::begin([
             <?= Html::activeDropDownList(
                 $model,
                 'subcategory',
-                ArrayHelper::map($categories['subcategory']??[], 'id', 'title'),
+                ArrayHelper::map($subcats, 'id', 'title'),
                 [
                     'id' => 'obj-subcategory',
                     'name' => 'subcategory',
                     'class' => 'filter-item form-control select-subcategory',
                     'data-type' => 'DropDownListFilter',
-                   // 'options' => \frontend\helpers\CatalogHelper::optionsForSelect($subcats),
+                    'options' => \frontend\helpers\CatalogHelper::optionsForSelect($subcats),
                 ]); ?>
         </div>
 
@@ -66,7 +66,7 @@ $form = ActiveForm::begin([
             <?= Html::activeDropDownList(
                 $model,
                 'manufacturer',
-                ArrayHelper::map($categories['manufacturer']??[], 'id', 'name'),
+                ArrayHelper::map($itemsRepository->getVocabularyTerms(3), 'id', 'name'),
                 [
                     'id' => 'obj-manufacturer',
                     'name' => 'manufacturer',
@@ -182,7 +182,7 @@ $form = ActiveForm::begin([
             <?= Html::activeDropDownList(
                 $model,
                 'country',
-                ArrayHelper::map($categories['country']??[], 'id', 'name'),
+                ArrayHelper::map($itemsRepository->getVocabularyTerms(4), 'id', 'name'),
                 [
                     'id' => 'obj-country',
                     'name' => 'country',
@@ -213,7 +213,3 @@ $form = ActiveForm::begin([
 <?php ActiveForm::end(); ?>
 <div class="dots-filter-slider"></div>
 <?php //frontend\widgets\Filter\Asset::register($this) ?>
-
-<script>
-    var categoriesJson = <?=$categoriesJson;?>
-</script>

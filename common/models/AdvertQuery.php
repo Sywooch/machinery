@@ -58,7 +58,7 @@ class AdvertQuery extends \yii\db\ActiveQuery
      */
     public function price(FilterForm $filterForm)
     {
-        return $this->andFilterWhere(['price', '<=', $filterForm->price['max']])->andFilterWhere(['price', '>=', $filterForm->price['min']]);
+        return $this->andFilterWhere(['<=', 'price', $filterForm->price['max']])->andFilterWhere([ '>=', 'price', $filterForm->price['min']]);
     }
 
     /**

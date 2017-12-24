@@ -4,55 +4,52 @@ namespace frontend\widgets\Filter;
 
 use common\modules\taxonomy\models\TaxonomyItemsRepository;
 use frontend\models\FilterForm;
+use frontend\widgets\Filter\services\FilterService;
 use Yii;
 use yii\bootstrap\Widget;
 use common\models\AdvertRepository;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 
 class FilterWidget extends Widget
 {
-    const CACHE_TIME = 60 * 60 * 5;
 
+    /** @var FilterForm  */
     private $_model;
-    /**
-     * @var AdvertRepository
-     */
+
+    /** @var AdvertRepository  */
     private $_advertRepository;
 
+
+    /** @var FilterService  */
+    protected $_filterService;
+
+
     /**
-     * @var TaxonomyItemsRepository
+     * FilterWidget constructor.
+     * @param FilterForm $model
+     * @param FilterService $filterService
+     * @param AdvertRepository $_advertRepository
+     * @param array $config
      */
-    private $_taxonomyItemsRepository;
-
-    /**
-     * @var SearchModule
-     */
-
-
-    public function __construct(FilterForm $model, AdvertRepository $_advertRepository,  TaxonomyItemsRepository $_taxonomyItemsRepository, $config = array())
+    public function __construct(FilterForm $model, FilterService $filterService, AdvertRepository $_advertRepository,  $config = array())
     {
         $this->_model = $model;
-        $this->_taxonomyItemsRepository = $_taxonomyItemsRepository;
+        $this->_filterService = $filterService;
         $this->_advertRepository = $_advertRepository;
         parent::__construct($config);
     }
 
     public function run()
     {
-//        $load = [];
-        $load['FilterForm'] = Yii::$app->request->get();
-        $this->_model->load($load);
-        $_subcats = $this->_model->category ?
-            \common\modules\taxonomy\helpers\TaxonomyHelper::tree(
-                $this->_taxonomyItemsRepository->getVocabularyTerms(2), $this->_model->category) : [];
 
-        $subcats = \frontend\helpers\CatalogHelper::tree2flat($_subcats);
-        unset($subcats[$this->_model->category]);
+        $categories = $this->_filterService->findCategories(Yii::$app->request->get());
+
         return $this->render('filter-widget', [
             'model' => $this->_model,
-            'itemsRepository' => $this->_taxonomyItemsRepository,
-            'subcats' => $subcats,
+            'categories' => $categories,
+            'categoriesJson' => Json::encode($categories),
             'priceMin' => floor($this->_advertRepository->getMinPrice()),
             'priceMax' => ceil($this->_advertRepository->getMaxPrice()),
         ]);

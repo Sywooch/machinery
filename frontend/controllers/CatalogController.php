@@ -8,8 +8,6 @@ use frontend\models\FilterForm;
 use yii\data\Sort;
 use yii\web\Controller;
 use common\helpers\ModelHelper;
-
-use common\modules\search\Module as SearchModule;
 use yii;
 
 class CatalogController extends Controller
@@ -25,23 +23,24 @@ class CatalogController extends Controller
      */
     private $_taxonomyItemsRepository;
 
-    /**
-     * @var SearchModule
-     */
-    private $_search;
+//    /**
+//     * @var SearchModule
+//     */
+//    private $_search;
 
     /**
      * CatalogController constructor.
      * @param string $id
-     * @param \yii\base\Module $module
+     * @param yii\base\Module $module
      * @param AdvertRepository $advertRepository
+     * @param TaxonomyItemsRepository $taxonomyItemsRepository
      * @param array $config
      */
     public function __construct($id, $module, AdvertRepository $advertRepository, TaxonomyItemsRepository $taxonomyItemsRepository, array $config = [])
     {
         $this->_advertRepository = $advertRepository;
         $this->_taxonomyItemsRepository = $taxonomyItemsRepository;
-        $this->_search = Yii::$app->getModule('search');
+       // $this->_search = Yii::$app->getModule('search');
 
         parent::__construct($id, $module, $config);
 
@@ -53,7 +52,8 @@ class CatalogController extends Controller
     public function actionIndex()
     {
         $filter = new FilterForm();
-        $filter->load(\Yii::$app->request->get());
+        $params = Yii::$app->request->get('Search') ? Yii::$app->request->get('Search') : \Yii::$app->request->get();
+        $filter->load(['FilterForm' => $params]);
 
         $sort = new Sort([
             'attributes' => [

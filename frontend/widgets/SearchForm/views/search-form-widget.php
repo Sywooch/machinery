@@ -10,7 +10,7 @@ use yii\helpers\ArrayHelper;
 
 <?php
 $form = ActiveForm::begin([
-    'action' => \yii\helpers\Url::to(['catalog/search']),
+    'action' => \yii\helpers\Url::to(['catalog/index']),
     'id' => 'search-from',
     'method' => 'get',
     'options' => [

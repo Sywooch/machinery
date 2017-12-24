@@ -50,7 +50,7 @@ use yii\helpers\Html;
                     <a class="advert-b footer-button" href="<?= \yii\helpers\Url::to(['advert/create']) ?>"><?= Yii::t('app', 'add advent') ?></a>
                 </div>
                 <div class="dropup main-footer-language">
-                    <ul class="menu-lang">
+                    <ul class="menu-lang mmmm">
                         <li class="dropdown">
                             <?= \frontend\widgets\Language\LanguageSwitcher::widget() ?>
                         </li>
