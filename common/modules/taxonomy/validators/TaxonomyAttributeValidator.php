@@ -24,7 +24,6 @@ class TaxonomyAttributeValidator extends Validator
     {
 
         $data = $model->{$attribute};
-
         if (empty($data)) {
             return;
         }

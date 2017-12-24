@@ -52,7 +52,8 @@ $this->endBlock();
 
                         <?php foreach ($categories as $category): ?>
                             <?php if ($category->pid && $category->vid == 2): ?>
-                                <li><a href="/<?=CatalogHelper::getRootCategory($categories, $category)->transliteration?>/<?= $category->transliteration ?>"><?= $category->name ?> (<?= $categoryCounts[$category->id]['c'] ?>)</a>
+                                <li>
+                                    <a class="<?=\Yii::$app->request->get('subcategory')==$category->id ? 'active':'';?>" href="/<?=CatalogHelper::getRootCategory($categories, $category)->transliteration?>/<?= $category->transliteration ?>"><?= $category->name ?> (<?= $categoryCounts[$category->id]['c'] ?>)</a>
                                 </li>
                             <?php endif; ?>
                         <?php endforeach; ?>

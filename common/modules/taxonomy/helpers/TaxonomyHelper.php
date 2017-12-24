@@ -311,4 +311,15 @@ class TaxonomyHelper
         return $tree;
     }
 
+    public static function getTranslated($items){
+        $out = [];
+        if(!$items) return false;
+        $items = \yii\helpers\ArrayHelper::toArray($items);
+        foreach ($items as $key => $item){
+            foreach($item as $k=>$term){
+                $items[$key]['title'] = $item['data']['translations'][Yii::$app->language] ? $item['data']['translations'][Yii::$app->language] : $item['name'];
+            }
+        }
+        return $items;
+    }
 }

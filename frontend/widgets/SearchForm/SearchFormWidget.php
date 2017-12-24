@@ -19,8 +19,10 @@ class SearchFormWidget extends \yii\bootstrap\Widget
     public function run()
     {
         $categories = TaxonomyItems::find()
-            ->where(['vid' => 2])
-            ->andWhere(['pid' => 0])
+            ->where([
+                'vid' => 2,
+                'pid' => 0
+            ])
             ->orderBy(['weight' => SORT_ASC])
             ->all();
         $this->searchFormModel->load(Yii::$app->request->get());

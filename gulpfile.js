@@ -18,7 +18,7 @@ gulp.task('sass', function () {
         .pipe(autoprefixer({
             browsers: ['last 50 versions', '> 1%', 'ie 8']
         }))
-        .pipe(sourcemaps.write())
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./frontend/web/css/'))
     ;
 });

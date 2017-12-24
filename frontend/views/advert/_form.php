@@ -156,29 +156,51 @@ $years['-1970'] = Yii::t('app', 'Before 1970');
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="panel-body">
-
+<?php //dd($model->area) ?>
                         <div class="form-row">
                             <div class="row">
                                 <div class="col-md-6">
+                                    <?= $form->field($model, 'area')->dropDownList(
+                                            \yii\helpers\ArrayHelper::map(\common\modules\taxonomy\helpers\TaxonomyHelper::getTranslated($areas), 'id', 'title'), ['prompt' => Yii::t('app','Select')]) ?>
+<!--                                    --><?php // echo $form->field($model, 'area')
+//                                        ->widget(Select2::classname(), [
+//                                            'data' => \yii\helpers\ArrayHelper::map(
+//                                                $areas, 'id', 'name'),
+//                                            'options' => ['placeholder' => Yii::t('app', '- Select Area -'), 'size' => 2],
+//                                            'pluginOptions' => [
+//                                                'allowClear' => true,
+//                                                'multiple' => true,
+//                                                'maximumInputLength' => 15,
+//                                                'tags' => true,
+//                                                'maximumSelectionLength' => 2,
+//                                            ],
+//                                            'showToggleAll' => false,
+//                                        ]); ?>
+                                </div>
+<!--                                --><?php //dd(\common\modules\taxonomy\helpers\TaxonomyHelper::getTranslated($categories)); ?>
+                                <div class="col-md-6">
                                     <?= $form->field($model, 'category')
                                         ->widget(Select2::classname(), [
-                                            'data' => TaxonomyHelper::terms3Level($categories),
+//                                            'data' => TaxonomyHelper::terms3Level($categories),
+                                            'data' => \yii\helpers\ArrayHelper::map(\common\modules\taxonomy\helpers\TaxonomyHelper::getTranslated($categories), 'id', 'title'),
                                             'options' => ['placeholder' => Yii::t('app', '- Select category -'), 'size' => 2],
                                             'pluginOptions' => [
                                                 'allowClear' => true,
-                                                'multiple' => true,
+//                                                'multiple' => true,
                                                 'maximumInputLength' => 15,
-                                                'tags' => true,
-                                                'maximumSelectionLength' => 2,
+//                                                'tags' => true,
+//                                                'maximumSelectionLength' => 2,
                                             ],
                                             'showToggleAll' => false,
                                         ]); ?>
                                 </div>
+                            </div>
+                            <div class="form-row row">
                                 <div class="col-md-6">
                                     <?php echo $form->field($model, 'manufacture')
                                         ->widget(Select2::classname(), [
                                             'data' => \yii\helpers\ArrayHelper::map(
-                                                $manufacturer, 'id', 'name'),
+                                                \common\modules\taxonomy\helpers\TaxonomyHelper::getTranslated($manufacturer), 'id', 'title'),
                                             'options' => ['placeholder' => Yii::t('app', '- Select manufacture -'), 'size' => 2],
                                             'pluginOptions' => [
                                                 'allowClear' => true,
@@ -190,19 +212,37 @@ $years['-1970'] = Yii::t('app', 'Before 1970');
                                             'showToggleAll' => false,
                                         ]) ?>
                                 </div>
+                                    <?= $form->field($model, 'model', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label(Yii::t('app', 'Model') . ':') ?>
+
                             </div>
-                        </div>
-                        <div class="form-row row">
-                            <?= $form->field($model, 'model', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label(Yii::t('app', 'Model') . ':') ?>
-                            <?= $form->field($model, 'year',
-                                ['options' =>
-                                    ['class' => 'col-md-3', 'data-placeholder' => Yii::t('app', 'Please select')]])
-                                ->dropDownList($years,
-                                    ['prompt' => ' - ']
-                                )
-                                ->label(Yii::t('app', 'Year of manufacture')) ?>
-                            <?= $form->field($model, 'condition', ['options' => ['class' => 'col-md-3']])
-                                ->radioList(['1' => Yii::t('app', 'New'), '0' => Yii::t('app', 'Used')]) ?>
+                            <div class="form-row row">
+
+                                    <?= $form->field($model, 'year',
+                                    ['options' =>
+                                        ['class' => 'col-md-3', 'data-placeholder' => Yii::t('app', 'Please select')]])
+                                    ->dropDownList($years,
+                                        ['prompt' => ' - ']
+                                    )
+                                    ->label(Yii::t('app', 'Year of manufacture')) ?>
+                                <?= $form->field($model, 'condition', ['options' => ['class' => 'col-md-3']])
+                                    ->radioList(['1' => Yii::t('app', 'New'), '0' => Yii::t('app', 'Used')]) ?>
+                                <div class="col-md-6">
+                                    <?= $form->field($model, 'country')
+                                        ->widget(Select2::classname(), [
+//                                            'data' => TaxonomyHelper::terms3Level($categories),
+                                            'data' => \yii\helpers\ArrayHelper::map(\common\modules\taxonomy\helpers\TaxonomyHelper::getTranslated($countries), 'id', 'title'),
+                                            'options' => ['placeholder' => Yii::t('app', '- Select country -'), 'size' => 2],
+                                            'pluginOptions' => [
+                                                'allowClear' => true,
+//                                                'multiple' => true,
+                                                'maximumInputLength' => 15,
+//                                                'tags' => true,
+//                                                'maximumSelectionLength' => 2,
+                                            ],
+                                            'showToggleAll' => false,
+                                        ]); ?>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-row row">
                             <?= $form->field($model, 'price',

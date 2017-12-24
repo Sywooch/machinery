@@ -64,7 +64,7 @@ class AdvertRepository
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                 'pageSize' => 16,
+                 'pageSize' => 30,
             ]
         ]);
 

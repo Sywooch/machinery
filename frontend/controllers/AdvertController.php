@@ -114,7 +114,9 @@ class AdvertController extends Controller
                 'translates' => $translates,
                 'languages' => $this->languageRepository->loadAllActive(),
                 'categories' => $this->itemsRepository->getVocabularyTerms($model::VCL_CATEGORIES),
+                'areas' => $this->itemsRepository->getVocabularyTopTerms(Advert::VCL_CATEGORIES),
                 'manufacturer' => $this->itemsRepository->getVocabularyTerms($model::VCL_MANUFACTURES),
+                'countries' => $this->itemsRepository->getVocabularyTerms($model::VCL_COUNTRY),
                 'colors' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_COLOR),
             ]);
         }
@@ -166,7 +168,9 @@ class AdvertController extends Controller
             'translates' => $translates,
             'languages' => $this->languageRepository->loadAllActive(),
             'categories' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_CATEGORIES),
+            'areas' => $this->itemsRepository->getVocabularyTopTerms(Advert::VCL_CATEGORIES),
             'manufacturer' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_MANUFACTURES),
+            'countries' => $this->itemsRepository->getVocabularyTerms($model::VCL_COUNTRY),
             'colors' => $this->itemsRepository->getVocabularyTerms(Advert::VCL_COLOR),
         ]);
     }

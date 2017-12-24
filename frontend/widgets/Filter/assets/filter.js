@@ -1,85 +1,81 @@
+var FilterService = function () {
+    this.data = {};
+    this.filterCommand = new FilterCommand();
+}
 
-/*var FilterForm = {
+FilterService.prototype.updateProperties = function (result, name) {
 
-    init: function () {
-        this.initOrders();
-        this.reset();
-        this.initSubmit();
-    },
-    reset: function(){
+    for (var t in result) {
+        let select = $('#filterForm select.select-' + t),
+            current = select.val(),
+            categories = result[t];
 
-    },
+        // if (name && name == 'subcategory' && t == 'category') {
+        //     continue;
+        // }
 
-    initSubmit: function(){
+        if (!categories.length) {
+            select.prop('disabled', 'disabled');
+        } else {
+            select.prop('disabled', false);
+        }
 
-        $('#filter-form').submit(function (e) {
-            var params = $(this).serializeArray().filter(function (value) {
-                return value.value != '' && value.value != 0;
+        select.html('').trigger('refresh');
+        select.append("<option value='' class='level-0' data-translit=''>All</option>");
+
+        for (var i in categories) {
+            let item = categories[i];
+            if(typeof item == 'object')
+            select.append("<option value='" + item.id + "' class='level-0' data-translit='" + item.transliteration + "'>" + item.name + " (" + item.count.count + ")</option>");
+        }
+
+        if (current) {
+            select.find('option[value=' + current + ']').attr('selected', 'selected');
+        }
+
+    }
+
+    $('#filterForm select').trigger('refresh');
+    $('#filter-count-result').text('( ' + result.counter + ' )');
+}
+
+FilterService.prototype.init = function () {
+    let self = this;
+    $('#filterForm select').change(function () {
+        self.changeFilter();
+    });
+
+    $('#filterform-price-max').change(function () {
+        self.changeFilter();
+    });
+
+    $('#filterform-price-min').change(function () {
+        self.changeFilter();
+    });
+}
+
+FilterService.prototype.changeFilter = function () {
+    let self = this;
+    self.filterCommand.loadData($('#filterForm').serializeArray()).then(result => self.updateProperties(result, name));
+}
+
+
+var FilterCommand = function () {
+    this.loadData = function (data) {
+        return new Promise((resolve, reject) => {
+            $.get('/ajax/categories', data, function (res) {
+                resolve(res);
             });
-            location.href = decodeURI(location.pathname + '?' + $.param(params))
 
-            return false;
-        });
-
-        $('#uk-dropdown-filter').on('hide.uk.dropdown', function () {
-            var params = $('#filter-form').serializeArray().filter(function (value) {
-                return value.value != '' && value.value != 0;
-            });
-            location.href = decodeURI(location.pathname + '?' + $.param(params))
-
-            return false;
-        });
-
-    },
-
-    initOrders: function () {
-
-        $('#filter-form .order a').each(function () {
-            var attr = $(this).attr('data-attr');
-            var current = $('#filterform-sort').val();
-
-            if (current.charAt(0) == '-' && attr == current.slice(1)) {
-                $(this).addClass('_desc');
-            } else if (current == attr) {
-                $(this).addClass('_asc');
-            }
-        });
-
-
-        $('#filter-form .order a').click(function () {
-            $('#filter-form .order a').removeClass('_asc').removeClass('_desc');
-
-            var attr = $(this).attr('data-attr');
-            var current = $('#filterform-sort').val();
-
-            if (current == attr) {
-                if (attr.charAt(0) != '-') {
-                    attr = '-' + attr;
-                    $(this).addClass('_desc');
-                }
-            } else {
-                $(this).addClass('_asc');
-            }
-            $('#filterform-sort').val(attr);
-
-            return false;
-        });
+        })
     }
 }
-*/
+
 
 $(document).ready(function () {
-    // FilterForm.init();
-    console.log('filter');
-    $('body').on('change','#obj-category', function(e){
-        e.preventDefault();
-        var url = '/ajax/categories';
-        var data = {id: this.value};
-        $.get(url, data, function(d){
-            console.log(d);
-            return false;
-        }, 'json');
-        return false;
-    });
+    var filter = new FilterService();
+    filter.init();
+    console.log(categoriesJson);
+    filter.updateProperties(categoriesJson);
 });
 

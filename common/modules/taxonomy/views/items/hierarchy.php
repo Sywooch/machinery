@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = 'Ordering';
 
 
 ?>
-<div class="taxonomy-items-index">
+<div class="taxonomy-items-index clearfix">
 
     <h1><?= Html::encode($this->title) ?></h1>
     

@@ -57,7 +57,7 @@ class Advert extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['manufacture', 'category'], 'required'],
+            [['manufacture', 'area', 'category'], 'required'],
             [['body', 'bucket_capacity', 'tire_condition', 'serial_number', 'lang', 'meta_description'], 'string'],
             [['price', 'power', 'weight', 'pressure','capacity','generatorOutput','voltage','tankVolume','length','width','height' ], 'number'],
             [['currency', 'year', 'condition', 'operating_hours', 'mileage', 'parent', 'status_user'], 'integer'],
@@ -68,8 +68,8 @@ class Advert extends \yii\db\ActiveRecord
             [['category'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
             [['country'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
             [['manufacture'], TaxonomyAttributeValidator::class, 'type' => 'string', 'pattern' => '/^[\w\s,\-]+$/u'],
-//            [['manufacture'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
             [['color'], TaxonomyAttributeValidator::class, 'type' => 'integer'],
+            [['area'], TaxonomyAttributeValidator::class],
             [['status_user'], 'default', 'value' => 1],
         ];
     }
@@ -116,6 +116,7 @@ class Advert extends \yii\db\ActiveRecord
             'height' => Yii::t('app', 'Height (cm)'),
             'status_user' => Yii::t('app', 'Ad status'),
             'country' => Yii::t('app', 'Country'),
+            'area' => Yii::t('app', 'Area'),
         ];
     }
 
@@ -167,6 +168,16 @@ class Advert extends \yii\db\ActiveRecord
             ->where(['vid' => self::VCL_COUNTRY])
             ->viaTable('{{%taxonomy_index}}', ['entity_id' => 'id']);
     }
+    public function getAreas()
+    {
+        return $this->hasOne(TaxonomyItems::className(), ['id' => 'term_id'])
+            ->where(['vid' => self::VCL_CATEGORIES])
+            ->viaTable('{{%taxonomy_index}}', ['entity_id' => 'id'])
+            ->indexBy('id')
+//            ->column('tid')
+            ->asArray();
+    }
+
 
     public function getManufacture()
     {

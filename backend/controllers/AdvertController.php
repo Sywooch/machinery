@@ -85,7 +85,7 @@ class AdvertController extends Controller
 
 
         if ($model->load(Yii::$app->request->post())) {
-            dd($model, 1);
+//            dd($model, 1);
             if($model->save())
                 return $this->redirect(['update', 'id' => $model->id]);
         }

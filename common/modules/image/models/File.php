@@ -45,7 +45,7 @@ class File extends \yii\db\ActiveRecord
     {
         return [
             [['entity_id', 'field', 'model', 'name', 'path', 'storage'], 'required'],
-            [['entity_id', 'size', 'delta'], 'integer'],
+            [['entity_id', 'size', 'delta', 'width', 'height'], 'integer'],
             [['field', 'model', 'storage'], 'string', 'max' => 50],
             [['name', 'path'], 'string', 'max' => 255],
             [['mimetype'], 'string', 'max' => 30],

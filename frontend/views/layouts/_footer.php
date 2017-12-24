@@ -42,7 +42,7 @@ use yii\bootstrap\Modal;
                     <a class="advert-b footer-button" href="<?= \yii\helpers\Url::to(['advert/create']) ?>"><?= Yii::t('app', 'add advent') ?></a>
                 </div>
                 <div class="dropup main-footer-language">
-                    <ul class="menu-lang">
+                    <ul class="menu-lang mmmm">
                         <li class="dropdown">
                             <?= \frontend\widgets\Language\LanguageSwitcher::widget() ?>
                         </li>
@@ -55,8 +55,18 @@ use yii\bootstrap\Modal;
 </footer>
 <?php Modal::begin([
     'id' => 'status-modal',
-    'header' => '<div class="text-header-modal">Header modal</div>',
-    'bodyOptions' => ['class' => 'modal-body']
+    'header' => '<div class="text-header-modal">Объявление добавлено 
+в избранные</div>',
+    'bodyOptions' => ['class' => 'modal-body'],
+    'footerOptions' => ['class'=>'modal-footer modal-status-footer', ],
+    'footer' => '<div class="status-footer-inner">footer</div>',
 ]); ?>
-    <div class="text-status"></div>
+    <div class="block-status">
+        <div class="status-icon">
+            <div class="icon-arrow-right"></div>
+            <div class="icon-image icon-add-favorite"></div>
+            <div class="status-text">Вы можете просмотреть список
+                избранных обьявлений в личном кабинете </div>
+        </div>
+    </div>
 <?php Modal::end(); ?>
